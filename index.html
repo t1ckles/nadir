@@ -3,12 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SGS Strategy Guides — Community Reference Library</title>
+<title>Strategy Guide Library</title>
 <meta name="description" content="Comprehensive community strategy guides for Strategy Game Studio (SGS) historical wargames. Covering both sides, all scenarios, and all systems.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <style>
-/* ── Reset & Root ──────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
@@ -27,567 +26,97 @@
 }
 
 html { scroll-behavior: smooth; font-size: 17px; }
+body { background: var(--parchment); color: var(--ink); font-family: var(--font-body); line-height: 1.75; min-height: 100vh; }
+body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 999; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); opacity: 0.5; }
 
-body {
-  background: var(--parchment);
-  color: var(--ink);
-  font-family: var(--font-body);
-  line-height: 1.75;
-  min-height: 100vh;
-}
+.site-hero { background: linear-gradient(160deg, #0f1e30 0%, #1b2f4a 50%, #2a1a0a 100%); padding: 80px 64px 70px; position: relative; overflow: hidden; border-bottom: 3px solid var(--gold-dark); }
+.site-hero::before { content: ''; position: absolute; inset: 0; background-image: repeating-linear-gradient(-55deg, transparent, transparent 40px, rgba(201,148,58,0.04) 40px, rgba(201,148,58,0.04) 41px); }
+.site-hero::after { content: ''; position: absolute; bottom: 0; left: 64px; right: 64px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+.hero-inner { max-width: 900px; margin: 0 auto; position: relative; text-align: center; }
+.hero-eyebrow { font-family: var(--font-head); font-size: 0.68rem; letter-spacing: 0.28em; color: var(--gold-dark); text-transform: uppercase; margin-bottom: 18px; }
+.hero-title { font-family: var(--font-head); font-size: clamp(1.8rem, 4.5vw, 3rem); font-weight: 900; color: var(--parchment); letter-spacing: 0.04em; text-transform: uppercase; line-height: 1.1; margin-bottom: 16px; }
+.hero-rule { width: 80px; height: 2px; background: var(--gold); margin: 0 auto 20px; opacity: 0.6; }
+.hero-desc { font-family: var(--font-body); font-size: 1rem; font-style: italic; color: rgba(240,217,168,0.7); font-weight: 300; max-width: 560px; margin: 0 auto; line-height: 1.7; }
 
-/* Noise texture */
-body::before {
-  content: '';
-  position: fixed; inset: 0; pointer-events: none; z-index: 999;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  opacity: 0.5;
-}
+.main-wrap { max-width: 1100px; margin: 0 auto; padding: 64px 40px 100px; }
+.section-label { font-family: var(--font-head); font-size: 0.65rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 10px; display: flex; align-items: center; gap: 14px; }
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.section-title { font-family: var(--font-head); font-size: clamp(1.1rem, 2vw, 1.4rem); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink); margin-bottom: 8px; }
+.section-intro { font-family: var(--font-body); font-size: 0.95rem; color: var(--mid); font-style: italic; margin-bottom: 36px; max-width: 640px; }
 
-/* ── Site header / hero ────────────────────────────────────── */
-.site-hero {
-  background: linear-gradient(160deg, #0f1e30 0%, #1b2f4a 50%, #2a1a0a 100%);
-  padding: 80px 64px 70px;
-  position: relative;
-  overflow: hidden;
-  border-bottom: 3px solid var(--gold-dark);
-}
-
-.site-hero::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image: repeating-linear-gradient(
-    -55deg,
-    transparent, transparent 40px,
-    rgba(201,148,58,0.04) 40px, rgba(201,148,58,0.04) 41px
-  );
-}
-
-.site-hero::after {
-  content: '';
-  position: absolute; bottom: 0; left: 64px; right: 64px; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-}
-
-.hero-inner {
-  max-width: 900px;
-  margin: 0 auto;
-  position: relative;
-  text-align: center;
-}
-
-.hero-eyebrow {
-  font-family: var(--font-head);
-  font-size: 0.68rem;
-  letter-spacing: 0.28em;
-  color: var(--gold-dark);
-  text-transform: uppercase;
-  margin-bottom: 18px;
-}
-
-.hero-title {
-  font-family: var(--font-head);
-  font-size: clamp(1.8rem, 4.5vw, 3rem);
-  font-weight: 900;
-  color: var(--parchment);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  line-height: 1.1;
-  margin-bottom: 16px;
-}
-
-.hero-rule {
-  width: 80px;
-  height: 2px;
-  background: var(--gold);
-  margin: 0 auto 20px;
-  opacity: 0.6;
-}
-
-.hero-desc {
-  font-family: var(--font-body);
-  font-size: 1rem;
-  font-style: italic;
-  color: rgba(240,217,168,0.7);
-  font-weight: 300;
-  max-width: 560px;
-  margin: 0 auto;
-  line-height: 1.7;
-}
-
-/* ── Main content wrapper ──────────────────────────────────── */
-.main-wrap {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 64px 40px 100px;
-}
-
-/* ── Section heading ───────────────────────────────────────── */
-.section-label {
-  font-family: var(--font-head);
-  font-size: 0.65rem;
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
-  color: var(--gold-dark);
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-.section-label::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-}
-
-.section-title {
-  font-family: var(--font-head);
-  font-size: clamp(1.1rem, 2vw, 1.4rem);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--ink);
-  margin-bottom: 8px;
-}
-
-.section-intro {
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  color: var(--mid);
-  font-style: italic;
-  margin-bottom: 36px;
-  max-width: 640px;
-}
-
-/* ── Games grid ─────────────────────────────────────────────── */
-.games-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 24px;
-  margin-bottom: 72px;
-}
-
-/* ── Game card ──────────────────────────────────────────────── */
-.game-card {
-  background: var(--light);
-  border: 1px solid var(--border);
-  cursor: pointer;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.game-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 28px var(--shadow);
-  border-color: var(--gold);
-}
-
-/* Top colour bar — each era gets a distinct colour */
-.game-card-bar {
-  height: 4px;
-  background: var(--gold);
-}
-.game-card[data-era="pre-ww2"] .game-card-bar  { background: linear-gradient(90deg, #7a3c1a, #c9943a); }
-.game-card[data-era="ww2"]     .game-card-bar  { background: linear-gradient(90deg, #1b3d5a, #4a8ab0); }
-.game-card[data-era="post-ww2"].game-card-bar  { background: linear-gradient(90deg, #1a5c3a, #4ab07a); }
-.game-card[data-era="scifi"]   .game-card-bar  { background: linear-gradient(90deg, #0d1a30, #2a6b8a); }
-
+.games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; margin-bottom: 72px; }
+.game-card { background: var(--light); border: 1px solid var(--border); cursor: pointer; transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease; position: relative; overflow: hidden; }
+.game-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px var(--shadow); border-color: var(--gold); }
+.game-card-bar { height: 4px; background: var(--gold); }
+.game-card[data-era="pre-ww2"] .game-card-bar { background: linear-gradient(90deg, #7a3c1a, #c9943a); }
+.game-card[data-era="ww2"]     .game-card-bar { background: linear-gradient(90deg, #1b3d5a, #4a8ab0); }
+.game-card[data-era="post-ww2"].game-card-bar { background: linear-gradient(90deg, #1a5c3a, #4ab07a); }
+.game-card[data-era="scifi"]   .game-card-bar { background: linear-gradient(90deg, #0d1a30, #2a6b8a); }
 .game-card-inner { padding: 20px 22px 22px; }
-
-.game-card-era {
-  font-family: var(--font-head);
-  font-size: 0.58rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--gold-dark);
-  margin-bottom: 5px;
-}
+.game-card-era { font-family: var(--font-head); font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 5px; }
 .game-card[data-era="ww2"]     .game-card-era { color: #2a6080; }
 .game-card[data-era="post-ww2"].game-card-era { color: #1a6040; }
 .game-card[data-era="scifi"]   .game-card-era { color: #1a5c6b; }
-
-.game-card-title {
-  font-family: var(--font-head);
-  font-size: 1.12rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--ink);
-  margin-bottom: 3px;
-  line-height: 1.2;
-}
-
-.game-card-subtitle {
-  font-family: var(--font-body);
-  font-size: 0.85rem;
-  font-style: italic;
-  color: var(--mid);
-  margin-bottom: 12px;
-}
-
-.game-card-divider {
-  height: 1px;
-  background: var(--border);
-  margin-bottom: 12px;
-}
-
-.game-card-desc {
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  line-height: 1.6;
-  color: var(--ink);
-  margin-bottom: 14px;
-}
-
-.game-card-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-bottom: 16px;
-}
-
-.game-card-tag {
-  font-family: var(--font-head);
-  font-size: 0.58rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--mid);
-  border: 1px solid var(--border);
-  padding: 2px 7px;
-  background: var(--parchment);
-}
-
-.game-card-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.game-card-cta {
-  font-family: var(--font-head);
-  font-size: 0.65rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--gold-dark);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: gap 0.15s;
-}
+.game-card-title { font-family: var(--font-head); font-size: 1.12rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink); margin-bottom: 3px; line-height: 1.2; }
+.game-card-subtitle { font-family: var(--font-body); font-size: 0.85rem; font-style: italic; color: var(--mid); margin-bottom: 12px; }
+.game-card-divider { height: 1px; background: var(--border); margin-bottom: 12px; }
+.game-card-desc { font-family: var(--font-body); font-size: 0.9rem; line-height: 1.6; color: var(--ink); margin-bottom: 14px; }
+.game-card-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 16px; }
+.game-card-tag { font-family: var(--font-head); font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mid); border: 1px solid var(--border); padding: 2px 7px; background: var(--parchment); }
+.game-card-footer { display: flex; align-items: center; justify-content: space-between; }
+.game-card-cta { font-family: var(--font-head); font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-dark); display: flex; align-items: center; gap: 6px; transition: gap 0.15s; }
 .game-card:hover .game-card-cta { gap: 10px; }
+.game-card-sections { font-family: var(--font-body); font-size: 0.8rem; color: var(--mid); font-style: italic; }
+.game-card.coming-soon { opacity: 0.55; cursor: default; pointer-events: none; }
+.game-card.coming-soon .game-card-bar { background: repeating-linear-gradient(90deg, rgba(201,148,58,0.3) 0px, rgba(201,148,58,0.3) 8px, transparent 8px, transparent 16px); }
+.coming-soon-badge { font-family: var(--font-head); font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mid); border: 1px solid var(--border); padding: 2px 7px; }
 
-.game-card-sections {
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-  color: var(--mid);
-  font-style: italic;
-}
-
-/* Coming soon state */
-.game-card.coming-soon {
-  opacity: 0.55;
-  cursor: default;
-  pointer-events: none;
-}
-.game-card.coming-soon .game-card-bar {
-  background: repeating-linear-gradient(
-    90deg,
-    rgba(201,148,58,0.3) 0px, rgba(201,148,58,0.3) 8px,
-    transparent 8px, transparent 16px
-  );
-}
-.coming-soon-badge {
-  font-family: var(--font-head);
-  font-size: 0.55rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--mid);
-  border: 1px solid var(--border);
-  padding: 2px 7px;
-}
-
-/* ── Modal overlay ──────────────────────────────────────────── */
-.modal-overlay {
-  position: fixed; inset: 0; z-index: 1000;
-  display: flex; align-items: center; justify-content: center;
-  padding: 20px;
-  background: rgba(15,22,32,0.82);
-  backdrop-filter: blur(4px);
-  opacity: 0; pointer-events: none;
-  transition: opacity 0.25s ease;
-}
+.modal-overlay { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(15,22,32,0.82); backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
 .modal-overlay.open { opacity: 1; pointer-events: all; }
-
-.modal {
-  background: var(--parchment);
-  border: 1px solid var(--gold);
-  max-width: 620px;
-  width: 100%;
-  max-height: 88vh;
-  overflow-y: auto;
-  position: relative;
-  transform: translateY(16px) scale(0.98);
-  transition: transform 0.28s cubic-bezier(0.16,1,0.3,1);
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
-}
+.modal { background: var(--parchment); border: 1px solid var(--gold); max-width: 620px; width: 100%; max-height: 88vh; overflow-y: auto; position: relative; transform: translateY(16px) scale(0.98); transition: transform 0.28s cubic-bezier(0.16,1,0.3,1); scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
 .modal-overlay.open .modal { transform: none; }
-
-.modal-bar {
-  height: 4px;
-  background: var(--gold);
-}
+.modal-bar { height: 4px; background: var(--gold); }
 .modal[data-era="pre-ww2"] .modal-bar { background: linear-gradient(90deg, #7a3c1a, #c9943a); }
 .modal[data-era="ww2"]     .modal-bar { background: linear-gradient(90deg, #1b3d5a, #4a8ab0); }
 .modal[data-era="post-ww2"].modal-bar { background: linear-gradient(90deg, #1a5c3a, #4ab07a); }
 .modal[data-era="scifi"]   .modal-bar { background: linear-gradient(90deg, #0d1a30, #2a6b8a); }
-
-.modal-header {
-  padding: 24px 28px 18px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.modal-era {
-  font-family: var(--font-head);
-  font-size: 0.6rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--gold-dark);
-  margin-bottom: 5px;
-}
+.modal-header { padding: 24px 28px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.modal-era { font-family: var(--font-head); font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 5px; }
 .modal[data-era="ww2"]     .modal-era { color: #2a6080; }
 .modal[data-era="scifi"]   .modal-era { color: #1a5c6b; }
 .modal[data-era="post-ww2"].modal-era { color: #1a6040; }
-
-.modal-title {
-  font-family: var(--font-head);
-  font-size: clamp(1.3rem, 3vw, 1.9rem);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--ink);
-  line-height: 1.1;
-  margin-bottom: 3px;
-}
-
-.modal-subtitle {
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  font-style: italic;
-  color: var(--mid);
-}
-
-.modal-close {
-  width: 34px; height: 34px;
-  border: 1px solid var(--border);
-  background: var(--light);
-  color: var(--mid);
-  font-size: 0.9rem;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: all 0.15s;
-  font-family: var(--font-body);
-  margin-top: 2px;
-}
-.modal-close:hover {
-  border-color: var(--gold);
-  color: var(--gold-dark);
-  background: var(--parchment);
-}
-
+.modal-title { font-family: var(--font-head); font-size: clamp(1.3rem, 3vw, 1.9rem); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink); line-height: 1.1; margin-bottom: 3px; }
+.modal-subtitle { font-family: var(--font-body); font-size: 0.9rem; font-style: italic; color: var(--mid); }
+.modal-close { width: 34px; height: 34px; border: 1px solid var(--border); background: var(--light); color: var(--mid); font-size: 0.9rem; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; transition: all 0.15s; font-family: var(--font-body); margin-top: 2px; }
+.modal-close:hover { border-color: var(--gold); color: var(--gold-dark); background: var(--parchment); }
 .modal-body { padding: 22px 28px 28px; }
-
-.modal-section-label {
-  font-family: var(--font-head);
-  font-size: 0.6rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--gold-dark);
-  margin-bottom: 8px;
-  margin-top: 20px;
-  padding-bottom: 5px;
-  border-bottom: 1px solid var(--border);
-}
+.modal-section-label { font-family: var(--font-head); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 8px; margin-top: 20px; padding-bottom: 5px; border-bottom: 1px solid var(--border); }
 .modal-section-label:first-child { margin-top: 0; }
+.modal-desc { font-family: var(--font-body); font-size: 0.95rem; line-height: 1.7; color: var(--ink); margin-bottom: 4px; }
+.modal-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 6px; }
+.modal-tag { font-family: var(--font-head); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mid); border: 1px solid var(--border); padding: 3px 8px; background: var(--light); }
+.modal-meta-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; }
+.modal-meta-cell { background: var(--light); border: 1px solid var(--border); padding: 9px 12px; }
+.modal-meta-label { font-family: var(--font-head); font-size: 0.55rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mid); margin-bottom: 2px; }
+.modal-meta-value { font-family: var(--font-body); font-size: 0.92rem; color: var(--ink); font-weight: 600; }
+.modal-sides { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; }
+.modal-side { padding: 10px 13px; border: 1px solid var(--border); background: var(--light); }
+.modal-side-label { font-family: var(--font-head); font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 4px; }
+.modal-side-body { font-family: var(--font-body); font-size: 0.88rem; line-height: 1.55; color: var(--ink); }
+.modal-cta { display: block; margin-top: 22px; padding: 13px 22px; background: var(--navy); color: var(--gold-pale); font-family: var(--font-head); font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; text-decoration: none; text-align: center; transition: background 0.15s; }
+.modal-cta:hover { background: #0f1e30; }
+.modal-ext-links { display: flex; gap: 10px; margin-top: 22px; }
+.modal-ext-link { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 14px; border: 1px solid var(--border); background: var(--light); color: var(--mid); font-family: var(--font-head); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; transition: border-color 0.15s, color 0.15s, background 0.15s; }
+.modal-ext-link:hover { border-color: var(--gold); color: var(--gold-dark); background: var(--parchment); }
+.modal-ext-link svg { flex-shrink: 0; opacity: 0.65; }
 
-.modal-desc {
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: var(--ink);
-  margin-bottom: 4px;
-}
+.info-strip { border: 1px solid var(--border); background: var(--light); padding: 20px 28px; margin-bottom: 60px; display: flex; align-items: flex-start; gap: 20px; }
+.info-strip-icon { font-size: 1.4rem; color: var(--gold); flex-shrink: 0; margin-top: 2px; font-family: serif; }
+.info-strip-body { font-family: var(--font-body); font-size: 0.92rem; line-height: 1.65; color: var(--mid); }
+.info-strip-body strong { font-family: var(--font-head); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); display: block; margin-bottom: 4px; }
 
-.modal-tags {
-  display: flex; flex-wrap: wrap; gap: 6px;
-  margin: 10px 0 6px;
-}
-.modal-tag {
-  font-family: var(--font-head);
-  font-size: 0.6rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--mid);
-  border: 1px solid var(--border);
-  padding: 3px 8px;
-  background: var(--light);
-}
+.site-footer { border-top: 1px solid var(--border); padding: 20px 40px; font-family: var(--font-head); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mid); text-align: center; }
 
-.modal-meta-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin: 10px 0;
-}
-.modal-meta-cell {
-  background: var(--light);
-  border: 1px solid var(--border);
-  padding: 9px 12px;
-}
-.modal-meta-label {
-  font-family: var(--font-head);
-  font-size: 0.55rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--mid);
-  margin-bottom: 2px;
-}
-.modal-meta-value {
-  font-family: var(--font-body);
-  font-size: 0.92rem;
-  color: var(--ink);
-  font-weight: 600;
-}
-
-.modal-sides {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin: 10px 0;
-}
-.modal-side {
-  padding: 10px 13px;
-  border: 1px solid var(--border);
-  background: var(--light);
-}
-.modal-side-label {
-  font-family: var(--font-head);
-  font-size: 0.58rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--gold-dark);
-  margin-bottom: 4px;
-}
-.modal-side-body {
-  font-family: var(--font-body);
-  font-size: 0.88rem;
-  line-height: 1.55;
-  color: var(--ink);
-}
-
-.modal-cta {
-  display: block;
-  margin-top: 22px;
-  padding: 13px 22px;
-  background: var(--navy);
-  color: var(--gold-pale);
-  font-family: var(--font-head);
-  font-size: 0.72rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  text-decoration: none;
-  text-align: center;
-  transition: background 0.15s;
-}
-.modal-cta:hover {
-  background: #0f1e30;
-}
-
-.modal-ext-links {
-  display: flex;
-  gap: 10px;
-  margin-top: 22px;
-}
-.modal-ext-link {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 14px;
-  border: 1px solid var(--border);
-  background: var(--light);
-  color: var(--mid);
-  font-family: var(--font-head);
-  font-size: 0.62rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  text-decoration: none;
-  transition: border-color 0.15s, color 0.15s, background 0.15s;
-}
-.modal-ext-link:hover {
-  border-color: var(--gold);
-  color: var(--gold-dark);
-  background: var(--parchment);
-}
-.modal-ext-link svg {
-  flex-shrink: 0;
-  opacity: 0.65;
-}
-
-/* ── Info strip ─────────────────────────────────────────────── */
-.info-strip {
-  border: 1px solid var(--border);
-  background: var(--light);
-  padding: 20px 28px;
-  margin-bottom: 60px;
-  display: flex;
-  align-items: flex-start;
-  gap: 20px;
-}
-.info-strip-icon {
-  font-size: 1.4rem;
-  color: var(--gold);
-  flex-shrink: 0;
-  margin-top: 2px;
-  font-family: serif;
-}
-.info-strip-body {
-  font-family: var(--font-body);
-  font-size: 0.92rem;
-  line-height: 1.65;
-  color: var(--mid);
-}
-.info-strip-body strong {
-  font-family: var(--font-head);
-  font-size: 0.78rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink);
-  display: block;
-  margin-bottom: 4px;
-}
-
-/* ── Footer ─────────────────────────────────────────────────── */
-.site-footer {
-  border-top: 1px solid var(--border);
-  padding: 20px 40px;
-  font-family: var(--font-head);
-  font-size: 0.62rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--mid);
-  text-align: center;
-}
-
-/* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 700px) {
   .site-hero { padding: 50px 24px 48px; }
   .main-wrap { padding: 40px 20px 80px; }
@@ -600,109 +129,60 @@ body::before {
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- HERO                                                         -->
-<!-- ═══════════════════════════════════════════════════════════ -->
 <header class="site-hero">
   <div class="hero-inner">
-    <div class="hero-eyebrow">Community Resource &nbsp;·&nbsp; Strategy Game Studio &nbsp;·&nbsp; Avalon Digital</div>
+    <div class="hero-eyebrow">Community Resource &nbsp;&middot;&nbsp; Strategy Guides &nbsp;&middot;&nbsp; Historical &amp; Science Fiction</div>
     <h1 class="hero-title">Strategy Guide Library</h1>
     <div class="hero-rule"></div>
-    <p class="hero-desc">Comprehensive guides covering both sides, all systems, and every scenario — for historical wargames and grand strategy titles.</p>
+    <p class="hero-desc">Comprehensive guides covering both sides, all systems, and every scenario &mdash; for historical wargames and grand strategy titles.</p>
   </div>
 </header>
 
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- MAIN                                                         -->
-<!-- ═══════════════════════════════════════════════════════════ -->
 <main class="main-wrap">
-
-  <!-- Info strip -->
   <div class="info-strip">
-    <div class="info-strip-icon">✦</div>
+    <div class="info-strip-icon">&#10022;</div>
     <div class="info-strip-body">
       <strong>How to use this library</strong>
-      Click any game card to read a brief overview — including sides, scenarios, engine version, and what makes it unique. Then follow the link to the full guide. New guides are added regularly; check back as the library grows.
+      Click any game card to read a brief overview &mdash; including sides, scenarios, engine version, and what makes it unique. Then follow the link to the full guide. New guides are added regularly; check back as the library grows.
     </div>
   </div>
 
-  <!-- ── Available Guides ───────────────────────────────────── -->
   <div class="section-label">Available Guides</div>
   <h2 class="section-title">Complete Strategy Guides</h2>
-  <p class="section-intro">Full multi-section guides covering historical context, rules, strategies, all scenarios, and a complete glossary. SGS historical wargames and grand strategy titles.</p>
+  <p class="section-intro">Full multi-section guides covering historical context, rules, both sides' strategies, all scenarios, and a complete glossary.</p>
+  <div class="games-grid" id="games-grid"></div>
 
-  <div class="games-grid" id="games-grid">
-    <!-- Cards injected by JS -->
-  </div>
-
-  <!-- ── Coming Soon ────────────────────────────────────────── -->
   <div class="section-label">In Progress</div>
   <h2 class="section-title">Upcoming Guides</h2>
   <p class="section-intro">Guides under research and development. Check back soon.</p>
-
-  <div class="games-grid" id="coming-grid">
-    <!-- Coming soon cards injected by JS -->
-  </div>
-
+  <div class="games-grid" id="coming-grid"></div>
 </main>
 
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- FOOTER                                                       -->
-<!-- ═══════════════════════════════════════════════════════════ -->
 <footer class="site-footer">
-  SGS Strategy Guide Library &nbsp;·&nbsp; Community Resource &nbsp;·&nbsp; Avalon Digital / Strategy Game Studio
+  Strategy Guide Library &nbsp;&middot;&nbsp; Community Resource &nbsp;&middot;&nbsp; Avalon Digital / Strategy Game Studio / Matrix Games
 </footer>
 
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- MODAL                                                        -->
-<!-- ═══════════════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal" id="modal">
     <div class="modal-bar"></div>
     <div class="modal-header">
       <div>
-        <div class="modal-era"    id="m-era"></div>
-        <div class="modal-title"  id="m-title"></div>
+        <div class="modal-era" id="m-era"></div>
+        <div class="modal-title" id="m-title"></div>
         <div class="modal-subtitle" id="m-subtitle"></div>
       </div>
-      <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+      <button class="modal-close" id="modal-close" aria-label="Close">&#10005;</button>
     </div>
     <div class="modal-body" id="modal-body"></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- JAVASCRIPT                                                   -->
-<!-- ═══════════════════════════════════════════════════════════ -->
 <script>
-/* ============================================================
-   GUIDE DATA
-   ─────────────────────────────────────────────────────────────
-   To add a new guide, append an object to GUIDES[].
-
-   Fields:
-     id         – unique string, used as card key
-     title      – game name (e.g. "SGS Overlord")
-     subtitle   – short descriptor (e.g. "Normandy, 1944")
-     era        – "pre-ww2" | "ww2" | "post-ww2"  (controls accent colour)
-     period     – display string (e.g. "Second World War")
-     engine     – e.g. "SGS Engine v1.5"
-     sections   – number of guide sections
-     scenarios  – number of scenarios covered
-     sides      – array of two side names, e.g. ["Allied", "German"]
-     hardest    – which side is harder to play
-     desc       – 2–3 sentence overview for the card
-     detail     – longer paragraph for the modal (can use <strong> tags)
-     sideA      – { label, body } — first side description for modal
-     sideB      – { label, body } — second side description for modal
-     tags       – array of tag strings
-     file       – relative path to the guide HTML file
-   ============================================================ */
 const GUIDES = [
   {
     id:        'taipings',
     title:     'SGS Taipings',
-    subtitle:  'The Taiping Rebellion, China 1851–1864',
+    subtitle:  'The Taiping Rebellion, China 1851\u20131864',
     era:       'pre-ww2',
     period:    'Pre-World War II',
     engine:    'SGS Engine v1.5',
@@ -711,15 +191,9 @@ const GUIDES = [
     sides:     ['Taiping Heavenly Kingdom', 'Qing Imperial China'],
     hardest:   'Qing Dynasty',
     desc:      'One of history\'s deadliest conflicts. The Taiping Rebellion pitted a millenarian Christian-influenced rebel movement against the crumbling Qing Dynasty. A loyalty-driven, economically complex campaign demanding mastery of the unique Imperial Concern Index.',
-    detail:    'SGS Taipings is one of the most mechanically distinctive entries in the SGS series. The Loyalty system governs income, Fog of War, and enemy unit placement simultaneously. The Qing player must raise the Imperial Concern Index to unlock the elite Xiang Army while managing the northern Nien Bandit threat. The Taiping player must exploit early momentum — capturing the Yangtze cities before Zeng Guofan\'s reformed forces arrive — or face a slow war of attrition they cannot win.',
-    sideA: {
-      label: 'Taiping Heavenly Kingdom',
-      body:  'Elite early units, fast expansion, powerful Taiping leaders. Must capture and hold the Yangtze before Qing modernises. Easier to learn; harder to sustain.'
-    },
-    sideB: {
-      label: 'Qing Imperial China',
-      body:  'Weak initially, powerful eventually. Must spike Imperial Concern to unlock the Xiang Army while surviving Taiping elite attacks. The most complex side in the game.'
-    },
+    detail:    'SGS Taipings is one of the most mechanically distinctive entries in the SGS series. The Loyalty system governs income, Fog of War, and enemy unit placement simultaneously. The Qing player must raise the Imperial Concern Index to unlock the elite Xiang Army while managing the northern Nien Bandit threat. The Taiping player must exploit early momentum \u2014 capturing the Yangtze cities before Zeng Guofan\'s reformed forces arrive \u2014 or face a slow war of attrition they cannot win.',
+    sideA: { label: 'Taiping Heavenly Kingdom', body: 'Elite early units, fast expansion, powerful Taiping leaders. Must capture and hold the Yangtze before Qing modernises. Easier to learn; harder to sustain.' },
+    sideB: { label: 'Qing Imperial China',       body: 'Weak initially, powerful eventually. Must spike Imperial Concern to unlock the Xiang Army while surviving Taiping elite attacks. The most complex side in the game.' },
     tags:  ['Loyalty System','Imperial Concern','Yangtze River','PBEM','Grand Campaign'],
     file:  'https://t1ckles.github.io/nadir/taipings.html',
     steam: 'https://store.steampowered.com/app/1519060/SGS_Taipings/',
@@ -738,14 +212,8 @@ const GUIDES = [
     hardest:   'Allied Forces',
     desc:      'The largest amphibious operation in history. From D-Day to the Falaise Pocket, command Allied forces pushing through the Norman bocage or hold the line as the Wehrmacht fights for time against overwhelming material superiority.',
     detail:    'SGS Overlord covers the complete Normandy campaign from June 6th to September 3rd, 1944. The Allied player faces a uniquely difficult challenge: superior material power is constantly stymied by the bocage terrain, supply fragility, inter-Allied zone restrictions, and strict operational timelines. The German player has no air support but excellent terrain, high-quality Panzer and SS formations, and the ability to inflict punishing attrition on attacking forces. The v1.5 update added the Mortain/Falaise scenario with instant-win conditions, revised supply rules (HQs no longer relay supply), and inter-Allied zone restrictions for Canadian/I Corps forces.',
-    sideA: {
-      label: 'Allied Forces',
-      body:  'US, British, Canadian, Polish, and French formations. Overwhelming air and naval support — when weather allows. Supply-dependent, terrain-frustrated, and racing against a historical clock. The hardest side to play well.'
-    },
-    sideB: {
-      label: 'Wehrmacht / Waffen-SS',
-      body:  'No air support whatsoever; random reinforcement timing. Compensated by terrain mastery, elite Panzer and SS formations, and the defensive advantage of bocage. Easier to learn; deeply satisfying to play well.'
-    },
+    sideA: { label: 'Allied Forces',          body: 'US, British, Canadian, Polish, and French formations. Overwhelming air and naval support \u2014 when weather allows. Supply-dependent, terrain-frustrated, and racing against a historical clock. The hardest side to play well.' },
+    sideB: { label: 'Wehrmacht / Waffen-SS',  body: 'No air support whatsoever; random reinforcement timing. Compensated by terrain mastery, elite Panzer and SS formations, and the defensive advantage of bocage. Easier to learn; deeply satisfying to play well.' },
     tags:  ['D-Day','Bocage','Operation Cobra','Falaise Pocket','Weather','PBEM'],
     file:  'https://t1ckles.github.io/nadir/overlord.html',
     steam: 'https://store.steampowered.com/app/2639440/SGS_Overlord/',
@@ -758,24 +226,38 @@ const GUIDES = [
     era:       'ww2',
     period:    'Second World War',
     engine:    'SGS Engine v1.5',
-    sections:  17,
-    scenarios: 4,
+    sections:  18,
+    scenarios: 6,
     sides:     ['Wehrmacht', 'Polish Armed Forces'],
     hardest:   'Polish Armed Forces',
-    desc:      'Germany\'s opening blitzkrieg and Poland\'s desperate defence. Fall Weiss covers the five-week September Campaign of 1939 — an asymmetric clash of modern armoured doctrine against a brave but outgunned opponent fighting on multiple fronts.',
+    desc:      'Germany\'s opening blitzkrieg and Poland\'s desperate defence. Fall Weiss covers the five-week September Campaign of 1939 \u2014 an asymmetric clash of modern armoured doctrine against a brave but outgunned opponent fighting on multiple fronts.',
     detail:    'SGS Fall Weiss simulates the September 1939 invasion of Poland, the opening campaign of the Second World War. The German player commands a mechanised force with overwhelming air superiority and superior operational tempo, tasked with encircling and destroying the Polish army before it can withdraw to defensible lines. The Polish player must trade space for time, concentrate forces at critical chokepoints, and exploit terrain and weather to inflict enough attrition to deny Germany a clean, rapid victory.',
-    sideA: {
-      label: 'Wehrmacht',
-      body:  'Mechanised infantry, Panzer divisions, and total air superiority. Fast and powerful; the challenge is achieving decisive encirclements rather than pushing Poland back in a disorganised retreat.'
-    },
-    sideB: {
-      label: 'Polish Armed Forces',
-      body:  'Outnumbered and outgunned but fighting on home terrain. Must delay, attrit, and hold key cities long enough to deny Germany a rapid campaign victory. The harder and more demanding side.'
-    },
+    sideA: { label: 'Wehrmacht',           body: 'Mechanised infantry, Panzer divisions, and total air superiority. Fast and powerful; the challenge is achieving decisive encirclements rather than pushing Poland back in a disorganised retreat.' },
+    sideB: { label: 'Polish Armed Forces', body: 'Outnumbered and outgunned but fighting on home terrain. Must delay, attrit, and hold key cities long enough to deny Germany a rapid campaign victory. The harder and more demanding side.' },
     tags:  ['Blitzkrieg','September Campaign','Encirclement','Air Superiority','PBEM'],
     file:  'https://t1ckles.github.io/nadir/fall_weiss.html',
     steam: 'https://store.steampowered.com/app/1747580/SGS_Fall_Weiss/',
     site:  'https://strategygamestudio.com/shop/sgs-fall-weiss/',
+  },
+  {
+    id:        'afrika-korps',
+    title:     'SGS Afrika Korps',
+    subtitle:  'The Desert War, North Africa 1940\u20131942',
+    era:       'ww2',
+    period:    'Second World War',
+    engine:    'SGS Engine',
+    sections:  16,
+    scenarios: 8,
+    sides:     ['Axis Forces (Germany & Italy)', 'Allied Forces (Commonwealth)'],
+    hardest:   'Allied Forces',
+    desc:      'Rommel\u2019s Afrika Korps versus the Desert Rats in the defining campaign of the North African theatre. From Italy\u2019s 1940 offensive to the decisive battles of El Alamein \u2014 the desert pendulum swings both ways, and supply decides everything.',
+    detail:    'SGS Afrika Korps recreates the campaigns of Erwin Rommel\u2019s legendary Afrika Korps across Libya and Egypt from 1940 to late 1942. The campaign is defined by a self-balancing elastic tether: the nearer an army advances to its objective, the longer and more vulnerable its supply line becomes. The Axis player commands elite German Panzer and motorised formations alongside Italian troops of variable quality, racing to capture the Suez Canal before Allied material superiority becomes insurmountable. The Allied player must survive Rommel\u2019s early offensives, hold Egypt, and leverage growing Commonwealth strength and air superiority to push the Axis back. Eight scenarios cover every phase from the Italian offensive to El Alamein. Weekly turns at divisional and brigade scale.',
+    sideA: { label: 'Axis Forces (Germany & Italy)', body: 'Elite German Panzer divisions with Rommel at their head, supported by Italian formations of variable quality. Powerful early but supply-constrained and time-pressured. Must reach Suez before Allied strength becomes overwhelming.' },
+    sideB: { label: 'Allied Forces (Commonwealth)',  body: 'British, Australian, New Zealand, Indian, South African, Free French, and Polish formations. Materially stronger in the long run; weaker in the early mobile battles. Play to the terrain, fix the flanks at El Alamein, and let time do the work.' },
+    tags:  ['Desert War','Rommel','Operation Crusader','El Alamein','Supply Lines','PBEM'],
+    file:  'https://t1ckles.github.io/nadir/sgs_afrika_korps.html',
+    steam: 'https://store.steampowered.com/app/1266640/SGS_Afrika_Korps/',
+    site:  'https://strategygamestudio.com/games/sgs-afrika-korps/',
   },
   {
     id:        'distant-worlds-universe',
@@ -788,19 +270,13 @@ const GUIDES = [
     scenarios: 5,
     sides:     ['Your Empire', 'Rival Empires / Shakturi'],
     hardest:   'Any Race (Automation Mastery Required)',
-    sidesLabel:'Your Faction & The Galaxy',
+    sidesLabel:    'Your Faction & The Galaxy',
     scenariosLabel: 'Victory Types',
     ctalabel:  'Open Full Strategy Guide',
     desc:      'A living galaxy of up to 2,000 star systems, a dual public/private economy, 22 playable races, and as much or as little automation as you want. One of the deepest 4X strategy games ever made \u2014 and one of the most misunderstood.',
     detail:    'Distant Worlds: Universe is a vast, pausable real-time 4X grand strategy game covering exploration, expansion, and galactic domination on an epic scale. Its defining feature is the dual economy: a State economy you control directly and a Private economy operated autonomously by civilian AI ships. The galaxy is alive whether you are watching it or not. All four expansions are included in Universe \u2014 base game, Return of the Shakturi, Legends, and Shadows \u2014 each of which fundamentally transforms the experience. The guide covers all 22 playable races, all major systems, the Shakturi threat, government types, ship design, and full early/mid/late-game strategic frameworks.',
-    sideA: {
-      label: 'Your Empire',
-      body:  'Choose from 22 races across 7 biological families. Set policy, manage research, design ships, and govern \u2014 the private economy runs itself. The challenge is knowing what to automate and what to control personally.'
-    },
-    sideB: {
-      label: 'The Galaxy & Shakturi',
-      body:  'Rival empires, pirate factions, space monsters, and the looming Shakturi Return. The galaxy is a living, competitive environment that never waits for you to be ready.'
-    },
+    sideA: { label: 'Your Empire',          body: 'Choose from 22 races across 7 biological families. Set policy, manage research, design ships, and govern \u2014 the private economy runs itself. The challenge is knowing what to automate and what to control personally.' },
+    sideB: { label: 'The Galaxy & Shakturi', body: 'Rival empires, pirate factions, space monsters, and the looming Shakturi Return. The galaxy is a living, competitive environment that never waits for you to be ready.' },
     tags:  ['Real-Time Pausable','4X Grand Strategy','22 Races','Dual Economy','Shakturi','Automation'],
     file:  'https://t1ckles.github.io/nadir/distant_worlds_universe.html',
     steam: 'https://store.steampowered.com/app/261470/Distant_Worlds_Universe/',
@@ -808,19 +284,7 @@ const GUIDES = [
   },
 ];
 
-/* ============================================================
-   COMING SOON DATA
-   Add entries here for guides that are in progress.
-   Fields: title, subtitle, era, period, desc
-   ============================================================ */
 const COMING_SOON = [
-  {
-    title:    'SGS Afrika Korps',
-    subtitle: 'North Africa, 1940–1943',
-    era:      'ww2',
-    period:   'Second World War',
-    desc:     'Rommel\'s desert war from Operation Compass to the end in Tunisia. Open terrain, supply lines measured in hundreds of miles, and tank battles of unparalleled fluidity.',
-  },
   {
     title:    'SGS Battle of the Bulge',
     subtitle: 'Ardennes Offensive, December 1944',
@@ -831,25 +295,20 @@ const COMING_SOON = [
   {
     title:    'Battletech',
     subtitle: 'Tactical Mercenary Warfare in the BattleTech Universe',
-    era:      'Succession Wars',
+    era:      'scifi',
     period:   '3025, Aurigan Reach Civil War',
     desc:     'Turn-based mech warfare and mercenary company management on the Periphery. Command a hard-luck lance through salvage-driven contracts and brutal attrition in the Aurigan Reach, 3025.',
   },
 ];
 
-/* ============================================================
-   RENDER GAME CARDS
-   ============================================================ */
 function renderGuides() {
   const grid = document.getElementById('games-grid');
   grid.innerHTML = '';
-
   GUIDES.forEach(g => {
     const card = document.createElement('div');
     card.className = 'game-card';
     card.setAttribute('data-era', g.era);
     card.setAttribute('data-id', g.id);
-
     card.innerHTML =
       '<div class="game-card-bar"></div>' +
       '<div class="game-card-inner">' +
@@ -858,32 +317,24 @@ function renderGuides() {
         '<div class="game-card-subtitle">' + g.subtitle + '</div>' +
         '<div class="game-card-divider"></div>' +
         '<div class="game-card-desc">' + g.desc + '</div>' +
-        '<div class="game-card-tags">' +
-          g.tags.map(t => '<span class="game-card-tag">' + t + '</span>').join('') +
-        '</div>' +
+        '<div class="game-card-tags">' + g.tags.map(t => '<span class="game-card-tag">' + t + '</span>').join('') + '</div>' +
         '<div class="game-card-footer">' +
           '<div class="game-card-cta">View Guide &rsaquo;</div>' +
           '<div class="game-card-sections">' + g.sections + ' sections &middot; ' + g.scenarios + ' scenarios</div>' +
         '</div>' +
       '</div>';
-
     card.addEventListener('click', () => openModal(g.id));
     grid.appendChild(card);
   });
 }
 
-/* ============================================================
-   RENDER COMING SOON
-   ============================================================ */
 function renderComingSoon() {
   const grid = document.getElementById('coming-grid');
   grid.innerHTML = '';
-
   COMING_SOON.forEach(g => {
     const card = document.createElement('div');
     card.className = 'game-card coming-soon';
-    card.setAttribute('data-era', g.era);
-
+    card.setAttribute('data-era', g.era || 'ww2');
     card.innerHTML =
       '<div class="game-card-bar"></div>' +
       '<div class="game-card-inner">' +
@@ -892,66 +343,44 @@ function renderComingSoon() {
         '<div class="game-card-subtitle">' + g.subtitle + '</div>' +
         '<div class="game-card-divider"></div>' +
         '<div class="game-card-desc">' + g.desc + '</div>' +
-        '<div class="game-card-footer">' +
-          '<span class="coming-soon-badge">Guide In Progress</span>' +
-        '</div>' +
+        '<div class="game-card-footer"><span class="coming-soon-badge">Guide In Progress</span></div>' +
       '</div>';
-
     grid.appendChild(card);
   });
 }
 
-/* ============================================================
-   MODAL
-   ============================================================ */
 function openModal(id) {
   const g = GUIDES.find(x => x.id === id);
   if (!g) return;
-
   const modal = document.getElementById('modal');
   modal.setAttribute('data-era', g.era);
-
-  document.getElementById('m-era').textContent   = g.period + ' · ' + g.engine;
-  document.getElementById('m-title').textContent = g.title;
+  document.getElementById('m-era').textContent      = g.period + ' \u00b7 ' + g.engine;
+  document.getElementById('m-title').textContent    = g.title;
   document.getElementById('m-subtitle').textContent = g.subtitle;
-
   const wipNote = g.wip
     ? '<div style="font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold-dark);border:1px solid var(--border);padding:5px 10px;display:inline-block;margin-bottom:14px;">Guide In Production</div>'
     : '';
-
   const extLinks =
     '<div class="modal-ext-links">' +
       '<a class="modal-ext-link" href="' + g.steam + '" target="_blank" rel="noopener">' +
-        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h10m0 0l-3-3m3 3l-3 3"/></svg>' +
-        'Steam' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h10m0 0l-3-3m3 3l-3 3"/></svg>Steam' +
       '</a>' +
       '<a class="modal-ext-link" href="' + g.site + '" target="_blank" rel="noopener">' +
-        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>' +
-        'Official Site' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Official Site' +
       '</a>' +
     '</div>';
-
   const guideCta = g.wip
     ? '<div class="modal-cta" style="opacity:0.45;cursor:default;pointer-events:none;">Guide Coming Soon</div>'
     : '<a class="modal-cta" href="' + g.file + '" target="_blank" rel="noopener">' + (g.ctalabel || 'Open Full Strategy Guide') + ' &rsaquo;</a>';
-
   document.getElementById('modal-body').innerHTML =
     wipNote +
     '<div class="modal-section-label">Overview</div>' +
     '<p class="modal-desc">' + g.detail + '</p>' +
-
     '<div class="modal-section-label">' + (g.sidesLabel || 'The Two Sides') + '</div>' +
     '<div class="modal-sides">' +
-      '<div class="modal-side">' +
-        '<div class="modal-side-label">' + g.sideA.label + '</div>' +
-        '<div class="modal-side-body">' + g.sideA.body + '</div>' +
-      '</div>' +
-      '<div class="modal-side">' +
-        '<div class="modal-side-label">' + g.sideB.label + '</div>' +
-        '<div class="modal-side-body">' + g.sideB.body + '</div>' +
-      '</div>' +
+      '<div class="modal-side"><div class="modal-side-label">' + g.sideA.label + '</div><div class="modal-side-body">' + g.sideA.body + '</div></div>' +
+      '<div class="modal-side"><div class="modal-side-label">' + g.sideB.label + '</div><div class="modal-side-body">' + g.sideB.body + '</div></div>' +
     '</div>' +
-
     '<div class="modal-section-label">At a Glance</div>' +
     '<div class="modal-meta-row">' +
       '<div class="modal-meta-cell"><div class="modal-meta-label">Engine</div><div class="modal-meta-value">' + g.engine + '</div></div>' +
@@ -959,17 +388,11 @@ function openModal(id) {
       '<div class="modal-meta-cell"><div class="modal-meta-label">' + (g.scenariosLabel || 'Scenarios Covered') + '</div><div class="modal-meta-value">' + g.scenarios + '</div></div>' +
       '<div class="modal-meta-cell"><div class="modal-meta-label">Hardest to Play</div><div class="modal-meta-value">' + g.hardest + '</div></div>' +
     '</div>' +
-
     '<div class="modal-section-label">Tags</div>' +
-    '<div class="modal-tags">' +
-      g.tags.map(t => '<span class="modal-tag">' + t + '</span>').join('') +
-    '</div>' +
-
+    '<div class="modal-tags">' + g.tags.map(t => '<span class="modal-tag">' + t + '</span>').join('') + '</div>' +
     '<div class="modal-section-label">External Links</div>' +
     extLinks +
-
     guideCta;
-
   document.getElementById('modal-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
   document.getElementById('modal-close').focus();
@@ -984,13 +407,8 @@ document.getElementById('modal-close').addEventListener('click', closeModal);
 document.getElementById('modal-overlay').addEventListener('click', e => {
   if (e.target === document.getElementById('modal-overlay')) closeModal();
 });
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeModal();
-});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-/* ============================================================
-   INIT
-   ============================================================ */
 renderGuides();
 renderComingSoon();
 </script>

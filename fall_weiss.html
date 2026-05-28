@@ -1,1 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SGS Fall Weiss — Comprehensive Strategy Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1410;--parchment:#f5efe4;--gold:#c9943a;--gold-dark:#8b6420;--gold-pale:#f0d9a8;
+  --mid:#4a3f32;--light:#f9f4ec;--border:rgba(201,148,58,0.3);--shadow:rgba(26,20,16,0.18);
+  --axis:#2e3d2a;--axis-pale:#e8ede6;--axis-border:rgba(46,61,42,0.35);
+  --polish:#7a1f1f;--polish-pale:#f5e8e8;--polish-border:rgba(122,31,31,0.35);
+  --soviet:#5c1a1a;--soviet-pale:#f0dede;
+  --navy:#1b2f4a;--navy-pale:#e8eef5;
+  --font-head:'Cinzel','Times New Roman',serif;
+  --font-body:'Crimson Pro','Georgia',serif;
+  --sidebar-w:280px;
+}
+html{scroll-behavior:smooth;font-size:17px}
+body{background:var(--parchment);color:var(--ink);font-family:var(--font-body);line-height:1.75;display:flex;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.5}
+a{color:inherit;text-decoration:none}button{cursor:pointer;font-family:inherit}
+#progress-bar{position:fixed;top:0;left:var(--sidebar-w);right:0;height:3px;background:var(--gold);transform-origin:left;transform:scaleX(0);z-index:500;transition:transform 0.1s linear}
+#sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--axis);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;border-right:2px solid var(--gold-dark);display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--gold-dark) var(--axis)}
+#sidebar-header{padding:28px 20px 20px;border-bottom:1px solid rgba(201,148,58,0.25);background:linear-gradient(180deg,#1a2418 0%,var(--axis) 100%)}
+#sidebar-title{font-family:var(--font-head);font-size:1rem;font-weight:900;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;line-height:1.3}
+#sidebar-sub{font-family:var(--font-body);font-size:0.72rem;color:rgba(255,255,255,0.45);margin-top:6px;letter-spacing:0.05em;font-style:italic}
+#sidebar-nav{padding:12px 0 40px;flex:1}
+.nav-section{padding:10px 20px 4px;font-family:var(--font-head);font-size:0.58rem;letter-spacing:0.2em;color:var(--gold-dark);text-transform:uppercase;margin-top:8px}
+.nav-item{display:block;padding:7px 20px 7px 28px;font-family:var(--font-body);font-size:0.82rem;color:rgba(245,239,228,0.72);text-decoration:none;border-left:2px solid transparent;transition:all 0.18s ease;line-height:1.35;position:relative}
+.nav-item::before{content:'›';position:absolute;left:14px;top:7px;color:var(--gold-dark);opacity:0;transition:opacity 0.15s}
+.nav-item:hover,.nav-item.active{color:var(--gold-pale);border-left-color:var(--gold);background:rgba(201,148,58,0.08);padding-left:30px}
+.nav-item:hover::before,.nav-item.active::before{opacity:1}
+#sidebar-toggle{display:none;position:fixed;top:12px;left:12px;z-index:200;background:var(--axis);border:1px solid var(--gold-dark);color:var(--gold);font-size:1.2rem;padding:6px 10px;cursor:pointer;border-radius:3px}
+#main{margin-left:var(--sidebar-w);flex:1;min-width:0}
+#hero{background:linear-gradient(160deg,#1a2418 0%,#2e3d2a 40%,#1b2f1a 100%);min-height:420px;display:flex;flex-direction:column;justify-content:center;padding:80px 64px 64px;position:relative;overflow:hidden;border-bottom:3px solid var(--gold-dark)}
+#hero::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(-55deg,transparent,transparent 40px,rgba(201,148,58,0.04) 40px,rgba(201,148,58,0.04) 41px)}
+#hero::after{content:'';position:absolute;bottom:0;left:64px;right:64px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.hero-eyebrow{font-family:var(--font-head);font-size:0.72rem;letter-spacing:0.28em;color:var(--gold-dark);text-transform:uppercase;margin-bottom:16px;position:relative}
+.hero-title{font-family:var(--font-head);font-size:clamp(2.2rem,5vw,3.4rem);font-weight:900;color:var(--parchment);letter-spacing:0.04em;text-transform:uppercase;line-height:1.05;margin-bottom:8px;position:relative}
+.hero-subtitle{font-family:var(--font-body);font-size:1.1rem;font-style:italic;color:rgba(240,217,168,0.75);font-weight:300;margin-bottom:28px;position:relative}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;position:relative}
+.hero-tag{font-family:var(--font-head);font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-pale);border:1px solid rgba(201,148,58,0.4);padding:4px 10px;background:rgba(201,148,58,0.08)}
+#content{padding:0 64px 80px;max-width:960px}
+.section{padding:56px 0 8px;animation:fadeInUp 0.5s ease both}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-num{display:inline-block;font-family:var(--font-head);font-size:0.82rem;font-weight:400;letter-spacing:0.1em;color:var(--gold-dark);margin-right:0.5em;vertical-align:middle}
+.section-title{font-family:var(--font-head);font-size:clamp(1.35rem,2.4vw,1.75rem);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink);padding-bottom:14px;margin-bottom:22px;border-bottom:2px solid var(--border);position:relative}
+.section-title::after{content:'';position:absolute;bottom:-2px;left:0;width:60px;height:2px;background:var(--gold)}
+.sub-title{font-family:var(--font-head);font-size:1.05rem;font-weight:600;letter-spacing:0.05em;color:var(--mid);margin:28px 0 10px;text-transform:uppercase}
+p{margin-bottom:1rem;font-size:1rem}
+.guide-list{margin:0.5rem 0 1rem 1.2rem}
+.guide-list li{margin-bottom:0.45rem;font-size:1rem}
+.guide-list li::marker{color:var(--gold-dark)}
+.callout{padding:16px 20px;margin:20px 0;border-left:4px solid var(--gold);background:var(--light);border-radius:0 3px 3px 0}
+.callout.axis{border-left-color:var(--axis);background:var(--axis-pale)}
+.callout.polish{border-left-color:var(--polish);background:var(--polish-pale)}
+.callout.soviet{border-left-color:var(--soviet);background:var(--soviet-pale)}
+.callout.warning{border-left-color:#7a3c1a;background:#f5edda}
+.callout.tip{border-left-color:#3a5c1a;background:#edf5e4}
+.callout-title{font-family:var(--font-head);font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;margin-bottom:6px}
+.callout .callout-title{color:var(--gold-dark)}
+.callout.axis .callout-title{color:var(--axis)}
+.callout.polish .callout-title{color:var(--polish)}
+.callout.soviet .callout-title{color:var(--soviet)}
+.callout.warning .callout-title{color:#7a3c1a}
+.callout.tip .callout-title{color:#3a5c1a}
+.strat-phase{padding:18px 22px;margin:18px 0;border:1px solid var(--border);background:var(--light)}
+.strat-phase.axis{border-color:var(--axis-border);background:var(--axis-pale);border-left:4px solid var(--axis)}
+.strat-phase.polish{border-color:var(--polish-border);background:var(--polish-pale);border-left:4px solid var(--polish)}
+.strat-phase-title{font-family:var(--font-head);font-size:0.9rem;font-weight:700;letter-spacing:0.05em;color:var(--mid);margin-bottom:8px;text-transform:uppercase}
+.strat-phase.axis .strat-phase-title{color:var(--axis)}
+.strat-phase.polish .strat-phase-title{color:var(--polish)}
+.strat-phase p{margin-bottom:0.6rem}
+.strat-phase p:last-child{margin-bottom:0}
+.leader-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin:20px 0}
+.leader-card{border:1px solid var(--border);background:var(--light);padding:16px 18px;position:relative}
+.leader-card.axis{border-top:3px solid var(--axis)}
+.leader-card.polish{border-top:3px solid var(--polish)}
+.leader-card.soviet{border-top:3px solid var(--soviet)}
+.leader-name{font-family:var(--font-head);font-size:0.88rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink);margin-bottom:3px}
+.leader-role{font-size:0.8rem;font-style:italic;color:var(--mid);margin-bottom:8px}
+.leader-body{font-size:0.9rem;line-height:1.6;color:var(--ink)}
+.scenario-grid{display:grid;grid-template-columns:1fr;gap:1px;background:var(--border);margin:20px 0;border:1px solid var(--border)}
+.scenario-row{background:var(--light);padding:14px 18px;display:grid;grid-template-columns:1fr 80px 90px;gap:12px;align-items:center}
+.scenario-row:nth-child(even){background:var(--parchment)}
+.scenario-row.header{background:var(--axis);color:var(--gold-pale);font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase}
+.scenario-name{font-family:var(--font-head);font-size:0.88rem;font-weight:600;color:var(--ink)}
+.scenario-date{font-size:0.82rem;color:var(--mid);font-style:italic}
+.scenario-turns{font-family:var(--font-head);font-size:0.82rem;color:var(--gold-dark);text-align:right}
+.terrain-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.9rem}
+.terrain-table th{background:var(--axis);color:var(--gold-pale);font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;padding:9px 12px;text-align:left;border:1px solid rgba(201,148,58,0.2)}
+.terrain-table td{padding:8px 12px;border:1px solid var(--border);vertical-align:top;line-height:1.5}
+.terrain-table tr:nth-child(even) td{background:var(--light)}
+.terrain-table tr:nth-child(odd) td{background:var(--parchment)}
+.turn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:16px 0}
+.turn-box{border:1px solid var(--border);background:var(--light);padding:12px 14px}
+.turn-num{font-family:var(--font-head);font-size:1.5rem;font-weight:900;color:var(--gold);line-height:1;margin-bottom:4px}
+.turn-label{font-family:var(--font-head);font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);margin-bottom:6px}
+.turn-desc{font-size:0.85rem;line-height:1.55;color:var(--ink)}
+.glossary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--border);margin-top:16px;border:1px solid var(--border)}
+.gloss-item{background:var(--light);padding:10px 14px;display:flex;gap:10px;align-items:baseline}
+.gloss-item:nth-child(even){background:var(--parchment)}
+.gloss-term{font-family:var(--font-head);font-size:0.8rem;font-weight:700;color:var(--ink);white-space:nowrap;min-width:110px;letter-spacing:0.04em;text-transform:uppercase}
+.gloss-def{font-size:0.88rem;color:var(--mid);line-height:1.5}
+.ornamental-divider{text-align:center;color:var(--gold);font-size:0.85rem;letter-spacing:0.3em;padding:28px 0 8px;opacity:0.7}
+#back-top{position:fixed;bottom:28px;right:28px;width:42px;height:42px;background:var(--axis);border:1px solid var(--gold-dark);color:var(--gold);font-size:1.1rem;display:flex;align-items:center;justify-content:center;text-decoration:none;opacity:0;transform:translateY(10px);transition:opacity 0.3s,transform 0.3s;z-index:90}
+#back-top.visible{opacity:1;transform:none}
+#back-top:hover{background:var(--gold-dark);color:var(--parchment)}
+#footer{margin-top:40px;border-top:1px solid var(--border);padding:20px 64px;font-family:var(--font-head);font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);text-align:center}
+@media(max-width:860px){
+  :root{--sidebar-w:0px}
+  #sidebar-toggle{display:flex;align-items:center;justify-content:center}
+  #sidebar{transform:translateX(-100%);transition:transform 0.28s ease;width:260px}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  #hero,#content{padding-left:24px;padding-right:24px}
+  #progress-bar{left:0}
+  #footer{padding-left:24px;padding-right:24px}
+  .scenario-row{grid-template-columns:1fr;gap:2px}
+  .leader-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+<button id="sidebar-toggle" aria-label="Menu">&#9776;</button>
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <div id="sidebar-title">SGS Fall Weiss</div>
+    <div id="sidebar-sub">Strategy Guide &mdash; Poland, September 1939</div>
+  </div>
+  <div id="sidebar-nav">
+    <div class="nav-section">Background</div>
+    <a class="nav-item" href="#s01">1 &middot; Historical Context</a>
+    <a class="nav-item" href="#s02">2 &middot; Game Overview</a>
+    <div class="nav-section">Core Rules</div>
+    <a class="nav-item" href="#s03">3 &middot; Turn Structure</a>
+    <a class="nav-item" href="#s04">4 &middot; Map &amp; Terrain</a>
+    <a class="nav-item" href="#s05">5 &middot; Units &amp; Forces</a>
+    <a class="nav-item" href="#s06">6 &middot; Supply &amp; Logistics</a>
+    <a class="nav-item" href="#s07">7 &middot; Combat System</a>
+    <a class="nav-item" href="#s08">8 &middot; Air Power</a>
+    <div class="nav-section">Key Systems</div>
+    <a class="nav-item" href="#s09">9 &middot; Campaign Variants</a>
+    <a class="nav-item" href="#s10">10 &middot; Leaders</a>
+    <a class="nav-item" href="#s11">11 &middot; Cards &amp; Events</a>
+    <a class="nav-item" href="#s12">12 &middot; The Soviet Invasion</a>
+    <a class="nav-item" href="#s13">13 &middot; Victory Conditions</a>
+    <div class="nav-section">Scenarios</div>
+    <a class="nav-item" href="#s14">14 &middot; Scenario Guide</a>
+    <div class="nav-section">Strategy</div>
+    <a class="nav-item" href="#s15">15 &middot; Axis Strategy</a>
+    <a class="nav-item" href="#s16">16 &middot; Polish Strategy</a>
+    <a class="nav-item" href="#s17">17 &middot; PBEM &amp; Multiplayer</a>
+    <div class="nav-section">Reference</div>
+    <a class="nav-item" href="#s18">18 &middot; Glossary</a>
+  </div>
+</nav>
+<div id="main">
+<div id="hero">
+  <div class="hero-eyebrow">Strategy Game Studio &nbsp;&middot;&nbsp; Avalon Digital</div>
+  <h1 class="hero-title">SGS Fall Weiss</h1>
+  <p class="hero-subtitle">Comprehensive Analysis &amp; Strategy Guide &mdash; The Invasion of Poland, September&ndash;October 1939</p>
+  <div class="hero-tags">
+    <span class="hero-tag">SGS Engine</span>
+    <span class="hero-tag">18 Sections</span>
+    <span class="hero-tag">Both Sides Covered</span>
+    <span class="hero-tag">Historical &amp; Alternative Variants</span>
+    <span class="hero-tag">PBEM</span>
+  </div>
+</div>
+<div id="content">
+<section class="section" id="s01">
+<h1 class="section-title"><span class="sec-num">&sect; 01</span> Historical Context</h1>
+<p>SGS Fall Weiss simulates the opening campaign of the Second World War: Germany's invasion of Poland, launched on 1 September 1939 and concluded with Poland's formal capitulation on 6 October. In five weeks, a nation of 35 million people &mdash; possessing a proud and courageous military tradition &mdash; was overrun by a two-front assault it had no realistic prospect of resisting alone. The campaign defined the opening character of the war and shaped everything that followed.</p>
+<h2 class="sub-title">The Road to War</h2>
+<p>The diplomatic context preceding Fall Weiss was a masterwork of manufactured crisis. Hitler originally planned the invasion for 26 August 1939, but British and French diplomatic activity forced a six-day delay. Crucially, some special units conducting operations behind Polish lines did not receive the counter-order in time, leading to scattered clashes before the official start date &mdash; a historical detail the game captures in its pre-turn options.</p>
+<p>The foundation of German strategic confidence was the Molotov-Ribbentrop Pact, signed on 23 August 1939. This agreement guaranteed Soviet neutrality &mdash; and, in a secret protocol, Soviet participation in the partition of Poland. Poland was encircled before a single German unit crossed the border. British and French guarantees to Poland were militarily meaningless without an immediate offensive into Germany; they could not mount one, and did not.</p>
+<h2 class="sub-title">The September Campaign</h2>
+<p>German forces attacked from three directions: Army Group North from East Prussia and Pomerania in the north; Army Group South from Silesia, Slovakia, and occupied Czechoslovakia in the south. The strategic objective was to encircle and destroy Polish armies west of the Vistula before they could withdraw to defensible river lines. German Panzer and motorised units drove deep into Polish rear areas, disrupting command and preventing the formation of coherent defensive lines. Polish units, many of which fought with exceptional courage and tactical skill, found themselves surrounded before they could concentrate.</p>
+<p>The Battle of the Bzura (9&ndash;12 September) was the largest Polish offensive action &mdash; the Army of Pozna&nacute; struck the flank of the German march to Warsaw and briefly alarmed German command. Eventually surrounded and destroyed, it nonetheless demonstrated what Polish forces could achieve with operational initiative, and remains a central event in the game's scenario list.</p>
+<h2 class="sub-title">The Soviet Invasion</h2>
+<p>On 17 September, the Red Army invaded Poland from the east under the Molotov-Ribbentrop protocols, claiming to &ldquo;protect&rdquo; Ukrainian and Belarusian minorities. Soviet forces operated with considerably less tactical flexibility than the Wehrmacht &mdash; Stalin's purges of 1937&ndash;38 had gutted the officer corps &mdash; but two simultaneous invasions from opposite directions made further resistance impossible. Warsaw held until 28 September; the last organised resistance collapsed on 6 October.</p>
+<h2 class="sub-title">The &ldquo;Blitzkrieg&rdquo; Myth</h2>
+<p>The term <em>blitzkrieg</em> was coined by Western journalists, not German officers. The Germans called it <em>Bewegungskrieg</em> &mdash; war of movement. What distinguished the Wehrmacht was effective combination of superior motorisation, radio communications, combined-arms coordination, and commanders willing to exploit breakthrough. SGS Fall Weiss models these advantages through Panzer movement rates, Kampfgruppe rules, and close air support &mdash; without pretending they amounted to a secret formula.</p>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+<section class="section" id="s02">
+<h1 class="section-title"><span class="sec-num">&sect; 02</span> Game Overview</h1>
+<p>SGS Fall Weiss is a turn-based operational wargame covering the full September 1939 Polish campaign. It uses a customised version of the SGS engine incorporating special rules for this campaign &mdash; rules that also appear in the forthcoming SGS France 1940 and SGS Balkans titles, forming the &ldquo;blitzkrieg offensive series.&rdquo;</p>
+<h2 class="sub-title">How Fall Weiss Differs from Other SGS Titles</h2>
+<ul class="guide-list">
+  <li><strong>2-day turns:</strong> Each turn represents two days, giving 19 turns in the main campaign plus a pre-turn. Finer resolution than Overlord's 3-day turns, reflecting the faster operational tempo.</li>
+  <li><strong>Pre-turn variant selection:</strong> Before the campaign begins, both players make binding choices about historical versus alternative options. These fundamentally shape the entire game.</li>
+  <li><strong>Three active sides:</strong> Axis (Germany + Slovakia), Polish, and Soviet. The Soviet entry at Turn 9 changes the strategic picture for both players simultaneously.</li>
+  <li><strong>Kampfgruppe rules:</strong> Combined-arms German formations with special ATK, movement, and breakthrough bonuses representing the integrated tactics of armour, motorised infantry, and artillery.</li>
+  <li><strong>Western Front Pressure:</strong> A unique meta-mechanic tracking how long the campaign lasts. Prolonged Polish resistance can trigger a Western Front Allied offensive &mdash; automatic German defeat.</li>
+</ul>
+<div class="callout">
+  <div class="callout-title">Design Philosophy</div>
+  One stated aim of SGS Fall Weiss is to function as an interactive history book &mdash; allowing players to understand how the conflict unfolded rather than executing pre-determined outcomes. The historical variant respects major milestones; the alternative variant opens diplomatic and military possibilities that could plausibly have occurred. Both are legitimate experiences.
+</div>
+<div class="callout axis">
+  <div class="callout-title">Axis Forces (Germany &amp; Slovakia)</div>
+  Superior in every metric relevant to offensive warfare: motorisation, air power, artillery integration, and command flexibility. Must conquer Poland quickly to avoid Allied intervention in the West. The challenge is not defeating Poland &mdash; it is winning decisively and fast enough.
+</div>
+<div class="callout polish">
+  <div class="callout-title">Polish Armed Forces</div>
+  Brave, capable, and ultimately doomed without Allied relief. Excellent individual unit quality; exceptional national morale. The task is to hold Warsaw and Lw&oacute;w, bleed the Germans, and last long enough to create political pressure. The hardest side to play well.
+</div>
+<div class="callout soviet">
+  <div class="callout-title">Soviet Forces (from Turn 9)</div>
+  A third party entering mid-campaign. Numerous, armoured, and air-supported, but hampered by post-purge command paralysis. Their arrival forces the Polish player's most agonising strategic choice: eastern deployment versus western concentration.
+</div>
+<h2 class="sub-title">Scale and Scope</h2>
+<ul class="guide-list">
+  <li><strong>Time scale:</strong> Each turn = two days. Main campaign = 19 turns (plus pre-turn), September 1 &ndash; October 6, 1939.</li>
+  <li><strong>Unit scale:</strong> Division, brigade, and regiment level; some battalion-sized units present.</li>
+  <li><strong>Map:</strong> Covers all of Poland plus border regions of Germany, East Prussia, Slovakia, and the Soviet Union.</li>
+</ul>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+<section class="section" id="s03">
+<h1 class="section-title"><span class="sec-num">&sect; 03</span> Turn Structure &amp; Phase Guide</h1>
+<p>Each game turn in SGS Fall Weiss represents two days of operations. Understanding phase order is critical because card timing, air windows, and breakthrough chains all depend on which phase is active.</p>
+<div class="turn-grid">
+  <div class="turn-box"><div class="turn-num">00</div><div class="turn-label">Pre-Turn (Campaign Setup)</div><div class="turn-desc">Both players choose historical or alternative campaign options. Choices are binding for the entire game. Read all options carefully before committing.</div></div>
+  <div class="turn-box"><div class="turn-num">01</div><div class="turn-label">Cards Phase</div><div class="turn-desc">Both sides draw and may play strategic cards. Events fire automatically where triggered. Pervitin, Allied pressure, and diplomatic cards may all fire here.</div></div>
+  <div class="turn-box"><div class="turn-num">02</div><div class="turn-label">Reinforcements Phase</div><div class="turn-desc">New units arrive at entry points. German timing has variability. Polish replacements improve as popular support events fire.</div></div>
+  <div class="turn-box"><div class="turn-num">03</div><div class="turn-label">Supply Phase</div><div class="turn-desc">Supply traced for all units. German Panzer spearheads that outrun supply are immediately vulnerable. Check supply before every advance.</div></div>
+  <div class="turn-box"><div class="turn-num">04</div><div class="turn-label">Weather Phase</div><div class="turn-desc">Weather determined. Autumn rain degrades German mobility and reduces Luftwaffe effectiveness. The defender's most reliable natural ally.</div></div>
+  <div class="turn-box"><div class="turn-num">05</div><div class="turn-label">Air Phase</div><div class="turn-desc">German air units conduct interdiction or allocate close air support. Polish air reacts where available.</div></div>
+  <div class="turn-box"><div class="turn-num">06</div><div class="turn-label">Land Movement Phase</div><div class="turn-desc">Both sides move units. Kampfgruppe formations assembled. German Panzers exploit at high MP rates.</div></div>
+  <div class="turn-box"><div class="turn-num">07</div><div class="turn-label">Combat Phase</div><div class="turn-desc">All battles resolve. Combat cards played during resolution. Encircled units fight at reduced effectiveness.</div></div>
+  <div class="turn-box"><div class="turn-num">08</div><div class="turn-label">Replacement Phase</div><div class="turn-desc">Supplied units in range of replacements rebuild. Polish replacements improve as popular support fires. Prioritise key formations.</div></div>
+  <div class="turn-box"><div class="turn-num">09</div><div class="turn-label">Western Front Check</div><div class="turn-desc">Unique to Fall Weiss. Checks if Allied pressure has reached the threshold for a Western Front offensive event. Long Polish resistance builds this track.</div></div>
+  <div class="turn-box"><div class="turn-num">10</div><div class="turn-label">Victory Check &amp; End</div><div class="turn-desc">VP totals checked. Capitulation conditions evaluated. Soviet entry checked from Turn 9 onward. Turn counter advances.</div></div>
+</div>
+<div class="callout warning">
+  <div class="callout-title">The Pre-Turn &mdash; Most Important Decision in the Game</div>
+  Do not rush the pre-turn options. The historical variant restricts events to those that occurred; the alternative unlocks significant changes: improved Polish air, early mobilisation, possible non-Soviet-invasion, Romanian involvement. Once chosen, pre-turn options cannot be changed.
+</div>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+<section class="section" id="s04">
+<h1 class="section-title"><span class="sec-num">&sect; 04</span> Map &amp; Terrain</h1>
+<p>Poland in 1939 is predominantly a great plain crossed by major river lines that provided the primary defensive positions available to Polish commanders &mdash; and which the Germans worked desperately to outflank before those positions could be occupied in strength.</p>
+<table class="terrain-table">
+  <tr><th>Terrain Type</th><th>Movement Cost</th><th>Defense Bonus</th><th>Notes</th></tr>
+  <tr><td><strong>Open Plain</strong></td><td>1 MP</td><td>None</td><td>Covers most of central Poland. German armour excels here. Avoid as Poland whenever possible.</td></tr>
+  <tr><td><strong>Forest / Woods</strong></td><td>2 MP</td><td>+1 to +2 DEF</td><td>Significant stretches in central and eastern Poland. Polish cavalry operates effectively here; armour is slowed.</td></tr>
+  <tr><td><strong>River (major)</strong></td><td>+1&ndash;2 MP to cross</td><td>+2&ndash;3 DEF</td><td>Vistula, San, Narew, Bug. Primary Polish defensive lines. A unit on the far bank can hold for several turns.</td></tr>
+  <tr><td><strong>Marshes / Pripyat</strong></td><td>3&ndash;4 MP or impassable</td><td>+3 DEF</td><td>Nearly impassable to armour. Limits Soviet offensive options; also limits Polish withdrawal routes in the east.</td></tr>
+  <tr><td><strong>Carpathian Mountains</strong></td><td>2&ndash;3 MP</td><td>+2&ndash;3 DEF</td><td>Southern border. Limits Army Group South's options initially; the passes are narrow and defensible.</td></tr>
+  <tr><td><strong>Fortified City</strong></td><td>1 MP to enter</td><td>+2&ndash;3 DEF</td><td>Warsaw and Lw&oacute;w. Required Axis captures for Polish capitulation. Require siege operations to reduce.</td></tr>
+  <tr><td><strong>City (normal)</strong></td><td>1 MP to enter</td><td>+1&ndash;2 DEF</td><td>Secondary cities provide moderate defensive bonuses and supply relay points.</td></tr>
+</table>
+<h2 class="sub-title">The River Strategy</h2>
+<p>The German operational plan was explicitly designed to prevent Poland from occupying the Vistula line in force. As the Polish player, your primary first-four-turn question is: can you get enough forces onto the major river lines before German Panzers cut the roads behind them?</p>
+<div class="callout tip">
+  <div class="callout-title">Terrain Strategy Tip &mdash; Polish Player</div>
+  The San River in southeastern Poland and the Narew in the northeast offer the best early defensive positions. Anchor your flanks on these rivers while maintaining a viable Warsaw garrison and you can fight a coherent defence for 6&ndash;8 turns. The open plain west of Warsaw is where Polish armies go to die.
+</div>
+<h2 class="sub-title">Warsaw and Lw&oacute;w</h2>
+<p>These cities are not merely VP objectives &mdash; they are the capitulation triggers. Poland does not surrender while either holds. As the Axis player, your primary strategic goal is to encircle and reduce both. As the Polish player, every card play and reinforcement that keeps these cities fighting extends the campaign and pressures Germany's western front.</p>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+<section class="section" id="s05">
+<h1 class="section-title"><span class="sec-num">&sect; 05</span> Units &amp; Forces</h1>
+<p>Fall Weiss fields three national forces with sharply different characters. The quality spread is wider than in Overlord &mdash; between a German Panzer division and a Polish reserve infantry, it is enormous. Between German and good Polish regular infantry, it is much smaller than popular history suggests.</p>
+<div class="callout axis">
+  <div class="callout-title">German Order of Battle</div>
+  <ul class="guide-list">
+    <li><strong>Panzer Divisions:</strong> The decisive instrument. High ATK, high MOV, breakthrough capable. Must encircle rather than push forward. Irreplaceable if destroyed.</li>
+    <li><strong>Motorised Infantry Divisions:</strong> Below Panzer quality but far superior in mobility to standard infantry. Follow Panzer breakthroughs to consolidate gains; cut supply lines behind encircled Polish forces.</li>
+    <li><strong>Standard Infantry Divisions:</strong> Solid quality; adequate ATK/DEF. Limited mobility (2 MP). The mass of both Army Groups; grind forward while Panzers race ahead.</li>
+    <li><strong>Mountain Divisions:</strong> Carpathian sector specialists. High DEF and reasonable ATK in mountain terrain.</li>
+    <li><strong>Artillery:</strong> Support units adding ATK bonus to attacks. Essential for fortified city assaults.</li>
+    <li><strong>Kampfgruppe:</strong> Combined-arms formations. See Section 7 for rules.</li>
+    <li><strong>Slovak Army:</strong> Smaller, lower quality. Useful for holding freed terrain; not for assault missions.</li>
+  </ul>
+</div>
+<div class="callout polish">
+  <div class="callout-title">Polish Order of Battle</div>
+  <ul class="guide-list">
+    <li><strong>Infantry Divisions (Regular):</strong> Well-trained, high morale. Not significantly inferior to German standard infantry in static defence on good terrain. The backbone of the defence.</li>
+    <li><strong>Reserve Infantry Divisions:</strong> Lower quality; slower mobilisation. Arrive later. Useful for garrison and reinforcing river lines.</li>
+    <li><strong>Cavalry Brigades:</strong> Mobile, high morale. Excellent in forests, screening, delaying, and supply-line raiding. Not tank-killers &mdash; that is a myth &mdash; but exceptional raiders and flankers.</li>
+    <li><strong>Armoured / Motorised Units:</strong> Limited numbers; older equipment. Useful for counterattacks and plugging gaps.</li>
+    <li><strong>Border Defence Corps (KOP):</strong> Eastern frontier troops. Central to the eastern deployment dilemma. See Section 12.</li>
+    <li><strong>Armoured Trains:</strong> Move along rail lines; provide fire support; defend junctions. Genuinely useful and historically flavourful.</li>
+    <li><strong>River Flotillas:</strong> Small naval units on major rivers. Provide DEF bonus to contested river crossings.</li>
+  </ul>
+</div>
+<div class="callout soviet">
+  <div class="callout-title">Soviet Order of Battle (enters Turn 9)</div>
+  <ul class="guide-list">
+    <li><strong>Rifle Armies:</strong> Numerous and large but post-purge command paralysis reduces effectiveness. Good life points; moderate ATK/DEF.</li>
+    <li><strong>Tank Corps:</strong> Numerous armour; less operationally flexible than German Panzers. Adequate for the reduced resistance typically faced in eastern Poland.</li>
+    <li><strong>Air Forces:</strong> Present; provide CAS to Soviet ground operations.</li>
+  </ul>
+</div>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+<section class="section" id="s06">
+<h1 class="section-title"><span class="sec-num">&sect; 06</span> Supply &amp; Logistics</h1>
+<p>Supply operates on standard SGS principles &mdash; trace an unbroken five-region path from unit to source &mdash; with a distinctive twist: German Panzer spearheads regularly outrun their supply lines, and this is both historically accurate and genuinely dangerous.</p>
+<h2 class="sub-title">How Supply Works</h2>
+<ul class="guide-list">
+  <li>A unit is in supply if it can trace an unbroken path, clear of enemy units or regions, back to a supply source or relay within five regions.</li>
+  <li><strong>Sources:</strong> Border entry points for each nation; for Poland, Warsaw and the major eastern cities.</li>
+  <li><strong>Relays:</strong> Friendly towns, fixed depots, and logistics units extending supply five regions each.</li>
+  <li><strong>Unsupplied effects:</strong> No replacements; movement penalty; combat penalty; extended deprivation causes LP loss.</li>
+</ul>
+<div class="callout axis">
+  <div class="callout-title">German Supply Management</div>
+  Push supply wagons forward <em>before</em> each Panzer surge, not reactively after. A wagon placed in a captured town on Turn 3 extends your supply arc for the Turn 5&ndash;6 advance. Panzers at the gates of Warsaw with no supply cannot receive replacements after the assault losses.
+</div>
+<div class="callout polish">
+  <div class="callout-title">Polish Supply Priority</div>
+  Keep your best units connected to Warsaw's supply network. An encircled Army of Pozna&nacute; fights at severe penalties. When German columns threaten to close an encirclement, prioritise withdrawal over combat &mdash; a unit that escapes can be rebuilt; one eliminated at 0 LP is gone.
+</div>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
 
+<section class="section" id="s07">
+<h1 class="section-title"><span class="sec-num">&sect; 07</span> Combat System</h1>
+<p>Fall Weiss uses the standard SGS combat system &mdash; Battle Morale governs routing, life points govern attrition &mdash; with two significant additions: Kampfgruppe combined-arms rules, and encirclement penalties.</p>
+<h2 class="sub-title">Standard Combat Resolution</h2>
+<ol class="guide-list">
+  <li>Attacker and defender commit units to the battle region.</li>
+  <li>Both sides calculate ATK/DEF totals modified by terrain, leaders, and cards.</li>
+  <li>Dice rolled against combat factors; life point losses applied to both sides.</li>
+  <li>Battle Morale compared; a side reaching zero routs and takes Pursuit fire.</li>
+  <li>Breakthrough-eligible units (armour, motorised, leaders) may advance after victory.</li>
+</ol>
+<h2 class="sub-title">Kampfgruppe Rules</h2>
+<p>A Kampfgruppe &mdash; Panzer division + motorised division + artillery &mdash; receives bonuses to ATK, movement (at the fastest component's rate), and breakthrough range. Never send a Panzer division forward alone when you can form a proper Kampfgruppe.</p>
+<div class="callout axis">
+  <div class="callout-title">Forming Effective Kampfgruppen</div>
+  The ideal combination: one Panzer division (ATK bonus + breakthrough), one motorised division (consolidates gains), one artillery unit (suppresses defenders, reduces fortress bonuses). This combination &mdash; historically the basis of every German armoured thrust in 1939 &mdash; consistently outperforms the sum of its parts.
+</div>
+<h2 class="sub-title">Encirclement</h2>
+<p>When all adjacent regions are occupied by enemy forces, the encircled unit suffers combat and morale penalties. Encircled units cannot receive reinforcements. Extended encirclement stacks with supply deprivation rapidly degrading combat power.</p>
+<div class="callout tip">
+  <div class="callout-title">Encirclement vs. Direct Attack</div>
+  It is almost always better to encircle a Polish formation than assault it frontally. A river-bank division at full strength may hold 3&ndash;4 turns under direct assault at considerable German cost. The same division, encircled and out of supply for two turns, often routs with a single attack.
+</div>
+<h2 class="sub-title">Siege Combat</h2>
+<p>Warsaw and Lw&oacute;w require siege reduction over multiple turns. The attacker must maintain the perimeter and provide artillery support each turn. Breaking the perimeter resets progress. Warsaw's garrison &mdash; boosted by popular support events &mdash; was among the most tenacious urban defences of the war.</p>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<section class="section" id="s08">
+<h1 class="section-title"><span class="sec-num">&sect; 08</span> Air Power</h1>
+<p>Air power in Fall Weiss is heavily asymmetric &mdash; but the Polish Air Force in September 1939 was not destroyed on the ground on Day 1, as popular myth suggests. It had dispersed to secondary airfields and fought throughout the campaign, claiming around 300 German aircraft.</p>
+<h2 class="sub-title">German Luftwaffe</h2>
+<ul class="guide-list">
+  <li><strong>Close Air Support:</strong> Attach to ground attacks for combat and morale bonuses. Stuka dive-bombers are particularly effective against isolated or encircled formations.</li>
+  <li><strong>Interdiction:</strong> Target Polish railroad junctions, supply depots, and road bridges. Effective early interdiction can prevent Polish forces withdrawing to river lines in time.</li>
+</ul>
+<div class="callout warning">
+  <div class="callout-title">Weather and Air Power</div>
+  Bad weather turns ground Luftwaffe CAS, eliminating Germany's greatest tactical advantage for that turn. If weather deteriorates in the first week, consolidate rather than overextending Panzers without air cover.
+</div>
+<h2 class="sub-title">Polish Air Force</h2>
+<p>Outclassed but not negligible. Can contest German CAS in specific battles, conduct ground attack against supply lines, and provide modest CAS to Polish attacks. Husband carefully &mdash; they cannot be replaced quickly and their loss leaves ground forces entirely exposed.</p>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+<section class="section" id="s09">
+<h1 class="section-title"><span class="sec-num">&sect; 09</span> Campaign Variants</h1>
+<p>The pre-turn variant system is one of Fall Weiss's most distinctive features. Both players select from a menu of historical and alternative options before Turn 1. These choices are binding and shape the entire game.</p>
+<h2 class="sub-title">Historical Variant</h2>
+<p>Removes options and events that did not occur, including Polish early mobilisation (cancelled under Allied diplomatic pressure), significant Polish air modernisation, non-Soviet-invasion options, and Romanian intervention. Provides a game experience closely following the September Campaign's known progression. Meaningful uncertainty remains through variable reinforcement timing, card draws, and weather.</p>
+<h2 class="sub-title">Alternative Variant Options</h2>
+<ul class="guide-list">
+  <li><strong>Polish early mobilisation:</strong> Full mobilisation before the German attack; improves initial Polish deployment. Historically cancelled to avoid provoking Germany.</li>
+  <li><strong>Improved Polish air force:</strong> Additional modern fighters representing contracted aircraft that were historically delayed.</li>
+  <li><strong>No Soviet invasion:</strong> The USSR stays neutral. Poland faces Germany on a single front &mdash; dramatically strengthens the Polish position.</li>
+  <li><strong>Romanian intervention:</strong> Romania may provide military support, complicating German southern operations.</li>
+  <li><strong>German complications:</strong> Cards representing diplomatic crises or military setbacks.</li>
+  <li><strong>Pervitin effects:</strong> Enhanced methamphetamine use providing early movement bonuses at long-term morale cost.</li>
+</ul>
+<div class="callout tip">
+  <div class="callout-title">Variant Recommendation for New Players</div>
+  Start with the historical variant. It is more structured and allows learning base mechanics without extra variables. Once you've played 2&ndash;3 historical games, the alternative variant adds substantial replayability.
+</div>
+<h2 class="sub-title">The Western Front Pressure Mechanic</h2>
+<p>Each turn Poland continues to resist, Allied pressure in the West increases slightly. If the track reaches its critical threshold &mdash; representing an Allied offensive while German forces are heavily committed in Poland &mdash; automatic German defeat fires. In the historical variant, the threshold is set very high (the Allies never came). In the alternative variant, with long Polish resistance and Allied Pressure cards, it can realistically be reached, making the Polish campaign a genuine strategic risk for Germany.</p>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<section class="section" id="s10">
+<h1 class="section-title"><span class="sec-num">&sect; 10</span> Leaders</h1>
+<p>Leaders follow the standard SGS model &mdash; attaching to stacks to provide combat, morale, and movement bonuses. Fall Weiss leaders are particularly important for Germany, where individual commander quality was a genuine force multiplier.</p>
+<h2 class="sub-title">Key German Leaders</h2>
+<div class="leader-grid">
+  <div class="leader-card axis">
+    <div class="leader-name">Generaloberst Fedor von Bock</div>
+    <div class="leader-role">Army Group North Commander</div>
+    <div class="leader-body">Commands the northern axis from Pomerania and East Prussia. Solid all-round bonuses. Best used leading the drive to cut the Polish Corridor and subsequently pushing toward Warsaw from the north.</div>
+  </div>
+  <div class="leader-card axis">
+    <div class="leader-name">Generaloberst Gerd von Rundstedt</div>
+    <div class="leader-role">Army Group South Commander</div>
+    <div class="leader-body">The strongest overall German leader. High ATK, excellent morale multiplier, breakthrough capable. Best used with Panzer spearheads driving for the Vistula encirclement. Move him with the leading armoured element at all times.</div>
+  </div>
+  <div class="leader-card axis">
+    <div class="leader-name">General Heinz Guderian</div>
+    <div class="leader-role">XIX Motorised Corps</div>
+    <div class="leader-body">The armour theorist in his element. Exceptional ATK and breakthrough bonuses; able to chain breakthrough moves that shift entire Polish formations from viable defence to encirclement in a single turn. Never use him on infantry operations.</div>
+  </div>
+  <div class="leader-card axis">
+    <div class="leader-name">General Erich von Manstein</div>
+    <div class="leader-role">Chief of Staff, Army Group South</div>
+    <div class="leader-body">Primarily a card-synergy leader. Certain OKW Directive cards have enhanced effects when Manstein is active. Less direct as a tactical commander, valuable for unlocking strategic card combinations.</div>
+  </div>
+</div>
+<h2 class="sub-title">Key Polish Leaders</h2>
+<div class="leader-grid">
+  <div class="leader-card polish">
+    <div class="leader-name">Marshal Edward R&yacute;dz-&Sacute;mig&lstrok;y</div>
+    <div class="leader-role">Commander-in-Chief</div>
+    <div class="leader-body">Supreme commander. Provides coordination bonus and accesses high-level strategic cards. Moderate bonuses across all factors. Best near Warsaw where his presence stiffens the garrison and unlocks capital-defence events.</div>
+  </div>
+  <div class="leader-card polish">
+    <div class="leader-name">General Tadeusz Kutrzeba</div>
+    <div class="leader-role">Army of Pozna&nacute; Commander</div>
+    <div class="leader-body">The most aggressive Polish leader. High ATK; excellent morale multiplier. Architect of the Bzura counteroffensive. Use him for counterattacks &mdash; he is wasted in static defence.</div>
+  </div>
+  <div class="leader-card polish">
+    <div class="leader-name">General Juliusz R&oacute;mmel</div>
+    <div class="leader-role">Warsaw Defence Commander</div>
+    <div class="leader-body">Good DEF; excellent morale multiplier in urban combat. R&oacute;mmel in Warsaw with a full garrison and Popular Support cards is a significant impediment to German siege operations. Keep him in Warsaw from Turn 5 onward.</div>
+  </div>
+  <div class="leader-card polish">
+    <div class="leader-name">General W&lstrok;adys&lstrok;aw Anders</div>
+    <div class="leader-role">Nowogr&oacute;dzka Cavalry Brigade</div>
+    <div class="leader-body">Commands elite cavalry. High MOV; good ATK in delaying and screening operations. In forested terrain Anders can significantly slow German motorised flanking manoeuvres.</div>
+  </div>
+</div>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<section class="section" id="s11">
+<h1 class="section-title"><span class="sec-num">&sect; 11</span> Cards &amp; Events</h1>
+<p>The card system is richly thematic and provides high replayability through historical and hypothetical events covering diplomatic, military, political, and economic developments. No two campaigns play identically.</p>
+<h2 class="sub-title">Card Categories</h2>
+<ul class="guide-list">
+  <li><strong>OKW Directives (German):</strong> High-level operational orders modifying German capabilities for one or more turns. Includes accelerated Panzer movement, priority air support, and logistics improvements.</li>
+  <li><strong>Pervitin (German):</strong> Documented methamphetamine use by Wehrmacht troops. Provides early movement and combat bonuses but risks morale degradation if overused.</li>
+  <li><strong>Polish Popular Support:</strong> Fired by Polish resistance; increases replacement rates and morale for garrison units. Strongest when accumulated and played during active siege turns.</li>
+  <li><strong>Allied Pressure (Polish):</strong> Each card contributes to the Western Front Pressure track. The primary strategic tool for the Polish player in the alternative variant.</li>
+  <li><strong>Diplomatic Events:</strong> Cover international reaction &mdash; British and French declarations of war, Soviet entry. Many fire automatically; some require activation.</li>
+  <li><strong>Weather Cards:</strong> Both sides hold a small number that modify weather outcomes for one turn.</li>
+  <li><strong>Counterintelligence / Sabotage:</strong> Can slow German reinforcement timing or disrupt Polish mobilisation.</li>
+</ul>
+<h2 class="sub-title">German Card Priorities</h2>
+<ul class="guide-list">
+  <li>Play OKW movement directives in Turns 1&ndash;3 to maximise encirclement reach before Polish forces reach river lines.</li>
+  <li>Hold Stuka cards for Warsaw and Lw&oacute;w siege operations rather than spending them in open-field attacks Panzers can win alone.</li>
+  <li>Pervitin cards are strongest in Turns 1&ndash;4. Play them early.</li>
+</ul>
+<h2 class="sub-title">Polish Card Priorities</h2>
+<ul class="guide-list">
+  <li>Allied Pressure cards are your most strategic asset. Accumulate rather than spending early; the track compounds and the threat of auto-defeat is your leverage.</li>
+  <li>Popular Support cards save for Warsaw during siege operations.</li>
+  <li>Counterintelligence cards played early can delay specific German reinforcements and slow the encirclement timeline.</li>
+</ul>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+<section class="section" id="s12">
+<h1 class="section-title"><span class="sec-num">&sect; 12</span> The Soviet Invasion</h1>
+<p>On Turn 9 (representing 17 September 1939), the Soviet Union invades Poland from the east under the Molotov-Ribbentrop protocols. This event is one of the game's most dramatic turning points and forces the central Polish strategic dilemma.</p>
+<h2 class="sub-title">The Eastern Deployment Dilemma</h2>
+<p>From Turn 1, the Polish player faces an agonising question: how many forces to keep facing east? Every unit kept on the eastern border is a unit not slowing the German advance. Every unit transferred west leaves the eastern flank open.</p>
+<div class="callout polish">
+  <div class="callout-title">Eastern Border Decision Framework</div>
+  <strong>Historical approach:</strong> Keep KOP in place; accept that eastern forces will be overwhelmed on Turn 9 regardless. This frees everything for the German front. KOP can delay the Soviets 2&ndash;3 turns on the Pripyat Marshes and Bug River.<br><br>
+  <strong>Reinforced eastern deployment:</strong> Keep 3&ndash;4 regular divisions facing east. These can hold the Soviet advance 4&ndash;5 turns, viable only if the German front has stabilised or the alternative &ldquo;no Soviet invasion&rdquo; option has not been taken.
+</div>
+<h2 class="sub-title">Soviet Operational Character</h2>
+<p>The post-purge Red Army of 1939 is not the force of 1944. The game models post-purge command paralysis through: lower ATK values than German equivalents despite similar unit sizes; reduced breakthrough capacity; morale fragility; and command radius limitations reducing operational flexibility.</p>
+<h2 class="sub-title">Alternative Variant: No Soviet Invasion</h2>
+<p>If this option is selected in the pre-turn, the USSR stays neutral throughout. Poland concentrates everything against Germany. The Western Front Pressure mechanic becomes the primary German concern, and the campaign typically extends significantly beyond its historical length.</p>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<section class="section" id="s13">
+<h1 class="section-title"><span class="sec-num">&sect; 13</span> Victory Conditions</h1>
+<p>Fall Weiss uses VP accumulation with special capitulation conditions that can end the game before the last turn. Understanding the difference between grinding VP and achieving capitulation is essential for both players.</p>
+<h2 class="sub-title">Primary Conditions</h2>
+<ul class="guide-list">
+  <li><strong>Polish Capitulation:</strong> Poland surrenders when <em>both</em> Warsaw and Lw&oacute;w are simultaneously held by Axis forces. This is the German primary objective. Not time-limited &mdash; Poland can theoretically hold until Turn 19.</li>
+  <li><strong>Western Front Auto-Defeat (German):</strong> If the Western Front Pressure track reaches its critical threshold (driven by long Polish resistance and Allied Pressure cards), automatic German defeat fires regardless of the tactical situation.</li>
+</ul>
+<h2 class="sub-title">VP Accumulation</h2>
+<ul class="guide-list">
+  <li>Axis VPs accumulate each turn from controlled Polish cities. Warsaw and Lw&oacute;w award the highest values; secondary cities award smaller amounts.</li>
+  <li>Polish VPs accumulate for each turn both cities remain in Polish hands, plus awards for destroying high-value German formations (especially Panzer divisions).</li>
+</ul>
+<h2 class="sub-title">The Time Pressure</h2>
+<p>Germany cannot wait for Poland to collapse slowly. Each turn of delay builds Western Front Pressure and risks auto-defeat. This compels the German player to take operational risks &mdash; pushing Panzers beyond safe supply, committing reserves prematurely, assaulting fortified cities before siege forces are ready &mdash; mirroring the genuine tempo pressure the real Wehrmacht faced.</p>
+<div class="callout warning">
+  <div class="callout-title">Axis Warning &mdash; VP Complacency</div>
+  Many new German players focus on VP accumulation and neglect the Western Front Pressure track. If Poland plays Allied Pressure cards consistently and Warsaw holds past Turn 14, the auto-defeat trigger becomes a real threat in the alternative variant. Check the track every turn.
+</div>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<section class="section" id="s14">
+<h1 class="section-title"><span class="sec-num">&sect; 14</span> Scenario Guide</h1>
+<div class="scenario-grid">
+  <div class="scenario-row header"><div>Scenario Name</div><div>Dates</div><div>Turns</div></div>
+  <div class="scenario-row">
+    <div><div class="scenario-name">Grand Campaign (Historical)</div><div class="scenario-date">Full September Campaign with historical constraints. Pre-turn options available but restricted. Includes Soviet invasion Turn 9. The standard experience.</div></div>
+    <div class="scenario-date">Sep 1 &ndash; Oct 6, 1939</div>
+    <div class="scenario-turns">19 turns</div>
+  </div>
+  <div class="scenario-row">
+    <div><div class="scenario-name">Grand Campaign (Alternative)</div><div class="scenario-date">Full campaign with all alternative options available. Maximum replayability; hypothetical scenarios including no Soviet invasion.</div></div>
+    <div class="scenario-date">Sep 1 &ndash; Oct 6, 1939</div>
+    <div class="scenario-turns">19 turns</div>
+  </div>
+  <div class="scenario-row">
+    <div><div class="scenario-name">The Opening Blow</div><div class="scenario-date">First days of the invasion. Can Germany achieve the breakthrough enabling encirclement? Can Poland hold the border long enough for coherent defence?</div></div>
+    <div class="scenario-date">Sep 1&ndash;4, 1939</div>
+    <div class="scenario-turns">2&ndash;3 turns</div>
+  </div>
+  <div class="scenario-row">
+    <div><div class="scenario-name">The Battle of the Bzura</div><div class="scenario-date">The only major Polish counteroffensive. Kutrzeba's Army of Pozna&nacute; strikes the German flank. Can Poland exploit the breakthrough and relieve Warsaw?</div></div>
+    <div class="scenario-date">Sep 9&ndash;12, 1939</div>
+    <div class="scenario-turns">2 turns</div>
+  </div>
+  <div class="scenario-row">
+    <div><div class="scenario-name">Carpathian Gambit</div><div class="scenario-date">The German-Slovak southern thrust through the mountain passes. Terrain-intensive; limited forces; quick to play and teach.</div></div>
+    <div class="scenario-date">Sep 1&ndash;4, 1939</div>
+    <div class="scenario-turns">2&ndash;3 turns</div>
+  </div>
+  <div class="scenario-row">
+    <div><div class="scenario-name">The Last Stand</div><div class="scenario-date">Warsaw besieged, Soviet invasion underway. Can the garrison hold long enough to apply decisive Western Front pressure? The most asymmetric scenario in the game.</div></div>
+    <div class="scenario-date">Sep 17 &ndash; Oct 6, 1939</div>
+    <div class="scenario-turns">6&ndash;7 turns</div>
+  </div>
+</div>
+<h2 class="sub-title">Recommended Play Order</h2>
+<ol class="guide-list">
+  <li><strong>The Opening Blow (2&ndash;3 turns)</strong> &mdash; Learn Kampfgruppe rules and encirclement without the full campaign.</li>
+  <li><strong>Battle of the Bzura (2 turns)</strong> &mdash; Polish counterattack capability; competitive from the first move.</li>
+  <li><strong>Grand Campaign Historical (19 turns)</strong> &mdash; Full experience with historical structure.</li>
+  <li><strong>Grand Campaign Alternative</strong> &mdash; Maximum replayability; full diplomatic range.</li>
+</ol>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+<section class="section" id="s15">
+<h1 class="section-title"><span class="sec-num">&sect; 15</span> Axis Strategy</h1>
+<p>The German objective is deceptively simple: take Warsaw and Lw&oacute;w, force capitulation, and do it fast enough to avoid triggering Allied intervention. The art of the German game is achieving decisive encirclements &mdash; not just territorial advances &mdash; before Polish forces can establish coherent river-line defences.</p>
+<div class="strat-phase axis">
+  <div class="strat-phase-title">Phase 1: The Opening Encirclements &mdash; Turns 1&ndash;4 (September 1&ndash;8)</div>
+  <p><strong>Objectives:</strong> Secure the Polish Corridor; punch through Army Group South's border; begin the double envelopment trapping Polish forces west of the Vistula.</p>
+  <p>Form Kampfgruppen before advancing. Every Panzer division moves with motorised infantry and artillery support. Guderian's XIX Corps pushes hard for the Bug River, threatening Warsaw from the northeast. Rundstedt's Army Group South drives northeast toward Warsaw from Krak&oacute;w. Do not stop to reduce isolated Polish formations &mdash; leave that to the standard infantry following behind. Play OKW movement directive cards in Turns 1&ndash;3.</p>
+</div>
+<div class="strat-phase axis">
+  <div class="strat-phase-title">Phase 2: Reducing the Cauldrons &mdash; Turns 5&ndash;8 (September 9&ndash;16)</div>
+  <p><strong>Objectives:</strong> Close the Warsaw encirclement ring; reduce isolated armies in western cauldrons; isolate Lw&oacute;w before Soviet entry complicates the picture.</p>
+  <p>Assign infantry divisions to systematically reduce encircled Polish pockets while motorised and Panzer forces drive east. Watch for Kutrzeba's Army of Pozna&nacute; building on your northern flank &mdash; keep 2&ndash;3 infantry divisions screening against the Bzura counterattack threat. Begin Warsaw siege by Turn 6 with artillery and Stuka cards.</p>
+</div>
+<div class="strat-phase axis">
+  <div class="strat-phase-title">Phase 3: The Final Collapse &mdash; Turns 9&ndash;14 (September 17 &ndash; October 1)</div>
+  <p><strong>Objectives:</strong> Coordinate with Soviet forces (historical); capture Lw&oacute;w; force Warsaw's surrender; achieve capitulation before Western Front Pressure becomes critical.</p>
+  <p>Soviet entry dramatically simplifies your position. Polish forces facing east must now deal with a second threat; units withdrawn from your front no longer reinforce Warsaw. Focus remaining Panzer strength on Lw&oacute;w while maintaining the Warsaw siege ring. Check the Western Front Pressure track every turn in the alternative variant.</p>
+</div>
+<h2 class="sub-title">Common German Mistakes</h2>
+<ul class="guide-list">
+  <li><strong>Incomplete encirclements:</strong> A Polish division that slips through a gap reconstitutes on the Vistula. Close every ring completely.</li>
+  <li><strong>Wasting Panzers on sieges:</strong> Panzers take disproportionate losses in city assaults. Use them to encircle; leave reduction to infantry and artillery.</li>
+  <li><strong>Ignoring Western Front Pressure:</strong> In the alternative variant, this is a losing condition. Check it every turn and manage through speed.</li>
+  <li><strong>Supply overextension:</strong> Check supply lines before every Panzer advance, not after they've already moved and found themselves isolated.</li>
+</ul>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<section class="section" id="s16">
+<h1 class="section-title"><span class="sec-num">&sect; 16</span> Polish Strategy</h1>
+<p>Playing Poland in SGS Fall Weiss is genuinely difficult and genuinely rewarding. Victory for Poland is measured in time bought, German losses inflicted, and the Western Front Pressure track value when the game ends. You cannot defeat Germany; you can make the campaign costly, slow, and pyrrhic.</p>
+<div class="strat-phase polish">
+  <div class="strat-phase-title">Phase 1: Delaying the Encirclement &mdash; Turns 1&ndash;4 (September 1&ndash;8)</div>
+  <p><strong>Objectives:</strong> Get best infantry divisions onto major river lines (Vistula, San, Narew) before German Panzers cut roads behind them; accept that border positions will be lost; preserve the Warsaw garrison at full strength.</p>
+  <p>Do not fight on the open plain. Border infantry conducts fighting withdrawals toward river lines; cavalry screens flanks, delays motorised spearheads in forests, and raids supply lines. Anders harassing German supply lines is more valuable than him defending a river crossing. Sacrifice isolated or encircled units rather than attempting open-plain breakouts.</p>
+</div>
+<div class="strat-phase polish">
+  <div class="strat-phase-title">Phase 2: The Defensive Core &mdash; Turns 5&ndash;8 (September 9&ndash;16)</div>
+  <p><strong>Objectives:</strong> Hold Warsaw and Lw&oacute;w; execute the Bzura counterattack if conditions allow; accumulate Allied Pressure cards; decide eastern deployment before Soviet entry.</p>
+  <p>The Bzura window opens Turns 5&ndash;6. If Kutrzeba's Army of Pozna&nacute; is intact on the German northern flank, launching the counterattack is nearly always correct. Even without breakthrough, it disrupts German operations 2&ndash;3 turns, slows the Warsaw investment, and costs irreplaceable motorised formations. Accumulate Allied Pressure cards seriously from Turn 5. Decide your eastern stance by Turn 7&ndash;8.</p>
+</div>
+<div class="strat-phase polish">
+  <div class="strat-phase-title">Phase 3: The Siege &mdash; Turns 9&ndash;19 (September 17 &ndash; October 6)</div>
+  <p><strong>Objectives:</strong> Keep Warsaw and Lw&oacute;w fighting; play Popular Support cards to sustain garrisons; maximise Western Front Pressure accumulation; make every German siege turn costly.</p>
+  <p>Play Popular Support cards for Warsaw every siege turn. R&oacute;mmel in Warsaw provides significant DEF; keep him there permanently from Turn 5. The longer Warsaw holds, the more Allied Pressure cards you can accumulate; in the alternative variant, every extra turn of resistance potentially moves the auto-defeat trigger closer to fruition.</p>
+</div>
+<h2 class="sub-title">Common Polish Mistakes</h2>
+<ul class="guide-list">
+  <li><strong>Fighting on the open plain:</strong> Every Polish unit lost in open terrain is a unit that never made it to the Vistula. Withdraw to defensible ground; accept temporary German advances.</li>
+  <li><strong>Neglecting the Bzura opportunity:</strong> Kutrzeba's window is one of the few moments where Polish forces can inflict genuine strategic pain. Do not waste the Army of Pozna&nacute; in static defence when the counterattack window is open.</li>
+  <li><strong>Dispersing the Warsaw garrison:</strong> Every unit pulled from Warsaw for a gap elsewhere reduces siege resistance. R&oacute;mmel and the full garrison should stay in Warsaw from Turn 5 onward.</li>
+  <li><strong>Ignoring the eastern deployment decision:</strong> Failing to decide your eastern stance leaves you with the worst of both worlds. Commit early.</li>
+</ul>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+<section class="section" id="s17">
+<h1 class="section-title"><span class="sec-num">&sect; 17</span> PBEM &amp; Multiplayer</h1>
+<p>SGS Fall Weiss supports <strong>Play By Email (PBEM)</strong> for two or three human players. The three-player variant (Germany, Poland, Soviet Union) adds a distinctive diplomatic layer as the Soviet player's timing and aggression can vary significantly from the historical outcome.</p>
+<h2 class="sub-title">How PBEM Works</h2>
+<ol class="guide-list">
+  <li>Player 1 (Axis) takes their turn, saves the file, sends it to Player 2.</li>
+  <li>Player 2 (Poland) loads, takes their turn, returns the file.</li>
+  <li>In the three-player variant, the Soviet player takes their turn from Turn 9 onward.</li>
+  <li>Continues until Poland capitulates or a victory condition triggers.</li>
+</ol>
+<p>Full PBEM instructions: <a href="https://strategygamestudio.com/sgs-rules/multiplayer/sgs-pbem-instructions/" target="_blank" rel="noreferrer">strategygamestudio.com/sgs-rules/multiplayer</a></p>
+<h2 class="sub-title">Three-Player PBEM Dynamics</h2>
+<p>The Soviet player has genuine agency over when and how aggressively the USSR invades. A conservative Soviet player gives Poland more time to concentrate against Germany. An aggressive Soviet player creates a genuine two-front crisis. Germany cannot directly influence Soviet decisions &mdash; adding uncertainty that is historically authentic.</p>
+<h2 class="sub-title">PBEM Strategy Notes</h2>
+<ul class="guide-list">
+  <li>Write strategic notes between sessions &mdash; a 19-turn game played over 2&ndash;3 weeks requires remembering your entire framework.</li>
+  <li>Agree whether pre-turn option selections are revealed or kept hidden before starting.</li>
+  <li>Weather card use is particularly powerful in PBEM because your opponent cannot see your hand. Polish storm cards played in a German turn where Stukas were planned can reverse a battle entirely.</li>
+  <li>In the alternative variant, the Western Front Pressure track requires both players to track carefully across sessions. Keep a running note of its current value.</li>
+</ul>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+<section class="section" id="s18">
+<h1 class="section-title"><span class="sec-num">&sect; 18</span> Glossary</h1>
+<div class="glossary-grid">
+  <div class="gloss-item"><div class="gloss-term">Alternative Variant</div><div class="gloss-def">Pre-turn option unlocking historical hypotheticals: early mobilisation, improved Polish air, no Soviet invasion, Romanian intervention.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Allied Pressure</div><div class="gloss-def">Polish card type; each builds the Western Front Pressure track. Primary strategic tool for Poland in the alternative variant.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Army Group North</div><div class="gloss-def">German northern force under Bock; attacks from Pomerania and East Prussia. Responsible for the Polish Corridor and northern envelopment.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Army Group South</div><div class="gloss-def">German main armoured force under Rundstedt; drives from Silesia and Slovakia toward Warsaw and the Vistula encirclement.</div></div>
+  <div class="gloss-item"><div class="gloss-term">ATK</div><div class="gloss-def">Attack factor; governs offensive combat die rolls.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Battle Morale</div><div class="gloss-def">Sum of unit morale + leader + terrain + card modifiers; routing occurs when it reaches zero. Encircled units suffer Battle Morale penalties.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Breakthrough</div><div class="gloss-def">Post-victory advance by eligible units (armour, motorised, leaders). Kampfgruppe formations extend breakthrough range.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Bzura</div><div class="gloss-def">River and battle; the largest Polish counteroffensive (9&ndash;12 September), launched by the Army of Pozna&nacute; against the German flank. A scenario in its own right.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Capitulation</div><div class="gloss-def">Polish defeat condition; triggered when both Warsaw and Lw&oacute;w are simultaneously held by Axis forces.</div></div>
+  <div class="gloss-item"><div class="gloss-term">DEF</div><div class="gloss-def">Defense factor; governs defensive combat rolls. Modified by terrain type and fortification.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Encirclement</div><div class="gloss-def">All adjacent regions held by enemy; encircled units suffer combat and morale penalties and cannot receive reinforcements.</div></div>
+  <div class="gloss-item"><div class="gloss-term">FoW</div><div class="gloss-def">Fog of War; enemy units hidden unless adjacent or within reconnaissance range.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Historical Variant</div><div class="gloss-def">Pre-turn option restricting choices to those that historically occurred; more scripted, closer to the actual September Campaign.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Kampfgruppe</div><div class="gloss-def">Combined-arms German formation (Panzer + motorised + artillery); receives ATK, movement, and breakthrough bonuses. Core German offensive doctrine.</div></div>
+  <div class="gloss-item"><div class="gloss-term">KOP</div><div class="gloss-def">Korpus Ochrony Pogranicza; Polish eastern frontier troops. Central piece of the eastern deployment dilemma.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Life Points</div><div class="gloss-def">Unit strength; at 0 LP unit is eliminated. Replacements restore LP to maximum for supplied units.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Lw&oacute;w</div><div class="gloss-def">Fortress city in southeastern Poland; with Warsaw, required for Axis capitulation condition. Faces German and Soviet pressure from Turn 9.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Molotov-Ribbentrop</div><div class="gloss-def">Nazi-Soviet pact (23 August 1939); secret protocol partitions Poland. Triggers automatic Soviet entry event on Turn 9 in historical variant.</div></div>
+  <div class="gloss-item"><div class="gloss-term">MOV / MP</div><div class="gloss-def">Movement points; spent crossing region connections per phase. Panzer and motorised units have highest MOV values.</div></div>
+  <div class="gloss-item"><div class="gloss-term">MOR</div><div class="gloss-def">Morale factor; contributes to Battle Morale. Polish cavalry and regular infantry have high MOR; reserve divisions lower.</div></div>
+  <div class="gloss-item"><div class="gloss-term">PBEM</div><div class="gloss-def">Play By Email; asynchronous 2- or 3-player multiplayer mode.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Pervitin</div><div class="gloss-def">German card; documents methamphetamine use by Wehrmacht troops. Provides early movement and combat bonuses; historically attested.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Popular Support</div><div class="gloss-def">Polish card type; boosts Warsaw garrison morale and replacement rates. Strongest during active siege turns.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Pre-Turn</div><div class="gloss-def">Campaign setup phase before Turn 1; both players select historical or alternative options. Choices are binding for the entire game.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Pursuit</div><div class="gloss-def">Free fire against routed units after a rout result; costly for already-weakened formations.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Relay (Supply)</div><div class="gloss-def">Friendly town, depot, or logistics unit extending supply up to five additional regions.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Rout</div><div class="gloss-def">Catastrophic combat failure; battle ends, routing units take Pursuit fire.</div></div>
+  <div class="gloss-item"><div class="gloss-term">SGS</div><div class="gloss-def">Strategy Game Studio; game engine and developer name.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Supply Range</div><div class="gloss-def">Five regions from a source or relay. Unsupplied units cannot receive replacements and suffer combat penalties.</div></div>
+  <div class="gloss-item"><div class="gloss-term">VP</div><div class="gloss-def">Victory Points; accumulated per turn from controlled objectives. Determines margin of victory when capitulation is the primary condition.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Warsaw</div><div class="gloss-def">Polish capital; fortified city; required Axis capture for capitulation. Defended by Popular Support events and R&oacute;mmel's leadership bonus.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Western Front Pressure</div><div class="gloss-def">Track accumulating from Polish resistance and Allied Pressure cards. Critical threshold triggers automatic German defeat in the alternative variant.</div></div>
+</div>
+</section>
+</div><!-- /content -->
+<footer id="footer">
+  SGS Fall Weiss Strategy Guide &nbsp;&middot;&nbsp; Based on SGS Engine &nbsp;&middot;&nbsp; Avalon Digital / Strategy Game Studio &nbsp;&middot;&nbsp; Community Resource
+</footer>
+</div><!-- /main -->
+<a id="back-top" href="#hero" title="Back to top">&#8593;</a>
+<script>
+const bar     = document.getElementById('progress-bar');
+const backTop = document.getElementById('back-top');
+const toggle  = document.getElementById('sidebar-toggle');
+const sidebar = document.getElementById('sidebar');
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY;
+  const total    = document.documentElement.scrollHeight - window.innerHeight;
+  bar.style.transform = `scaleX(${scrolled / total})`;
+  backTop.classList.toggle('visible', scrolled > 400);
+}, { passive: true });
+const sections = document.querySelectorAll('.section[id]');
+const navItems = document.querySelectorAll('.nav-item');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navItems.forEach(n => n.classList.remove('active'));
+      const a = document.querySelector(`.nav-item[href="#${e.target.id}"]`);
+      if (a) { a.classList.add('active'); a.scrollIntoView({ block: 'nearest' }); }
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(s => observer.observe(s));
+toggle.addEventListener('click', () => sidebar.classList.toggle('open'));
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => sidebar.classList.remove('open'));
+});
+document.querySelectorAll('.section').forEach((s, i) => {
+  s.style.animationDelay = `${i * 0.04}s`;
+});
+</script>
+</body>
+</html>

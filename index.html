@@ -3,33 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SGS Taipings — Comprehensive Strategy Guide</title>
+<title>SGS Strategy Guides — Community Reference Library</title>
+<meta name="description" content="Comprehensive community strategy guides for Strategy Game Studio (SGS) historical wargames. Covering both sides, all scenarios, and all systems.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <style>
-/* ── Reset & Root ─────────────────────────────────────────────── */
+/* ── Reset & Root ──────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --ink:       #1a1410;
-  --parchment: #f5efe4;
-  --gold:      #c9943a;
-  --gold-dark: #8b6420;
-  --gold-pale: #f0d9a8;
-  --red:       #8b1a1a;
-  --red-pale:  #f5e8e8;
-  --teal:      #1a5c5c;
-  --teal-pale: #e4f0f0;
-  --navy:      #1b2f4a;
-  --navy-pale: #e8eef5;
-  --mid:       #4a3f32;
-  --light:     #f9f4ec;
-  --border:    rgba(201,148,58,0.3);
-  --shadow:    rgba(26,20,16,0.18);
-  --font-head: 'Cinzel', 'Times New Roman', serif;
-  --font-body: 'Crimson Pro', 'Georgia', serif;
-  --font-zh:   'Noto Serif SC', serif;
-  --sidebar-w: 280px;
+  --ink:         #1a1410;
+  --parchment:   #f5efe4;
+  --gold:        #c9943a;
+  --gold-dark:   #8b6420;
+  --gold-pale:   #f0d9a8;
+  --mid:         #4a3f32;
+  --light:       #f9f4ec;
+  --navy:        #1b2f4a;
+  --border:      rgba(201,148,58,0.3);
+  --shadow:      rgba(26,20,16,0.14);
+  --font-head:   'Cinzel', 'Times New Roman', serif;
+  --font-body:   'Crimson Pro', 'Georgia', serif;
 }
 
 html { scroll-behavior: smooth; font-size: 17px; }
@@ -39,11 +33,10 @@ body {
   color: var(--ink);
   font-family: var(--font-body);
   line-height: 1.75;
-  display: flex;
   min-height: 100vh;
 }
 
-/* ── Decorative noise texture overlay ───────────────────────── */
+/* Noise texture */
 body::before {
   content: '';
   position: fixed; inset: 0; pointer-events: none; z-index: 999;
@@ -51,1454 +44,923 @@ body::before {
   opacity: 0.5;
 }
 
-/* ── Sidebar ──────────────────────────────────────────────────── */
-#sidebar {
-  width: var(--sidebar-w);
-  min-width: var(--sidebar-w);
-  background: var(--navy);
-  position: fixed; top: 0; left: 0; bottom: 0;
-  overflow-y: auto;
-  z-index: 100;
-  border-right: 2px solid var(--gold-dark);
-  display: flex; flex-direction: column;
-  scrollbar-width: thin;
-  scrollbar-color: var(--gold-dark) var(--navy);
-}
-
-#sidebar-header {
-  padding: 28px 20px 20px;
-  border-bottom: 1px solid rgba(201,148,58,0.25);
-  background: linear-gradient(180deg, #0f1e30 0%, var(--navy) 100%);
-}
-
-#sidebar-title {
-  font-family: var(--font-head);
-  font-size: 1rem;
-  font-weight: 900;
-  color: var(--gold);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  line-height: 1.3;
-}
-
-#sidebar-sub {
-  font-family: var(--font-body);
-  font-size: 0.72rem;
-  color: rgba(255,255,255,0.45);
-  margin-top: 6px;
-  letter-spacing: 0.05em;
-  font-style: italic;
-}
-
-#sidebar-nav { padding: 12px 0 40px; flex: 1; }
-
-.nav-section {
-  padding: 10px 20px 4px;
-  font-family: var(--font-head);
-  font-size: 0.58rem;
-  letter-spacing: 0.2em;
-  color: var(--gold-dark);
-  text-transform: uppercase;
-  margin-top: 8px;
-}
-
-.nav-item {
-  display: block;
-  padding: 7px 20px 7px 28px;
-  font-family: var(--font-body);
-  font-size: 0.82rem;
-  color: rgba(245,239,228,0.72);
-  text-decoration: none;
-  border-left: 2px solid transparent;
-  transition: all 0.18s ease;
-  line-height: 1.35;
-  position: relative;
-}
-.nav-item::before {
-  content: '›';
-  position: absolute; left: 14px; top: 7px;
-  color: var(--gold-dark);
-  opacity: 0;
-  transition: opacity 0.15s;
-}
-.nav-item:hover,
-.nav-item.active {
-  color: var(--gold-pale);
-  border-left-color: var(--gold);
-  background: rgba(201,148,58,0.08);
-  padding-left: 30px;
-}
-.nav-item:hover::before,
-.nav-item.active::before { opacity: 1; }
-
-/* ── Main Content ─────────────────────────────────────────────── */
-#main {
-  margin-left: var(--sidebar-w);
-  flex: 1;
-  min-width: 0;
-}
-
-/* ── Hero ──────────────────────────────────────────────────────── */
-#hero {
+/* ── Site header / hero ────────────────────────────────────── */
+.site-hero {
   background: linear-gradient(160deg, #0f1e30 0%, #1b2f4a 50%, #2a1a0a 100%);
-  min-height: 420px;
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 80px 64px 64px;
+  padding: 80px 64px 70px;
   position: relative;
   overflow: hidden;
   border-bottom: 3px solid var(--gold-dark);
 }
 
-/* Diagonal decorative lines */
-#hero::before {
+.site-hero::before {
   content: '';
   position: absolute; inset: 0;
-  background-image:
-    repeating-linear-gradient(
-      -45deg,
-      rgba(201,148,58,0.04) 0px, rgba(201,148,58,0.04) 1px,
-      transparent 1px, transparent 60px
-    );
-  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    -55deg,
+    transparent, transparent 40px,
+    rgba(201,148,58,0.04) 40px, rgba(201,148,58,0.04) 41px
+  );
 }
 
-#hero-eyebrow {
+.site-hero::after {
+  content: '';
+  position: absolute; bottom: 0; left: 64px; right: 64px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.hero-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  text-align: center;
+}
+
+.hero-eyebrow {
   font-family: var(--font-head);
-  font-size: 0.7rem;
-  letter-spacing: 0.35em;
-  color: var(--gold);
+  font-size: 0.68rem;
+  letter-spacing: 0.28em;
+  color: var(--gold-dark);
   text-transform: uppercase;
-  margin-bottom: 20px;
-  opacity: 0.85;
+  margin-bottom: 18px;
 }
 
-#hero-title {
+.hero-title {
   font-family: var(--font-head);
-  font-size: clamp(2.8rem, 5vw, 4.4rem);
+  font-size: clamp(1.8rem, 4.5vw, 3rem);
   font-weight: 900;
-  color: var(--gold-pale);
-  line-height: 1.05;
-  letter-spacing: 0.05em;
-  text-shadow: 0 2px 24px rgba(0,0,0,0.5);
+  color: var(--parchment);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.hero-rule {
+  width: 80px;
+  height: 2px;
+  background: var(--gold);
+  margin: 0 auto 20px;
+  opacity: 0.6;
+}
+
+.hero-desc {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-style: italic;
+  color: rgba(240,217,168,0.7);
+  font-weight: 300;
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── Main content wrapper ──────────────────────────────────── */
+.main-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 64px 40px 100px;
+}
+
+/* ── Section heading ───────────────────────────────────────── */
+.section-label {
+  font-family: var(--font-head);
+  font-size: 0.65rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.section-title {
+  font-family: var(--font-head);
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.section-intro {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--mid);
+  font-style: italic;
+  margin-bottom: 36px;
+  max-width: 640px;
+}
+
+/* ── Games grid ─────────────────────────────────────────────── */
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  margin-bottom: 72px;
+}
+
+/* ── Game card ──────────────────────────────────────────────── */
+.game-card {
+  background: var(--light);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.game-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px var(--shadow);
+  border-color: var(--gold);
+}
+
+/* Top colour bar — each era gets a distinct colour */
+.game-card-bar {
+  height: 4px;
+  background: var(--gold);
+}
+.game-card[data-era="pre-ww2"] .game-card-bar  { background: linear-gradient(90deg, #7a3c1a, #c9943a); }
+.game-card[data-era="ww2"]     .game-card-bar  { background: linear-gradient(90deg, #1b3d5a, #4a8ab0); }
+.game-card[data-era="post-ww2"].game-card-bar  { background: linear-gradient(90deg, #1a5c3a, #4ab07a); }
+
+.game-card-inner { padding: 20px 22px 22px; }
+
+.game-card-era {
+  font-family: var(--font-head);
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  margin-bottom: 5px;
+}
+.game-card[data-era="ww2"]     .game-card-era { color: #2a6080; }
+.game-card[data-era="post-ww2"].game-card-era { color: #1a6040; }
+
+.game-card-title {
+  font-family: var(--font-head);
+  font-size: 1.12rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 3px;
+  line-height: 1.2;
+}
+
+.game-card-subtitle {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--mid);
   margin-bottom: 12px;
 }
 
-#hero-subtitle {
+.game-card-divider {
+  height: 1px;
+  background: var(--border);
+  margin-bottom: 12px;
+}
+
+.game-card-desc {
   font-family: var(--font-body);
-  font-size: 1.25rem;
-  color: rgba(245,239,228,0.65);
-  font-style: italic;
-  font-weight: 300;
-  margin-bottom: 36px;
-  letter-spacing: 0.02em;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--ink);
+  margin-bottom: 14px;
 }
 
-.hero-tags { display: flex; flex-wrap: wrap; gap: 10px; }
-.hero-tag {
-  font-family: var(--font-head);
-  font-size: 0.62rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  padding: 5px 14px;
-  border: 1px solid rgba(201,148,58,0.4);
-  color: var(--gold-pale);
-  opacity: 0.8;
-}
-
-/* ── Content Area ──────────────────────────────────────────────── */
-#content {
-  max-width: 860px;
-  padding: 64px 64px 96px;
-}
-
-/* ── Sections ──────────────────────────────────────────────────── */
-.section {
-  margin-bottom: 80px;
-  animation: fadeUp 0.5s ease both;
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ── Headings ──────────────────────────────────────────────────── */
-h1.section-title {
-  font-family: var(--font-head);
-  font-size: clamp(1.5rem, 2.5vw, 2rem);
-  font-weight: 700;
-  color: var(--navy);
-  letter-spacing: 0.04em;
-  padding-bottom: 14px;
-  border-bottom: 2px solid var(--gold);
-  margin-bottom: 32px;
-  display: flex; align-items: center; gap: 16px;
-}
-
-h1.section-title .sec-num {
-  font-size: 0.65em;
-  color: var(--gold);
-  font-weight: 400;
-  letter-spacing: 0.1em;
-  opacity: 0.8;
-  flex-shrink: 0;
-}
-
-h2.sub-title {
-  font-family: var(--font-head);
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--navy);
-  letter-spacing: 0.06em;
-  margin: 40px 0 16px;
-  padding-left: 14px;
-  border-left: 3px solid var(--gold);
-}
-
-h3.mini-title {
-  font-family: var(--font-body);
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: var(--mid);
-  margin: 28px 0 10px;
-  font-style: italic;
-}
-h3.mini-title.taiping { color: var(--red); }
-h3.mini-title.qing    { color: var(--teal); }
-
-/* ── Body Text ──────────────────────────────────────────────────── */
-p {
+.game-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
   margin-bottom: 16px;
-  color: var(--mid);
-  font-size: 1rem;
 }
 
-/* ── Lists ───────────────────────────────────────────────────────── */
-ul.guide-list, ol.guide-list {
-  margin: 12px 0 20px 0;
-  padding-left: 0;
-  list-style: none;
-}
-ul.guide-list li, ol.guide-list li {
-  position: relative;
-  padding: 5px 0 5px 28px;
-  color: var(--mid);
-  font-size: 0.97rem;
-  border-bottom: 1px solid rgba(201,148,58,0.1);
-}
-ul.guide-list li::before {
-  content: '◆';
-  position: absolute; left: 4px;
-  color: var(--gold);
-  font-size: 0.5rem;
-  top: 10px;
-}
-ol.guide-list { counter-reset: ol-counter; }
-ol.guide-list li { counter-increment: ol-counter; }
-ol.guide-list li::before {
-  content: counter(ol-counter) '.';
-  position: absolute; left: 0;
-  color: var(--gold-dark);
+.game-card-tag {
   font-family: var(--font-head);
-  font-size: 0.75rem;
-  font-weight: 600;
-  top: 7px;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid);
+  border: 1px solid var(--border);
+  padding: 2px 7px;
+  background: var(--parchment);
 }
 
-/* ── Callouts ────────────────────────────────────────────────────── */
-.callout {
-  border-left: 4px solid var(--gold);
-  background: linear-gradient(90deg, rgba(240,217,168,0.35) 0%, rgba(245,239,228,0.1) 100%);
-  padding: 18px 24px;
-  margin: 28px 0;
-  position: relative;
+.game-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-.callout.taiping {
-  border-color: var(--red);
-  background: linear-gradient(90deg, rgba(139,26,26,0.07) 0%, transparent 100%);
-}
-.callout.qing {
-  border-color: var(--teal);
-  background: linear-gradient(90deg, rgba(26,92,92,0.07) 0%, transparent 100%);
-}
-.callout.danger {
-  border-color: var(--red);
-}
-.callout-label {
+
+.game-card-cta {
   font-family: var(--font-head);
   font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: gap 0.15s;
+}
+.game-card:hover .game-card-cta { gap: 10px; }
+
+.game-card-sections {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--mid);
+  font-style: italic;
+}
+
+/* Coming soon state */
+.game-card.coming-soon {
+  opacity: 0.55;
+  cursor: default;
+  pointer-events: none;
+}
+.game-card.coming-soon .game-card-bar {
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(201,148,58,0.3) 0px, rgba(201,148,58,0.3) 8px,
+    transparent 8px, transparent 16px
+  );
+}
+.coming-soon-badge {
+  font-family: var(--font-head);
+  font-size: 0.55rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mid);
+  border: 1px solid var(--border);
+  padding: 2px 7px;
+}
+
+/* ── Modal overlay ──────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  background: rgba(15,22,32,0.82);
+  backdrop-filter: blur(4px);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+
+.modal {
+  background: var(--parchment);
+  border: 1px solid var(--gold);
+  max-width: 620px;
+  width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
+  position: relative;
+  transform: translateY(16px) scale(0.98);
+  transition: transform 0.28s cubic-bezier(0.16,1,0.3,1);
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.modal-overlay.open .modal { transform: none; }
+
+.modal-bar {
+  height: 4px;
+  background: var(--gold);
+}
+.modal[data-era="pre-ww2"] .modal-bar { background: linear-gradient(90deg, #7a3c1a, #c9943a); }
+.modal[data-era="ww2"]     .modal-bar { background: linear-gradient(90deg, #1b3d5a, #4a8ab0); }
+.modal[data-era="post-ww2"].modal-bar { background: linear-gradient(90deg, #1a5c3a, #4ab07a); }
+
+.modal-header {
+  padding: 24px 28px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.modal-era {
+  font-family: var(--font-head);
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  margin-bottom: 5px;
+}
+.modal[data-era="ww2"]     .modal-era { color: #2a6080; }
+.modal[data-era="post-ww2"].modal-era { color: #1a6040; }
+
+.modal-title {
+  font-family: var(--font-head);
+  font-size: clamp(1.3rem, 3vw, 1.9rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  line-height: 1.1;
+  margin-bottom: 3px;
+}
+
+.modal-subtitle {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--mid);
+}
+
+.modal-close {
+  width: 34px; height: 34px;
+  border: 1px solid var(--border);
+  background: var(--light);
+  color: var(--mid);
+  font-size: 0.9rem;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.15s;
+  font-family: var(--font-body);
+  margin-top: 2px;
+}
+.modal-close:hover {
+  border-color: var(--gold);
+  color: var(--gold-dark);
+  background: var(--parchment);
+}
+
+.modal-body { padding: 22px 28px 28px; }
+
+.modal-section-label {
+  font-family: var(--font-head);
+  font-size: 0.6rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--gold-dark);
   margin-bottom: 8px;
-  display: block;
+  margin-top: 20px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--border);
 }
-.callout.taiping .callout-label { color: var(--red); }
-.callout.qing    .callout-label { color: var(--teal); }
-.callout p { margin-bottom: 0; font-size: 0.95rem; }
+.modal-section-label:first-child { margin-top: 0; }
 
-/* ── Tables ──────────────────────────────────────────────────────── */
-.table-wrap {
-  overflow-x: auto;
-  margin: 24px 0 32px;
-  border: 1px solid var(--border);
-  box-shadow: 0 2px 12px var(--shadow);
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.88rem;
+.modal-desc {
   font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--ink);
+  margin-bottom: 4px;
 }
 
-thead th {
+.modal-tags {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin: 10px 0 6px;
+}
+.modal-tag {
+  font-family: var(--font-head);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid);
+  border: 1px solid var(--border);
+  padding: 3px 8px;
+  background: var(--light);
+}
+
+.modal-meta-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 10px 0;
+}
+.modal-meta-cell {
+  background: var(--light);
+  border: 1px solid var(--border);
+  padding: 9px 12px;
+}
+.modal-meta-label {
+  font-family: var(--font-head);
+  font-size: 0.55rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 2px;
+}
+.modal-meta-value {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.modal-sides {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 10px 0;
+}
+.modal-side {
+  padding: 10px 13px;
+  border: 1px solid var(--border);
+  background: var(--light);
+}
+.modal-side-label {
+  font-family: var(--font-head);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  margin-bottom: 4px;
+}
+.modal-side-body {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--ink);
+}
+
+.modal-cta {
+  display: block;
+  margin-top: 22px;
+  padding: 13px 22px;
   background: var(--navy);
   color: var(--gold-pale);
   font-family: var(--font-head);
-  font-size: 0.7rem;
-  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  padding: 12px 16px;
-  text-align: left;
-  border-bottom: 2px solid var(--gold-dark);
-  white-space: nowrap;
+  text-decoration: none;
+  text-align: center;
+  transition: background 0.15s;
+}
+.modal-cta:hover {
+  background: #0f1e30;
 }
 
-tbody tr:nth-child(even) td { background: rgba(201,148,58,0.05); }
-tbody tr:hover td { background: rgba(27,47,74,0.06); }
-
-td {
-  padding: 10px 16px;
-  border-bottom: 1px solid rgba(201,148,58,0.15);
-  color: var(--mid);
-  vertical-align: top;
-  line-height: 1.5;
+.modal-ext-links {
+  display: flex;
+  gap: 10px;
+  margin-top: 22px;
 }
-
-td:first-child {
-  font-weight: 600;
-  color: var(--navy);
-  white-space: nowrap;
-}
-
-/* KV tables */
-.kv-table td:first-child {
-  width: 220px;
-  font-family: var(--font-head);
-  font-size: 0.75rem;
-  letter-spacing: 0.05em;
-  color: var(--gold-dark);
-  background: rgba(201,148,58,0.06);
-}
-
-/* ── Side badges ─────────────────────────────────────────────────── */
-.badge {
-  display: inline-block;
-  font-family: var(--font-head);
-  font-size: 0.6rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  padding: 3px 10px;
-  border-radius: 2px;
-  vertical-align: middle;
-  margin-left: 8px;
-}
-.badge-taiping { background: var(--red); color: #fff; }
-.badge-qing    { background: var(--teal); color: #fff; }
-.badge-neutral { background: var(--navy); color: var(--gold-pale); }
-
-/* ── Phase list ───────────────────────────────────────────────────── */
-.phase-list { margin: 0 0 32px; }
-.phase-item {
-  display: flex; gap: 20px; align-items: flex-start;
-  padding: 14px 0;
-  border-bottom: 1px solid rgba(201,148,58,0.15);
-}
-.phase-num {
-  font-family: var(--font-head);
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--gold);
-  min-width: 32px;
-  padding-top: 2px;
-}
-.phase-name {
-  font-family: var(--font-head);
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--navy);
-  letter-spacing: 0.05em;
-  margin-bottom: 4px;
-}
-.phase-desc { font-size: 0.92rem; color: var(--mid); }
-
-/* ── Scenario cards ───────────────────────────────────────────────── */
-.scenario-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 16px;
-  margin: 24px 0;
-}
-.scenario-card {
+.modal-ext-link {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
   border: 1px solid var(--border);
   background: var(--light);
-  padding: 20px;
-  position: relative;
-  transition: box-shadow 0.2s, transform 0.2s;
-}
-.scenario-card:hover {
-  box-shadow: 0 6px 24px var(--shadow);
-  transform: translateY(-2px);
-}
-.sc-name {
+  color: var(--mid);
   font-family: var(--font-head);
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--navy);
-  letter-spacing: 0.04em;
-  margin-bottom: 8px;
-}
-.sc-turns {
-  font-family: var(--font-head);
-  font-size: 0.65rem;
-  letter-spacing: 0.15em;
-  color: var(--gold-dark);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  margin-bottom: 6px;
+  text-decoration: none;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
 }
-.sc-diff {
-  display: inline-block;
-  font-size: 0.68rem;
+.modal-ext-link:hover {
+  border-color: var(--gold);
+  color: var(--gold-dark);
+  background: var(--parchment);
+}
+.modal-ext-link svg {
+  flex-shrink: 0;
+  opacity: 0.65;
+}
+
+/* ── Info strip ─────────────────────────────────────────────── */
+.info-strip {
+  border: 1px solid var(--border);
+  background: var(--light);
+  padding: 20px 28px;
+  margin-bottom: 60px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+.info-strip-icon {
+  font-size: 1.4rem;
+  color: var(--gold);
+  flex-shrink: 0;
+  margin-top: 2px;
+  font-family: serif;
+}
+.info-strip-body {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--mid);
+}
+.info-strip-body strong {
   font-family: var(--font-head);
+  font-size: 0.78rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 2px 8px;
-  margin-bottom: 10px;
+  color: var(--ink);
+  display: block;
+  margin-bottom: 4px;
 }
-.diff-intro  { background: #d4edda; color: #155724; }
-.diff-inter  { background: #fff3cd; color: #856404; }
-.diff-adv    { background: #f8d7da; color: #721c24; }
-.diff-expert { background: var(--navy); color: var(--gold-pale); }
-.sc-desc { font-size: 0.85rem; color: var(--mid); line-height: 1.55; }
 
-/* ── Strategy phases ──────────────────────────────────────────────── */
-.strat-phase {
-  border-left: 4px solid var(--gold);
-  padding: 20px 24px;
-  margin: 24px 0;
-  background: linear-gradient(90deg, rgba(240,217,168,0.2) 0%, transparent 60%);
-}
-.strat-phase.taiping { border-color: var(--red); background: linear-gradient(90deg, rgba(139,26,26,0.06) 0%, transparent 60%); }
-.strat-phase.qing    { border-color: var(--teal); background: linear-gradient(90deg, rgba(26,92,92,0.06) 0%, transparent 60%); }
-.strat-phase-title {
+/* ── Footer ─────────────────────────────────────────────────── */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 20px 40px;
   font-family: var(--font-head);
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--navy);
-  letter-spacing: 0.06em;
-  margin-bottom: 12px;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-}
-.strat-phase.taiping .strat-phase-title { color: var(--red); }
-.strat-phase.qing    .strat-phase-title { color: var(--teal); }
-
-/* ── Glossary ─────────────────────────────────────────────────────── */
-.glossary-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  margin: 24px 0;
-}
-.gloss-item {
-  background: var(--parchment);
-  padding: 10px 16px;
-  display: flex; gap: 12px;
-}
-.gloss-term {
-  font-family: var(--font-head);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: var(--navy);
-  min-width: 80px;
-  padding-top: 2px;
-}
-.gloss-def { font-size: 0.85rem; color: var(--mid); }
-
-/* ── Divider ───────────────────────────────────────────────────────── */
-.ornamental-divider {
+  color: var(--mid);
   text-align: center;
-  margin: 56px 0;
-  color: var(--gold);
-  font-size: 1.4rem;
-  letter-spacing: 0.5em;
-  opacity: 0.5;
-  user-select: none;
 }
 
-/* ── Footer ────────────────────────────────────────────────────────── */
-#footer {
-  background: var(--navy);
-  color: rgba(245,239,228,0.5);
-  font-family: var(--font-head);
-  font-size: 0.65rem;
-  letter-spacing: 0.15em;
-  text-align: center;
-  padding: 28px 40px;
-  border-top: 2px solid var(--gold-dark);
-  text-transform: uppercase;
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 700px) {
+  .site-hero { padding: 50px 24px 48px; }
+  .main-wrap { padding: 40px 20px 80px; }
+  .games-grid { grid-template-columns: 1fr; }
+  .modal-meta-row, .modal-sides { grid-template-columns: 1fr; }
+  .modal-header { flex-direction: column; }
+  .modal-close { align-self: flex-end; margin-top: -38px; }
 }
-
-/* ── Mobile ────────────────────────────────────────────────────────── */
-#menu-toggle {
-  display: none;
-  position: fixed; top: 14px; left: 14px; z-index: 200;
-  background: var(--navy); border: 1px solid var(--gold-dark);
-  color: var(--gold-pale); padding: 8px 12px;
-  font-family: var(--font-head); font-size: 0.7rem;
-  letter-spacing: 0.1em; cursor: pointer;
-}
-
-@media (max-width: 900px) {
-  :root { --sidebar-w: 260px; }
-  #sidebar { transform: translateX(-100%); transition: transform 0.25s ease; }
-  #sidebar.open { transform: translateX(0); }
-  #main { margin-left: 0; }
-  #menu-toggle { display: block; }
-  #content { padding: 48px 28px 72px; }
-  #hero { padding: 70px 28px 48px; }
-  .glossary-grid { grid-template-columns: 1fr; }
-  .scenario-grid { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 600px) {
-  #content { padding: 32px 18px 56px; }
-  #hero { padding: 60px 18px 40px; min-height: 300px; }
-  .table-wrap { font-size: 0.8rem; }
-  td, thead th { padding: 8px 10px; }
-}
-
-/* ── Scroll progress bar ───────────────────────────────────────────── */
-#progress-bar {
-  position: fixed; top: 0; left: var(--sidebar-w); right: 0;
-  height: 3px; background: var(--gold);
-  transform-origin: left;
-  transform: scaleX(0);
-  z-index: 50;
-  transition: transform 0.1s linear;
-}
-
-/* ── Back to top ────────────────────────────────────────────────────── */
-#back-top {
-  position: fixed; bottom: 32px; right: 32px;
-  width: 42px; height: 42px;
-  background: var(--navy); border: 1px solid var(--gold-dark);
-  color: var(--gold-pale); font-size: 1.1rem;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; opacity: 0; pointer-events: none;
-  transition: opacity 0.2s;
-  font-family: var(--font-head);
-  text-decoration: none;
-  z-index: 50;
-}
-#back-top.visible { opacity: 1; pointer-events: auto; }
 </style>
 </head>
 <body>
 
-<button id="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">☰ Menu</button>
-<div id="progress-bar"></div>
-
-<!-- ── Sidebar ──────────────────────────────────────────────────── -->
-<nav id="sidebar">
-  <div id="sidebar-header">
-    <div id="sidebar-title">SGS Taipings</div>
-    <div id="sidebar-sub">Strategy Guide — 1851–1864</div>
-  </div>
-  <div id="sidebar-nav">
-    <div class="nav-section">Background</div>
-    <a class="nav-item" href="#s1">1 · Historical Context</a>
-    <a class="nav-item" href="#s2">2 · Game Overview</a>
-    <div class="nav-section">Core Rules</div>
-    <a class="nav-item" href="#s3">3 · Turn Structure</a>
-    <a class="nav-item" href="#s4">4 · Map &amp; Terrain</a>
-    <a class="nav-item" href="#s5">5 · Units &amp; Forces</a>
-    <a class="nav-item" href="#s6">6 · Supply &amp; Movement</a>
-    <a class="nav-item" href="#s7">7 · Combat System</a>
-    <a class="nav-item" href="#s8">8 · Sieges &amp; Fortresses</a>
-    <div class="nav-section">Systems</div>
-    <a class="nav-item" href="#s9">9 · Economy &amp; Income</a>
-    <a class="nav-item" href="#s10">10 · Loyalty System</a>
-    <a class="nav-item" href="#s11">11 · Diplomacy &amp; Foreign Powers</a>
-    <a class="nav-item" href="#s12">12 · Events &amp; Cards</a>
-    <a class="nav-item" href="#s13">13 · Imperial Concern Index</a>
-    <div class="nav-section">Strategy</div>
-    <a class="nav-item" href="#s14">14 · Scenarios</a>
-    <a class="nav-item" href="#s15">15 · Playing the Taipings</a>
-    <a class="nav-item" href="#s16">16 · Playing the Qing</a>
-    <a class="nav-item" href="#s17">17 · PBEM &amp; Multiplayer</a>
-    <div class="nav-section">Reference</div>
-    <a class="nav-item" href="#s18">18 · Glossary</a>
-  </div>
-</nav>
-
-<!-- ── Main ─────────────────────────────────────────────────────── -->
-<div id="main">
-
-<!-- Hero -->
-<header id="hero">
-  <div id="hero-eyebrow">Strategy Game Studio &nbsp;·&nbsp; Avalon Digital</div>
-  <h1 id="hero-title">SGS Taipings</h1>
-  <p id="hero-subtitle">Comprehensive Analysis &amp; Strategy Guide — The Taiping Rebellion 1851–1864</p>
-  <div class="hero-tags">
-    <span class="hero-tag">SGS Engine v1.5</span>
-    <span class="hero-tag">18 Sections</span>
-    <span class="hero-tag">Both Sides Covered</span>
-    <span class="hero-tag">Grand Campaign</span>
-    <span class="hero-tag">PBEM</span>
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- HERO                                                         -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<header class="site-hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Community Resource &nbsp;·&nbsp; Strategy Game Studio &nbsp;·&nbsp; Avalon Digital</div>
+    <h1 class="hero-title">SGS Strategy Guide Library</h1>
+    <div class="hero-rule"></div>
+    <p class="hero-desc">Comprehensive guides covering both sides, all systems, and every scenario — for the SGS Engine wargame series.</p>
   </div>
 </header>
 
-<div id="content">
-
-<!-- ══════════════════════════════════════════════════════════════ -->
-<section class="section" id="s1">
-<h1 class="section-title"><span class="sec-num">§ 01</span> Historical Context</h1>
-
-<p>SGS Taipings simulates one of history's most devastating conflicts: the Taiping Rebellion (1851–1864), a cataclysmic civil war in mid-19th-century China that claimed an estimated 20–30 million lives — one of the deadliest wars in human history.</p>
-
-<h2 class="sub-title">Origins of the Rebellion</h2>
-<p>The rebellion's roots lay in the charisma of <strong>Hong Xiuquan</strong>, a Hakka Chinese man from Guangdong Province who, after repeatedly failing the imperial examinations, experienced religious visions in which he believed himself to be the younger brother of Jesus Christ. He founded the "Bai Shangdi Hui" (God Worshippers Society) and began preaching a syncretic Christian-influenced doctrine that drew thousands of impoverished peasants, displaced miners, and disaffected Hakka and Zhuang peoples.</p>
-<p>The Qing dynasty in 1851 was already battered: economically ruined by the Opium Wars (1839–42, 1856–60), facing rampant corruption, severe famine, and a flood crisis along the Yellow River. The Manchu ruling class was seen as illegitimate foreign overlords by many Han Chinese, and their military — the Banner Armies and Green Standard troops — had stagnated into hollow, underfunded shells.</p>
-
-<h2 class="sub-title">The Heavenly Kingdom</h2>
-<p>In January 1851, Hong Xiuquan proclaimed the <em>Taiping Tianguo</em> (Heavenly Kingdom of Great Peace) with himself as Heavenly King. The movement rapidly swept north through Guangxi and Hunan, capturing Nanjing in March 1853 and renaming it <strong>Tianjing</strong> (Heavenly Capital). At its height the Taiping state controlled large swaths of the Yangtze Valley — the richest agricultural and commercial heartland of China.</p>
-<p>The Taiping introduced radical social reforms: gender equality in theory (separate women's battalions), land redistribution, prohibition of opium, foot-binding, and prostitution. However, the theocratic leadership grew increasingly autocratic and fractious, culminating in the catastrophic <strong>Tianjing Massacre of 1856</strong> when the Taiping kings turned on each other, killing tens of thousands of followers.</p>
-
-<h2 class="sub-title">Foreign Involvement</h2>
-<p>Britain and France, fresh from the Second Opium War, initially maintained cautious neutrality. By 1860–61, attitudes shifted. The <strong>Ever Victorious Army (EVA)</strong> — Chinese troops trained and led by Western officers including Frederick Townsend Ward and later Charles "Chinese" Gordon — fought for the Qing, introducing modern tactics and weaponry that accelerated the dynasty's recovery.</p>
-
-<h2 class="sub-title">Other Rebellions</h2>
-<p>The game also models several concurrent rebellions that complicated Qing strategic planning:</p>
-<ul class="guide-list">
-  <li><strong>The Nien Rebellion (1851–1868)</strong> — a bandit confederation operating in northern China along the Huang-Ho River plain, tying down substantial Qing forces.</li>
-  <li><strong>The Panthay Rebellion in Yunnan</strong> — Muslim uprising (1856–1873).</li>
-  <li><strong>The Miao Rebellion</strong> in Guizhou and Hunan.</li>
-</ul>
-
-<div class="callout">
-  <span class="callout-label">Why this matters for gameplay</span>
-  <p>The historical arc drives the game's asymmetry. The Taipings begin with momentum and the element of surprise. The Qing begin weak, slow, and hamstrung by bureaucratic inertia. Both sides race against time in opposite directions.</p>
-</div>
-</section>
-
-<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
-
-<!-- ══════════════════════════════════════════════════════════════ -->
-<section class="section" id="s2">
-<h1 class="section-title"><span class="sec-num">§ 02</span> Game Overview &amp; Core Systems</h1>
-
-<p>SGS Taipings is a digital wargame by Avalon Digital / Strategy Game Studio, running on the <strong>SGS Engine v1.5</strong> (as of the 2024 major update). It is a 2-player strategic-operational simulation — one side plays Taiping, the other Qing — with full singleplayer AI support.</p>
-
-<h2 class="sub-title">At a Glance</h2>
-<div class="table-wrap">
-<table class="kv-table">
-<tbody>
-  <tr><td>Developer</td><td>Avalon Digital / Strategy Game Studio</td></tr>
-  <tr><td>Engine</td><td>SGS Engine v1.5 (2024 major update)</td></tr>
-  <tr><td>Scale</td><td>Strategic/Operational — one turn = one month</td></tr>
-  <tr><td>Map Style</td><td>Area-based irregular regions, most of China</td></tr>
-  <tr><td>Grand Campaign</td><td>April 1851 to December 1864 (164 turns)</td></tr>
-  <tr><td>Shorter Scenarios</td><td>8 to ~40 turns each</td></tr>
-  <tr><td>Players</td><td>1 (vs. AI) or 2 (PBEM)</td></tr>
-  <tr><td>Languages</td><td>English, French, Italian, German, Spanish, Chinese, Polish, Russian</td></tr>
-  <tr><td>Favoured Side</td><td>None (balanced)</td></tr>
-  <tr><td>Hardest to Play</td><td>Qing (per developers)</td></tr>
-</tbody>
-</table>
-</div>
-
-<h2 class="sub-title">The Two Sides</h2>
-
-<h3 class="mini-title taiping">The Taipings (Heavenly Kingdom) <span class="badge badge-taiping">Taiping</span></h3>
-<p>You command Hong Xiuquan's rebel state: Taiping armies and navies, allied Nien bandits, and event-triggered rebel groups. Your early game is aggressive — you have momentum, initiative, and quality units that outclass the initial Qing forces. Your long-term challenge is internal cohesion and the growing Qing response once the Imperial Concern index rises.</p>
-<ul class="guide-list">
-  <li><strong>Strengths:</strong> High initial unit quality, offensive initiative, surprise, multiple allied factions.</li>
-  <li><strong>Weaknesses:</strong> Internal leadership feuds (event-triggered), limited starting territory, must hold economically vital Yangtze cities.</li>
-</ul>
-
-<h3 class="mini-title qing">The Qing Dynasty <span class="badge badge-qing">Qing</span></h3>
-<p>You command the Manchu imperial apparatus: Banner Armies, Green Standard troops, provincial militias, and eventually the modern Xiang Army and Ever Victorious Army. Your early game is reactive and painful — you are slow, poorly led, and spread thin. The Qing game is a race to raise your Imperial Concern, unlock better units and leaders, and stabilise the front.</p>
-<ul class="guide-list">
-  <li><strong>Strengths:</strong> Vast territory, long-term economic advantage, access to foreign troops, more strategic depth.</li>
-  <li><strong>Weaknesses:</strong> Poor initial unit quality, bad leadership, bureaucratic delays via the Imperial Concern gate, reactive to rebel initiative.</li>
-</ul>
-
-<h2 class="sub-title">The Five Core Gameplay Pillars</h2>
-<ol class="guide-list">
-  <li>Area-based movement and combat on an irregular map of Chinese provinces and regions.</li>
-  <li>An economic engine: income from cities, ports, and agricultural regions funds unit construction and maintenance.</li>
-  <li>A supply system that degrades unsupplied units progressively until eliminated.</li>
-  <li>The <strong>Loyalty system</strong> (v1.5): regions must be actively garrisoned or they revert to the original owner.</li>
-  <li>A card and event system providing diplomatic, military, and economic surprises each turn.</li>
-</ol>
-</section>
-
-<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
-
-<!-- ══════════════════════════════════════════════════════════════ -->
-<section class="section" id="s3">
-<h1 class="section-title"><span class="sec-num">§ 03</span> Turn Structure &amp; Phase Guide</h1>
-
-<p>Every game turn represents one calendar month. Phases resolve in strict sequence. Understanding the order is critical because card timings, retreats, and reinforcements all depend on phase placement.</p>
-
-<div class="phase-list">
-  <div class="phase-item"><div class="phase-num">01</div><div><div class="phase-name">Cards Phase</div><div class="phase-desc">Each side receives cards for the turn. Events may fire automatically. Play strategic cards with no phase restriction now; save combat cards for later.</div></div></div>
-  <div class="phase-item"><div class="phase-num">02</div><div><div class="phase-name">Reinforcements Phase</div><div class="phase-desc">New units arrive at designated entry points per scenario rules. New units cannot move this turn but can defend.</div></div></div>
-  <div class="phase-item"><div class="phase-num">03</div><div><div class="phase-name">Supply Phase</div><div class="phase-desc">Supply is traced for all stacks. Unsupplied units begin taking movement and combat penalties. Identify cut-off stacks; play logistics cards if available.</div></div></div>
-  <div class="phase-item"><div class="phase-num">04</div><div><div class="phase-name">Naval Movement Phase</div><div class="phase-desc">Naval units move along coast and rivers. Use rivers to outflank; protect supply lines; land/embark troops at ports.</div></div></div>
-  <div class="phase-item"><div class="phase-num">05</div><div><div class="phase-name">Naval Combat Phase</div><div class="phase-desc">Naval battles resolve. Engage enemy fleets to contest river and coastal supply.</div></div></div>
-  <div class="phase-item"><div class="phase-num">06</div><div><div class="phase-name">Land Movement Phase</div><div class="phase-desc">Land units move, attacking or repositioning. Declare attacks by entering enemy regions. Concentric attacks from multiple regions grant combat bonuses.</div></div></div>
-  <div class="phase-item"><div class="phase-num">07</div><div><div class="phase-name">Land Combat Phase</div><div class="phase-desc">All battles resolve simultaneously by region. Play combat cards during battles. Use leaders to boost morale at critical moments.</div></div></div>
-  <div class="phase-item"><div class="phase-num">08</div><div><div class="phase-name">Replacement Phase</div><div class="phase-desc">Supplied units in range of replacements may be rebuilt to full strength. Prioritise elite or strategically positioned units.</div></div></div>
-  <div class="phase-item"><div class="phase-num">09</div><div><div class="phase-name">Victory Check Phase</div><div class="phase-desc">VP totals calculated. Sudden death conditions checked. Review score and adjust strategy accordingly.</div></div></div>
-  <div class="phase-item"><div class="phase-num">10</div><div><div class="phase-name">End Phase</div><div class="phase-desc">Turn counter advances. Save game if PBEM; review the combat log for the next planning cycle.</div></div></div>
-</div>
-
-<div class="callout">
-  <span class="callout-label">Critical Timing Note</span>
-  <p>Cards marked "play during movement" must be played in Phase 6 before the relevant movement occurs. Cards marked "play during combat" are used in Phase 7 as a battle unfolds. Always read each card's timing restriction before holding it in hand.</p>
-</div>
-</section>
-
-<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
-
-<!-- ══════════════════════════════════════════════════════════════ -->
-<section class="section" id="s4">
-<h1 class="section-title"><span class="sec-num">§ 04</span> The Map, Terrain &amp; Regions</h1>
-
-<p>The SGS Taipings map covers the entirety of mainland China relevant to the conflict: the Yangtze River valley, southern provinces, the northern plains, Beijing, and peripheral regions including Yunnan, Sichuan, and Manchuria.</p>
-
-<h2 class="sub-title">Terrain Types &amp; Effects</h2>
-<div class="table-wrap">
-<table>
-<thead><tr><th>Terrain</th><th>Move Cost</th><th>Defense Mod</th><th>Supply</th><th>Notes</th></tr></thead>
-<tbody>
-  <tr><td>Plains / Rice Fields</td><td>1 MP</td><td>Neutral</td><td>Yes</td><td>Core of Yangtze &amp; northern China; economically vital.</td></tr>
-  <tr><td>Hills</td><td>2 MP</td><td>+1 Defense</td><td>Yes</td><td>Common in southern and central China.</td></tr>
-  <tr><td>Mountains</td><td>3 MP</td><td>+2 Defense</td><td>Restricted</td><td>Blocks supply in some configurations. Key bottlenecks.</td></tr>
-  <tr><td>Forest</td><td>2 MP</td><td>+1 Defense</td><td>Yes</td><td>Common in south; slows movement significantly.</td></tr>
-  <tr><td>Desert / Steppe</td><td>2 MP</td><td>Neutral</td><td>Restricted</td><td>Northern/western periphery; supply very difficult.</td></tr>
-  <tr><td>Major River</td><td>Special</td><td>+2 Defender</td><td>Via Port</td><td>Crossing without a port costs extra MP and gives attacker a penalty.</td></tr>
-  <tr><td>City / Urban</td><td>1 MP</td><td>+1–2 Defense</td><td>Yes (relay)</td><td>Acts as supply relay. Major cities are fortified.</td></tr>
-</tbody>
-</table>
-</div>
-
-<h2 class="sub-title">Key Strategic Regions</h2>
-
-<h3 class="mini-title">The Yangtze River Corridor</h3>
-<p>The Yangtze is the spine of the game. It flows through the richest agricultural and commercial regions. Whoever controls the Yangtze cities (Nanjing/Tianjing, Wuhan, Anqing, Zhenjiang) controls the economic heart of China and the main supply route for both sides. Naval dominance on the Yangtze is often decisive.</p>
-
-<h3 class="mini-title">Nanjing / Tianjing</h3>
-<p>The Taiping capital for most of the game. Loss of Nanjing is catastrophic for the Taipings and may trigger a sudden-death Qing victory. The Taipings must fortify it heavily and ensure it is never isolated from supply.</p>
-
-<h3 class="mini-title">Shanghai &amp; Coastal Ports</h3>
-<p>Rich income sources and entry points for foreign influence. British and French powers may intervene here. Control of Shanghai is extremely valuable economically and diplomatically.</p>
-
-<h3 class="mini-title">Beijing</h3>
-<p>The Qing imperial capital. Far north and initially safe, but vulnerable if the Qing front collapses. Some scenarios include a Taiping northward-drive strategy targeting Beijing.</p>
-</section>
-
-<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
-
-<!-- ══════════════════════════════════════════════════════════════ -->
-<section class="section" id="s5">
-<h1 class="section-title"><span class="sec-num">§ 05</span> Units &amp; Forces</h1>
-
-<p>Units in SGS Taipings represent formations of roughly regimental size. Each unit displays four core statistics: <strong>Attack, Defense, Movement, and Morale</strong>. Strength (life points) represents remaining combat power.</p>
-
-<h2 class="sub-title">Unit Statistics</h2>
-<div class="table-wrap">
-<table class="kv-table">
-<tbody>
-  <tr><td>ATK (Attack)</td><td>The unit's offensive combat factor. Compared against a die roll each round.</td></tr>
-  <tr><td>DEF (Defense)</td><td>The unit's defensive combat factor. Modified by terrain and fortifications.</td></tr>
-  <tr><td>MOV (Movement)</td><td>Movement points available per land movement phase.</td></tr>
-  <tr><td>MOR (Morale)</td><td>Critical for battle outcome. Units at low morale panic, flee, or rout.</td></tr>
-  <tr><td>Strength (HP)</td><td>Life points. Unit is eliminated at 0 HP. Reduced by combat losses.</td></tr>
-  <tr><td>Stacking Value</td><td>Contribution to regional stacking limit. Terrain type determines the cap.</td></tr>
-</tbody>
-</table>
-</div>
-
-<h2 class="sub-title">Taiping Unit Roster <span class="badge badge-taiping">Taiping</span></h2>
-<div class="table-wrap">
-<table>
-<thead><tr><th>Unit Type</th><th>ATK</th><th>DEF</th><th>MOV</th><th>Morale</th><th>Notes</th></tr></thead>
-<tbody>
-  <tr><td>Taiping Infantry (Elite)</td><td>High</td><td>High</td><td>3</td><td>High</td><td>Core Taiping fighting force. Better quality than early Qing.</td></tr>
-  <tr><td>Taiping Cavalry</td><td>High</td><td>Medium</td><td>5</td><td>High</td><td>Fast exploitation unit; excellent for cutting supply lines.</td></tr>
-  <tr><td>Women's Battalions</td><td>Medium</td><td>Medium</td><td>3</td><td>High</td><td>Useful garrison and secondary combat units.</td></tr>
-  <tr><td>Nien Bandits</td><td>Medium</td><td>Low</td><td>5</td><td>Medium</td><td>Allied cavalry-like forces in the north; highly mobile raiders.</td></tr>
-  <tr><td>Taiping Artillery</td><td>High</td><td>Low</td><td>2</td><td>Medium</td><td>Siege support; powerful but slow. Essential vs. fortresses.</td></tr>
-  <tr><td>Taiping Navy (Junks)</td><td>Low–Med</td><td>Low</td><td>High</td><td>Medium</td><td>River transport and combat; outclassed by Western warships.</td></tr>
-  <tr><td>Taiping Leader</td><td>—</td><td>—</td><td>High</td><td>+Bonus</td><td>Adds morale bonus to stack. Stays behind in battle.</td></tr>
-</tbody>
-</table>
-</div>
-
-<h2 class="sub-title">Qing Unit Roster <span class="badge badge-qing">Qing</span></h2>
-<div class="table-wrap">
-<table>
-<thead><tr><th>Unit Type</th><th>ATK</th><th>DEF</th><th>MOV</th><th>Morale</th><th>Notes</th></tr></thead>
-<tbody>
-  <tr><td>Green Standard Infantry</td><td>Low</td><td>Low</td><td>2</td><td>Low</td><td>Initial Qing mainstay. Weak, poorly led, but numerous.</td></tr>
-  <tr><td>Manchu Banner Cavalry</td><td>Medium</td><td>Low</td><td>5</td><td>Medium</td><td>Faster than Green Standard; still outclassed early on.</td></tr>
-  <tr><td>Xiang Army Infantry</td><td>High</td><td>High</td><td>3</td><td>High</td><td>Zeng Guofan's new army. Unlocked by Imperial Concern.</td></tr>
-  <tr><td>Xiang Army Cavalry</td><td>High</td><td>Medium</td><td>5</td><td>High</td><td>Highly effective; the Qing's best mobile force.</td></tr>
-  <tr><td>Ever Victorious Army</td><td>High</td><td>High</td><td>3</td><td>High</td><td>Western-led elite. Available via diplomacy/events.</td></tr>
-  <tr><td>Provincial Militia (Yong)</td><td>Low</td><td>Medium</td><td>2</td><td>Low</td><td>Cheap garrison filler; poor in open battle.</td></tr>
-  <tr><td>Qing Artillery (Modern)</td><td>High</td><td>Low</td><td>2</td><td>Medium</td><td>Unlocked later; essential for reducing Taiping fortresses.</td></tr>
-  <tr><td>Qing Navy (Warships)</td><td>Med–High</td><td>Medium</td><td>High</td><td>Medium</td><td>Superior to Taiping junks; critical for Yangtze control.</td></tr>
-</tbody>
-</table>
-</div>
-
-<h2 class="sub-title">Historical Leaders</h2>
-<div class="table-wrap">
-<table>
-<thead><tr><th>Leader</th><th>Side</th><th>Morale Bonus</th><th>Notes</th></tr></thead>
-<tbody>
-  <tr><td>Hong Xiuquan</td><td><span class="badge badge-taiping">T</span></td><td>+2 to +3</td><td>Heavenly King; high morale booster but leadership feud events can fire.</td></tr>
-  <tr><td>Yang Xiuqing</td><td><span class="badge badge-taiping">T</span></td><td>+2</td><td>Eastern King; excellent commander until the 1856 purge event removes him.</td></tr>
-  <tr><td>Li Xiucheng</td><td><span class="badge badge-taiping">T</span></td><td>+3</td><td>Loyal King; best Taiping military commander in mid-to-late game.</td></tr>
-  <tr><td>Chen Yucheng</td><td><span class="badge badge-taiping">T</span></td><td>+2</td><td>Brave King; aggressive cavalry-style leader.</td></tr>
-  <tr><td>Zeng Guofan</td><td><span class="badge badge-qing">Q</span></td><td>+3</td><td>Most effective Qing leader; unlocks the Xiang Army.</td></tr>
-  <tr><td>Li Hongzhang</td><td><span class="badge badge-qing">Q</span></td><td>+3</td><td>Outstanding; commands EVA alliance and Huai Army.</td></tr>
-  <tr><td>Charles Gordon</td><td><span class="badge badge-qing">Q</span></td><td>+3</td><td>Commands the Ever Victorious Army if available via diplomacy.</td></tr>
-  <tr><td>Frederick T. Ward</td><td><span class="badge badge-qing">Q</span></td><td>+2</td><td>Early EVA commander; killed 1862 (scripted event).</td></tr>
-  <tr><td>Sengge Rinchen</td><td><span class="badge badge-qing">Q</span></td><td>+2</td><td>Effective against Nien; Mongol cavalry specialist.</td></tr>
-</tbody>
-</table>
-</div>
-</section>
-
-<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
-
-<!-- ══════════════════════════════════════════════════════════════ -->
-<section class="section" id="s6">
-<h1 class="section-title"><span class="sec-num">§ 06</span> Supply, Movement &amp; Stacking</h1>
-
-<h2 class="sub-title">Supply</h2>
-<p>Supply is the lifeblood of your armies. An unsupplied stack suffers progressively: first reduced movement, then reduced combat values, then life-point loss each turn until eliminated. Cutting enemy supply is often more effective than frontal assault.</p>
-<ul class="guide-list">
-  <li>A stack is <strong>in supply</strong> if it can trace an unbroken path, free of enemy units, back to a supply source or relay.</li>
-  <li>Supply sources are indicated on the map (major cities or specially marked regions).</li>
-  <li>Supply relays are friendly structures (cities, ports, forts) and certain logistics units that extend the chain.</li>
-  <li>Supply has a <strong>maximum range of 3–4 regions</strong> in most scenarios.</li>
-  <li>Certain terrain (impassable mountains) blocks supply entirely.</li>
-</ul>
-
-<div class="callout">
-  <span class="callout-label">Tactical Tip — The Yangtze Highway</span>
-  <p>The Yangtze River doubles as a supply highway. Naval units moving on the Yangtze can act as floating supply relays, extending your supply reach deep into enemy territory. Always maintain a riverine presence; losing the river often means losing supply to your forward armies.</p>
-</div>
-
-<h2 class="sub-title">Movement</h2>
-<p>Stacks spend movement points (MP) to move from region to region. Each connection's cost is shown in tooltips. A stack may pass through a friendly region even if almost fully stacked (so long as it does not stop there).</p>
-<ol class="guide-list">
-  <li>Land units move in the Land Movement Phase only (Phase 6).</li>
-  <li>Naval units move in the Naval Movement Phase (Phase 4).</li>
-  <li>Entering an enemy-occupied region declares an attack; battle resolves in Phase 7.</li>
-  <li>Multiple stacks from different regions can attack the same target — this is a <strong>concentric attack</strong> and gives a combat bonus.</li>
-  <li>Immobilized units cannot move; right-click move will auto-select only mobile units in mixed stacks (v1.5 improvement).</li>
-</ol>
-
-<h2 class="sub-title">Stacking Limits by Terrain</h2>
-<div class="table-wrap">
-<table class="kv-table">
-<tbody>
-  <tr><td>Plains / Rice Fields</td><td>6–8 stacking points (terrain-dependent)</td></tr>
-  <tr><td>Hills / Forest</td><td>4–5 stacking points</td></tr>
-  <tr><td>Mountains</td><td>2–3 stacking points</td></tr>
-  <tr><td>Major Cities</td><td>6–8 points (functions like plains)</td></tr>
-  <tr><td>Minor Cities / Towns</td><td>4–5 points</td></tr>
-</tbody>
-</table>
-</div>
-</section>
-
-<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
-
-<!-- ══════════════════════════════════════════════════════════════ -->
-<section class="section" id="s7">
-<h1 class="section-title"><span class="sec-num">§ 07</span> Combat System In Depth</h1>
-
-<p>Combat in SGS Taipings is probabilistic but not random — stacking quality units, attaching good leaders, attacking from multiple directions, and playing the right combat cards all shift the odds substantially.</p>
-
-<h2 class="sub-title">Battle Resolution Sequence</h2>
-<ol class="guide-list">
-  <li>Attacker enters defender's region during Land Movement Phase.</li>
-  <li>Multiple attacking stacks from different directions merge into one combined force.</li>
-  <li>Battle opens with <strong>preliminary rounds</strong>: artillery, reconnaissance, ambushes fire first.</li>
-  <li><strong>Main round</strong>: all surviving land units fight simultaneously.</li>
-  <li>After the main round, either side may retreat. The non-retreating side wins.</li>
-  <li>Post-main rounds continue with escalating <strong>battle exhaustion</strong> (morale drops each round).</li>
-  <li>If a side's Battle Morale reaches 0 and fails a rout test, the battle ends in rout. A pursuit round may fire on fleeing units.</li>
-</ol>
-
-<h2 class="sub-title">The Die Roll Mechanic</h2>
-<p>For each unit in a round, one die is rolled. If the result is equal to or less than the unit's <em>modified</em> combat factor, it inflicts one hit on the opposing side. A result of 0 always hits regardless of modifiers. Hits are distributed across the enemy side proportionally to unit strengths.</p>
-
-<h2 class="sub-title">Battle Morale</h2>
-<p><strong>Battle Morale</strong> = (mean morale of combat units) + (leader's morale value) + terrain effects + booster bonuses (cards or special units). Morale is capped at <strong>9 maximum</strong>. Combat bonuses from all sources combined are capped at <strong>−4/+4</strong>.</p>
-
-<div class="callout danger">
-  <span class="callout-label">Critical Cap Rule</span>
-  <p>Morale boosters are hard-capped at +4 in SGS Taipings specifically. Stacking three great leaders won't give you +9 — you are capped at +4 total boost. Plan your leader deployments accordingly and don't waste multiple elite leaders in a single stack that's already at the cap.</p>
-</div>
-
-<h2 class="sub-title">Combat Modifiers Reference</h2>
-<div class="table-wrap">
-<table>
-<thead><tr><th>Modifier</th><th>Effect On</th><th>Direction</th><th>Notes</th></tr></thead>
-<tbody>
-  <tr><td>Hills terrain</td><td>Combat factors</td><td>+1 DEF side</td><td>Use terrain defensively; never fight in the open when hills are available.</td></tr>
-  <tr><td>Mountains terrain</td><td>Combat factors</td><td>+2 DEF side</td><td>Very powerful defensive bonus; fortress-like protection.</td></tr>
-  <tr><td>River crossing (no bridge/port)</td><td>Attacker combat</td><td>−1 ATK</td><td>Attacking across a major river without naval support is costly.</td></tr>
-  <tr><td>Fortification / entrenchment</td><td>Defender combat</td><td>+1 to +2</td><td>Units in fortified structures gain significant defensive bonus.</td></tr>
-  <tr><td>Concentric attack (2+ directions)</td><td>Attacker morale/combat</td><td>+1 bonus</td><td>Always try to attack from multiple regions simultaneously.</td></tr>
-  <tr><td>Leader quality</td><td>Battle Morale</td><td>+1 to +3</td><td>Always attach your best available leader to key battles.</td></tr>
-  <tr><td>Artillery present</td><td>Attacker (prelim round)</td><td>+bonus</td><td>Artillery fires in preliminary round before main round.</td></tr>
-  <tr><td>Demoralized unit</td><td>Combat participation</td><td>Removed</td><td>Leaves battlefield; each instance raises exhaustion by 1.</td></tr>
-  <tr><td>Panicked unit</td><td>Combat + losses</td><td>Removed</td><td>Worse than demoralization; can trigger cascading rout.</td></tr>
-</tbody>
-</table>
-</div>
-
-<h2 class="sub-title">Retreats &amp; Breakthroughs</h2>
-<p>After the main round, either side may retreat. Attackers return to the region they entered from; defenders retreat to an adjacent friendly region. Units jump over fully-stacked friendly regions when retreating. A key v1.5 rule: retreat into a region loyal to you is possible even if the enemy just captured it.</p>
-<p><strong>Breakthrough:</strong> if the attacker wins and has breakthrough-capable units (cavalry, fast-moving leaders), they may immediately advance into an adjacent region — potentially starting another battle. Chains of breakthroughs with expert leaders can create dramatic encirclements.</p>
-</section>
-
-<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
-
-<!-- ══════════════════════════════════════════════════════════════ -->
-<section class="section" id="s8">
-<h1 class="section-title"><span class="sec-num">§ 08</span> Sieges &amp; Fortresses</h1>
-
-<p>Fortresses are structures in certain regions displaying a Defense Factor and capable of containing garrisoned units. They cannot be captured by passing through — they must be besieged or assaulted.</p>
-
-<h2 class="sub-title">Siege Resolution</h2>
-<ul class="guide-list">
-  <li>Siege begins when at least <strong>2 of your units</strong> are outside the fortress in the same region.</li>
-  <li>Each turn, a die is rolled. On a modified result ≤ the fortress's Defense Factor, the fortress surrenders and its garrison is eliminated.</li>
-  <li>Multiple besieging units reduce the effective Defense Factor — mass your forces for faster resolution.</li>
-</ul>
-
-<h2 class="sub-title">Assault</h2>
-<ul class="guide-list">
-  <li>Assault is a direct attack on the fortress rather than waiting for surrender.</li>
-  <li>Treated as a normal battle, but the fortress garrison and structure provide a massive defensive bonus (+2 to +4).</li>
-  <li>Assault is faster than siege but costly. Only attempt with substantial numerical and morale superiority, or after prolonged siege has weakened the garrison.</li>
-</ul>
-
-<div class="callout qing">
-  <span class="callout-label">Pro Tip — Combined Siege/Assault</span>
-  <p>Begin a siege to whittle down the Defense Factor over several turns, then switch to assault once the fortress is weakened. Always bring artillery to sieges — it fires in the preliminary round and can devastate fortress defenders before the main combat even begins.</p>
-</div>
-
-<h2 class="sub-title">Key Fortresses</h2>
-<div class="table-wrap">
-<table>
-<thead><tr><th>Location</th><th>Importance</th><th>Typical Holder</th></tr></thead>
-<tbody>
-  <tr><td>Nanjing / Tianjing</td><td>Taiping capital; loss may be game-decisive</td><td>Taiping (main game)</td></tr>
-  <tr><td>Anqing</td><td>Key Yangtze fortress; gateway to Nanjing</td><td>Contested</td></tr>
-  <tr><td>Wuhan (Wuchang/Hankou)</td><td>Triple city; major Yangtze node and supply hub</td><td>Contested</td></tr>
-  <tr><td>Hangzhou</td><td>Wealthy Zhejiang city; major Taiping prize</td><td>Contested</td></tr>
-  <tr><td>Suzhou</td><td>Silk capital near Shanghai; EVA battleground</td><td>Contested</td></tr>
-  <tr><td>Guangzhou (Canton)</td><td>Southern trade hub; foreign presence</td><td>Qing (usually)</td></tr>
-  <tr><td>Beijing</td><td>Qing capital; rarely contested but symbolically vital</td><td>Qing</td></tr>
-</tbody>
-</table>
-</div>
-</section>
-
-<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
-
-<!-- ══════════════════════════════════════════════════════════════ -->
-<section class="section" id="s9">
-<h1 class="section-title"><span class="sec-num">§ 09</span> Economy &amp; Income</h1>
-
-<p>The economic system in SGS Taipings is a unique addition to the SGS engine. Income funds unit construction, maintenance, and certain card/event effects. Mismanaging your economy starves your army.</p>
-
-<h2 class="sub-title">Income Sources</h2>
-<ul class="guide-list">
-  <li><strong>Major Cities &amp; Ports:</strong> the primary income generators. Yangtze cities and coastal ports produce significantly more than interior towns.</li>
-  <li><strong>Agricultural Regions (Rice Fields):</strong> rice-growing regions produce income; controlling the Yangtze valley rice bowl is economically transformative.</li>
-  <li><strong>Trade Routes:</strong> control of coastal and river trade routes provides bonus income.</li>
-  <li><strong>Foreign Trade:</strong> certain diplomacy events and card plays unlock foreign income streams.</li>
-</ul>
-
-<h2 class="sub-title">Income Modifiers</h2>
-<ul class="guide-list">
-  <li><strong>Loyalty:</strong> a region at 50% loyalty to you yields only 50% of its income. Full loyalty = full income.</li>
-  <li><strong>Corruption &amp; Imperial Spending (Qing only):</strong> a corruption mechanic wastes a portion of income; rises as Imperial Concern rises and modernisation occurs.</li>
-  <li><strong>Nien cavalry raiding:</strong> can significantly cut income without ever capturing a city — raids on agricultural regions are highly cost-effective for the Taipings.</li>
-</ul>
-
-<div class="callout taiping">
-  <span class="callout-label">Economic Priority — Taiping</span>
-  <p>Seize the Yangtze cities as fast as possible. Nanjing, Wuhan, Anqing, and Zhenjiang together generate enough income to sustain a major army. Do not overextend so far that you cannot hold and loyalise these core cities — a disloyal Yangtze city produces zero income for you.</p>
-</div>
-
-<div class="callout qing">
-  <span class="callout-label">Economic Priority — Qing</span>
-  <p>Protect your coastal ports (Shanghai especially) from Taiping raids. Deny the rebels the Yangtze income by contesting river cities. Use income to accelerate Imperial Concern spending and unlock better forces as quickly as possible.</p>
-</div>
-</section>
-
-<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
-
-<!-- ══════════════════════════════════════════════════════════════ -->
-<section class="section" id="s10">
-<h1 class="section-title"><span class="sec-num">§ 10</span> The Loyalty System</h1>
-
-<p>Added in the 2024 v1.5 major update, the Loyalty system fundamentally changed how territorial control works. It is arguably the single most important mechanic to understand in the modern version of the game.</p>
-
-<h2 class="sub-title">How Loyalty Works</h2>
-<ul class="guide-list">
-  <li>Every region has a loyalty value ranging from 0% to 100% for each side.</li>
-  <li>Capturing a region does <em>not</em> instantly convert it. Loyalty shifts toward you only if you maintain military presence there.</li>
-  <li>If you leave a captured region ungarrisoned, its loyalty gradually returns to the original owner — and may flip back.</li>
-  <li>Disloyal regions allow your opponent to construct new units there, even behind your front lines.</li>
-</ul>
-
-<h2 class="sub-title">Loyalty Effects by Level</h2>
-<div class="table-wrap">
-<table>
-<thead><tr><th>Loyalty Level</th><th>Income</th><th>Fog of War</th><th>Enemy Builds?</th><th>Retreat Allowed?</th></tr></thead>
-<tbody>
-  <tr><td>100% Your Side</td><td>Full</td><td>Enemy unit details visible</td><td>No</td><td>Yes (even if just enemy-captured)</td></tr>
-  <tr><td>50% Your Side</td><td>50%</td><td>Partial visibility</td><td>No</td><td>Yes</td></tr>
-  <tr><td>0% (Contested)</td><td>0%</td><td>Fog applies</td><td>Possible</td><td>Limited</td></tr>
-  <tr><td>50% Enemy</td><td>0%</td><td>Fog applies fully</td><td>Yes (if enemy present)</td><td>No</td></tr>
-  <tr><td>100% Enemy</td><td>0%</td><td>Full fog</td><td>Yes freely</td><td>No</td></tr>
-</tbody>
-</table>
-</div>
-
-<h2 class="sub-title">Loyalty Strategy</h2>
-
-<h3 class="mini-title taiping">Taiping Loyalty Strategy</h3>
-<ul class="guide-list">
-  <li>Never advance so fast that you leave a trail of disloyal regions behind you. Enemy militia can suddenly appear in "captured" territory you left empty.</li>
-  <li>Leave small garrison units to hold key corridors. Even a single militia unit accelerates loyalty conversion.</li>
-  <li>Prioritise loyalty in income-generating regions first.</li>
-</ul>
-
-<h3 class="mini-title qing">Qing Loyalty Strategy</h3>
-<ul class="guide-list">
-  <li>Loyalty is your greatest long-term weapon. Your empire starts with high loyalty in most of China — use that advantage.</li>
-  <li>When you lose territory, the loyalty bleed is your chance to regenerate. Move forces through recaptured areas and let loyalty restore income.</li>
-  <li>Use <strong>Unrest units</strong> (added in v1.5) to degrade loyalty in Taiping-held regions, cutting their income without direct combat.</li>
-</ul>
-
-<div class="callout">
-  <span class="callout-label">Key Insight</span>
-  <p>A deep Taiping breakthrough that overruns empty Qing territory may leave a string of regions that never truly become Taiping-loyal, creating a fragile, indefensible salient. "Holding the line" means maintaining garrisoned presence in every region you claim — not just a front line.</p>
-</div>
-</section>
-
-<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
-
-<!-- ══════════════════════════════════════════════════════════════ -->
-<section class="section" id="s11">
-<h1 class="section-title"><span class="sec-num">§ 11</span> Diplomacy &amp; Foreign Powers</h1>
-
-<p>The British and French presence is one of the most unpredictable elements of SGS Taipings. At game start they are neutral, but diplomatic events and card plays can swing them toward either side — or make them a dangerous wild card threatening both.</p>
-
-<h2 class="sub-title">Foreign Power States</h2>
-<div class="table-wrap">
-<table>
-<thead><tr><th>State</th><th>Effect on Taiping</th><th>Effect on Qing</th></tr></thead>
-<tbody>
-  <tr><td>Neutral</td><td>No threat; trade possible</td><td>No help; may restrict port access</td></tr>
-  <tr><td>Pro-Qing (Allied)</td><td>EVA attacks Taiping; warships control rivers</td><td>Gain EVA, Gordon, Ward; massive combat boost</td></tr>
-  <tr><td>Anti-Taiping (Hostile)</td><td>Direct attacks near coast/Shanghai</td><td>Indirect naval assistance</td></tr>
-  <tr><td>Pro-Taiping (Allied)</td><td>Foreign trade income; limited military support</td><td>Lose port trade income; diplomatic pressure</td></tr>
-  <tr><td>Anti-Qing (Hostile)</td><td>Qing coastal cities threatened by gunboats</td><td>Major economic and military threat in south</td></tr>
-</tbody>
-</table>
-</div>
-
-<h2 class="sub-title">The Ever Victorious Army</h2>
-<p>If the Qing successfully courts British support, the <strong>Ever Victorious Army (EVA)</strong> becomes available. Commanded first by Frederick Townsend Ward and later by Charles Gordon, it is an elite mixed force with high attack, defense, and morale. The EVA operates primarily in Jiangsu Province near Shanghai. Ward's death in 1862 is a scripted event; Gordon then takes command.</p>
-
-<div class="callout danger">
-  <span class="callout-label">Diplomacy Warning — Both Sides</span>
-  <p>Do not assume the foreign powers will stay on your side. Historical events can flip diplomatic allegiances. The British were pragmatic — they cared about trade, not ideology. Actions that threaten Shanghai or disrupt commerce can suddenly turn a friendly power hostile. Monitor the diplomatic track every turn.</p>
-</div>
-</section>
-
-<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
-
-<!-- ══════════════════════════════════════════════════════════════ -->
-<section class="section" id="s12">
-<h1 class="section-title"><span class="sec-num">§ 12</span> Events &amp; Cards</h1>
-
-<p>The event and card system is what gives SGS Taipings its exceptional replayability. No two games play identically because card draws are random and many events offer branching choices.</p>
-
-<h2 class="sub-title">Notable Events — Taiping Side <span class="badge badge-taiping">Taiping</span></h2>
-<div class="table-wrap">
-<table>
-<thead><tr><th>Event</th><th>Trigger</th><th>Effect</th></tr></thead>
-<tbody>
-  <tr><td>Tianjing Massacre (1856)</td><td>~Turn 65 (historical date)</td><td>Internal purge; removes key Taiping leaders; significant morale/leadership penalty. In v1.5 you can choose which leaders to spare.</td></tr>
-  <tr><td>Nien Alliance</td><td>Taiping holding northern positions</td><td>Activates Nien bandit forces as allies; expands northern raiding capacity.</td></tr>
-  <tr><td>Firefly Warship Capture (1860)</td><td>v1.5 update event</td><td>Taipings capture a modern warship; naval power boost.</td></tr>
-  <tr><td>Baocun Rebellion</td><td>v1.5 update (1861+)</td><td>Local uprising in Zhejiang weakens Taiping loyalty in that province.</td></tr>
-</tbody>
-</table>
-</div>
-
-<h2 class="sub-title">Notable Events — Qing Side <span class="badge badge-qing">Qing</span></h2>
-<div class="table-wrap">
-<table>
-<thead><tr><th>Event</th><th>Trigger</th><th>Effect</th></tr></thead>
-<tbody>
-  <tr><td>Zeng Guofan Commission</td><td>Imperial Concern threshold</td><td>Zeng appears as leader; Xiang Army construction unlocked.</td></tr>
-  <tr><td>Li Hongzhang Emergence</td><td>Mid-game IC threshold</td><td>Li Hongzhang available; Huai Army and EVA coordination option.</td></tr>
-  <tr><td>Ward's Death (1862)</td><td>Historical turn</td><td>Frederick Ward eliminated; EVA command transitions.</td></tr>
-  <tr><td>Gordon Takes Command</td><td>Post-Ward event</td><td>Charles Gordon leads EVA; combat quality maintained or improved.</td></tr>
-  <tr><td>Huang-Ho Course Change (1855)</td><td>Historical turn</td><td>Yellow River shifts course; affects northern supply and movement.</td></tr>
-</tbody>
-</table>
-</div>
-
-<h2 class="sub-title">Card Categories</h2>
-<ul class="guide-list">
-  <li><strong>Military Cards:</strong> combat bonuses, extra movement, reinforcements, ambushes, reconnaissance.</li>
-  <li><strong>Diplomatic Cards:</strong> shift foreign power track; hire foreign advisers; purchase modern weapons.</li>
-  <li><strong>Economic Cards:</strong> boost income for a turn, reduce corruption, unlock faster construction.</li>
-  <li><strong>Intelligence Cards:</strong> reveal enemy unit positions through Fog of War.</li>
-  <li><strong>Leadership Cards:</strong> improve a leader's morale bonus; rush a leader to a front.</li>
-</ul>
-
-<div class="callout">
-  <span class="callout-label">Card Timing Principle</span>
-  <p>Hoarding powerful combat cards for a decisive battle versus playing cards incrementally each turn is a constant tension. Unplayed cards at end of turn are usually lost — don't hoard indefinitely. Prioritise diplomatic cards early when they have the most influence on the foreign power track.</p>
-</div>
-</section>
-
-<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
-
-<!-- ══════════════════════════════════════════════════════════════ -->
-<section class="section" id="s13">
-<h1 class="section-title"><span class="sec-num">§ 13</span> The Imperial Concern Index</h1>
-
-<p>The Imperial Concern Index is the Qing-exclusive mechanic that models the Manchu court's slow awakening to the severity of the rebellion. It is the central challenge and drama of playing the Qing side.</p>
-
-<h2 class="sub-title">What It Restricts at Start</h2>
-<ul class="guide-list">
-  <li><strong>Units:</strong> only weak, cheap Green Standard and Banner units available initially.</li>
-  <li><strong>Leaders:</strong> poor-quality generals only; Zeng Guofan and Li Hongzhang are locked behind IC thresholds.</li>
-  <li><strong>Spending:</strong> limited ability to fund modernization or foreign-weapon purchases.</li>
-  <li><strong>Corruption:</strong> high corruption modifier bleeds your income until IC rises.</li>
-</ul>
-
-<h2 class="sub-title">IC Thresholds &amp; Unlocks</h2>
-<div class="table-wrap">
-<table>
-<thead><tr><th>IC Level</th><th>Condition</th><th>Unlocked</th></tr></thead>
-<tbody>
-  <tr><td>Low (0–25)</td><td>Starting state; Emperor dismissive</td><td>Green Standard, basic Banner units only. Minimal spending.</td></tr>
-  <tr><td>Medium (26–50)</td><td>Court alarmed; governors mobilising</td><td>Zeng Guofan commission eligible. Xiang Army construction begins. Reduced corruption.</td></tr>
-  <tr><td>High (51–75)</td><td>Full imperial mobilisation</td><td>Li Hongzhang available. Foreign weapon purchases allowed. EVA option if diplomacy supports. Modern artillery.</td></tr>
-  <tr><td>Maximum (76–100)</td><td>Crisis recognised as existential</td><td>All top leaders available. Xiang Army at full strength. Minimal corruption. Full modernisation unlocked.</td></tr>
-</tbody>
-</table>
-</div>
-
-<div class="callout qing">
-  <span class="callout-label">Core Qing Insight — The Controlled Crisis</span>
-  <p>As Qing, you almost <em>want</em> the Taipings to capture major cities early — because it raises your IC faster. The problem is that letting them take too much territory means you may never financially recover. The ideal Qing strategy is a "controlled crisis": let the Taipings advance just enough to spike your IC, while delaying their capture of the most critical economic cities.</p>
-</div>
-</section>
-
-<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
-
-<!-- ══════════════════════════════════════════════════════════════ -->
-<section class="section" id="s14">
-<h1 class="section-title"><span class="sec-num">§ 14</span> Scenarios</h1>
-
-<p>SGS Taipings ships with multiple scenarios from short introductory engagements to the 164-turn grand campaign. Starting with shorter scenarios is strongly recommended for new players.</p>
-
-<div class="scenario-grid">
-  <div class="scenario-card">
-    <div class="sc-turns">8–12 Turns &nbsp;·&nbsp; Apr–Jun 1853</div>
-    <div class="sc-name">The Fall of Nanjing</div>
-    <span class="sc-diff diff-intro">Introductory</span>
-    <p class="sc-desc">Learn basic movement, combat, and siege mechanics. Best first scenario for any new player.</p>
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- MAIN                                                         -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<main class="main-wrap">
+
+  <!-- Info strip -->
+  <div class="info-strip">
+    <div class="info-strip-icon">✦</div>
+    <div class="info-strip-body">
+      <strong>How to use this library</strong>
+      Click any game card to read a brief overview — including sides, scenarios, engine version, and what makes it unique. Then follow the link to the full guide. New guides are added regularly; check back as the library grows.
+    </div>
   </div>
-  <div class="scenario-card">
-    <div class="sc-turns">~24 Turns &nbsp;·&nbsp; 1853–1855</div>
-    <div class="sc-name">The Yangtze Campaign</div>
-    <span class="sc-diff diff-inter">Intermediate</span>
-    <p class="sc-desc">Economy, supply, and naval control. Both sides have room to breathe and develop strategy.</p>
+
+  <!-- ── Available Guides ───────────────────────────────────── -->
+  <div class="section-label">Available Guides</div>
+  <h2 class="section-title">Complete Strategy Guides</h2>
+  <p class="section-intro">Full multi-section guides covering historical context, rules, both sides' strategies, all scenarios, and a complete glossary.</p>
+
+  <div class="games-grid" id="games-grid">
+    <!-- Cards injected by JS -->
   </div>
-  <div class="scenario-card">
-    <div class="sc-turns">~20 Turns &nbsp;·&nbsp; 1853–1856</div>
-    <div class="sc-name">The Northern Expedition</div>
-    <span class="sc-diff diff-inter">Intermediate</span>
-    <p class="sc-desc">Taiping offensive toward Beijing; Qing reactive play. Learn the limits of overextension.</p>
+
+  <!-- ── Coming Soon ────────────────────────────────────────── -->
+  <div class="section-label">In Progress</div>
+  <h2 class="section-title">Upcoming Guides</h2>
+  <p class="section-intro">Guides under research and development. Check back soon.</p>
+
+  <div class="games-grid" id="coming-grid">
+    <!-- Coming soon cards injected by JS -->
   </div>
-  <div class="scenario-card">
-    <div class="sc-turns">~24 Turns &nbsp;·&nbsp; 1853–1856</div>
-    <div class="sc-name">The Western Expedition</div>
-    <span class="sc-diff diff-inter">Intermediate</span>
-    <p class="sc-desc">Contest for Wuhan and the upper Yangtze. Focuses on river warfare and supply chains.</p>
-  </div>
-  <div class="scenario-card">
-    <div class="sc-turns">~40 Turns &nbsp;·&nbsp; 1856–1862</div>
-    <div class="sc-name">Crisis &amp; Recovery</div>
-    <span class="sc-diff diff-adv">Advanced</span>
-    <p class="sc-desc">Covers the post-Tianjing Massacre period. Qing resurgence begins. Loyalty system central.</p>
-  </div>
-  <div class="scenario-card">
-    <div class="sc-turns">~32 Turns &nbsp;·&nbsp; 1862–1864</div>
-    <div class="sc-name">The Final Years</div>
-    <span class="sc-diff diff-adv">Advanced</span>
-    <p class="sc-desc">EVA, Zeng Guofan vs. Li Xiucheng. Taiping defence of Nanjing. Near-endgame dynamics.</p>
-  </div>
-  <div class="scenario-card">
-    <div class="sc-turns">164 Turns &nbsp;·&nbsp; 1851–1864</div>
-    <div class="sc-name">Grand Campaign</div>
-    <span class="sc-diff diff-expert">Expert</span>
-    <p class="sc-desc">The full historical sweep. Requires mastery of all systems. Do not start here as a beginner.</p>
-  </div>
-</div>
-</section>
 
-<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
+</main>
 
-<!-- ══════════════════════════════════════════════════════════════ -->
-<section class="section" id="s15">
-<h1 class="section-title"><span class="sec-num">§ 15</span> Playing the Taipings</h1>
-
-<p>The Taipings are the aggressor. You start with initiative, quality, and surprise. Your window to win is the first 30–50 turns before the Qing fully mobilises. Everything in your strategy must serve one master goal: establish and consolidate the Heavenly Kingdom's economic base before Imperial Concern unlocks the Qing's true potential.</p>
-
-<div class="strat-phase taiping">
-  <div class="strat-phase-title">Phase 1: The Great March North (Turns 1–15)</div>
-  <p><strong>Objectives:</strong> capture Nanjing as fast as possible, secure the Yangtze corridor from Wuhan to Zhenjiang, neutralise or bypass weak Qing garrisons.</p>
-  <p>Your Taiping infantry outclasses the initial Green Standard Qing troops. Do not give the Qing time to entrench. Use cavalry and fast infantry to race ahead and cut supply lines — isolated Green Standard units will wither without a fight. Avoid expensive frontal assaults on fortified cities unless you have artillery support. Bring Taiping artillery forward as fast as movement allows.</p>
-  <p>The Yangtze is your highway. Establish naval control immediately. In early turns your river fleet can provide supply relay, transport troops, and block Qing river movement. Prioritise the river above almost all other concerns.</p>
-</div>
-
-<div class="strat-phase taiping">
-  <div class="strat-phase-title">Phase 2: Consolidation (Turns 15–40)</div>
-  <p><strong>Objectives:</strong> loyalise all captured cities, build income-producing infrastructure, construct reserve armies, manage the Northern Expedition carefully.</p>
-  <p>This is the most dangerous phase. You have a lot of territory but loyalty conversion lags behind your front lines. The Qing will probe your rear with cavalry raids and militia materialising in disloyal regions you thought you controlled. Establish a garrison network: every captured city should have at least 1–2 units permanently stationed.</p>
-  <p>The Northern Expedition (historical push toward Beijing) is tempting but strategically disastrous if overcommitted. Treat it as a pinning operation to raise Qing Imperial Concern, not a war-winning stroke.</p>
-</div>
-
-<div class="callout taiping">
-  <span class="callout-label">The Tianjing Massacre Event (~Turn 60–65)</span>
-  <p>This event fires around the historical date of 1856 and removes key Taiping leaders, imposing significant penalties. In v1.5 you have alternative choices. Recommendation: if you have the choice, spare Yang Xiuqing or pay a price — losing multiple high-morale leaders simultaneously is game-changing. Build up your position before this event fires; you need to be strong enough to absorb the shock.</p>
-</div>
-
-<div class="strat-phase taiping">
-  <div class="strat-phase-title">Phase 3: Endgame (Turns 50+)</div>
-  <p><strong>If you are winning:</strong> push hard. Advance on flanks, siege secondary Qing cities, use your income advantage to build additional elite units. Deny the Qing player time.</p>
-  <p><strong>If the Qing are recovering:</strong> once Xiang Army units appear with Zeng Guofan, switch to defensive play. Hold your economic core, fortify Nanjing deeply, and make every Qing attack costly. Bleed them — their corruption mechanic and bureaucratic inefficiencies create long-term strain. Let events work for you.</p>
-</div>
-
-<h2 class="sub-title">Taiping Build Order Priority</h2>
-<ol class="guide-list">
-  <li>Taiping Elite Infantry — your core combat power.</li>
-  <li>Taiping Artillery — essential for sieges; never neglect.</li>
-  <li>Taiping Cavalry — supply-cutting and exploitation.</li>
-  <li>Garrison Militia — cheap loyalty-conversion units; critical for the Loyalty system.</li>
-  <li>Taiping Warships — only if the Yangtze is actively contested.</li>
-</ol>
-
-<h2 class="sub-title">Key Taiping Card Plays</h2>
-<ul class="guide-list">
-  <li>Play diplomatic cards to keep France and Britain neutral. The EVA is your greatest long-term threat.</li>
-  <li>Use reconnaissance cards aggressively early — knowing where thin Qing lines are lets you exploit gaps.</li>
-  <li>Hold 1–2 powerful combat cards in reserve for the inevitable Qing counter-offensive. They will come with a big stack; you want a battle card to blunt it.</li>
-</ul>
-</section>
-
-<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
-
-<!-- ══════════════════════════════════════════════════════════════ -->
-<section class="section" id="s16">
-<h1 class="section-title"><span class="sec-num">§ 16</span> Playing the Qing</h1>
-
-<p>The Qing is the designated "hard" side (per the developers). You start weak, slow, and outclassed. Your game is about survival, patience, and timing your resurgence perfectly. It is arguably the more intellectually demanding side to play well.</p>
-
-<div class="callout qing">
-  <span class="callout-label">Most Common Beginner Qing Mistake</span>
-  <p>Trying to hold the entire front line with Green Standard troops. This spreads your weak forces thin, they get beaten in detail, and you run out of units. Instead, concentrate at key chokepoint nodes, let the Taipings advance into disloyal territory they cannot easily garrison, and prepare your counter once Imperial Concern rises.</p>
-</div>
-
-<div class="strat-phase qing">
-  <div class="strat-phase-title">Phase 1: Controlled Retreat (Turns 1–20)</div>
-  <p><strong>Objectives:</strong> do not try to stop the Taipings with Green Standard troops in the open; trade space for time; keep supply lines open; spike Imperial Concern with IC-raising cards every single turn.</p>
-  <p>Green Standard infantry cannot stop Taiping elite troops in open battle. Concentrate your forces at chokepoints where terrain modifiers compensate for unit quality. Fortified city defenders gain +2 defense — even weak Qing troops become reasonably hard to dislodge in a fortress.</p>
-  <p>Protect the coastal ports. Shanghai and Guangzhou generate enormous income. If you lose them early, you may never financially recover. Position your best early units (Manchu Banner cavalry) to screen the coastline.</p>
-</div>
-
-<div class="strat-phase qing">
-  <div class="strat-phase-title">Phase 2: Imperial Awakening (Turns 15–40)</div>
-  <p><strong>Objectives:</strong> raise Imperial Concern to at least the "Medium" threshold; begin Xiang Army construction; court British/French support; conduct naval operations to contest the Yangtze.</p>
-  <p>Once Zeng Guofan appears, your strategic situation transforms. The Xiang Army is roughly on par with Taiping elite infantry and superior in morale when stacked with Zeng Guofan. Form concentrated striking forces of 3–4 Xiang Army units under Zeng and begin methodical offensive operations along the Yangtze.</p>
-  <p>Use Qing cavalry to cut Taiping supply lines. You cannot out-fight them everywhere at once, but you can isolate forward Taiping stacks — an isolated elite Taiping stack starves within 3–4 turns.</p>
-</div>
-
-<div class="strat-phase qing">
-  <div class="strat-phase-title">Phase 3: The Counter-Offensive (Turns 40+)</div>
-  <p><strong>Objectives:</strong> retake Yangtze cities one at a time from the east (where EVA support is available); methodically loyalise recaptured regions; besiege Nanjing with Zeng Guofan's full army.</p>
-  <p>The historical Qing strategy — optimal in-game — was the "ever-tightening ring." Recapture Anqing to cut the Yangtze link, then advance on Nanjing from multiple directions. Concentric attacks with 4 Xiang Army stacks converging from three directions on a Taiping position will consistently win.</p>
-</div>
-
-<h2 class="sub-title">Qing Build Order Priority</h2>
-<ol class="guide-list">
-  <li>Xiang Army Infantry — as many as you can afford; your game-winning tool.</li>
-  <li>Xiang Army Cavalry — fast, powerful, excellent supply-cutters.</li>
-  <li>Modern Artillery — essential for reducing Taiping fortresses; build as soon as unlocked.</li>
-  <li>Qing Warships — Yangtze control; outclass Taiping junks significantly.</li>
-  <li>Provincial Militia — cheap garrison fillers to hold recaptured regions and accelerate loyalty.</li>
-</ol>
-
-<h2 class="sub-title">Managing the Nien Threat</h2>
-<p>The Nien Bandits in the north are an ongoing drain. They are highly mobile and excel at raiding agricultural regions, cutting income and supply.</p>
-<ul class="guide-list">
-  <li>Keep 1–2 Banner cavalry units dedicated to the northern theater to chase and destroy Nien forces.</li>
-  <li><strong>Sengge Rinchen</strong> (Mongol cavalry leader) is the ideal Nien-fighter; position him in the north as soon as he's available.</li>
-  <li>Do not let Nien raiding paralyse your northern income, but do not over-commit resources away from the Taiping front.</li>
-</ul>
-</section>
-
-<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
-
-<!-- ══════════════════════════════════════════════════════════════ -->
-<section class="section" id="s17">
-<h1 class="section-title"><span class="sec-num">§ 17</span> PBEM &amp; Multiplayer</h1>
-
-<p>SGS Taipings supports <strong>Play By Email (PBEM)</strong> multiplayer for two human players. The PBEM system allows each player to take their turn asynchronously — ideal for wargamers with busy schedules.</p>
-
-<h2 class="sub-title">How PBEM Works</h2>
-<ol class="guide-list">
-  <li>Player 1 (usually Taiping) takes their turn, then saves and sends the game file to Player 2.</li>
-  <li>Player 2 (Qing) receives the file, loads it, takes their turn, and returns the file.</li>
-  <li>This continues until the scenario ends.</li>
-</ol>
-
-<p>Detailed PBEM setup instructions are available in Chinese and English at the official site: <a href="https://strategygamestudio.com/sgs-rules/multiplayer/" target="_blank" rel="noreferrer">strategygamestudio.com/sgs-rules/multiplayer</a></p>
-
-<h2 class="sub-title">PBEM Strategy Differences</h2>
-<ul class="guide-list">
-  <li>Write notes about your strategic intentions between sessions — you cannot remember every plan across days.</li>
-  <li>Fog of War is more important in PBEM; dedicate more intelligence/reconnaissance card plays since you cannot watch what the opponent is doing.</li>
-  <li>Agree on a turn cadence with your opponent before starting a grand campaign (e.g., turns within 48 hours).</li>
-</ul>
-</section>
-
-<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
-
-<!-- ══════════════════════════════════════════════════════════════ -->
-<section class="section" id="s18">
-<h1 class="section-title"><span class="sec-num">§ 18</span> Glossary</h1>
-
-<div class="glossary-grid">
-  <div class="gloss-item"><div class="gloss-term">ATK</div><div class="gloss-def">Attack factor; governs offensive combat die rolls.</div></div>
-  <div class="gloss-item"><div class="gloss-term">Banner</div><div class="gloss-def">Traditional Qing cavalry/infantry units; initially mediocre quality.</div></div>
-  <div class="gloss-item"><div class="gloss-term">Battle Morale</div><div class="gloss-def">Sum of unit morale + leader bonus + terrain + boosters; governs routing.</div></div>
-  <div class="gloss-item"><div class="gloss-term">Breakthrough</div><div class="gloss-def">Post-victory advance into adjacent region; can chain with expert leaders.</div></div>
-  <div class="gloss-item"><div class="gloss-term">Concentric</div><div class="gloss-def">Attacking from 2+ regions simultaneously; grants attacker a combat bonus.</div></div>
-  <div class="gloss-item"><div class="gloss-term">DEF</div><div class="gloss-def">Defense factor; governs defensive combat die rolls.</div></div>
-  <div class="gloss-item"><div class="gloss-term">EVA</div><div class="gloss-def">Ever Victorious Army; Western-led Qing allied elite force.</div></div>
-  <div class="gloss-item"><div class="gloss-term">FoW</div><div class="gloss-def">Fog of War; enemy units in low-loyalty regions are hidden.</div></div>
-  <div class="gloss-item"><div class="gloss-term">Green Standard</div><div class="gloss-def">Cheap but weak Qing infantry; the initial Qing backbone.</div></div>
-  <div class="gloss-item"><div class="gloss-term">IC</div><div class="gloss-def">Imperial Concern Index (Qing); rises as crisis proves serious; unlocks better forces.</div></div>
-  <div class="gloss-item"><div class="gloss-term">Life Points</div><div class="gloss-def">Unit strength; at 0 the unit is eliminated.</div></div>
-  <div class="gloss-item"><div class="gloss-term">Loyalty</div><div class="gloss-def">Regional affiliation (0–100%); affects income, FoW, and enemy unit construction.</div></div>
-  <div class="gloss-item"><div class="gloss-term">MOV / MP</div><div class="gloss-def">Movement points; spent crossing region connections per phase.</div></div>
-  <div class="gloss-item"><div class="gloss-term">MOR</div><div class="gloss-def">Morale factor; contributes to Battle Morale calculation.</div></div>
-  <div class="gloss-item"><div class="gloss-term">Nien Bandits</div><div class="gloss-def">Northern Chinese rebel cavalry alliance; Taiping allied faction.</div></div>
-  <div class="gloss-item"><div class="gloss-term">PBEM</div><div class="gloss-def">Play By Email; asynchronous 2-player multiplayer mode.</div></div>
-  <div class="gloss-item"><div class="gloss-term">Pursuit</div><div class="gloss-def">Free round of fire against routed units after a rout result.</div></div>
-  <div class="gloss-item"><div class="gloss-term">Relay (Supply)</div><div class="gloss-def">Friendly structure or logistics unit extending supply range.</div></div>
-  <div class="gloss-item"><div class="gloss-term">Rout</div><div class="gloss-def">Catastrophic combat failure; battle ends, routed units take pursuit fire.</div></div>
-  <div class="gloss-item"><div class="gloss-term">SGS</div><div class="gloss-def">Strategy Game Studio; game engine and developer name.</div></div>
-  <div class="gloss-item"><div class="gloss-term">Supply Range</div><div class="gloss-def">Maximum region distance from a source/relay; typically 3–4 regions.</div></div>
-  <div class="gloss-item"><div class="gloss-term">Tianjing</div><div class="gloss-def">Nanjing renamed as the Taiping Heavenly Capital.</div></div>
-  <div class="gloss-item"><div class="gloss-term">Unrest Units</div><div class="gloss-def">v1.5 units that degrade loyalty in enemy-held regions without direct combat.</div></div>
-  <div class="gloss-item"><div class="gloss-term">VP</div><div class="gloss-def">Victory Points; accumulated per scenario objectives.</div></div>
-  <div class="gloss-item"><div class="gloss-term">Xiang Army</div><div class="gloss-def">Zeng Guofan's reformed Qing army; unlocked by IC; core Qing endgame force.</div></div>
-  <div class="gloss-item"><div class="gloss-term">Yangtze</div><div class="gloss-def">The great river; economic spine of China and central strategic axis of the game.</div></div>
-</div>
-
-</section>
-
-</div><!-- /content -->
-
-<footer id="footer">
-  SGS Taipings Strategy Guide &nbsp;·&nbsp; Based on SGS Engine v1.5 &nbsp;·&nbsp; Avalon Digital / Strategy Game Studio &nbsp;·&nbsp; Community Resource
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- FOOTER                                                       -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<footer class="site-footer">
+  SGS Strategy Guide Library &nbsp;·&nbsp; Community Resource &nbsp;·&nbsp; Avalon Digital / Strategy Game Studio
 </footer>
 
-</div><!-- /main -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- MODAL                                                        -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal">
+    <div class="modal-bar"></div>
+    <div class="modal-header">
+      <div>
+        <div class="modal-era"    id="m-era"></div>
+        <div class="modal-title"  id="m-title"></div>
+        <div class="modal-subtitle" id="m-subtitle"></div>
+      </div>
+      <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
 
-<a id="back-top" href="#hero" title="Back to top">↑</a>
-
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- JAVASCRIPT                                                   -->
+<!-- ═══════════════════════════════════════════════════════════ -->
 <script>
-// ── Progress bar ──────────────────────────────────────────────────
-const bar = document.getElementById('progress-bar');
-const backTop = document.getElementById('back-top');
-window.addEventListener('scroll', () => {
-  const scrolled = window.scrollY;
-  const total = document.documentElement.scrollHeight - window.innerHeight;
-  bar.style.transform = `scaleX(${scrolled / total})`;
-  backTop.classList.toggle('visible', scrolled > 400);
-}, { passive: true });
+/* ============================================================
+   GUIDE DATA
+   ─────────────────────────────────────────────────────────────
+   To add a new guide, append an object to GUIDES[].
 
-// ── Active nav highlight ──────────────────────────────────────────
-const sections = document.querySelectorAll('.section[id]');
-const navItems = document.querySelectorAll('.nav-item');
+   Fields:
+     id         – unique string, used as card key
+     title      – game name (e.g. "SGS Overlord")
+     subtitle   – short descriptor (e.g. "Normandy, 1944")
+     era        – "pre-ww2" | "ww2" | "post-ww2"  (controls accent colour)
+     period     – display string (e.g. "Second World War")
+     engine     – e.g. "SGS Engine v1.5"
+     sections   – number of guide sections
+     scenarios  – number of scenarios covered
+     sides      – array of two side names, e.g. ["Allied", "German"]
+     hardest    – which side is harder to play
+     desc       – 2–3 sentence overview for the card
+     detail     – longer paragraph for the modal (can use <strong> tags)
+     sideA      – { label, body } — first side description for modal
+     sideB      – { label, body } — second side description for modal
+     tags       – array of tag strings
+     file       – relative path to the guide HTML file
+   ============================================================ */
+const GUIDES = [
+  {
+    id:        'taipings',
+    title:     'SGS Taipings',
+    subtitle:  'The Taiping Rebellion, China 1851–1864',
+    era:       'pre-ww2',
+    period:    'Pre-World War II',
+    engine:    'SGS Engine v1.5',
+    sections:  18,
+    scenarios: 4,
+    sides:     ['Taiping Heavenly Kingdom', 'Qing Imperial China'],
+    hardest:   'Qing Dynasty',
+    desc:      'One of history\'s deadliest conflicts. The Taiping Rebellion pitted a millenarian Christian-influenced rebel movement against the crumbling Qing Dynasty. A loyalty-driven, economically complex campaign demanding mastery of the unique Imperial Concern Index.',
+    detail:    'SGS Taipings is one of the most mechanically distinctive entries in the SGS series. The Loyalty system governs income, Fog of War, and enemy unit placement simultaneously. The Qing player must raise the Imperial Concern Index to unlock the elite Xiang Army while managing the northern Nien Bandit threat. The Taiping player must exploit early momentum — capturing the Yangtze cities before Zeng Guofan\'s reformed forces arrive — or face a slow war of attrition they cannot win.',
+    sideA: {
+      label: 'Taiping Heavenly Kingdom',
+      body:  'Elite early units, fast expansion, powerful Taiping leaders. Must capture and hold the Yangtze before Qing modernises. Easier to learn; harder to sustain.'
+    },
+    sideB: {
+      label: 'Qing Imperial China',
+      body:  'Weak initially, powerful eventually. Must spike Imperial Concern to unlock the Xiang Army while surviving Taiping elite attacks. The most complex side in the game.'
+    },
+    tags:  ['Loyalty System','Imperial Concern','Yangtze River','PBEM','Grand Campaign'],
+    file:  'https://t1ckles.github.io/nadir/taipings.html',
+    steam: 'https://store.steampowered.com/app/1519060/SGS_Taipings/',
+    site:  'https://strategygamestudio.com/games/sgs-taipings/',
+  },
+  {
+    id:        'overlord',
+    title:     'SGS Overlord',
+    subtitle:  'Operation Overlord, Normandy 1944',
+    era:       'ww2',
+    period:    'Second World War',
+    engine:    'SGS Engine v1.5',
+    sections:  17,
+    scenarios: 6,
+    sides:     ['Allied Forces', 'Wehrmacht / Waffen-SS'],
+    hardest:   'Allied Forces',
+    desc:      'The largest amphibious operation in history. From D-Day to the Falaise Pocket, command Allied forces pushing through the Norman bocage or hold the line as the Wehrmacht fights for time against overwhelming material superiority.',
+    detail:    'SGS Overlord covers the complete Normandy campaign from June 6th to September 3rd, 1944. The Allied player faces a uniquely difficult challenge: superior material power is constantly stymied by the bocage terrain, supply fragility, inter-Allied zone restrictions, and strict operational timelines. The German player has no air support but excellent terrain, high-quality Panzer and SS formations, and the ability to inflict punishing attrition on attacking forces. The v1.5 update added the Mortain/Falaise scenario with instant-win conditions, revised supply rules (HQs no longer relay supply), and inter-Allied zone restrictions for Canadian/I Corps forces.',
+    sideA: {
+      label: 'Allied Forces',
+      body:  'US, British, Canadian, Polish, and French formations. Overwhelming air and naval support — when weather allows. Supply-dependent, terrain-frustrated, and racing against a historical clock. The hardest side to play well.'
+    },
+    sideB: {
+      label: 'Wehrmacht / Waffen-SS',
+      body:  'No air support whatsoever; random reinforcement timing. Compensated by terrain mastery, elite Panzer and SS formations, and the defensive advantage of bocage. Easier to learn; deeply satisfying to play well.'
+    },
+    tags:  ['D-Day','Bocage','Operation Cobra','Falaise Pocket','Weather','PBEM'],
+    file:  'https://t1ckles.github.io/nadir/overlord.html',
+    steam: 'https://store.steampowered.com/app/2639440/SGS_Overlord/',
+    site:  'https://strategygamestudio.com/wargame/sgs-overlord/',
+  },
+  {
+    id:        'fall-weiss',
+    title:     'SGS Fall Weiss',
+    subtitle:  'Invasion of Poland, September 1939',
+    era:       'ww2',
+    period:    'Second World War',
+    engine:    'SGS Engine v1.5',
+    sections:  17,
+    scenarios: 4,
+    sides:     ['Wehrmacht', 'Polish Armed Forces'],
+    hardest:   'Polish Armed Forces',
+    desc:      'Germany\'s opening blitzkrieg and Poland\'s desperate defence. Fall Weiss covers the five-week September Campaign of 1939 — an asymmetric clash of modern armoured doctrine against a brave but outgunned opponent fighting on multiple fronts.',
+    detail:    'SGS Fall Weiss simulates the September 1939 invasion of Poland, the opening campaign of the Second World War. The German player commands a mechanised force with overwhelming air superiority and superior operational tempo, tasked with encircling and destroying the Polish army before it can withdraw to defensible lines. The Polish player must trade space for time, concentrate forces at critical chokepoints, and exploit terrain and weather to inflict enough attrition to deny Germany a clean, rapid victory. Guide currently in production.',
+    sideA: {
+      label: 'Wehrmacht',
+      body:  'Mechanised infantry, Panzer divisions, and total air superiority. Fast and powerful; the challenge is achieving decisive encirclements rather than pushing Poland back in a disorganised retreat.'
+    },
+    sideB: {
+      label: 'Polish Armed Forces',
+      body:  'Outnumbered and outgunned but fighting on home terrain. Must delay, attrit, and hold key cities long enough to deny Germany a rapid campaign victory. The harder and more demanding side.'
+    },
+    tags:  ['Blitzkrieg','September Campaign','Encirclement','Air Superiority','PBEM'],
+    file:  'https://t1ckles.github.io/nadir/fall_weiss.html',
+    steam: 'https://store.steampowered.com/app/1747580/SGS_Fall_Weiss/',
+    site:  'https://strategygamestudio.com/shop/sgs-fall-weiss/',
+    wip:   true,
+  },
+];
 
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      navItems.forEach(n => n.classList.remove('active'));
-      const a = document.querySelector(`.nav-item[href="#${e.target.id}"]`);
-      if (a) {
-        a.classList.add('active');
-        a.scrollIntoView({ block: 'nearest' });
-      }
-    }
+/* ============================================================
+   COMING SOON DATA
+   Add entries here for guides that are in progress.
+   Fields: title, subtitle, era, period, desc
+   ============================================================ */
+const COMING_SOON = [
+  {
+    title:    'SGS Afrika Korps',
+    subtitle: 'North Africa, 1940–1943',
+    era:      'ww2',
+    period:   'Second World War',
+    desc:     'Rommel\'s desert war from Operation Compass to the end in Tunisia. Open terrain, supply lines measured in hundreds of miles, and tank battles of unparalleled fluidity.',
+  },
+  {
+    title:    'SGS Battle of the Bulge',
+    subtitle: 'Ardennes Offensive, December 1944',
+    era:      'ww2',
+    period:   'Second World War',
+    desc:     'Germany\'s last major offensive in the West. Fog, snow, and a desperate armoured thrust against an Allied line briefly caught off guard.',
+  },
+  {
+    title:    'SGS Fall Weiss',
+    subtitle: 'Invasion of Poland, September 1939',
+    era:      'ww2',
+    period:   'Second World War',
+    desc:     'The opening campaign of World War II. German blitzkrieg vs. determined Polish resistance across difficult terrain and limited timeframe.',
+  },
+];
+
+/* ============================================================
+   RENDER GAME CARDS
+   ============================================================ */
+function renderGuides() {
+  const grid = document.getElementById('games-grid');
+  grid.innerHTML = '';
+
+  GUIDES.forEach(g => {
+    const card = document.createElement('div');
+    card.className = 'game-card';
+    card.setAttribute('data-era', g.era);
+    card.setAttribute('data-id', g.id);
+
+    card.innerHTML =
+      '<div class="game-card-bar"></div>' +
+      '<div class="game-card-inner">' +
+        '<div class="game-card-era">' + g.period + '</div>' +
+        '<div class="game-card-title">' + g.title + '</div>' +
+        '<div class="game-card-subtitle">' + g.subtitle + '</div>' +
+        '<div class="game-card-divider"></div>' +
+        '<div class="game-card-desc">' + g.desc + '</div>' +
+        '<div class="game-card-tags">' +
+          g.tags.map(t => '<span class="game-card-tag">' + t + '</span>').join('') +
+        '</div>' +
+        '<div class="game-card-footer">' +
+          '<div class="game-card-cta">View Guide &rsaquo;</div>' +
+          '<div class="game-card-sections">' + g.sections + ' sections &middot; ' + g.scenarios + ' scenarios</div>' +
+        '</div>' +
+      '</div>';
+
+    card.addEventListener('click', () => openModal(g.id));
+    grid.appendChild(card);
   });
-}, { rootMargin: '-20% 0px -70% 0px' });
+}
 
-sections.forEach(s => observer.observe(s));
+/* ============================================================
+   RENDER COMING SOON
+   ============================================================ */
+function renderComingSoon() {
+  const grid = document.getElementById('coming-grid');
+  grid.innerHTML = '';
 
-// ── Mobile: close sidebar on nav click ───────────────────────────
-navItems.forEach(item => {
-  item.addEventListener('click', () => {
-    document.getElementById('sidebar').classList.remove('open');
+  COMING_SOON.forEach(g => {
+    const card = document.createElement('div');
+    card.className = 'game-card coming-soon';
+    card.setAttribute('data-era', g.era);
+
+    card.innerHTML =
+      '<div class="game-card-bar"></div>' +
+      '<div class="game-card-inner">' +
+        '<div class="game-card-era">' + g.period + '</div>' +
+        '<div class="game-card-title">' + g.title + '</div>' +
+        '<div class="game-card-subtitle">' + g.subtitle + '</div>' +
+        '<div class="game-card-divider"></div>' +
+        '<div class="game-card-desc">' + g.desc + '</div>' +
+        '<div class="game-card-footer">' +
+          '<span class="coming-soon-badge">Guide In Progress</span>' +
+        '</div>' +
+      '</div>';
+
+    grid.appendChild(card);
   });
+}
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+function openModal(id) {
+  const g = GUIDES.find(x => x.id === id);
+  if (!g) return;
+
+  const modal = document.getElementById('modal');
+  modal.setAttribute('data-era', g.era);
+
+  document.getElementById('m-era').textContent   = g.period + ' · ' + g.engine;
+  document.getElementById('m-title').textContent = g.title;
+  document.getElementById('m-subtitle').textContent = g.subtitle;
+
+  const wipNote = g.wip
+    ? '<div style="font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold-dark);border:1px solid var(--border);padding:5px 10px;display:inline-block;margin-bottom:14px;">Guide In Production</div>'
+    : '';
+
+  const extLinks =
+    '<div class="modal-ext-links">' +
+      '<a class="modal-ext-link" href="' + g.steam + '" target="_blank" rel="noopener">' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h10m0 0l-3-3m3 3l-3 3"/></svg>' +
+        'Steam' +
+      '</a>' +
+      '<a class="modal-ext-link" href="' + g.site + '" target="_blank" rel="noopener">' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>' +
+        'Official Site' +
+      '</a>' +
+    '</div>';
+
+  const guideCta = g.wip
+    ? '<div class="modal-cta" style="opacity:0.45;cursor:default;pointer-events:none;">Guide Coming Soon</div>'
+    : '<a class="modal-cta" href="' + g.file + '" target="_blank" rel="noopener">Open Full Strategy Guide &rsaquo;</a>';
+
+  document.getElementById('modal-body').innerHTML =
+    wipNote +
+    '<div class="modal-section-label">Overview</div>' +
+    '<p class="modal-desc">' + g.detail + '</p>' +
+
+    '<div class="modal-section-label">The Two Sides</div>' +
+    '<div class="modal-sides">' +
+      '<div class="modal-side">' +
+        '<div class="modal-side-label">' + g.sideA.label + '</div>' +
+        '<div class="modal-side-body">' + g.sideA.body + '</div>' +
+      '</div>' +
+      '<div class="modal-side">' +
+        '<div class="modal-side-label">' + g.sideB.label + '</div>' +
+        '<div class="modal-side-body">' + g.sideB.body + '</div>' +
+      '</div>' +
+    '</div>' +
+
+    '<div class="modal-section-label">At a Glance</div>' +
+    '<div class="modal-meta-row">' +
+      '<div class="modal-meta-cell"><div class="modal-meta-label">Engine</div><div class="modal-meta-value">' + g.engine + '</div></div>' +
+      '<div class="modal-meta-cell"><div class="modal-meta-label">Sections</div><div class="modal-meta-value">' + g.sections + '</div></div>' +
+      '<div class="modal-meta-cell"><div class="modal-meta-label">Scenarios Covered</div><div class="modal-meta-value">' + g.scenarios + '</div></div>' +
+      '<div class="modal-meta-cell"><div class="modal-meta-label">Hardest to Play</div><div class="modal-meta-value">' + g.hardest + '</div></div>' +
+    '</div>' +
+
+    '<div class="modal-section-label">Tags</div>' +
+    '<div class="modal-tags">' +
+      g.tags.map(t => '<span class="modal-tag">' + t + '</span>').join('') +
+    '</div>' +
+
+    '<div class="modal-section-label">External Links</div>' +
+    extLinks +
+
+    guideCta;
+
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('modal-close').focus();
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modal-close').addEventListener('click', closeModal);
+document.getElementById('modal-overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
 });
 
-// ── Stagger section animation on load ────────────────────────────
-document.querySelectorAll('.section').forEach((s, i) => {
-  s.style.animationDelay = `${i * 0.04}s`;
-});
+/* ============================================================
+   INIT
+   ============================================================ */
+renderGuides();
+renderComingSoon();
 </script>
 </body>
 </html>

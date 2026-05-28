@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SGS Overlord — Comprehensive Strategy Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Root ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink:         #1a1410;
+  --parchment:   #f5efe4;
+  --gold:        #c9943a;
+  --gold-dark:   #8b6420;
+  --gold-pale:   #f0d9a8;
+  --olive:       #6b7c3e;
+  --olive-pale:  #edf0e4;
+  --red:         #8b1a1a;
+  --red-pale:    #f5e8e8;
+  --steel:       #2a3f5a;
+  --steel-pale:  #e4eaf2;
+  --allied:      #1a4a5c;
+  --allied-pale: #ddedf5;
+  --german:      #4a3a1a;
+  --german-pale: #f5edda;
+  --mid:         #4a3f32;
+  --light:       #f9f4ec;
+  --border:      rgba(201,148,58,0.3);
+  --shadow:      rgba(26,20,16,0.18);
+  --font-head:   'Cinzel', 'Times New Roman', serif;
+  --font-body:   'Crimson Pro', 'Georgia', serif;
+  --sidebar-w:   280px;
+}
+
+html { scroll-behavior: smooth; font-size: 17px; }
+
+body {
+  background: var(--parchment);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.75;
+  display: flex;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none; z-index: 999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.5;
+}
+
+/* ── Progress Bar ─────────────────────────────────────────────── */
+#progress-bar {
+  position: fixed; top: 0; left: var(--sidebar-w); right: 0; height: 3px;
+  background: var(--gold);
+  transform-origin: left;
+  transform: scaleX(0);
+  z-index: 500;
+  transition: transform 0.1s linear;
+}
+
+/* ── Sidebar ──────────────────────────────────────────────────── */
+#sidebar {
+  width: var(--sidebar-w);
+  min-width: var(--sidebar-w);
+  background: var(--steel);
+  position: fixed; top: 0; left: 0; bottom: 0;
+  overflow-y: auto;
+  z-index: 100;
+  border-right: 2px solid var(--gold-dark);
+  display: flex; flex-direction: column;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-dark) var(--steel);
+}
+
+#sidebar-header {
+  padding: 28px 20px 20px;
+  border-bottom: 1px solid rgba(201,148,58,0.25);
+  background: linear-gradient(180deg, #192838 0%, var(--steel) 100%);
+}
+
+#sidebar-title {
+  font-family: var(--font-head);
+  font-size: 1rem;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  line-height: 1.3;
+}
+
+#sidebar-sub {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.45);
+  margin-top: 6px;
+  letter-spacing: 0.05em;
+  font-style: italic;
+}
+
+#sidebar-nav { padding: 12px 0 40px; flex: 1; }
+
+.nav-section {
+  padding: 10px 20px 4px;
+  font-family: var(--font-head);
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  color: var(--gold-dark);
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+.nav-item {
+  display: block;
+  padding: 7px 20px 7px 28px;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  color: rgba(245,239,228,0.72);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: all 0.18s ease;
+  line-height: 1.35;
+  position: relative;
+}
+.nav-item::before {
+  content: '›';
+  position: absolute; left: 14px; top: 7px;
+  color: var(--gold-dark);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.nav-item:hover,
+.nav-item.active {
+  color: var(--gold-pale);
+  border-left-color: var(--gold);
+  background: rgba(201,148,58,0.08);
+  padding-left: 30px;
+}
+.nav-item:hover::before,
+.nav-item.active::before { opacity: 1; }
+
+/* ── Mobile toggle ────────────────────────────────────────────── */
+#sidebar-toggle {
+  display: none;
+  position: fixed; top: 12px; left: 12px; z-index: 200;
+  background: var(--steel); border: 1px solid var(--gold-dark);
+  color: var(--gold); font-size: 1.2rem; padding: 6px 10px;
+  cursor: pointer; border-radius: 3px;
+}
+
+/* ── Main Content ─────────────────────────────────────────────── */
+#main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  min-width: 0;
+}
+
+/* ── Hero ──────────────────────────────────────────────────────── */
+#hero {
+  background: linear-gradient(160deg, #0d1e30 0%, #1b2f4a 40%, #2a1a0a 100%);
+  min-height: 420px;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 80px 64px 64px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 3px solid var(--gold-dark);
+}
+
+#hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      -55deg,
+      transparent, transparent 40px,
+      rgba(201,148,58,0.04) 40px, rgba(201,148,58,0.04) 41px
+    );
+}
+
+#hero::after {
+  content: '';
+  position: absolute; bottom: 0; left: 64px; right: 64px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.hero-eyebrow {
+  font-family: var(--font-head);
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  color: var(--gold-dark);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.hero-title {
+  font-family: var(--font-head);
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-weight: 900;
+  color: var(--parchment);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.05;
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.hero-subtitle {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  font-style: italic;
+  color: rgba(240,217,168,0.75);
+  font-weight: 300;
+  margin-bottom: 28px;
+  position: relative;
+}
+
+.hero-tags {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  position: relative;
+}
+
+.hero-tag {
+  font-family: var(--font-head);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-pale);
+  border: 1px solid rgba(201,148,58,0.4);
+  padding: 4px 10px;
+  background: rgba(201,148,58,0.08);
+}
+
+/* ── Content area ─────────────────────────────────────────────── */
+#content { padding: 0 64px 80px; max-width: 960px; }
+
+/* ── Section ──────────────────────────────────────────────────── */
+.section {
+  padding: 56px 0 8px;
+  animation: fadeInUp 0.5s ease both;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.sec-num {
+  display: inline-block;
+  font-family: var(--font-head);
+  font-size: 0.82rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  color: var(--gold-dark);
+  margin-right: 0.5em;
+  vertical-align: middle;
+}
+
+.section-title {
+  font-family: var(--font-head);
+  font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  padding-bottom: 14px;
+  margin-bottom: 22px;
+  border-bottom: 2px solid var(--border);
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute; bottom: -2px; left: 0; width: 60px; height: 2px;
+  background: var(--gold);
+}
+
+.sub-title {
+  font-family: var(--font-head);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--mid);
+  margin: 28px 0 10px;
+  text-transform: uppercase;
+}
+
+p {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+/* ── Lists ────────────────────────────────────────────────────── */
+.guide-list {
+  margin: 0.5rem 0 1rem 1.2rem;
+}
+.guide-list li {
+  margin-bottom: 0.45rem;
+  font-size: 1rem;
+}
+.guide-list li::marker {
+  color: var(--gold-dark);
+}
+
+/* ── Callout boxes ────────────────────────────────────────────── */
+.callout {
+  padding: 16px 20px;
+  margin: 20px 0;
+  border-left: 4px solid var(--gold);
+  background: var(--light);
+  border-radius: 0 3px 3px 0;
+}
+
+.callout.allied {
+  border-left-color: var(--allied);
+  background: var(--allied-pale);
+}
+.callout.german {
+  border-left-color: var(--german);
+  background: var(--german-pale);
+}
+.callout.warning {
+  border-left-color: var(--red);
+  background: var(--red-pale);
+}
+.callout.tip {
+  border-left-color: var(--olive);
+  background: var(--olive-pale);
+}
+
+.callout-title {
+  font-family: var(--font-head);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.callout.allied .callout-title  { color: var(--allied); }
+.callout.german .callout-title  { color: var(--german); }
+.callout.warning .callout-title { color: var(--red); }
+.callout.tip .callout-title     { color: var(--olive); }
+.callout .callout-title         { color: var(--gold-dark); }
+
+/* ── Two-side strategy phases ─────────────────────────────────── */
+.strat-phase {
+  padding: 18px 22px;
+  margin: 18px 0;
+  border: 1px solid var(--border);
+  background: var(--light);
+}
+.strat-phase.allied {
+  border-color: rgba(26,74,92,0.35);
+  background: var(--allied-pale);
+  border-left: 4px solid var(--allied);
+}
+.strat-phase.german {
+  border-color: rgba(74,58,26,0.35);
+  background: var(--german-pale);
+  border-left: 4px solid var(--german);
+}
+.strat-phase-title {
+  font-family: var(--font-head);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--mid);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+.strat-phase.allied .strat-phase-title { color: var(--allied); }
+.strat-phase.german .strat-phase-title { color: var(--german); }
+.strat-phase p { margin-bottom: 0.6rem; }
+.strat-phase p:last-child { margin-bottom: 0; }
+
+/* ── Leader cards ─────────────────────────────────────────────── */
+.leader-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.leader-card {
+  border: 1px solid var(--border);
+  background: var(--light);
+  padding: 16px 18px;
+  position: relative;
+}
+
+.leader-card.allied {
+  border-top: 3px solid var(--allied);
+}
+.leader-card.german {
+  border-top: 3px solid var(--german);
+}
+
+.leader-name {
+  font-family: var(--font-head);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+
+.leader-role {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--mid);
+  margin-bottom: 8px;
+}
+
+.leader-body {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+/* ── Scenario table ───────────────────────────────────────────── */
+.scenario-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1px;
+  background: var(--border);
+  margin: 20px 0;
+  border: 1px solid var(--border);
+}
+
+.scenario-row {
+  background: var(--light);
+  padding: 14px 18px;
+  display: grid;
+  grid-template-columns: 1fr 80px 90px;
+  gap: 12px;
+  align-items: center;
+}
+.scenario-row:nth-child(even) { background: var(--parchment); }
+.scenario-row.header {
+  background: var(--steel);
+  color: var(--gold-pale);
+  font-family: var(--font-head);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.scenario-name {
+  font-family: var(--font-head);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.scenario-date {
+  font-size: 0.82rem;
+  color: var(--mid);
+  font-style: italic;
+}
+.scenario-turns {
+  font-family: var(--font-head);
+  font-size: 0.82rem;
+  color: var(--gold-dark);
+  text-align: right;
+}
+
+/* ── Terrain table ────────────────────────────────────────────── */
+.terrain-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 0.9rem;
+}
+.terrain-table th {
+  background: var(--steel);
+  color: var(--gold-pale);
+  font-family: var(--font-head);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 9px 12px;
+  text-align: left;
+  border: 1px solid rgba(201,148,58,0.2);
+}
+.terrain-table td {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.5;
+}
+.terrain-table tr:nth-child(even) td { background: var(--light); }
+.terrain-table tr:nth-child(odd) td  { background: var(--parchment); }
+
+/* ── Glossary ─────────────────────────────────────────────────── */
+.glossary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  margin-top: 16px;
+  border: 1px solid var(--border);
+}
+
+.gloss-item {
+  background: var(--light);
+  padding: 10px 14px;
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.gloss-item:nth-child(even) { background: var(--parchment); }
+
+.gloss-term {
+  font-family: var(--font-head);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+  min-width: 110px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.gloss-def {
+  font-size: 0.88rem;
+  color: var(--mid);
+  line-height: 1.5;
+}
+
+/* ── Ornamental divider ───────────────────────────────────────── */
+.ornamental-divider {
+  text-align: center;
+  color: var(--gold);
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  padding: 28px 0 8px;
+  opacity: 0.7;
+}
+
+/* ── Turn summary boxes ───────────────────────────────────────── */
+.turn-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.turn-box {
+  border: 1px solid var(--border);
+  background: var(--light);
+  padding: 12px 14px;
+}
+
+.turn-num {
+  font-family: var(--font-head);
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 4px;
+  letter-spacing: 0.02em;
+}
+
+.turn-label {
+  font-family: var(--font-head);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 6px;
+}
+
+.turn-desc {
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--ink);
+}
+
+/* ── Back to top ──────────────────────────────────────────────── */
+#back-top {
+  position: fixed; bottom: 28px; right: 28px;
+  width: 42px; height: 42px;
+  background: var(--steel);
+  border: 1px solid var(--gold-dark);
+  color: var(--gold);
+  font-size: 1.1rem;
+  display: flex; align-items: center; justify-content: center;
+  text-decoration: none;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 90;
+}
+#back-top.visible { opacity: 1; transform: none; }
+#back-top:hover { background: var(--gold-dark); color: var(--parchment); }
+
+/* ── Footer ───────────────────────────────────────────────────── */
+#footer {
+  margin-top: 40px;
+  border-top: 1px solid var(--border);
+  padding: 20px 64px;
+  font-family: var(--font-head);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mid);
+  text-align: center;
+}
+
+/* ── Responsive ───────────────────────────────────────────────── */
+@media (max-width: 860px) {
+  :root { --sidebar-w: 0px; }
+  #sidebar-toggle { display: flex; align-items: center; justify-content: center; }
+  #sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.28s ease;
+    width: 260px;
+  }
+  #sidebar.open { transform: translateX(0); }
+  #main { margin-left: 0; }
+  #hero, #content { padding-left: 24px; padding-right: 24px; }
+  #progress-bar { left: 0; }
+  #footer { padding-left: 24px; padding-right: 24px; }
+  .scenario-row { grid-template-columns: 1fr; gap: 2px; }
+  .leader-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<button id="sidebar-toggle" aria-label="Menu">☰</button>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SIDEBAR                                                        -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <div id="sidebar-title">SGS Overlord</div>
+    <div id="sidebar-sub">Strategy Guide — Normandy 1944</div>
+  </div>
+  <div id="sidebar-nav">
+
+    <div class="nav-section">Background</div>
+    <a class="nav-item" href="#s01">1 · Historical Context</a>
+    <a class="nav-item" href="#s02">2 · Game Overview</a>
+
+    <div class="nav-section">Core Rules</div>
+    <a class="nav-item" href="#s03">3 · Turn Structure</a>
+    <a class="nav-item" href="#s04">4 · Map &amp; Terrain</a>
+    <a class="nav-item" href="#s05">5 · Units &amp; Forces</a>
+    <a class="nav-item" href="#s06">6 · Supply &amp; Logistics</a>
+    <a class="nav-item" href="#s07">7 · Combat System</a>
+    <a class="nav-item" href="#s08">8 · Air &amp; Naval Power</a>
+
+    <div class="nav-section">Key Systems</div>
+    <a class="nav-item" href="#s09">9 · Weather</a>
+    <a class="nav-item" href="#s10">10 · Leaders</a>
+    <a class="nav-item" href="#s11">11 · Cards &amp; Events</a>
+    <a class="nav-item" href="#s12">12 · Victory Conditions</a>
+
+    <div class="nav-section">Scenarios</div>
+    <a class="nav-item" href="#s13">13 · Scenario Guide</a>
+
+    <div class="nav-section">Strategy</div>
+    <a class="nav-item" href="#s14">14 · Allied Strategy</a>
+    <a class="nav-item" href="#s15">15 · German Strategy</a>
+    <a class="nav-item" href="#s16">16 · PBEM &amp; Multiplayer</a>
+
+    <div class="nav-section">Reference</div>
+    <a class="nav-item" href="#s17">17 · Glossary</a>
+
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- MAIN                                                           -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div id="main">
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-eyebrow">Strategy Game Studio &nbsp;·&nbsp; Avalon Digital</div>
+  <h1 class="hero-title">SGS Overlord</h1>
+  <p class="hero-subtitle">Comprehensive Analysis &amp; Strategy Guide — Normandy 1944</p>
+  <div class="hero-tags">
+    <span class="hero-tag">SGS Engine v1.5</span>
+    <span class="hero-tag">17 Sections</span>
+    <span class="hero-tag">Both Sides Covered</span>
+    <span class="hero-tag">6 Scenarios</span>
+    <span class="hero-tag">PBEM</span>
+  </div>
+</div>
+
+<div id="content">
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="section" id="s01">
+<h1 class="section-title"><span class="sec-num">§ 01</span> Historical Context</h1>
+
+<p>SGS Overlord simulates one of history's most consequential military operations: the Allied invasion of Normandy and the subsequent campaign to break out of the beachhead, covering June 6th to early September 1944. In two months of brutal combat, the Western Allies landed over two million men, and the Wehrmacht suffered a catastrophic defeat from which it would never recover on the Western Front.</p>
+
+<h2 class="sub-title">The Strategic Situation, June 1944</h2>
+<p>By the spring of 1944, Germany was fighting a war on three fronts. The Eastern Front consumed the bulk of Wehrmacht strength; Italy tied down additional divisions; and the anticipated Allied invasion from Britain threatened to open a fourth major front in the west. Hitler and the OKW debated furiously about where the blow would fall — most expected the Pas-de-Calais, the shortest crossing. Rommel, commanding Army Group B, disagreed: he believed the invasion must be crushed on the beaches within the first 24 hours, before Allied air power rendered armoured movement impossible.</p>
+<p>The Germans had roughly 50 divisions in France and the Low Countries, but their armoured reserves — the critical tool for any counterattack — were controlled by OKW and could not be committed without Hitler's direct authorisation. This command paralysis would prove fatal on D-Day itself.</p>
+
+<h2 class="sub-title">D-Day and the Landings</h2>
+<p>Operation Overlord launched in the early hours of June 6th, 1944. Three airborne divisions — the US 82nd and 101st, and the British 6th — dropped overnight to seize bridges and disrupt German communications. Five naval assault forces struck the beaches at dawn: Utah, Omaha, Gold, Juno, and Sword. American forces at Utah encountered light resistance. Omaha was catastrophic — stiff German defences, navigational errors, and the near-total loss of DD tanks combined to produce over 2,000 casualties in a single day. By nightfall, the five beachheads were established but not yet linked; the Germans had failed to mount a decisive armoured counterattack.</p>
+
+<h2 class="sub-title">The Battle of the Bocage</h2>
+<p>The weeks that followed confounded Allied optimism. The Norman countryside — the <em>bocage</em> — proved a defender's paradise. Ancient hedgerows, sunken lanes, orchards, and small fields broken by thick earthen banks converted every French village into a fortress and stripped Allied armour of its mobility advantage. American, British, and Canadian infantry paid in blood for every few hundred metres. The planned breakout in the first weeks of June became two months of attritional horror that the planners had never anticipated.</p>
+<p>Caen, targeted for capture on D-Day itself, held out until mid-July, pinning the bulk of German panzer strength on the British-Canadian flank. This — whether by design or fortunate circumstance — kept the armour away from the American sector, where Bradley was quietly building the forces for a decisive blow.</p>
+
+<h2 class="sub-title">Operation Cobra and the Breakout</h2>
+<p>On July 25th, after a massive strategic bombing carpet attack that devastated the German front (and killed several hundred Americans in short falls), Operation Cobra tore a gap in the German lines near Saint-Lô. Patton's Third Army poured through at Avranches in early August, turning both east toward Paris and west into Brittany. The Germans, ordered by Hitler to counterattack toward Avranches — Operation Lüttich — drove directly into a trap. The resulting encirclement nearly destroyed two German armies at the Falaise Pocket, and by late August the Seine had been crossed and Paris liberated.</p>
+</section>
+
+<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="section" id="s02">
+<h1 class="section-title"><span class="sec-num">§ 02</span> Game Overview</h1>
+
+<p>SGS Overlord is a two-player operational wargame covering the entire Normandy campaign from D-Day to the end of August 1944. It uses the SGS Engine v1.5, the same system underlying Taipings, Afrika Korps, and other SGS titles, adapted for the specific conditions of the Western Front.</p>
+
+<h2 class="sub-title">Core Design Philosophy</h2>
+<p>The designers at Strategy Game Studio and Avalon Digital built Overlord to be simultaneously historically authentic and tightly balanced. Neither side has a guaranteed advantage — the game is specifically designed so that both are enjoyable and winnable once you understand their distinct strengths and constraints. The German player's challenge is fundamentally different from the Allied player's: one must hold a crumbling line against superior material; the other must punch through terrain deliberately designed to absorb and destroy attacking forces.</p>
+
+<div class="callout">
+  <div class="callout-title">Key Design Note</div>
+  Some mechanisms — restricted movement zones for certain national forces, random German reinforcement timing, weather dependence for Allied air cover — can feel frustrating to first-time players. These are deliberate design decisions to model historical constraints. The Allies <em>did</em> take longer than planned; the Germans <em>did</em> suffer from command uncertainty. The friction is the game.
+</div>
+
+<h2 class="sub-title">The Two Sides</h2>
+<div class="callout allied">
+  <div class="callout-title">Allied Forces</div>
+  American, British, Canadian, Polish, French, and smaller national contingents (Belgian Piron Brigade, Norwegian 99th Battalion, and others). Overwhelming material superiority, near-total air dominance (in good weather), and a steady flow of reinforcements. Hardest to play well due to supply complexity, terrain friction, and Allied-zone restrictions.
+</div>
+
+<div class="callout german">
+  <div class="callout-title">German Forces</div>
+  Wehrmacht (Heer and Luftwaffe ground forces) and Waffen-SS divisions of high quality, excellent defensive terrain, and the advantage of interior lines. No organic air support whatsoever. Random reinforcement schedule adds uncertainty. Easier to learn, but requires disciplined defence and careful armour management.
+</div>
+
+<h2 class="sub-title">Scale and Scope</h2>
+<ul class="guide-list">
+  <li><strong>Time scale:</strong> Each turn represents three days of operations.</li>
+  <li><strong>Unit scale:</strong> Brigade or divisional level for primary combat units; smaller garrison and local defence units also present.</li>
+  <li><strong>Air/naval:</strong> Allied air and naval assets are abstracted into support groups; no equivalent German air units exist in the theatre.</li>
+  <li><strong>Map:</strong> Covers the Normandy region from the beaches south to the Loire and east toward the Seine.</li>
+</ul>
+</section>
+
+<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="section" id="s03">
+<h1 class="section-title"><span class="sec-num">§ 03</span> Turn Structure &amp; Phase Guide</h1>
+
+<p>Each game turn in SGS Overlord represents three calendar days of operations. Phases resolve in strict sequence. Understanding the order matters because card timing, replacements, and movement windows all depend on which phase is active.</p>
+
+<div class="turn-grid">
+  <div class="turn-box">
+    <div class="turn-num">01</div>
+    <div class="turn-label">Cards Phase</div>
+    <div class="turn-desc">Both sides receive cards for the turn. Events fire automatically where triggered. Play strategic cards now; save combat cards for battle.</div>
+  </div>
+  <div class="turn-box">
+    <div class="turn-num">02</div>
+    <div class="turn-label">Reinforcements Phase</div>
+    <div class="turn-desc">New units arrive at designated entry points. German reinforcements are random in timing — you may not receive what you expect.</div>
+  </div>
+  <div class="turn-box">
+    <div class="turn-num">03</div>
+    <div class="turn-label">Supply Phase</div>
+    <div class="turn-desc">Supply is traced from source to unit. Unsupplied units cannot receive replacements and suffer combat penalties.</div>
+  </div>
+  <div class="turn-box">
+    <div class="turn-num">04</div>
+    <div class="turn-label">Weather Phase</div>
+    <div class="turn-desc">Weather is determined. Bad weather grounds Allied air units and naval support, dramatically altering the balance of power for that turn.</div>
+  </div>
+  <div class="turn-box">
+    <div class="turn-num">05</div>
+    <div class="turn-label">Air Phase</div>
+    <div class="turn-desc">Allied air units can move to interdict German supply lines, support attacks, or conduct strategic missions.</div>
+  </div>
+  <div class="turn-box">
+    <div class="turn-num">06</div>
+    <div class="turn-label">Land Movement Phase</div>
+    <div class="turn-desc">Both sides move land units. Units entering enemy-occupied regions initiate combat at the end of movement.</div>
+  </div>
+  <div class="turn-box">
+    <div class="turn-num">07</div>
+    <div class="turn-label">Combat Phase</div>
+    <div class="turn-desc">All battles resolve simultaneously. Play combat cards during battles. Leaders boost attack and morale at critical moments.</div>
+  </div>
+  <div class="turn-box">
+    <div class="turn-num">08</div>
+    <div class="turn-label">Replacement Phase</div>
+    <div class="turn-desc">Supplied units in range of replacements rebuild. Prioritise elite or strategically critical units. Each replacement = 1 life point restored.</div>
+  </div>
+  <div class="turn-box">
+    <div class="turn-num">09</div>
+    <div class="turn-label">Victory Check Phase</div>
+    <div class="turn-desc">VP totals checked. Sudden-death conditions evaluated. Adjust plans for the next turn accordingly.</div>
+  </div>
+  <div class="turn-box">
+    <div class="turn-num">10</div>
+    <div class="turn-label">End Phase</div>
+    <div class="turn-desc">Turn counter advances. Save game if PBEM; review the situation and plan your next turn.</div>
+  </div>
+</div>
+
+<div class="callout warning">
+  <div class="callout-title">Critical Timing Note</div>
+  Cards marked "play during movement" must be played in Phase 6 before the relevant movement occurs. Cards marked "play during combat" are played in Phase 7 as a battle unfolds. Read card timing carefully before holding a card in hand — a card played one phase too late is wasted.
+</div>
+</section>
+
+<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="section" id="s04">
+<h1 class="section-title"><span class="sec-num">§ 04</span> Map &amp; Terrain</h1>
+
+<p>The Normandy map is one of the most terrain-hostile environments in the SGS series. Understanding terrain effects is perhaps the single most important factor in the first half of the campaign — terrain is what keeps the Allies from overwhelming the Germans in the first five turns.</p>
+
+<h2 class="sub-title">Terrain Types and Effects</h2>
+
+<table class="terrain-table">
+  <tr>
+    <th>Terrain Type</th>
+    <th>Movement Cost</th>
+    <th>Defense Bonus</th>
+    <th>Notes</th>
+  </tr>
+  <tr>
+    <td><strong>Open Ground</strong></td>
+    <td>1 MP</td>
+    <td>None</td>
+    <td>Rare in Normandy; found mainly on the Caen plain. Allied armour excels here.</td>
+  </tr>
+  <tr>
+    <td><strong>Bocage</strong></td>
+    <td>2–3 MP</td>
+    <td>+2 to +3 DEF</td>
+    <td>The defining terrain. Hedgerow country. Negates Allied armour advantage; infantry fights at close range.</td>
+  </tr>
+  <tr>
+    <td><strong>Forest / Woods</strong></td>
+    <td>2 MP</td>
+    <td>+1 to +2 DEF</td>
+    <td>Slower movement; defenders gain significant concealment bonuses.</td>
+  </tr>
+  <tr>
+    <td><strong>Marsh / Flooded</strong></td>
+    <td>3–4 MP or impassable</td>
+    <td>+3 DEF if defended</td>
+    <td>Deliberately flooded by Germans behind Utah beach. Channels Allied movement onto narrow causeways.</td>
+  </tr>
+  <tr>
+    <td><strong>River / Estuary</strong></td>
+    <td>+1 MP to cross</td>
+    <td>Defender bonus</td>
+    <td>Rivers act as defensive lines. The Seine, Orne, and Vire are significant barriers.</td>
+  </tr>
+  <tr>
+    <td><strong>City / Town</strong></td>
+    <td>1 MP to enter</td>
+    <td>+2 DEF (fortified +3)</td>
+    <td>Urban fighting extremely costly for attacker. Caen and Cherbourg are fortified cities.</td>
+  </tr>
+  <tr>
+    <td><strong>Hills / Escarpment</strong></td>
+    <td>+1 MP</td>
+    <td>+1 DEF</td>
+    <td>Minor bonus; mainly affects line-of-supply calculation and reinforcement routing.</td>
+  </tr>
+  <tr>
+    <td><strong>Port</strong></td>
+    <td>—</td>
+    <td>—</td>
+    <td>Essential for Allied supply. Cherbourg is the only deep-water port; Mulberry harbours provide temporary supply until it falls.</td>
+  </tr>
+</table>
+
+<h2 class="sub-title">The Bocage Problem</h2>
+<p>No other terrain type shapes SGS Overlord as completely as the <em>bocage normand</em>. These ancient field boundaries — thick earthen banks topped with tree roots and dense undergrowth — were invisible on aerial photographs and were not adequately studied in Allied pre-invasion planning. Their effect on mechanised warfare was devastating.</p>
+
+<div class="callout tip">
+  <div class="callout-title">Strategic Tip — Allied Players</div>
+  The Caen plain (south of Caen, east of the Orne) is the only significant stretch of open ground in the entire Normandy theatre. If you can capture and hold Caen, you can operate armour freely in the direction of Paris. This is why the British-Canadian sector battles are so important even when they seem to make little progress — they are fixing the German armour away from the American sector.
+</div>
+
+<h2 class="sub-title">Allied Zone Restrictions</h2>
+<p>A v1.5 rule of particular importance: Canadian forces and units of the British I Corps (together comprising the 1st Canadian Army) are prohibited from advancing into the "inter-Allied zone" — the area of operations assigned to the American sector. This reflects historical operational boundaries. It may feel restrictive, but it prevents the ahistorical tactic of concentrating all British and Canadian armour for a southern drive, which would leave the American sector unsupported and create logistical chaos.</p>
+
+<p>The remaining British corps — VIII Corps, XII Corps, and XXX Corps — are free to coordinate with American forces in the later phases of the campaign.</p>
+</section>
+
+<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="section" id="s05">
+<h1 class="section-title"><span class="sec-num">§ 05</span> Units &amp; Forces</h1>
+
+<p>SGS Overlord uses the standard SGS unit framework with three unit types: combat units (which display attack, defence, morale, and movement factors), support units (which stay behind in battle and do not display combat factors), and leaders (discussed in Section 10).</p>
+
+<h2 class="sub-title">Unit Statistics</h2>
+<ul class="guide-list">
+  <li><strong>ATK</strong> — Attack factor; governs offensive combat rolls.</li>
+  <li><strong>DEF</strong> — Defense factor; governs defensive rolls; modified by terrain.</li>
+  <li><strong>MOR</strong> — Morale factor; contributes to Battle Morale calculation; routing occurs when Battle Morale reaches zero.</li>
+  <li><strong>MOV</strong> — Movement points; spent crossing region connections each phase.</li>
+  <li><strong>Life Points</strong> — Unit strength. At 0 LP the unit is eliminated. Replacements restore LP to maximum, but units must be in supply to receive them.</li>
+</ul>
+
+<div class="callout warning">
+  <div class="callout-title">v1.5 Change: Combat Modifier Cap</div>
+  Cumulative combat and morale modifiers are capped at +4 in v1.5. This prevents the stacking exploit of previous versions where concentrating multiple bonus sources could make certain attacks nearly automatic. Plan offensives assuming a maximum +4 combined modifier.
+</div>
+
+<h2 class="sub-title">Allied Unit Types</h2>
+
+<div class="callout allied">
+  <div class="callout-title">Allied Order of Battle</div>
+  <ul class="guide-list">
+    <li><strong>American Infantry Divisions</strong> — Solid all-round troops. The workhorses of the bocage campaign. High supply consumption.</li>
+    <li><strong>American Armored Divisions</strong> — Powerful in open country; hampered badly by bocage. Excel in the breakout phase.</li>
+    <li><strong>American Paratrooper Divisions (82nd &amp; 101st)</strong> — Elite infantry; higher movement factor after v1.5 update. Drop on D-Day to seize causeways and bridges; reinforce normally thereafter.</li>
+    <li><strong>British Infantry Divisions</strong> — Good quality; slightly reduced offensive values in v1.5 to reflect bocage difficulties. Excellent in deliberate set-piece attacks.</li>
+    <li><strong>British Armoured Divisions</strong> — Designed for the Caen plain breakout. Strong ATK; suffer in bocage like all armour.</li>
+    <li><strong>Canadian Divisions</strong> — Comparable to British formations; restricted to 1st Canadian Army operational zone.</li>
+    <li><strong>Polish Armoured Division</strong> — Appears later; aggressive formation with high morale. Plays key role in the Falaise encirclement.</li>
+    <li><strong>French 2nd Armored Division</strong> — Arrives mid-campaign; strong morale, important for liberating Paris.</li>
+    <li><strong>Allied Support Units</strong> — Supply wagons, depots, engineering units, and bridging assets. Essential for extending supply lines as the front moves south.</li>
+  </ul>
+</div>
+
+<h2 class="sub-title">German Unit Types</h2>
+
+<div class="callout german">
+  <div class="callout-title">German Order of Battle</div>
+  <ul class="guide-list">
+    <li><strong>Infantry Divisions</strong> — Variable quality. Static coastal divisions are weak; later-arriving infantry are better. All benefit enormously from bocage terrain.</li>
+    <li><strong>Panzer Divisions</strong> — The German trump card. High ATK and DEF; excellent morale. Critically important and irreplaceable — every Panzer division lost makes the situation more precarious. In v1.5, morale of some recently reformed Panzer divisions is slightly reduced to reflect poor cohesion.</li>
+    <li><strong>Waffen-SS Panzer Divisions</strong> — Elite. Highest ATK/DEF/MOR values in the German order of battle. 1st SS, 2nd SS, 9th SS, 10th SS, and 12th SS Hitlerjugend are the decisive formations. Do not squander them in defensive attrition.</li>
+    <li><strong>Fallschirmjäger (Paratroopers)</strong> — Elite infantry; fanatical defenders. The German paratroopers defending around Saint-Lô were among the toughest opponents American forces faced.</li>
+    <li><strong>Garrison / Fortress Units</strong> — Defend specific points (Cherbourg, Atlantic Wall positions). Low offensive value but can hold fortified positions for extended periods.</li>
+    <li><strong>German Support Units</strong> — Supply wagons and depots. In v1.5, HQs no longer act as supply relays; only towns, bridgeheads, fixed depots, and relay structures extend supply.</li>
+  </ul>
+</div>
+
+<h2 class="sub-title">Stacking Rules</h2>
+<p>Units have stacking values that limit how many can share a region. Exceeding the stacking limit causes penalties. For the Allies, managing the traffic behind the beachhead — getting the right units to the front while keeping supply lines clear — is a genuine logistical challenge in the first turns.</p>
+</section>
+
+<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="section" id="s06">
+<h1 class="section-title"><span class="sec-num">§ 06</span> Supply &amp; Logistics</h1>
+
+<p>Supply in SGS Overlord is the dominant Allied constraint. While the Germans must fight without air support and with uncertain reinforcements, the Allies must manage an enormous logistical apparatus that can strangle offensive operations if mismanaged. The Normandy campaign in history was nearly derailed not by German resistance but by Allied supply failure.</p>
+
+<h2 class="sub-title">How Supply Works</h2>
+<p>A unit is in supply if it can trace an unbroken path, clear of enemy units or enemy-controlled regions, back to a supply source or relay. The path is measured in regions, and the maximum range from source or relay to unit is five regions.</p>
+
+<ul class="guide-list">
+  <li><strong>Supply Sources:</strong> Ports and beaches designated on the map by the supply symbol (oil barrels). Initially, the Allied supply sources are the beach sectors (Mulberry harbours until Cherbourg is captured).</li>
+  <li><strong>Relay Points:</strong> Friendly towns, bridgeheads, fixed depots, and logistics units. Note that in v1.5, <strong>HQs no longer serve as supply relays</strong> — a significant change from earlier versions.</li>
+  <li><strong>Supply Range:</strong> Every five regions from a source or relay. Place supply wagons and depots forward as the front advances.</li>
+</ul>
+
+<div class="callout warning">
+  <div class="callout-title">v1.5 Supply Rule Change — Critical</div>
+  HQs no longer act as supply relays. Earlier versions allowed HQs to extend supply, enabling surrounded units to receive replacements. This has been removed. Supply lines must now trace strictly through towns, bridgeheads, and fixed depots. Plan your advance around actual relay points, not HQ positions.
+</div>
+
+<h2 class="sub-title">The Port Problem — Allied Priority #1</h2>
+<p>The Allies land across open beaches, not in ports. The two Mulberry artificial harbours — one American, one British — provide initial supply but are fragile (the American Mulberry was destroyed by a June storm). The capture of Cherbourg, the only deep-water port in Normandy, is therefore not optional. It is the logistical foundation of the entire campaign.</p>
+
+<div class="callout tip">
+  <div class="callout-title">Allied Strategic Tip</div>
+  Move quickly on Cherbourg in the first 4–5 turns. Every turn it remains in German hands is a turn where Allied supply capacity is restricted. Once Cherbourg is secured (even partially functional), your supply situation stabilises dramatically. The Race for Cherbourg scenario exists precisely because the real Allied commanders understood this.
+</div>
+
+<h2 class="sub-title">Effects of Being Out of Supply</h2>
+<ul class="guide-list">
+  <li>Unsupplied units cannot receive replacements.</li>
+  <li>Unsupplied units suffer movement penalties — they cannot move at full MP.</li>
+  <li>Unsupplied units suffer combat penalties in both attack and defence.</li>
+  <li>If a unit remains out of supply for multiple turns, it degrades further and may eventually be eliminated through attrition alone.</li>
+</ul>
+
+<p>For the Germans, isolating Allied spearheads that have outrun their supply lines is one of the most potent defensive tactics available. An isolated Allied armoured division is a liability, not an asset.</p>
+
+<h2 class="sub-title">German Supply</h2>
+<p>German supply is somewhat simpler than Allied supply — their sources are the road and rail network running from Germany through France. However, Allied air interdiction attacks targeting supply depots and road junctions can disrupt German logistics significantly, particularly in the later campaign when the Luftwaffe cannot provide any cover.</p>
+</section>
+
+<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="section" id="s07">
+<h1 class="section-title"><span class="sec-num">§ 07</span> Combat System</h1>
+
+<p>SGS Overlord uses the standard SGS combat system: a Battle Morale calculation that determines whether units rout, combined with life point attrition that eliminates units at zero LP. Understanding both the morale and attrition dimensions of combat is essential for planning attacks effectively.</p>
+
+<h2 class="sub-title">Battle Morale</h2>
+<p>Battle Morale is the sum of unit morale factors, leader bonuses, terrain modifiers, and any applicable card bonuses for all units engaged on one side of a battle. When Battle Morale reaches zero, the side routs. Routing units take Pursuit fire — additional losses before they can disengage.</p>
+
+<ul class="guide-list">
+  <li><strong>Morale modifiers cap at +4</strong> (v1.5 rule). Stacking attack and morale bonuses beyond +4 confers no additional benefit.</li>
+  <li>Terrain adds significant morale bonuses for defenders in bocage, forest, and fortified urban areas.</li>
+  <li>Leaders attached to a stack contribute their morale bonus to Battle Morale — their positioning in the right place at the right time can be decisive.</li>
+</ul>
+
+<h2 class="sub-title">Combat Resolution</h2>
+<ol class="guide-list">
+  <li>Attacker and defender commit units to the battle.</li>
+  <li>Both sides calculate ATK/DEF totals modified by terrain, leaders, and cards.</li>
+  <li>Dice are rolled against the combat factors; results determine life point losses to each side.</li>
+  <li>Battle Morale is checked. If either side's Battle Morale reaches zero, that side routs.</li>
+  <li>Pursuit fire applies against routed units.</li>
+  <li>If the attacker wins, eligible units may attempt a Breakthrough into the next region.</li>
+</ol>
+
+<h2 class="sub-title">Breakthrough</h2>
+<p>After a successful combat, units capable of breakthrough — primarily armour, mechanised units, leaders, and air units — may advance into an adjacent unoccupied region. Breakthrough can chain with experienced leaders: a sweeping Patton-led armoured advance can cover enormous ground in a single turn if breakthroughs chain successfully.</p>
+
+<div class="callout allied">
+  <div class="callout-title">Allied Combat Priority</div>
+  Do not attack into bocage frontally with armour. Attackers suffer heavily in bocage; wait until you can find an open flank or use artillery and air support to suppress the defender before committing armour. In the breakout phase, use armour for exploitation after the infantry has opened a gap — exactly as it happened historically.
+</div>
+
+<div class="callout german">
+  <div class="callout-title">German Combat Priority</div>
+  Fight defensively in terrain. A German infantry division in bocage can hold for several turns against forces much larger than itself. Reserve your Panzer and SS formations for concentrated counter-attacks at breakthrough points — do not use them to hold static defensive lines where they will simply absorb Allied artillery and air attacks.
+</div>
+
+<h2 class="sub-title">Siege Combat</h2>
+<p>Fortified cities (Cherbourg, Caen) use a siege mechanic. Sieges progress over multiple turns; the attacker must maintain the siege ring and use siege-capable units. Breaking the siege perimeter automatically ends the siege and resets progress. For Allied players besieging Cherbourg: maintain the perimeter with adequate forces and accept that capturing it will take 2–3 turns even with overwhelming force.</p>
+</section>
+
+<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="section" id="s08">
+<h1 class="section-title"><span class="sec-num">§ 08</span> Air &amp; Naval Power</h1>
+
+<p>Air and naval power are exclusively Allied advantages — one of the sharpest asymmetries in the game. Understanding how to use them effectively as the Allied player, and how to mitigate them as the German player, is critical for both sides.</p>
+
+<h2 class="sub-title">Allied Air Power</h2>
+<p>Allied air groups — representing combined RAF and USAAF tactical air forces — can be used in several ways each turn:</p>
+
+<ul class="guide-list">
+  <li><strong>Air Interdiction:</strong> Target German supply depots, road junctions, or rail lines to disrupt supply. An interdicted supply relay reduces its effective range, potentially cutting German formations off from replacement capacity.</li>
+  <li><strong>Close Air Support:</strong> Attach air units to a land battle for the turn. Provides an ATK/morale bonus to the attacker and a morale penalty to the defender. One of the most powerful offensive tools available to Allied players.</li>
+  <li><strong>Air Superiority:</strong> Air units can contest regions to reduce the effect of German ground operations.</li>
+</ul>
+
+<div class="callout warning">
+  <div class="callout-title">Weather Dependency — Allied Air</div>
+  All Allied air operations are weather-dependent. Poor weather grounds air units entirely. This is not a minor inconvenience — when the weather is bad, the German player has temporary tactical parity with the Allies in terms of combat modifiers. German players should plan aggressive operations during bad weather turns; Allied players should avoid major offensives unless the weather card has already been played.
+</div>
+
+<h2 class="sub-title">Allied Naval Support</h2>
+<p>Naval gunfire support represents the enormous Allied fleet offshore — battleships, cruisers, and destroyers providing fire support inland. Naval support has range limits and is most effective near the coast, but in the early turns it can provide devastating fire support to beachhead operations.</p>
+
+<ul class="guide-list">
+  <li>Naval support is available in coastal regions within range of the fire support zone.</li>
+  <li>Its value diminishes as the front moves inland beyond the effective bombardment range.</li>
+  <li>No German equivalent exists; the Kriegsmarine had no meaningful surface capability in the Channel by 1944.</li>
+</ul>
+
+<h2 class="sub-title">Luftwaffe Absence</h2>
+<p>The German player has no air units in the Normandy theatre. The Luftwaffe was decimated over the Reich in 1943–44, and what remained was prioritised for home defence against strategic bombing. This is not a game balance decision — it is historical reality. The German player must accept total Allied air dominance and work around it through terrain, timing (bad weather turns), and night operations encoded in card effects.</p>
+</section>
+
+<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="section" id="s09">
+<h1 class="section-title"><span class="sec-num">§ 09</span> Weather</h1>
+
+<p>Weather is one of SGS Overlord's most distinctive systems, and one of the most historically faithful. The Norman summer of 1944 was unusually poor — constant rain, low cloud, and storms repeatedly disrupted Allied operations. The famous storm of June 19–22 destroyed the American Mulberry harbour and severely damaged the British one, setting back the entire Allied logistics programme by several weeks.</p>
+
+<h2 class="sub-title">Weather Determination</h2>
+<p>Weather is determined each turn in the Weather Phase. The result affects that turn's entire operations. The possible states range from fine (full Allied air and naval capability) through overcast (partial air capability) to storm (all air and naval operations grounded).</p>
+
+<h2 class="sub-title">Effects by Weather State</h2>
+
+<table class="terrain-table">
+  <tr>
+    <th>Weather State</th>
+    <th>Allied Air</th>
+    <th>Naval Support</th>
+    <th>Movement</th>
+  </tr>
+  <tr>
+    <td><strong>Fine / Clear</strong></td>
+    <td>Full operations</td>
+    <td>Available</td>
+    <td>Normal</td>
+  </tr>
+  <tr>
+    <td><strong>Overcast / Rain</strong></td>
+    <td>Reduced (–1 to –2 effectiveness)</td>
+    <td>Reduced</td>
+    <td>Normal on roads; –1 MP off-road</td>
+  </tr>
+  <tr>
+    <td><strong>Storm</strong></td>
+    <td>Grounded — no air operations</td>
+    <td>Unavailable</td>
+    <td>Significant off-road penalties; river crossing restricted</td>
+  </tr>
+</table>
+
+<div class="callout german">
+  <div class="callout-title">German Strategic Tip — Weather Windows</div>
+  Storm turns are your best offensive opportunity. With Allied air grounded, the Germans can move armour in daylight without the catastrophic losses that normally attend column movement. If you have a prepared counterattack — for instance, a response to an Allied breakthrough — time it for bad weather if possible. Conversely, if the Allies have achieved a dangerous penetration, a storm turn may allow you to seal the breach before their air can exploit it.
+</div>
+
+<h2 class="sub-title">Cards and Weather</h2>
+<p>Both sides have cards that interact with weather. The Allies have cards to improve weather temporarily or extend fine conditions; the Germans have cards to call in storms or exploit bad weather. These are powerful cards and should generally be saved for critical moments rather than played routinely.</p>
+</section>
+
+<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="section" id="s10">
+<h1 class="section-title"><span class="sec-num">§ 10</span> Leaders</h1>
+
+<p>Leaders in SGS Overlord represent the senior commanders on both sides. They differ from standard combat units in that they contribute bonuses to combat, morale, and movement for all units they lead — they do not fight themselves but dramatically amplify the effectiveness of the formations they accompany.</p>
+
+<h2 class="sub-title">Leader Functions</h2>
+<ul class="guide-list">
+  <li><strong>Combat Bonus:</strong> Leaders add their ATK bonus to any attack they lead.</li>
+  <li><strong>Morale Bonus:</strong> Leader morale bonuses add to Battle Morale calculations.</li>
+  <li><strong>Movement Bonus (v1.5):</strong> In v1.5, HQs provide movement bonuses to units they accompany — a significant change making HQ positioning tactically relevant even after the supply relay function was removed.</li>
+  <li><strong>Breakthrough:</strong> Leaders capable of breakthrough can chain advance further than standard units after winning a battle.</li>
+</ul>
+
+<h2 class="sub-title">Key Allied Leaders</h2>
+
+<div class="leader-grid">
+  <div class="leader-card allied">
+    <div class="leader-name">General Dwight D. Eisenhower</div>
+    <div class="leader-role">Supreme Allied Commander, SHAEF</div>
+    <div class="leader-body">Strategic-level leader. Provides overall coordination bonuses and may be used to play certain high-level cards. Not a tactical battlefield commander.</div>
+  </div>
+  <div class="leader-card allied">
+    <div class="leader-name">General Bernard Montgomery</div>
+    <div class="leader-role">21st Army Group Commander</div>
+    <div class="leader-body">Commands all Allied ground forces in the early campaign. Good morale bonus; represents the deliberate, set-piece approach of British operations. Best used on the Caen sector.</div>
+  </div>
+  <div class="leader-card allied">
+    <div class="leader-name">General Omar Bradley</div>
+    <div class="leader-role">First U.S. Army / 12th Army Group</div>
+    <div class="leader-body">Solid all-round commander for the American sector. Methodical; best suited to the bocage breakthrough operations leading up to Cobra.</div>
+  </div>
+  <div class="leader-card allied">
+    <div class="leader-name">General George S. Patton</div>
+    <div class="leader-role">Third U.S. Army</div>
+    <div class="leader-body">Arrives with Third Army during the Cobra breakout. The highest ATK and breakthrough bonus of any Allied leader. Devastating in open country — chain breakthroughs with Patton and armour can cover enormous ground in a single turn. Do not let him sit idle.</div>
+  </div>
+  <div class="leader-card allied">
+    <div class="leader-name">General Miles Dempsey</div>
+    <div class="leader-role">British Second Army</div>
+    <div class="leader-body">British sector commander. Good morale and defensive bonuses. Best in the set-piece operations around Caen (Operations Epsom, Goodwood, Totalize).</div>
+  </div>
+</div>
+
+<h2 class="sub-title">Key German Leaders</h2>
+
+<div class="leader-grid">
+  <div class="leader-card german">
+    <div class="leader-name">Generalfeldmarschall Erwin Rommel</div>
+    <div class="leader-role">Army Group B Commander</div>
+    <div class="leader-body">The German's most valuable leader. Excellent across all factors: ATK, DEF, morale, and movement bonuses. Best used as a roving commander — move him to threatened sectors to stiffen resistance. Historically wounded in July; check for events that may remove him from play.</div>
+  </div>
+  <div class="leader-card german">
+    <div class="leader-name">General Paul Hausser</div>
+    <div class="leader-role">7th Army / II SS Panzer Corps</div>
+    <div class="leader-body">Aggressive SS commander; high ATK bonus. Best used leading Waffen-SS Panzer counterattacks. Less suitable for static defensive command.</div>
+  </div>
+  <div class="leader-card german">
+    <div class="leader-name">General Sepp Dietrich</div>
+    <div class="leader-role">I SS Panzer Corps</div>
+    <div class="leader-body">Commands the elite 1st SS Panzer Corps on the British-Canadian front. Solid DEF bonus; excellent morale multiplier for SS formations.</div>
+  </div>
+  <div class="leader-card german">
+    <div class="leader-name">General Heinrich von Lüttwitz</div>
+    <div class="leader-role">2nd Panzer Division</div>
+    <div class="leader-body">Aggressive divisional commander with good ATK bonus. Useful for leading panzer counterattacks when Rommel is committed elsewhere.</div>
+  </div>
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">Leader Management Tip</div>
+  Leaders are not inexhaustible. Both sides have event cards that can wound or temporarily remove leaders from play. Keep leaders in relatively safe positions when not actively needed — a leader lost in a failed attack is a strategic catastrophe.
+</div>
+</section>
+
+<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="section" id="s11">
+<h1 class="section-title"><span class="sec-num">§ 11</span> Cards &amp; Events</h1>
+
+<p>Both sides draw cards each turn. Cards may be played as strategic actions, combat enhancements, or event triggers. Managing your hand — knowing when to play a card for immediate effect versus holding it for a more critical moment — is one of the skill-differentiating elements of SGS Overlord.</p>
+
+<h2 class="sub-title">Types of Cards</h2>
+<ul class="guide-list">
+  <li><strong>Strategic Cards:</strong> Played in the Cards Phase. Effects include improving reinforcement timing, adjusting supply capacity, or activating historical events (e.g. the Ultra intelligence intercepts that forewarned the Allies of Operation Lüttich).</li>
+  <li><strong>Movement Cards:</strong> Played during the Movement Phase. Allows additional movement for designated units or bypasses terrain restrictions for one turn.</li>
+  <li><strong>Combat Cards:</strong> Played during battle resolution. Adds ATK, DEF, or morale bonuses to a specific battle.</li>
+  <li><strong>Event Cards:</strong> Trigger specific historical events — good or bad for the side that holds them. Some events fire automatically based on game state.</li>
+  <li><strong>Weather Cards:</strong> Modify weather determination for the current or next turn.</li>
+</ul>
+
+<h2 class="sub-title">Allied Card Priorities</h2>
+<ul class="guide-list">
+  <li>Hold at least one close air support card for critical attacks — the bonus can turn a marginal assault into a certain victory.</li>
+  <li>Play supply cards before major offensives that will extend your supply lines.</li>
+  <li>The Ultra card — if available — should be held until you know the German counterattack axis (or played immediately before Operation Lüttich turns to forearm yourself against the Mortain attack).</li>
+</ul>
+
+<h2 class="sub-title">German Card Priorities</h2>
+<ul class="guide-list">
+  <li>Storm weather cards are your most valuable strategic asset. Hold them for turns when you need to counterattack or escape encirclement.</li>
+  <li>Play reinforcement-accelerating cards immediately when available — German reinforcement timing is random and unpredictable, and getting your Panzer divisions earlier can be decisive.</li>
+  <li>Anti-air cards should be played during Allied air interdiction turns to reduce the effect on your supply network.</li>
+</ul>
+
+<h2 class="sub-title">Automatic Events</h2>
+<p>Certain events fire automatically when game conditions are met, regardless of cards. The most significant include:</p>
+<ul class="guide-list">
+  <li><strong>Operation Lüttich:</strong> The German Mortain counterattack event — triggers in the Mortain/Falaise scenario and affects the Grand Campaign if conditions are met.</li>
+  <li><strong>Mulberry Harbour Damage:</strong> The June storm event may damage or destroy Allied Mulberry capacity, affecting supply in early turns.</li>
+  <li><strong>German Reinforcement Delays:</strong> Historical command indecision events may delay German Panzer reinforcements, exactly as Rommel experienced on D-Day when OKW refused to release the armoured reserves.</li>
+</ul>
+</section>
+
+<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="section" id="s12">
+<h1 class="section-title"><span class="sec-num">§ 12</span> Victory Conditions</h1>
+
+<p>Victory conditions in SGS Overlord vary by scenario. Most scenarios use a Victory Point system based on control of key locations; the Mortain/Falaise scenario uses instant-win conditions. Understanding exactly what wins or loses each scenario is essential — many beginners focus on destroying enemy units when controlling objective towns would have been more efficient.</p>
+
+<h2 class="sub-title">Standard VP Victory Conditions</h2>
+<p>Most scenarios award VPs for:</p>
+<ul class="guide-list">
+  <li><strong>Control of Named Towns:</strong> Key locations (Caen, Cherbourg, Saint-Lô, Avranches, Falaise) award VPs each turn they are held. High-value towns are obvious priorities for both sides.</li>
+  <li><strong>Elimination of Enemy Units:</strong> Minor VP awards for destroying enemy formations.</li>
+  <li><strong>Holding the Beachhead (German):</strong> The German player gains VP each turn the Allied breakout is delayed below certain thresholds.</li>
+</ul>
+
+<h2 class="sub-title">Mortain/Falaise Instant-Win Conditions</h2>
+<p>This scenario is unique — no VP accumulation. Instead:</p>
+<ul class="guide-list">
+  <li><strong>German instant win:</strong> Capture Avranches before the scenario ends. This cuts the Patton corridor and represents a successful Lüttich counteroffensive.</li>
+  <li><strong>Allied instant win:</strong> Simultaneously occupy Le Mans, Argentan, and Falaise — closing the Falaise Pocket and encircling the German armour.</li>
+  <li><strong>Draw:</strong> Neither condition met by turn 6 end.</li>
+</ul>
+
+<div class="callout warning">
+  <div class="callout-title">Mortain/Falaise Balance Note</div>
+  The Allies are the stronger side in this scenario, but the Germans play second — meaning they can respond to Allied moves before the turn ends. A compromised Allied position can sometimes be reversed in extremis by an unexpected German lunge. This is the most dynamically unpredictable scenario in the game.
+</div>
+
+<h2 class="sub-title">Grand Campaign Victory</h2>
+<p>In the Grand Campaign (30 turns), the Allied player must push the Germans back to and beyond the Seine by the end of August. The German player wins by preventing this — holding the Normandy position long enough that the Allied schedule slips catastrophically. Historical outcome is an Allied victory, but only by the narrowest of margins; a skilled German defence can force a draw or even a German VP victory by bleeding Allied forces through the bocage for two months and preventing the clean breakout that historically occurred.</p>
+</section>
+
+<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="section" id="s13">
+<h1 class="section-title"><span class="sec-num">§ 13</span> Scenario Guide</h1>
+
+<p>SGS Overlord v1.5 includes six scenarios ranging from a 3-turn D-Day sprint to the full 30-turn Grand Campaign. Each scenario focuses on a different phase of the Normandy campaign and offers distinct strategic challenges.</p>
+
+<div class="scenario-grid">
+  <div class="scenario-row header">
+    <div>Scenario Name</div>
+    <div>Dates</div>
+    <div>Turns</div>
+  </div>
+  <div class="scenario-row">
+    <div>
+      <div class="scenario-name">Grand Campaign</div>
+      <div class="scenario-date">The complete Normandy campaign from D-Day to the Seine. Both sides field their full forces. The longest and most complete experience.</div>
+    </div>
+    <div class="scenario-date">Jun 6 – Sep 3, 1944</div>
+    <div class="scenario-turns">30 turns</div>
+  </div>
+  <div class="scenario-row">
+    <div>
+      <div class="scenario-name">The Landings</div>
+      <div class="scenario-date">Covers the first week: D-Day beaches, initial breakout attempts. Can the Allies seize their D-Day objectives? Can the Germans contain the beachheads?</div>
+    </div>
+    <div class="scenario-date">Jun 6–15, 1944</div>
+    <div class="scenario-turns">3 turns</div>
+  </div>
+  <div class="scenario-row">
+    <div>
+      <div class="scenario-name">Battle for Caen</div>
+      <div class="scenario-date">The prolonged British-Canadian struggle for Caen after the failure to seize it on D-Day. German armour massed on the eastern flank. Attritional and brutally difficult.</div>
+    </div>
+    <div class="scenario-date">Jun 7 – Jul 19, 1944</div>
+    <div class="scenario-turns">14 turns</div>
+  </div>
+  <div class="scenario-row">
+    <div>
+      <div class="scenario-name">Race for Cherbourg</div>
+      <div class="scenario-date">The American drive to capture the deep-water port. Essential Allied supply priority. Germans try to delay long enough to demolish the port facilities.</div>
+    </div>
+    <div class="scenario-date">Jun 6–26, 1944</div>
+    <div class="scenario-turns">7 turns</div>
+  </div>
+  <div class="scenario-row">
+    <div>
+      <div class="scenario-name">Operation Cobra</div>
+      <div class="scenario-date">The American breakout at Saint-Lô/Avranches that shattered the German front and unleashed Patton. Dynamic and fast-moving once the front cracks.</div>
+    </div>
+    <div class="scenario-date">Jul 25 – Aug 3, 1944</div>
+    <div class="scenario-turns">3 turns</div>
+  </div>
+  <div class="scenario-row">
+    <div>
+      <div class="scenario-name">Mortain / Falaise</div>
+      <div class="scenario-date">NEW in v1.5. The German Lüttich counteroffensive and the formation of the Falaise Pocket. Instant-win conditions only — no VP accumulation. Highly competitive.</div>
+    </div>
+    <div class="scenario-date">Aug 5–22, 1944</div>
+    <div class="scenario-turns">6 turns</div>
+  </div>
+</div>
+
+<h2 class="sub-title">Recommended Play Order for New Players</h2>
+<ol class="guide-list">
+  <li><strong>Race for Cherbourg (7 turns)</strong> — Short enough to learn the system; focused objective makes it easy to understand what you're trying to achieve.</li>
+  <li><strong>Operation Cobra (3 turns)</strong> — Fast, dynamic, showcases the breakout mechanics and Patton's power.</li>
+  <li><strong>Battle for Caen (14 turns)</strong> — Teaches attrition, supply management, and the distinctive difficulty of the British-Canadian sector.</li>
+  <li><strong>Grand Campaign (30 turns)</strong> — Only once you understand each phase independently.</li>
+</ol>
+</section>
+
+<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="section" id="s14">
+<h1 class="section-title"><span class="sec-num">§ 14</span> Allied Strategy</h1>
+
+<p>The Allied player has by far the hardest strategic challenge in SGS Overlord. You have material supremacy, air power, and naval support — but the terrain fights against you, your supply is fragile, your advance must be managed on multiple axes simultaneously, and you are playing against a clock. The historical Allies expected to break out of Normandy in 30 days; it took 60. Your goal as the Allied player is to avoid that trap.</p>
+
+<h2 class="sub-title">The Core Allied Strategic Problem</h2>
+<p>You must accomplish three things simultaneously: secure your supply (capture Cherbourg), fix the German armour on the eastern flank (Caen sector), and break through on the western flank (Saint-Lô sector). If any one of these fails, the others suffer. The interdependence of these three objectives is what makes the Allied game genuinely difficult.</p>
+
+<div class="strat-phase allied">
+  <div class="strat-phase-title">Phase 1: Consolidation — Turns 1–5 (June 6–21)</div>
+  <p><strong>Objectives:</strong> Link the five beachheads; seize Cherbourg; establish a viable supply base; prevent German counterattack from reaching the beaches.</p>
+  <p>D-Day is managed by the scenario setup for the Grand Campaign — your first real decisions come on Turn 2. Move immediately on Cherbourg with the VII Corps and two armoured units. Do not slow down; the longer Cherbourg holds out the worse your supply situation becomes.</p>
+  <p>On the British-Canadian flank, push toward Caen with available forces but do not sacrifice divisions in a reckless frontal assault against dug-in Panzer divisions. Apply pressure rather than committing to a breakthrough — you are fixing German armour, not necessarily capturing terrain.</p>
+  <p>Watch the weather. If a storm turn arrives, do not schedule a major offensive — your air support will be unavailable and your supply wagons will be stuck in traffic on ruined Norman roads.</p>
+</div>
+
+<div class="strat-phase allied">
+  <div class="strat-phase-title">Phase 2: The Bocage Grind — Turns 6–15 (June 21 – July 25)</div>
+  <p><strong>Objectives:</strong> Capture Caen; advance American forces to the Saint-Lô line; use air interdiction to disrupt German supply; build up forces for Cobra.</p>
+  <p>This is the most frustrating phase of the Allied game, and the one where inexperienced players make the most mistakes. The bocage resists all frontal attacks with heavy losses. Your job here is not to break through — it is to maintain relentless pressure that prevents the Germans from withdrawing and regrouping.</p>
+  <p>Use air interdiction aggressively in this phase. Target German supply depots rather than frontline units — disrupted supply means disrupted replacements, and German formations degraded by attrition cannot hold the bocage as effectively.</p>
+  <p>Caen is the key VP objective. Mount Operations Epsom and Goodwood with concentrated British and Canadian forces, using close air support cards on the main assault axes. Accept that you will take losses; the objective is to draw and destroy Panzer divisions, not just capture geography.</p>
+</div>
+
+<div class="strat-phase allied">
+  <div class="strat-phase-title">Phase 3: Cobra and Exploitation — Turns 16–25 (July 25 – August 18)</div>
+  <p><strong>Objectives:</strong> Execute Operation Cobra; deploy Patton; drive for the Seine and the encirclement of German forces in the Falaise Pocket.</p>
+  <p>Operation Cobra begins with a carpet bombing attack (represented as a card/event) followed by American infantry punching through the weakened German front at Saint-Lô. Once the gap is open, deploy Patton's Third Army for exploitation — do not use Patton in the bocage breakthrough itself, where his talents are wasted. Patton belongs in open country chaining breakthroughs.</p>
+  <p>The Falaise encirclement requires coordinating American forces from the south with British and Canadian forces from the north. The Polish Armoured Division is your key northern blocking force at Falaise. Timing is everything — close the pocket before the Germans can escape, but do not over-extend the encircling forces so that a German relief column breaks through.</p>
+</div>
+
+<h2 class="sub-title">Allied Build Order Priorities</h2>
+<ol class="guide-list">
+  <li>Cherbourg capture — before anything else, this secures your supply foundation.</li>
+  <li>Link the beachheads — a separated beachhead is a vulnerable beachhead.</li>
+  <li>Forward supply depots — as you advance, pre-position supply before the push, not after.</li>
+  <li>Caen — fix the German armour; accept that it may take 10–12 turns, not 3.</li>
+  <li>Cobra preparation — save close air support cards and fresh infantry divisions for the breakthrough.</li>
+</ol>
+
+<h2 class="sub-title">Common Allied Mistakes</h2>
+<ul class="guide-list">
+  <li><strong>Attacking bocage with armour:</strong> Armour loses its offensive edge entirely in bocage. Use infantry to clear bocage; use armour for exploitation once the front is open.</li>
+  <li><strong>Ignoring supply:</strong> Allied supply failures historically halted armies cold. Don't let the front outrun your depots.</li>
+  <li><strong>Violating Allied zone restrictions:</strong> Sending Canadian/I Corps forces into the American zone not only violates the rules but destroys your command structure.</li>
+  <li><strong>Wasting Patton in bocage:</strong> Patton's value is in open-country exploitation. If he arrives before Cobra, keep him in reserve.</li>
+  <li><strong>Attacking in bad weather:</strong> Every Allied offensive should be planned around good weather turns when air support is available.</li>
+</ul>
+</section>
+
+<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="section" id="s15">
+<h1 class="section-title"><span class="sec-num">§ 15</span> German Strategy</h1>
+
+<p>The German player faces a fundamentally different strategic problem: you cannot win by attacking. Your goal is to delay, attrite, and exhaust the Allied forces long enough to score VP for time bought and objectives held. In the Grand Campaign, a German victory requires denying the Allies their breakout timeline — if the Allies are still fighting in the bocage when the scenario clock runs out, Germany wins.</p>
+
+<h2 class="sub-title">The Core German Strategic Problem</h2>
+<p>Your two premium assets — your Panzer/SS divisions and the bocage terrain — are in tension with each other. Bocage is perfect for infantry defence; Panzers are wasted in static bocage attrition. But if you hold Panzers in reserve for counterattacks, the Allied infantry will grind forward relentlessly. The art of the German game is positioning your armour for decisive counterattacks while keeping your infantry in the best defensive terrain.</p>
+
+<div class="strat-phase german">
+  <div class="strat-phase-title">Phase 1: D-Day Crisis Management — Turns 1–4 (June 6–18)</div>
+  <p><strong>Objectives:</strong> Do not let the beachheads link; delay Cherbourg as long as possible; rush Panzer reserves to the front — particularly toward Caen — before Allied air makes movement impossible.</p>
+  <p>This is the phase where the historical Germans failed most catastrophically. OKW refused to release the Panzer reserves on D-Day, and they arrived piecemeal throughout June instead of as a concentrated force. In the game, event cards may replicate this delay — if the reserves are held back, use them as a coordinated mass when they do arrive, not in dribs and drabs.</p>
+  <p>Pull coastal garrison divisions back from untenable positions. The Atlantic Wall has been breached; keeping units on the beaches where they will be destroyed by naval gunfire accomplishes nothing. Fall back to the first defensible bocage line.</p>
+</div>
+
+<div class="strat-phase german">
+  <div class="strat-phase-title">Phase 2: Defensive Attrition — Turns 5–18 (June 21 – July 21)</div>
+  <p><strong>Objectives:</strong> Hold the bocage line; concentrate Panzer reserves on the Caen front to face British-Canadian armour; use storm weather turns for limited counterattacks; bleed Allied formations in the hedgerows.</p>
+  <p>Your infantry divisions in bocage can hold for a surprisingly long time against much larger forces. Fight from bocage to bocage, trading space grudgingly. Each Allied division you damage in the bocage is one fewer fresh division available for Cobra.</p>
+  <p>Concentrate your Waffen-SS Panzer divisions on the Caen plain, where they can operate in terrain suited to armour. A single SS Panzer division in open country can defeat multiple Allied armoured brigades in a single turn if well led. Do not send these formations into the bocage grinder.</p>
+  <p>Rommel is your most important asset. Move him constantly to threatened sectors. A stack with Rommel can hold terrain that would otherwise fall immediately.</p>
+</div>
+
+<div class="strat-phase german">
+  <div class="strat-phase-title">Phase 3: Cobra Response — Turns 19–25 (July 25 – August 18)</div>
+  <p><strong>Objectives:</strong> Seal the Cobra breach if possible; if not, execute a fighting withdrawal to the Seine to preserve your forces; avoid the Falaise Pocket.</p>
+  <p>Once Cobra cracks the front, you face a fundamental choice: counterattack (as Hitler ordered historically, with catastrophic results) or withdraw. The historical counterattack toward Avranches — Operation Lüttich — drove directly into the Allied encirclement. In the game, this can succeed only if you have concentrated armoured strength and a storm weather turn available.</p>
+  <p>If you cannot seal the breach, your priority is preserving your Panzer formations for the defence of the Seine. Every Panzer division that escapes Normandy is one that can fight on the Westwall. Do not sacrifice them in a futile stand when a fighting withdrawal is possible.</p>
+</div>
+
+<h2 class="sub-title">German Build Order Priorities</h2>
+<ol class="guide-list">
+  <li>Concentrate SS Panzer divisions on the Caen flank as quickly as possible.</li>
+  <li>Maintain infantry in bocage on the western flank — they don't need Panzers to hold hedgerows.</li>
+  <li>Replace Panzer life points aggressively — a 12th SS Hitlerjugend division at 3 LP is not worth two fresh infantry divisions.</li>
+  <li>Save storm weather cards for critical counterattack turns.</li>
+  <li>Use Rommel constantly as a roving tactical commander.</li>
+</ol>
+
+<h2 class="sub-title">Common German Mistakes</h2>
+<ul class="guide-list">
+  <li><strong>Committing Panzers to bocage defence:</strong> The bocage destroys everyone; Panzers lose their offensive edge and simply absorb attrition. Keep them for counterattacks.</li>
+  <li><strong>Piecemeal counterattacks:</strong> The Germans failed historically by committing Panzer divisions one at a time. In the game, mass 3–4 Panzer/SS divisions for a concentrated blow; never attack with one at a time.</li>
+  <li><strong>Ignoring supply lines:</strong> Even with modest supply needs, German formations cut off from supply depots degrade rapidly. Allied air interdiction can isolate forward German units — keep supply wagons forward.</li>
+  <li><strong>Executing Lüttich without storm weather:</strong> The Mortain counterattack in clear weather, with full Allied air available, is a formula for losing your best Panzer divisions.</li>
+  <li><strong>Defending every village:</strong> Some positions must be abandoned. Concentrated defence of key terrain (Caen, Saint-Lô, Avranches) is more valuable than dispersed defence of every crossroads village.</li>
+</ul>
+</section>
+
+<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="section" id="s16">
+<h1 class="section-title"><span class="sec-num">§ 16</span> PBEM &amp; Multiplayer</h1>
+
+<p>SGS Overlord supports <strong>Play By Email (PBEM)</strong> multiplayer for two human players. The PBEM system allows each player to take their turn asynchronously — essential for a game that can stretch to 30 turns in the Grand Campaign.</p>
+
+<h2 class="sub-title">How PBEM Works</h2>
+<ol class="guide-list">
+  <li>Player 1 (typically Allied) takes their turn, saves the game file, and sends it to Player 2.</li>
+  <li>Player 2 (German) receives the file, loads it, takes their turn, and returns the file.</li>
+  <li>This continues until the scenario ends or a victory condition is triggered.</li>
+</ol>
+
+<p>Full PBEM setup instructions are available at the official site: <a href="https://strategygamestudio.com/sgs-rules/multiplayer/sgs-pbem-instructions/" target="_blank" rel="noreferrer">strategygamestudio.com/sgs-rules/multiplayer</a></p>
+
+<h2 class="sub-title">SGS Arena</h2>
+<p>Strategy Game Studio also offers SGS Arena, an online matchmaking and game-tracking service for competitive play. This provides a structured environment for ladder play and tournament matches.</p>
+
+<h2 class="sub-title">PBEM Strategy Differences</h2>
+<ul class="guide-list">
+  <li>Fog of War becomes dramatically more important in PBEM. Without the ability to watch your opponent's movements, intelligence — through card plays, advance reconnaissance moves, and positional inference — becomes critical.</li>
+  <li>Write strategic notes between sessions. A 30-turn Grand Campaign played over 60 days requires remembering your plans; notes ensure consistency.</li>
+  <li>Agree on a turn cadence before starting a Grand Campaign — a reasonable expectation is one turn exchange every 24–48 hours.</li>
+  <li>Weather card holding is more powerful in PBEM because your opponent cannot see your hand. A German player holding storm cards can spring them as a surprise on turns where the Allied player has committed to a major offensive.</li>
+</ul>
+
+<div class="callout tip">
+  <div class="callout-title">PBEM Opening Move Tip — Allied Player</div>
+  Your Turn 1 movements set the template for the entire early campaign. The choices you make in the first PBEM exchange — how aggressively to move on Cherbourg, how strongly to push toward Caen, how to position supply wagons — are visible to the German player who will respond accordingly. Consider making a secondary deceptive move even in Turn 1 to obscure your main axis of advance.
+</div>
+</section>
+
+<div class="ornamental-divider">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="section" id="s17">
+<h1 class="section-title"><span class="sec-num">§ 17</span> Glossary</h1>
+
+<div class="glossary-grid">
+  <div class="gloss-item"><div class="gloss-term">Allied Zone</div><div class="gloss-def">Operational sector assigned to specific Allied national forces; Canadian and I Corps forces restricted to their zone.</div></div>
+  <div class="gloss-item"><div class="gloss-term">ATK</div><div class="gloss-def">Attack factor; governs offensive combat die rolls.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Battle Morale</div><div class="gloss-def">Sum of unit morale + leader bonus + terrain + card modifiers; governs routing. Cap of +4 on cumulative bonuses in v1.5.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Bocage</div><div class="gloss-def">Norman hedgerow terrain; 2–3 MP movement cost; +2 to +3 DEF bonus; cancels armour mobility advantage.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Breakthrough</div><div class="gloss-def">Post-victory advance into adjacent region by eligible units (armour, mechanised, leaders); can chain with leaders.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Carpet Bombing</div><div class="gloss-def">Event card / auto-event representing massed strategic bombing before Operation Cobra; suppresses German defenders in target regions.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Close Air Support</div><div class="gloss-def">Allied air units attached to a land battle; provides ATK and morale bonus to attacker, morale penalty to defender.</div></div>
+  <div class="gloss-item"><div class="gloss-term">DEF</div><div class="gloss-def">Defense factor; governs defensive combat die rolls; modified significantly by terrain.</div></div>
+  <div class="gloss-item"><div class="gloss-term">EVA</div><div class="gloss-def">Not applicable in this theatre; see Afrika Korps/Taipings guides for EVA references.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Falaise Pocket</div><div class="gloss-def">Allied encirclement of German forces in August 1944; the primary Allied win condition in the Mortain/Falaise scenario.</div></div>
+  <div class="gloss-item"><div class="gloss-term">FoW</div><div class="gloss-def">Fog of War; enemy units not revealed unless adjacent or in range of reconnaissance.</div></div>
+  <div class="gloss-item"><div class="gloss-term">HQ</div><div class="gloss-def">Headquarters unit; provides movement bonus to attached units in v1.5. No longer acts as supply relay (changed in v1.5).</div></div>
+  <div class="gloss-item"><div class="gloss-term">Interdiction</div><div class="gloss-def">Allied air mission targeting German supply depots or road junctions; disrupts supply relay effectiveness.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Life Points</div><div class="gloss-def">Unit strength; at 0 LP the unit is eliminated. Each replacement restores a unit to full LP.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Lüttich</div><div class="gloss-def">Operation Lüttich; German counteroffensive toward Avranches in August 1944; instant-win German condition in Mortain/Falaise scenario.</div></div>
+  <div class="gloss-item"><div class="gloss-term">MOV / MP</div><div class="gloss-def">Movement points; spent crossing region connections per phase. HQs provide MP bonuses to adjacent units in v1.5.</div></div>
+  <div class="gloss-item"><div class="gloss-term">MOR</div><div class="gloss-def">Morale factor; contributes to Battle Morale. High-morale units (SS, paratroopers) are hard to rout.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Mulberry</div><div class="gloss-def">Artificial harbour; Allied temporary supply source until Cherbourg is captured. Vulnerable to storm events.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Naval Support</div><div class="gloss-def">Allied coastal bombardment support; available within range of the offshore fleet; unavailable in storm weather.</div></div>
+  <div class="gloss-item"><div class="gloss-term">PBEM</div><div class="gloss-def">Play By Email; asynchronous 2-player multiplayer mode.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Pursuit</div><div class="gloss-def">Free round of fire against routed units after a rout result; can be devastating against weakened formations.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Relay (Supply)</div><div class="gloss-def">Friendly structure (city, airport, port, fort) or logistical unit extending supply up to five regions. HQs no longer relay in v1.5.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Rout</div><div class="gloss-def">Catastrophic combat failure; battle ends, routed units take pursuit fire before withdrawing.</div></div>
+  <div class="gloss-item"><div class="gloss-term">SGS</div><div class="gloss-def">Strategy Game Studio; the game engine and developer name. Overlord uses SGS Engine v1.5.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Siege</div><div class="gloss-def">Multi-turn reduction of a fortified city (Cherbourg, Caen); attacker must maintain encirclement each turn.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Supply Range</div><div class="gloss-def">Maximum five regions from a source or relay in v1.5. Beyond this range, units are unsupplied.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Ultra</div><div class="gloss-def">Card representing Allied signals intelligence; can reveal German intentions or provide combat bonus at critical moment.</div></div>
+  <div class="gloss-item"><div class="gloss-term">VP</div><div class="gloss-def">Victory Points; accumulated per scenario objectives by holding key towns and eliminating enemy units.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Waffen-SS</div><div class="gloss-def">Elite German formations (1st, 2nd, 9th, 10th, 12th SS Panzer Divisions); highest combat values in the German order of battle.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Weather</div><div class="gloss-def">Determined each turn; governs Allied air and naval capability. Storm grounds all Allied air; critical window for German operations.</div></div>
+</div>
+
+</section>
+
+</div><!-- /content -->
+
+<footer id="footer">
+  SGS Overlord Strategy Guide &nbsp;·&nbsp; Based on SGS Engine v1.5 &nbsp;·&nbsp; Avalon Digital / Strategy Game Studio &nbsp;·&nbsp; Community Resource
+</footer>
+
+</div><!-- /main -->
+
+<a id="back-top" href="#hero" title="Back to top">↑</a>
+
+<script>
+const bar     = document.getElementById('progress-bar');
+const backTop = document.getElementById('back-top');
+const toggle  = document.getElementById('sidebar-toggle');
+const sidebar = document.getElementById('sidebar');
+
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY;
+  const total    = document.documentElement.scrollHeight - window.innerHeight;
+  bar.style.transform = `scaleX(${scrolled / total})`;
+  backTop.classList.toggle('visible', scrolled > 400);
+}, { passive: true });
+
+// Active nav highlight
+const sections = document.querySelectorAll('.section[id]');
+const navItems = document.querySelectorAll('.nav-item');
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navItems.forEach(n => n.classList.remove('active'));
+      const a = document.querySelector(`.nav-item[href="#${e.target.id}"]`);
+      if (a) {
+        a.classList.add('active');
+        a.scrollIntoView({ block: 'nearest' });
+      }
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+
+sections.forEach(s => observer.observe(s));
+
+// Mobile toggle
+toggle.addEventListener('click', () => {
+  sidebar.classList.toggle('open');
+});
+
+navItems.forEach(item => {
+  item.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+  });
+});
+
+// Section stagger
+document.querySelectorAll('.section').forEach((s, i) => {
+  s.style.animationDelay = `${i * 0.04}s`;
+});
+</script>
+</body>
+</html>

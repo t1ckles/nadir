@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SGS Afrika Korps — Comprehensive Strategy Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1410;--parchment:#f5efe4;--gold:#c9943a;--gold-dark:#8b6420;--gold-pale:#f0d9a8;
+  --mid:#4a3f32;--light:#f9f4ec;--border:rgba(201,148,58,0.3);
+  /* Desert palette */
+  --sand:#5a4a20;--sand-pale:#f5edcc;--sand-border:rgba(90,74,32,0.35);
+  --khaki:#6b5a30;--khaki-bg:#191208;
+  /* Axis — feldgrau with desert tint */
+  --axis:#3d3820;--axis-pale:#edeadc;--axis-border:rgba(61,56,32,0.38);
+  /* Allied — imperial crimson-tan */
+  --allied:#6b2020;--allied-pale:#f5e4e4;--allied-border:rgba(107,32,32,0.38);
+  /* Warning/tip */
+  --warn-bg:#f5edda;--tip-bg:#edf5e4;
+  --font-head:'Cinzel','Times New Roman',serif;
+  --font-body:'Crimson Pro','Georgia',serif;
+  --sidebar-w:280px;
+}
+html{scroll-behavior:smooth;font-size:17px}
+body{background:var(--parchment);color:var(--ink);font-family:var(--font-body);line-height:1.75;display:flex;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.5}
+a{color:inherit;text-decoration:none}button{cursor:pointer;font-family:inherit}
+#progress-bar{position:fixed;top:0;left:var(--sidebar-w);right:0;height:3px;background:var(--gold);transform-origin:left;transform:scaleX(0);z-index:500;transition:transform 0.1s linear}
+#sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--khaki-bg);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;border-right:2px solid var(--gold-dark);display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--gold-dark) var(--khaki-bg)}
+#sidebar-header{padding:28px 20px 20px;border-bottom:1px solid rgba(201,148,58,0.25);background:linear-gradient(180deg,#0d0a04 0%,var(--khaki-bg) 100%)}
+#sidebar-title{font-family:var(--font-head);font-size:1rem;font-weight:900;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;line-height:1.3}
+#sidebar-sub{font-family:var(--font-body);font-size:0.72rem;color:rgba(255,255,255,0.45);margin-top:6px;letter-spacing:0.05em;font-style:italic}
+#sidebar-nav{padding:12px 0 40px;flex:1}
+.nav-section{padding:10px 20px 4px;font-family:var(--font-head);font-size:0.58rem;letter-spacing:0.2em;color:var(--gold-dark);text-transform:uppercase;margin-top:8px}
+.nav-item{display:block;padding:7px 20px 7px 28px;font-family:var(--font-body);font-size:0.82rem;color:rgba(245,239,228,0.72);text-decoration:none;border-left:2px solid transparent;transition:all 0.18s ease;line-height:1.35;position:relative}
+.nav-item::before{content:'›';position:absolute;left:14px;top:7px;color:var(--gold-dark);opacity:0;transition:opacity 0.15s}
+.nav-item:hover,.nav-item.active{color:var(--gold-pale);border-left-color:var(--gold);background:rgba(201,148,58,0.08);padding-left:30px}
+.nav-item:hover::before,.nav-item.active::before{opacity:1}
+#sidebar-toggle{display:none;position:fixed;top:12px;left:12px;z-index:200;background:var(--khaki-bg);border:1px solid var(--gold-dark);color:var(--gold);font-size:1.2rem;padding:6px 10px;cursor:pointer;border-radius:3px}
+#main{margin-left:var(--sidebar-w);flex:1;min-width:0}
+#hero{background:linear-gradient(160deg,#100c04 0%,#2a2010 35%,#1a0a04 70%,#201408 100%);min-height:440px;display:flex;flex-direction:column;justify-content:center;padding:80px 64px 64px;position:relative;overflow:hidden;border-bottom:3px solid var(--gold-dark)}
+#hero::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(-55deg,transparent,transparent 40px,rgba(201,148,58,0.04) 40px,rgba(201,148,58,0.04) 41px),radial-gradient(ellipse at 75% 50%,rgba(90,74,32,0.08) 0%,transparent 60%)}
+#hero::after{content:'';position:absolute;bottom:0;left:64px;right:64px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.hero-eyebrow{font-family:var(--font-head);font-size:0.72rem;letter-spacing:0.28em;color:var(--gold-dark);text-transform:uppercase;margin-bottom:16px;position:relative}
+.hero-title{font-family:var(--font-head);font-size:clamp(2.2rem,5vw,3.4rem);font-weight:900;color:var(--parchment);letter-spacing:0.04em;text-transform:uppercase;line-height:1.05;margin-bottom:8px;position:relative}
+.hero-subtitle{font-family:var(--font-body);font-size:1.1rem;font-style:italic;color:rgba(240,217,168,0.75);font-weight:300;margin-bottom:28px;position:relative}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;position:relative}
+.hero-tag{font-family:var(--font-head);font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-pale);border:1px solid rgba(201,148,58,0.4);padding:4px 10px;background:rgba(201,148,58,0.08)}
+#content{padding:0 64px 80px;max-width:960px}
+.section{padding:56px 0 8px;animation:fadeInUp 0.5s ease both}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-num{display:inline-block;font-family:var(--font-head);font-size:0.82rem;font-weight:400;letter-spacing:0.1em;color:var(--gold-dark);margin-right:0.5em;vertical-align:middle}
+.section-title{font-family:var(--font-head);font-size:clamp(1.35rem,2.4vw,1.75rem);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink);padding-bottom:14px;margin-bottom:22px;border-bottom:2px solid var(--border);position:relative}
+.section-title::after{content:'';position:absolute;bottom:-2px;left:0;width:60px;height:2px;background:var(--gold)}
+.sub-title{font-family:var(--font-head);font-size:1.05rem;font-weight:600;letter-spacing:0.05em;color:var(--mid);margin:28px 0 10px;text-transform:uppercase}
+p{margin-bottom:1rem;font-size:1rem}
+.guide-list{margin:0.5rem 0 1rem 1.2rem}
+.guide-list li{margin-bottom:0.45rem;font-size:1rem}
+.guide-list li::marker{color:var(--gold-dark)}
+.callout{padding:16px 20px;margin:20px 0;border-left:4px solid var(--gold);background:var(--light);border-radius:0 3px 3px 0}
+.callout.axis{border-left-color:var(--axis);background:var(--axis-pale)}
+.callout.allied{border-left-color:var(--allied);background:var(--allied-pale)}
+.callout.warning{border-left-color:#7a3c1a;background:var(--warn-bg)}
+.callout.tip{border-left-color:#3a5c1a;background:var(--tip-bg)}
+.callout.sand{border-left-color:var(--sand);background:var(--sand-pale)}
+.callout-title{font-family:var(--font-head);font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;margin-bottom:6px}
+.callout .callout-title{color:var(--gold-dark)}
+.callout.axis .callout-title{color:var(--axis)}
+.callout.allied .callout-title{color:var(--allied)}
+.callout.warning .callout-title{color:#7a3c1a}
+.callout.tip .callout-title{color:#3a5c1a}
+.callout.sand .callout-title{color:var(--sand)}
+.strat-phase{padding:18px 22px;margin:18px 0;border:1px solid var(--border);background:var(--light)}
+.strat-phase.axis{border-color:var(--axis-border);background:var(--axis-pale);border-left:4px solid var(--axis)}
+.strat-phase.allied{border-color:var(--allied-border);background:var(--allied-pale);border-left:4px solid var(--allied)}
+.strat-phase-title{font-family:var(--font-head);font-size:0.9rem;font-weight:700;letter-spacing:0.05em;color:var(--mid);margin-bottom:8px;text-transform:uppercase}
+.strat-phase.axis .strat-phase-title{color:var(--axis)}
+.strat-phase.allied .strat-phase-title{color:var(--allied)}
+.strat-phase p{margin-bottom:0.6rem}.strat-phase p:last-child{margin-bottom:0}
+.leader-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin:20px 0}
+.leader-card{border:1px solid var(--border);background:var(--light);padding:16px 18px;position:relative}
+.leader-card.axis{border-top:3px solid var(--axis)}
+.leader-card.allied{border-top:3px solid var(--allied)}
+.leader-name{font-family:var(--font-head);font-size:0.88rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink);margin-bottom:3px}
+.leader-role{font-size:0.8rem;font-style:italic;color:var(--mid);margin-bottom:8px}
+.leader-body{font-size:0.9rem;line-height:1.6;color:var(--ink)}
+.scenario-grid{display:grid;grid-template-columns:1fr;gap:1px;background:var(--border);margin:20px 0;border:1px solid var(--border)}
+.scenario-row{background:var(--light);padding:14px 18px;display:grid;grid-template-columns:1fr 90px 90px;gap:12px;align-items:center}
+.scenario-row:nth-child(even){background:var(--parchment)}
+.scenario-row.header{background:var(--axis);color:var(--gold-pale);font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase}
+.scenario-name{font-family:var(--font-head);font-size:0.88rem;font-weight:600;color:var(--ink)}
+.scenario-date{font-size:0.82rem;color:var(--mid);font-style:italic}
+.scenario-turns{font-family:var(--font-head);font-size:0.82rem;color:var(--gold-dark);text-align:right}
+.terrain-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.9rem}
+.terrain-table th{background:var(--axis);color:var(--gold-pale);font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;padding:9px 12px;text-align:left;border:1px solid rgba(201,148,58,0.2)}
+.terrain-table td{padding:8px 12px;border:1px solid var(--border);vertical-align:top;line-height:1.5}
+.terrain-table tr:nth-child(even) td{background:var(--light)}
+.terrain-table tr:nth-child(odd) td{background:var(--parchment)}
+.turn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:16px 0}
+.turn-box{border:1px solid var(--border);background:var(--light);padding:12px 14px}
+.turn-num{font-family:var(--font-head);font-size:1.5rem;font-weight:900;color:var(--gold);line-height:1;margin-bottom:4px}
+.turn-label{font-family:var(--font-head);font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);margin-bottom:6px}
+.turn-desc{font-size:0.85rem;line-height:1.55;color:var(--ink)}
+.glossary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--border);margin-top:16px;border:1px solid var(--border)}
+.gloss-item{background:var(--light);padding:10px 14px;display:flex;gap:10px;align-items:baseline}
+.gloss-item:nth-child(even){background:var(--parchment)}
+.gloss-term{font-family:var(--font-head);font-size:0.8rem;font-weight:700;color:var(--ink);white-space:nowrap;min-width:120px;letter-spacing:0.04em;text-transform:uppercase}
+.gloss-def{font-size:0.88rem;color:var(--mid);line-height:1.5}
+.ornamental-divider{text-align:center;color:var(--gold);font-size:0.85rem;letter-spacing:0.3em;padding:28px 0 8px;opacity:0.7}
+#back-top{position:fixed;bottom:28px;right:28px;width:42px;height:42px;background:var(--khaki-bg);border:1px solid var(--gold-dark);color:var(--gold);font-size:1.1rem;display:flex;align-items:center;justify-content:center;text-decoration:none;opacity:0;transform:translateY(10px);transition:opacity 0.3s,transform 0.3s;z-index:90}
+#back-top.visible{opacity:1;transform:none}
+#back-top:hover{background:var(--gold-dark);color:var(--parchment)}
+#footer{margin-top:40px;border-top:1px solid var(--border);padding:20px 64px;font-family:var(--font-head);font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);text-align:center}
+@media(max-width:860px){
+  :root{--sidebar-w:0px}
+  #sidebar-toggle{display:flex;align-items:center;justify-content:center}
+  #sidebar{transform:translateX(-100%);transition:transform 0.28s ease;width:260px}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  #hero,#content{padding-left:24px;padding-right:24px}
+  #progress-bar{left:0}
+  #footer{padding-left:24px;padding-right:24px}
+  .scenario-row{grid-template-columns:1fr;gap:2px}
+  .leader-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+<button id="sidebar-toggle" aria-label="Menu">&#9776;</button>
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <div id="sidebar-title">SGS Afrika Korps</div>
+    <div id="sidebar-sub">Strategy Guide &mdash; North Africa, 1940&ndash;1942</div>
+  </div>
+  <div id="sidebar-nav">
+    <div class="nav-section">Background</div>
+    <a class="nav-item" href="#s01">1 &middot; Historical Context</a>
+    <a class="nav-item" href="#s02">2 &middot; Game Overview</a>
+    <div class="nav-section">Core Rules</div>
+    <a class="nav-item" href="#s03">3 &middot; Turn Structure</a>
+    <a class="nav-item" href="#s04">4 &middot; Map &amp; Terrain</a>
+    <a class="nav-item" href="#s05">5 &middot; Units &amp; Forces</a>
+    <a class="nav-item" href="#s06">6 &middot; Supply &amp; Logistics</a>
+    <a class="nav-item" href="#s07">7 &middot; Combat System</a>
+    <a class="nav-item" href="#s08">8 &middot; Air Power</a>
+    <div class="nav-section">Key Systems</div>
+    <a class="nav-item" href="#s09">9 &middot; Leaders</a>
+    <a class="nav-item" href="#s10">10 &middot; Cards &amp; Events</a>
+    <a class="nav-item" href="#s11">11 &middot; Victory Conditions</a>
+    <div class="nav-section">Scenarios</div>
+    <a class="nav-item" href="#s12">12 &middot; Scenario Guide</a>
+    <div class="nav-section">Strategy</div>
+    <a class="nav-item" href="#s13">13 &middot; Axis Strategy</a>
+    <a class="nav-item" href="#s14">14 &middot; Allied Strategy</a>
+    <a class="nav-item" href="#s15">15 &middot; PBEM &amp; Multiplayer</a>
+    <div class="nav-section">Reference</div>
+    <a class="nav-item" href="#s16">16 &middot; Glossary</a>
+  </div>
+</nav>
+<div id="main">
+<div id="hero">
+  <div class="hero-eyebrow">Strategy Game Studio &nbsp;&middot;&nbsp; Avalon Digital</div>
+  <h1 class="hero-title">SGS Afrika Korps</h1>
+  <p class="hero-subtitle">Comprehensive Analysis &amp; Strategy Guide &mdash; The Desert War, 1940&ndash;1942</p>
+  <div class="hero-tags">
+    <span class="hero-tag">SGS Engine</span>
+    <span class="hero-tag">16 Sections</span>
+    <span class="hero-tag">Both Sides Covered</span>
+    <span class="hero-tag">8 Scenarios</span>
+    <span class="hero-tag">PBEM</span>
+  </div>
+</div>
+<div id="content">
+<section class="section" id="s01">
+<h1 class="section-title"><span class="sec-num">&sect; 01</span> Historical Context</h1>
+<p>SGS Afrika Korps simulates one of the most distinctive and operationally fascinating campaigns of the Second World War: the Desert War in Libya and Egypt, from Italy's initial offensive in 1940 through to the decisive battles of El Alamein in late 1942. In a 1,900-kilometre strip of desert between Tripoli and the Suez Canal, two armies surged back and forth along the single coastal road, bound by the Mediterranean to the north and the impassable Qattara Depression to the south. The campaign produced some of the war's most celebrated commanders, its most dramatic reversals of fortune, and its most revealing lessons about the relationship between logistics and operational ambition.</p>
+
+<h2 class="sub-title">Italy's Desert Gamble &mdash; 1940</h2>
+<p>The campaign began in September 1940 when Marshal Rodolfo Graziani's Italian Tenth Army advanced cautiously from Libya into Egypt, establishing a chain of fortified camps along the coastal road. With 200,000 men and massive material superiority, Graziani inexplicably halted at Sidi Barrani rather than driving to the Suez Canal. This hesitation would prove fatal. In December 1940, General Richard O'Connor launched Operation Compass with just 30,000 men of the Western Desert Force and in two months annihilated the Italian Tenth Army, capturing 130,000 prisoners and advancing 800 kilometres.</p>
+<p>The game covers this Italian period through the <em>Operazione E</em> and <em>Compass 1940</em> scenarios, providing a distinctive early-war context before the Germans arrived. The Italian forces in game terms are large in number but weak in quality &mdash; vulnerable to isolation, poor in armour, and difficult to supply effectively.</p>
+
+<h2 class="sub-title">Rommel and the Afrika Korps &mdash; 1941</h2>
+<p>Hitler dispatched General Erwin Rommel and the newly formed <em>Deutsches Afrika Korps</em> to stiffen Italian resistance in February 1941. Rommel arrived expecting to take a defensive role but within three weeks launched an audacious offensive that drove the British back to the Egyptian frontier, capturing Cyrenaica and leaving only the besieged port of Tobruk in Allied hands. The siege of Tobruk became one of the war's defining contests: 242 days, an Australian and then British garrison holding a vital supply point that pinned down a significant portion of Rommel's force and threatened his supply lines whenever he drove east.</p>
+<p>Operation Battleaxe in June 1941 failed to relieve Tobruk and cost the Allies 91 tanks to Rommel's 12. Operation Crusader in November 1941 finally succeeded in lifting the siege through a sprawling, chaotic tank battle that covered hundreds of kilometres and saw entire armoured formations materialise and disappear like mirages. By year's end Rommel had been pushed back to El Agheila &mdash; where he had started &mdash; but had inflicted punishing losses on the British armoured forces.</p>
+
+<h2 class="sub-title">The Pendulum Swings &mdash; 1942</h2>
+<p>1942 saw the war's most dramatic swings. Rommel's January offensive caught the Allies off guard and recovered much of Cyrenaica within weeks. The Battle of Gazala in May&ndash;June 1942 was Rommel's masterwork: a deep southern flanking move, the encirclement and destruction of multiple British armoured brigades, the capture of Bir Hakeim after a legendary Free French defence, and finally the surrender of Tobruk on 21 June with 33,000 men. Churchill called it one of the most humiliating defeats in British history. Hitler promoted Rommel to Field Marshal on the spot.</p>
+<p>Rommel drove into Egypt, reaching El Alamein in July 1942 &mdash; 60 miles from Alexandria &mdash; where for the first time in the desert war, the flank could not be turned. The Qattara Depression made a southern hook impossible. General Claude Auchinleck used this reality brilliantly, fighting a series of defensive battles that halted Rommel's exhausted, supply-starved forces. Auchinleck was replaced by Montgomery in August; what followed was a methodical Allied buildup that culminated in the Second Battle of El Alamein in October, the decisive Allied victory that turned the tide in North Africa.</p>
+
+<h2 class="sub-title">The Central Strategic Truth</h2>
+<p>The desert war was decided by logistics more than by tactics. Rommel's consistent failure was not tactical genius but strategic overextension &mdash; his supply lines stretched 1,000 kilometres from Tripoli, under constant air and naval attack, dependent on inadequate Libyan ports and an Italian merchant fleet being systematically destroyed by Malta-based forces. Every time he drove east, his supply position became more precarious; every time the Allies retreated, they grew stronger. The game models this fundamental dynamic through its supply range mechanics, and understanding it is the foundation of strategy for both sides.</p>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<section class="section" id="s02">
+<h1 class="section-title"><span class="sec-num">&sect; 02</span> Game Overview</h1>
+<p>SGS Afrika Korps is a turn-based operational wargame using the SGS Engine at <strong>weekly turn scale</strong> &mdash; each turn represents one week of operations. It is a direct application of the core SGS ruleset introduced in Winter War and extended throughout the series, covering the full range of the North African desert campaign from the Italian offensive of 1940 to El Alamein in 1942. Like all SGS titles, it is area-based (not hex-based), meaning units occupy named regions connected by routes of varying cost and terrain.</p>
+
+<h2 class="sub-title">Design Philosophy</h2>
+<p>The designer's stated aim was to capture the feel of the desert pendulum &mdash; the to-and-fro momentum of the campaign, the magnetic lure of the coast road, the importance of supply, the value of armour and air power, and the debilitating effect of desert heat &mdash; within a clean, approachable rules framework. Cards and scripted events handle historical nuances that the core mechanics cannot fully represent: Malta's strategic pressure on Axis supply lines, the impact of developments in Greece and Russia on available forces, the quality difference between Rommel's German elite and the Italian formations they served alongside.</p>
+
+<div class="callout sand">
+  <div class="callout-title">The Elastic Tether</div>
+  The desert campaign was famously self-balancing. The nearer an army advanced toward its objective, the longer and more vulnerable its supply line became, while its opponent's supply shortened and strengthened. SGS Afrika Korps models this through supply range mechanics: as Axis forces push east, their supply chains lengthen and become easier to sever; as Allied forces retreat toward Egypt, their positions grow stronger. Every advance creates the seeds of the next reversal.
+</div>
+
+<h2 class="sub-title">The Two Sides</h2>
+<div class="callout axis">
+  <div class="callout-title">Axis Forces (Germany &amp; Italy)</div>
+  German and Italian units combined under Rommel's command. German formations &mdash; the Afrika Korps proper (15th and 21st Panzer, 90th Light) &mdash; are high quality; Italian formations are numerous but fragile. The Axis have the initiative early and superior unit quality, but face constant supply constraints and dwindling reinforcements as the war progresses. Goal: capture Suez or accumulate VP from held objectives.
+</div>
+<div class="callout allied">
+  <div class="callout-title">Allied Forces (Commonwealth &amp; Allies)</div>
+  British, Australian, New Zealand, South African, Indian, Polish, Greek, and Free French units of the Eighth Army. Materially stronger in the long run, but initially poorly led and tactically rigid. The Allies improve dramatically from mid-1942 with the arrival of US equipment, Montgomery's command discipline, and growing air superiority. Goal: hold Egypt and destroy the Axis force.
+</div>
+
+<h2 class="sub-title">Scale and Scope</h2>
+<ul class="guide-list">
+  <li><strong>Turn scale:</strong> One week per turn.</li>
+  <li><strong>Unit scale:</strong> Division, brigade, and regiment level; air units represent wings or groups.</li>
+  <li><strong>Map:</strong> The coastal strip from El Agheila (western Libya) to the El Alamein line in Egypt, including the coast road, key ports, desert tracks, and the Qattara Depression.</li>
+  <li><strong>Grand Campaign length:</strong> 42 turns, April 1941 to December 1942.</li>
+</ul>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+<section class="section" id="s03">
+<h1 class="section-title"><span class="sec-num">&sect; 03</span> Turn Structure &amp; Phase Guide</h1>
+<p>SGS Afrika Korps follows the standard SGS turn sequence. Each weekly turn resolves all phases in strict order. Understanding timing is critical for card play, air operations, and combat sequencing.</p>
+
+<div class="turn-grid">
+  <div class="turn-box"><div class="turn-num">01</div><div class="turn-label">Cards Phase</div><div class="turn-desc">Both sides draw cards and may play strategic cards. Events fire automatically. Historical events such as the Malta convoys, reinforcement arrivals, or command changes may trigger here.</div></div>
+  <div class="turn-box"><div class="turn-num">02</div><div class="turn-label">Reinforcements Phase</div><div class="turn-desc">New units arrive at designated entry points. The Axis player places arriving formations on the Libyan entry coast; Allied reinforcements arrive at Egyptian ports. Some events modify placement options.</div></div>
+  <div class="turn-box"><div class="turn-num">03</div><div class="turn-label">Supply Phase</div><div class="turn-desc">Supply is traced for all units. Unsupplied units begin degrading immediately: movement reduction, combat penalty, and LP loss over time. Axis supply is the campaign's defining constraint.</div></div>
+  <div class="turn-box"><div class="turn-num">04</div><div class="turn-label">Air Movement Phase</div><div class="turn-desc">Air units move to their operational areas. Both sides rebase as needed. Air units that fly over enemy AA defences may be intercepted or aborted. This is the offensive air phase.</div></div>
+  <div class="turn-box"><div class="turn-num">05</div><div class="turn-label">Naval Movement Phase</div><div class="turn-desc">Naval units (primarily Allied) move to interdict Axis supply lines or support coastal operations. The Mediterranean sea lane is a critical Axis vulnerability.</div></div>
+  <div class="turn-box"><div class="turn-num">06</div><div class="turn-label">Naval-Air Combat</div><div class="turn-desc">Resolution of naval and air combats from the movement phases. Convoy interdiction results determined here.</div></div>
+  <div class="turn-box"><div class="turn-num">07</div><div class="turn-label">Land Movement Phase</div><div class="turn-desc">Both sides move land units. Entering an enemy-occupied region initiates combat. Concentric attacks from multiple regions gain a combat bonus. This is when Rommel-style sweeping flanks are executed.</div></div>
+  <div class="turn-box"><div class="turn-num">08</div><div class="turn-label">Land Combat Phase</div><div class="turn-desc">All battles resolve. Play combat cards during resolution. Air units in the region contribute. Leaders apply their bonuses. Encircled or isolated stacks fight at severe penalties.</div></div>
+  <div class="turn-box"><div class="turn-num">09</div><div class="turn-label">Air Defence Phase</div><div class="turn-desc">Air units may reposition to cover friendly stacks or structures defensively. An air unit on a friendly stack boosts its defence morale for the following turn.</div></div>
+  <div class="turn-box"><div class="turn-num">10</div><div class="turn-label">Replacement Phase</div><div class="turn-desc">Supplied units in range of replacements rebuild LP. Unsupplied units receive nothing. The Axis replacement pipeline is thin &mdash; prioritise your best German formations.</div></div>
+  <div class="turn-box"><div class="turn-num">11</div><div class="turn-label">Victory Check &amp; End</div><div class="turn-desc">VP totals checked. Sudden-death conditions evaluated. Suez Canal capture = immediate Axis victory in most scenarios. Turn counter advances; plan for the following week.</div></div>
+</div>
+
+<div class="callout warning">
+  <div class="callout-title">Card Timing &mdash; Read Every Card</div>
+  Cards specify during which phase they may be played. A supply card played in the Reinforcements phase instead of the Supply phase does nothing. An air superiority card must be played before the Air Movement phase to affect that turn's air operations. The desert war was won and lost on timing; so are card plays in this game.
+</div>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<section class="section" id="s04">
+<h1 class="section-title"><span class="sec-num">&sect; 04</span> Map &amp; Terrain</h1>
+<p>The North African map is unlike any other SGS theatre. Almost the entire operational area is open desert, traversable by mechanised forces at relatively equal cost. There are no forests, bocage, or mountain ranges to create natural defensive lines &mdash; except for the Qattara Depression in the south and the escarpments at specific points along the coast. This openness is the defining geographic reality of the campaign: the desert favours movement, encirclement, and fast-moving armour over static defensive lines.</p>
+
+<h2 class="sub-title">Terrain Types and Effects</h2>
+<table class="terrain-table">
+  <tr><th>Terrain</th><th>Movement Cost</th><th>Defence Bonus</th><th>Notes</th></tr>
+  <tr><td><strong>Open Desert</strong></td><td>1&ndash;2 MP</td><td>None</td><td>The dominant terrain. Motorised units move freely; infantry slower. Offers no defensive advantage.</td></tr>
+  <tr><td><strong>Coast Road (Via Balbia)</strong></td><td>1 MP</td><td>None</td><td>The campaign's central artery. Fastest movement for all units; supply flows along it. Control of the road is everything.</td></tr>
+  <tr><td><strong>Desert Track</strong></td><td>2 MP</td><td>None</td><td>Secondary routes through open desert, enabling flanking moves off the coast road.</td></tr>
+  <tr><td><strong>Escarpment</strong></td><td>+1 MP to cross</td><td>+1&ndash;2 DEF</td><td>The Halfaya Pass ("Hellfire Pass") and similar escarpment breaks are natural chokepoints. Units defending from the plateau above gain a significant bonus.</td></tr>
+  <tr><td><strong>Salt Marsh / Impassable</strong></td><td>Impassable</td><td>&mdash;</td><td>Channels movement onto specific routes. The Qattara Depression makes the southern flank of El Alamein permanently impassable.</td></tr>
+  <tr><td><strong>Fortified Position</strong></td><td>1 MP to enter</td><td>+2&ndash;3 DEF</td><td>Tobruk, the "boxes" of the Gazala Line. Require siege operations or direct assault with strong force.</td></tr>
+  <tr><td><strong>Port / Harbour</strong></td><td>1 MP to enter</td><td>+1 DEF</td><td>Tripoli, Benghazi, Tobruk, Mersa Matruh. Critical supply relay points. Ports extend supply range significantly along the coast.</td></tr>
+</table>
+
+<h2 class="sub-title">The Coast Road as Operational Spine</h2>
+<p>Every supply chain, every advance, every reinforcement in SGS Afrika Korps flows along or parallels the Via Balbia. Cutting this road behind an enemy formation is often more decisive than defeating it in battle. An enemy army east of a gap in its supply line is already half-destroyed; it will lose LP every turn without combat. Much of both sides' operational planning revolves around cutting or protecting the road at key points.</p>
+
+<div class="callout tip">
+  <div class="callout-title">Key Geographic Chokepoints</div>
+  <strong>Halfaya Pass</strong> &mdash; the escarpment crossing between the Egyptian frontier and the coastal plain. Whoever holds it controls the gateway to Egypt from the west. German 88mm guns at Halfaya blunted Operation Battleaxe in 1941.<br><br>
+  <strong>Tobruk</strong> &mdash; the only adequate harbour between Benghazi and Alexandria. An enemy garrison at Tobruk pins down besieging forces, threatens the coast road, and prevents the attacker from using its port for supply extension.<br><br>
+  <strong>El Alamein</strong> &mdash; the 65-kilometre gap between the sea and the Qattara Depression. The one position where the southern flank cannot be turned. Whoever reaches it first with adequate force holds a decisive defensive advantage.
+</div>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<section class="section" id="s05">
+<h1 class="section-title"><span class="sec-num">&sect; 05</span> Units &amp; Forces</h1>
+<p>Afrika Korps fields a wider variety of national formations than most SGS titles, with sharply differentiated quality between German, Italian, and the diverse Commonwealth nationalities. Understanding who fights well and who does not is essential for planning both assault operations and defensive assignments.</p>
+
+<h2 class="sub-title">Axis Forces</h2>
+<div class="callout axis">
+  <div class="callout-title">German Order of Battle</div>
+  <ul class="guide-list">
+    <li><strong>15th Panzer Division:</strong> Elite. High ATK, DEF, and MOR. The primary offensive spearhead of the Afrika Korps. Treat as irreplaceable; every LP lost here is difficult to recover given thin Axis replacement pipelines.</li>
+    <li><strong>21st Panzer Division:</strong> Equivalent to 15th Panzer. Together these two divisions are the cutting edge of every Axis offensive. Rotate them to allow recovery where possible.</li>
+    <li><strong>90th Light Africa Division:</strong> Elite motorised infantry. Very mobile; high morale. Best used to exploit Panzer breakthroughs, cut enemy supply lines, or hold terrain while armour regroups. Not a frontal assault formation.</li>
+    <li><strong>Reconnaissance Units:</strong> Fast-moving screening elements. Crucial for identifying enemy dispositions without committing Panzer strength. In the SGS engine, recon units fight in a special preliminary round; in Afrika Korps they are invaluable for flank protection.</li>
+    <li><strong>Artillery:</strong> Support units that remain behind in combat but contribute ATK bonuses to attacking stacks. The famous German 88mm Flak gun, when positioned on escarpment terrain, provides devastating anti-armour capability.</li>
+  </ul>
+</div>
+
+<div class="callout axis" style="border-left-color:#7a6a30;background:#f5f0d8;">
+  <div class="callout-title" style="color:#7a6a30;">Italian Order of Battle</div>
+  <ul class="guide-list">
+    <li><strong>Italian Infantry Divisions (Trento, Bologna, Trieste, Brescia, Savona):</strong> Adequate quality; moderate ATK and DEF. Better suited to static holding tasks than aggressive assault. Their value is in numbers and their ability to hold the flanks while German armour operates.</li>
+    <li><strong>Ariete Armoured Division:</strong> The best Italian formation. Comparable to German motorised formations, if not to the Panzer divisions. The Ariete earned genuine respect from both sides; used well it can achieve real offensive results.</li>
+    <li><strong>Trieste Motorised Division:</strong> Better than standard Italian infantry; useful for following through behind German Panzer breakthroughs.</li>
+    <li><strong>Italian Garrison and Coastal Units:</strong> Weak; suitable only for occupation duty on secure rear areas.</li>
+  </ul>
+  The fundamental challenge of commanding Axis forces is managing the German-Italian quality gap. German formations win battles; Italian formations hold ground freed by German victories. Never use Italians to lead assaults if Germans are available.
+</div>
+
+<h2 class="sub-title">Allied Forces</h2>
+<div class="callout allied">
+  <div class="callout-title">Commonwealth Order of Battle</div>
+  <ul class="guide-list">
+    <li><strong>British Armoured Divisions (7th &ldquo;Desert Rats,&rdquo; 1st):</strong> Powerful but initially hampered by dispersal doctrine and poor tactical use of armour. In game terms, strong ATK but susceptible to massed German anti-tank fire if unsupported. Improve significantly in 1942 scenarios with better equipment.</li>
+    <li><strong>British Infantry Divisions (50th, 51st Highland, and others):</strong> Solid; capable defenders. The 51st Highland Division in the El Alamein period is among the best infantry formations available to the Allied player.</li>
+    <li><strong>Australian Divisions (9th Australian):</strong> Elite defensive infantry. The garrison of Tobruk was largely Australian; in game terms they are high-morale units that hold fortified positions stubbornly.</li>
+    <li><strong>New Zealand Division (2nd NZ):</strong> High quality infantry with strong morale and good ATK. One of the most reliable formations in the Allied order of battle through the entire campaign.</li>
+    <li><strong>South African Divisions (1st, 2nd SA):</strong> Adequate; stronger in defence than attack.</li>
+    <li><strong>Indian Formations (4th, 5th Indian):</strong> Excellent infantry; some of the most capable units in the Allied order of battle, particularly in desert conditions. Often overlooked but genuinely strong.</li>
+    <li><strong>Free French Brigade (1&egrave;re Brigade Fran&ccedil;aise Libre):</strong> Elite; very high morale. The defenders of Bir Hakeim are legendary and in game terms reflect their extraordinary resistance. Small in size but disproportionate in fighting value.</li>
+    <li><strong>Polish Carpathian Brigade:</strong> Part of the Tobruk garrison; high morale; capable infantry.</li>
+  </ul>
+</div>
+
+<h2 class="sub-title">Unit Statistics Explained</h2>
+<ul class="guide-list">
+  <li><strong>ATK</strong> &mdash; Attack factor; governs offensive combat die rolls.</li>
+  <li><strong>DEF</strong> &mdash; Defence factor; modified by terrain, fortifications, and supporting units.</li>
+  <li><strong>MOR</strong> &mdash; Morale factor; contributes to Battle Morale calculation; governs routing.</li>
+  <li><strong>MOV</strong> &mdash; Movement points per turn; motorised and armoured units have significantly higher values than infantry.</li>
+  <li><strong>Life Points</strong> &mdash; Unit strength. At 0 LP the unit is eliminated. Replacements restore to full LP but require supply.</li>
+  <li><strong>Stacking Value</strong> &mdash; Limits how many units can occupy one region simultaneously, based on terrain type.</li>
+</ul>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+<section class="section" id="s06">
+<h1 class="section-title"><span class="sec-num">&sect; 06</span> Supply &amp; Logistics</h1>
+<p>Supply is not merely one system among many in SGS Afrika Korps &mdash; it is <em>the</em> system. More battles in the historical campaign were decided by supply failure than by enemy action. The game honours this reality. Understanding supply mechanics in depth is the difference between winning and losing at anything above beginner difficulty.</p>
+
+<h2 class="sub-title">How Supply Works</h2>
+<p>A unit is in supply if it can trace an unbroken path, clear of enemy units or regions, back to a supply source or relay point, within the supply range (typically 3&ndash;4 regions from source or relay). Supply does not pass through regions blocked by enemy control or certain terrain types.</p>
+<ul class="guide-list">
+  <li><strong>Supply Sources:</strong> Designated ports and depots on the map marked with the supply symbol (oil barrels). For the Axis, the primary sources are Tripoli and Benghazi; for the Allies, Egyptian ports and the Alexandria-Cairo infrastructure.</li>
+  <li><strong>Supply Relays:</strong> Friendly structures (ports, airports, fortified towns) and logistical units that extend supply range by the standard relay range. Each relay extends supply up to 4 regions further.</li>
+  <li><strong>Ports are critical relays:</strong> Tobruk, Benghazi, and Mersa Matruh are not just objectives &mdash; each one captured extends the attacker's supply reach significantly along the coast, enabling further advances. Losing a port immediately compresses supply range.</li>
+</ul>
+
+<h2 class="sub-title">Effects of Being Out of Supply</h2>
+<ul class="guide-list">
+  <li>Unsupplied units receive <strong>no replacements</strong> in the Replacement Phase.</li>
+  <li>Unsupplied units suffer <strong>movement point reduction</strong>.</li>
+  <li>Unsupplied units suffer <strong>combat factor reduction</strong> in both attack and defence.</li>
+  <li>Units that remain out of supply progressively <strong>lose Life Points</strong> each turn through attrition until eliminated &mdash; no combat required.</li>
+</ul>
+
+<div class="callout warning">
+  <div class="callout-title">The Supply Trap &mdash; Axis Player's Greatest Danger</div>
+  Rommel consistently overextended his supply lines in the historical campaign, and the game models this risk perfectly. When you drive east past Tobruk toward the Egyptian frontier, your supply chain grows to its maximum length. A single Allied unit cutting the coast road between Benghazi and the front isolates your entire eastern force from supply. Units deep in enemy territory, cut off from their supply relay chain, begin dying within 2&ndash;3 turns without any combat involvement. Always verify your supply path before committing to a deep advance.
+</div>
+
+<h2 class="sub-title">Ports and the Axis Supply Equation</h2>
+<p>The Axis faces a layered supply problem unlike anything the Allies experience. First, convoys must cross the Mediterranean from Italy under Allied naval and air attack from Malta &mdash; a historical constraint represented in the game through events and cards that can reduce or delay supply arrivals. Second, once in Tripoli or Benghazi, supplies must travel along the coast road to the front, a journey of 1,000+ kilometres exposed to Desert Air Force interdiction. Third, the front-line supply relay depends on captured ports, each one an objective in its own right.</p>
+
+<div class="callout tip">
+  <div class="callout-title">The Port Priority Rule</div>
+  After every significant advance, your first construction and logistical priority should be activating the nearest captured port as a supply relay. A functioning Tobruk or Benghazi extends your supply reach substantially and allows the front line to hold without constant rear-area attrition. Never bypass a port without a plan for either capturing it or isolating it from interference with your supply chain.
+</div>
+
+<h2 class="sub-title">Allied Supply</h2>
+<p>Allied supply is fundamentally simpler than Axis supply. With Alexandria and Cairo as inexhaustible sources, Egypt provides an expanding base as the front moves west. The longer the campaign runs, the more powerful Allied supply becomes relative to Axis logistics. This is the game's central asymmetry: time favours the Allies. The Axis must win early, before the Allied material and logistical advantage becomes insurmountable.</p>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<section class="section" id="s07">
+<h1 class="section-title"><span class="sec-num">&sect; 07</span> Combat System</h1>
+<p>SGS Afrika Korps uses the standard SGS combat system with desert-specific modifiers that reflect the open terrain, the primacy of armour, and the specific dynamics of the North African campaign.</p>
+
+<h2 class="sub-title">Battle Morale</h2>
+<p>Battle Morale is the sum of unit morale factors, leader bonuses, terrain modifiers, and card effects for all units engaged on one side. When Battle Morale reaches zero, that side routs. Pursuit fire then applies against routed units &mdash; often resulting in further LP loss against formations already battered by combat.</p>
+
+<h2 class="sub-title">Combat Resolution Sequence</h2>
+<ol class="guide-list">
+  <li>Initial rounds: air support (if air units are present), artillery preparation.</li>
+  <li>Main round: all surviving land units engage simultaneously. One die rolled per unit against its modified combat factor &mdash; a roll equal to or below the factor inflicts a hit; above it does nothing. A result of 0 always hits.</li>
+  <li>After the main round, either side may retreat. Non-retreating side wins the region.</li>
+  <li>Each subsequent round increases Battle Exhaustion, reducing Battle Morale. When one side reaches 0, that side routs and takes Pursuit fire.</li>
+  <li>Breakthrough eligible units (armour, mechanised, leaders) may advance into an adjacent region after a victory.</li>
+</ol>
+
+<h2 class="sub-title">Key Desert Combat Modifiers</h2>
+<table class="terrain-table">
+  <tr><th>Modifier</th><th>Effect</th><th>Notes</th></tr>
+  <tr><td>Armour Presence (Attacker)</td><td>ATK bonus</td><td>Panzer or armoured units significantly boost attack effectiveness in open desert.</td></tr>
+  <tr><td>Armour Presence (Defender)</td><td>DEF bonus</td><td>Armoured formations defending are harder to dislodge than pure infantry.</td></tr>
+  <tr><td>Air Superiority</td><td>Combat bonus / Morale penalty</td><td>Air units over the battle add ATK bonus to the owning side and reduce enemy Battle Morale.</td></tr>
+  <tr><td>Concentric Attack</td><td>ATK bonus</td><td>Attacking from multiple adjacent regions simultaneously. The historical Rommel manoeuvre.</td></tr>
+  <tr><td>Fortification</td><td>+2&ndash;3 DEF</td><td>Tobruk perimeter, Gazala boxes, El Alamein line. Must be reduced by siege or assault with superior force.</td></tr>
+  <tr><td>Escarpment / Pass Defence</td><td>+1&ndash;2 DEF</td><td>Halfaya Pass and similar chokepoints. An ideal position for the famous German 88mm.</td></tr>
+  <tr><td>Isolation / Out of Supply</td><td>ATK &amp; DEF reduction</td><td>Progressively severe as supply deprivation continues. A fully isolated formation is easy to destroy.</td></tr>
+</table>
+
+<h2 class="sub-title">Breakthrough</h2>
+<p>In the open desert, Panzer breakthroughs chain beautifully. After a successful battle, armour and mechanised units eligible for breakthrough advance into an adjacent region and can engage again. With capable leaders present (especially Rommel), multiple successive breakthroughs can occur in a single turn, allowing a Panzer division to sweep deep into enemy rear areas in one week of operations &mdash; exactly as occurred historically in the Gazala battles.</p>
+
+<div class="callout axis">
+  <div class="callout-title">Axis Combat Doctrine</div>
+  The historical German operational principle was to identify a weak point in the enemy line, fix it frontally with infantry, and commit Panzer forces to a flanking move that cut off the fixed enemy from its supply. In game terms: use Italian or motorised infantry to hold the enemy's attention; use Panzer divisions to swing around the flank and cut the coast road behind them. The enemy force, now isolated, can be destroyed at leisure or left to attrite out of supply.
+</div>
+
+<div class="callout allied">
+  <div class="callout-title">Allied Combat Doctrine</div>
+  Early-war Allied doctrine dispersed armour in small packets tied to infantry formations, a fatal error against concentrated German Panzers. In game terms, this is represented through the generally lower morale of early-war Allied armoured formations. From 1942 onward, concentrate armour as a mass and use it decisively rather than parcelling it out. Montgomery's insistence on this principle won El Alamein.
+</div>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<section class="section" id="s08">
+<h1 class="section-title"><span class="sec-num">&sect; 08</span> Air Power</h1>
+<p>Air power in SGS Afrika Korps reflects the genuinely contested nature of desert air war. Unlike Overlord (where Germany has no air at all) or Fall Weiss (where Germany dominates completely), the North African air war swung back and forth. Both sides have meaningful air capabilities, though the balance shifts toward the Allies progressively through 1942 as the Desert Air Force &mdash; reorganised under Air Marshal Coningham into a genuinely integrated land-air team &mdash; gained superiority.</p>
+
+<h2 class="sub-title">Air Unit Operations</h2>
+<p>Air units in SGS move twice per turn: once offensively (Air Movement Phase) and once defensively (Air Defence Phase). In the offensive phase they can attack enemy stacks or rebase to a different airfield. In the defensive phase they can only move to protect friendly stacks or structures.</p>
+<ul class="guide-list">
+  <li><strong>Close Air Support:</strong> Air units present in a battle region add ATK and morale bonuses to the attacking side and penalise defending morale. The most powerful single-battle modifier available to either side.</li>
+  <li><strong>Interdiction:</strong> Air units can attack supply relay structures to disrupt supply flow. Targeting enemy supply depots and road junctions can isolate forward formations.</li>
+  <li><strong>AA Defence:</strong> Structures with anti-aircraft defences fire on overflying enemy aircraft, potentially aborting or shooting down air units. The famous German 88mm guns were equally devastating against aircraft and tanks.</li>
+  <li><strong>Interception:</strong> Air battles are handled automatically; winning side's air units complete their mission, losers abort and return to base.</li>
+</ul>
+
+<h2 class="sub-title">Axis Air (Luftwaffe and Regia Aeronautica)</h2>
+<p>The Axis air forces in 1941 are roughly equivalent to the Allies in strength and quality, particularly in fighter coverage over eastern Libya. Rommel's campaign was substantially enabled by Luftwaffe support, particularly against the Tobruk garrison and in covering Panzer operations. In the 1942 scenarios, Allied air superiority begins to tell, and Axis air assets shrink as losses exceed replacements.</p>
+
+<div class="callout tip">
+  <div class="callout-title">Axis Air Priorities</div>
+  Use air power offensively in the first 1&ndash;3 turns of an offensive operation, when it has the greatest impact on battle outcomes. Concentrate air on the main assault sector rather than dispersing it across the front. As Allied air grows stronger in the 1942 scenarios, shift to defensive coverage of your Panzer formations during attacks to prevent Allied CAS from reversing combat results.
+</div>
+
+<h2 class="sub-title">Allied Air (Desert Air Force &mdash; RAF)</h2>
+<p>The Desert Air Force under Coningham pioneered the concept of centralised air power directly supporting ground operations &mdash; the model that all later Allied air-ground doctrine was built on. In early scenarios the RAF is capable but not dominant; by the El Alamein period Allied air superiority is near-total and provides decisive combat support in every major battle.</p>
+<p>As the Allied player, air power is one of your most reliable force multipliers. Use it at the decisive point. A well-placed CAS card combined with air units present over a battle can swing results against even strong German defensive positions.</p>
+
+<h2 class="sub-title">Malta's Shadow</h2>
+<p>Malta is not directly on the map but is represented through events and cards. The island's strategic role &mdash; as a base for attacks on Axis supply convoys &mdash; is one of the campaign's dominant factors. Cards representing Malta's activity can reduce Axis supply arrivals, delay reinforcements, or trigger loss events for Axis shipping. The Axis attempt to neutralise Malta through air bombardment is also represented in card events. When Malta-related events fire, they can have dramatic effects on Axis logistics that cascade through several subsequent turns.</p>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+<section class="section" id="s09">
+<h1 class="section-title"><span class="sec-num">&sect; 09</span> Leaders</h1>
+<p>Leaders in SGS Afrika Korps follow the standard SGS model: they attach to stacks and provide ATK, DEF, and morale bonuses to all units they lead. They are not combat units themselves but force multipliers. Desert warfare put exceptional premium on personal leadership &mdash; the open terrain and fast-moving operations rewarded commanders who could read the battle quickly and act decisively, which is accurately reflected in the quality spread between sides' leadership in the early campaign.</p>
+
+<h2 class="sub-title">Key Axis Leaders</h2>
+<div class="leader-grid">
+  <div class="leader-card axis">
+    <div class="leader-name">General Erwin Rommel</div>
+    <div class="leader-role">Commander, Afrika Korps / Panzerarmee Afrika</div>
+    <div class="leader-body">The most important unit in the game. Rommel provides the highest combined ATK, morale, and breakthrough bonuses of any leader. He is the embodiment of the Axis operational principle: mass at the decisive point, punch through, and exploit. Always position Rommel with your leading Panzer element. A Rommel-led armoured breakthrough in open desert can chain multiple regions in a single turn. His presence transforms a good attack into a great one.</div>
+  </div>
+  <div class="leader-card axis">
+    <div class="leader-name">General Ludwig Crüwell</div>
+    <div class="leader-role">Commander, Afrika Korps (under Rommel)</div>
+    <div class="leader-body">Solid corps-level commander. Good ATK bonus; dependable morale multiplier. Best used leading the Afrika Korps' second thrust axis when Rommel is committed elsewhere, ensuring both Panzer divisions operate effectively without direct Rommel attachment.</div>
+  </div>
+  <div class="leader-card axis">
+    <div class="leader-name">General Georg Stumme</div>
+    <div class="leader-role">Acting Commander (August&ndash;October 1942)</div>
+    <div class="leader-body">Replaced Rommel during his illness before El Alamein. Moderate bonuses. His historical death of a heart attack on the first night of the Second Battle of El Alamein is represented as an event card or random event in relevant scenarios. A reminder that even leader availability is not certain.</div>
+  </div>
+  <div class="leader-card axis">
+    <div class="leader-name">General Francesco Zingales / Ettore Bastico</div>
+    <div class="leader-role">Italian Command</div>
+    <div class="leader-body">Italian senior commanders provide modest bonuses primarily to Italian formations. Notably weaker than German leaders; the historical Italian command relationship with Rommel was troubled, and the game reflects the reduced effectiveness of Italian formations under their own commanders versus those bolstered by German officers.</div>
+  </div>
+</div>
+
+<h2 class="sub-title">Key Allied Leaders</h2>
+<div class="leader-grid">
+  <div class="leader-card allied">
+    <div class="leader-name">General Richard O'Connor</div>
+    <div class="leader-role">Commander, Western Desert Force (1940&ndash;early 1941)</div>
+    <div class="leader-body">The architect of Operation Compass and one of the war's most underrated commanders. O'Connor provides strong ATK and breakthrough bonuses for the Compass and Operazione E scenarios. His capture by German troops in April 1941 is represented as a potential event; losing him mid-scenario dramatically weakens Allied offensive capability. An exceptional leader available only in early-war scenarios.</div>
+  </div>
+  <div class="leader-card allied">
+    <div class="leader-name">General Neil Ritchie</div>
+    <div class="leader-role">Commander, Eighth Army (1941&ndash;June 1942)</div>
+    <div class="leader-body">Adequate but uninspiring. Moderate bonuses across the board. Represents the period of Allied tactical fumbling in 1942 before Montgomery's arrival. If Rommel is your primary weapon, Ritchie is not an effective counter &mdash; his strength is in organising deliberate set-piece attacks, not fluid armoured battles.</div>
+  </div>
+  <div class="leader-card allied">
+    <div class="leader-name">General Claude Auchinleck</div>
+    <div class="leader-role">Commander-in-Chief Middle East / Eighth Army (July&ndash;August 1942)</div>
+    <div class="leader-body">Better than Ritchie; provides a solid DEF bonus that reflects his strategic skill at the First Battle of El Alamein in halting Rommel's final drive. Best used in defensive operations organising the El Alamein line. The game correctly notes his defensive excellence even if his offensive command was less assured.</div>
+  </div>
+  <div class="leader-card allied">
+    <div class="leader-name">General Bernard Montgomery</div>
+    <div class="leader-role">Commander, Eighth Army (August 1942 onward)</div>
+    <div class="leader-body">Arrives in August 1942 and transforms the Allied command structure. Strong across all factors: ATK, DEF, morale, and a distinctive ability to coordinate artillery, armour, and air in set-piece battles. His presence changes the El Alamein scenarios from a balanced contest to an Allied-favoured one &mdash; reflecting the historical reality that Montgomery brought methodical, well-supplied, and well-supported power to bear in a way his predecessors could not.</div>
+  </div>
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">Leader Vulnerability</div>
+  Leaders can be targeted or lost through events &mdash; O'Connor's capture, Rommel's illness, Stumme's death. Always keep your primary leader attached to the main force rather than forward scouting with recon units. A leader lost in a forward position is a catastrophic strategic setback.
+</div>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<section class="section" id="s10">
+<h1 class="section-title"><span class="sec-num">&sect; 10</span> Cards &amp; Events</h1>
+<p>Cards and events are the mechanism through which SGS Afrika Korps introduces historical nuance that pure mechanics cannot represent. The desert war was not fought in isolation &mdash; developments in Greece, the Balkans, Russia, East Africa, and the Pacific constantly affected the forces available to both sides. Cards simulate these effects without requiring players to manage the entire global war.</p>
+
+<h2 class="sub-title">Card Categories</h2>
+<ul class="guide-list">
+  <li><strong>Strategic Supply Cards (Axis):</strong> Represent additional convoy arrivals from Italy. Play immediately on receipt to extend the current supply or save for a turn when your front-line forces are critically short. The most valuable regular card in the Axis hand.</li>
+  <li><strong>Reinforcement Timing Cards (both sides):</strong> Allow acceleration of scheduled reinforcement arrivals or optimal placement of incoming formations. Particularly valuable for the Axis in the 1941 Grand Campaign when specific German formations arrive on a fixed schedule.</li>
+  <li><strong>Air Superiority Cards (both sides):</strong> Provide a combat and morale bonus in a specific battle. Essentially guarantees air support for one turn. Play immediately before committing to a decisive assault.</li>
+  <li><strong>Malta Event Cards (Allied):</strong> Represent Malta-based attacks on Axis convoys. Can delay or reduce Axis supply arrivals for 1&ndash;2 turns. Time for maximum effect when Axis supply is already stretched.</li>
+  <li><strong>Leadership Cards (Axis):</strong> Specific Rommel or senior commander action cards that provide additional breakthrough capability, extra movement, or a temporary combat bonus. Save for the moment of exploitation rather than routine turns.</li>
+  <li><strong>Weather Cards (both sides):</strong> Sandstorms, khamsin, and summer heat events can reduce movement rates for all units in a region. The khamsin &mdash; a hot desert wind &mdash; was a real operational constraint in the summer months, represented here as a card or automatic event.</li>
+  <li><strong>Desert Expertise Cards (both sides):</strong> The desert veterans of both armies developed unique tactics that newcomers struggled to match. These cards represent the accumulated tactical experience of both the Afrika Korps and the Desert Rats &mdash; providing combat bonuses that reflect their elite desert fighting skills.</li>
+</ul>
+
+<h2 class="sub-title">Automatic Events</h2>
+<p>Many significant historical events fire automatically when game conditions are met or based on the scenario turn calendar:</p>
+<ul class="guide-list">
+  <li><strong>Rommel's illness</strong> (August 1942): The Field Marshal's physical breakdown from the desert conditions is represented as an event that temporarily reduces his effectiveness or removes him for a turn.</li>
+  <li><strong>Tobruk garrison events:</strong> Periodic reinforcement or resupply of Tobruk's garrison by Allied naval runs can strengthen the besieged port's resistance.</li>
+  <li><strong>O'Connor's capture</strong> (April 1941): A random event in relevant scenarios. If triggered, the Allied player loses their best leader mid-scenario.</li>
+  <li><strong>Greece and Crete withdrawals:</strong> Some Allied formations are temporarily unavailable due to commitments in Greece (1941). Events representing this constraint may fire in the Grand Campaign.</li>
+  <li><strong>American equipment arrivals</strong> (mid-1942): Grant/Lee and Sherman tanks begin arriving for the Allies, significantly upgrading armoured formation ATK values in the El Alamein period.</li>
+</ul>
+
+<h2 class="sub-title">Card Priorities by Side</h2>
+<div class="callout axis">
+  <div class="callout-title">Axis Card Priorities</div>
+  Play supply cards immediately &mdash; never hold them. A supply card held while your formations are attriting from isolation is wasted potential. Save reinforcement timing cards for scenarios where your initial forces are inadequate for the first-turn objective. Leadership cards should be held for your main offensive push, not routine advances.
+</div>
+<div class="callout allied">
+  <div class="callout-title">Allied Card Priorities</div>
+  Malta cards are most effective when Axis supply is already strained &mdash; a supply disruption when Rommel is at the Egyptian frontier is catastrophic; one when he is resting at El Agheila barely matters. Air superiority cards should be saved for the decisive defensive battle rather than counterattack operations.
+</div>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<section class="section" id="s11">
+<h1 class="section-title"><span class="sec-num">&sect; 11</span> Victory Conditions</h1>
+<p>Victory conditions vary by scenario but share common elements across most of the SGS Afrika Korps scenarios. Understanding exactly what wins or loses a given scenario is essential &mdash; many games are decided by VP accumulation from held objectives rather than outright military elimination of the enemy.</p>
+
+<h2 class="sub-title">Standard Victory Point Objectives</h2>
+<ul class="guide-list">
+  <li><strong>Key Ports (Tobruk, Benghazi, Mersa Matruh):</strong> Award VP each turn held. The highest-value regular VP locations on the map. Both sides know these are the decisive objectives; the campaign naturally flows toward them.</li>
+  <li><strong>Major Cities and Road Junctions:</strong> Secondary VP awards for controlling key locations along the coast road.</li>
+  <li><strong>Unit Elimination:</strong> Each enemy formation destroyed awards VP. Elite German formations (15th and 21st Panzer) are worth more VP when destroyed than Italian garrison units.</li>
+  <li><strong>Suez Canal (Axis ultimate objective):</strong> Capturing the Suez Canal triggers an immediate Axis victory in the Grand Campaign and most 1942 scenarios. This is the supreme Axis goal &mdash; reaching it before the Allied logistical advantage becomes insurmountable.</li>
+</ul>
+
+<h2 class="sub-title">Axis Victory Thresholds</h2>
+<p>The Axis must advance fast enough to accumulate VP from the major ports while keeping their Panzer divisions operational. Losing both 15th and 21st Panzer to attrition without capturing sufficient VP is a losing proposition even without losing the scenario outright. Each Panzer division that survives to the end of the scenario with adequate LP represents saved military potential for future offensives.</p>
+
+<h2 class="sub-title">Allied Victory Thresholds</h2>
+<p>The Allies primarily win by preventing the Axis from reaching the Suez Canal &mdash; by holding the El Alamein line, destroying the Panzer divisions, or accumulating VP through grinding Axis forces back toward Tripoli. In the later scenarios, Allied victory requires active offensive operations rather than passive defence.</p>
+
+<div class="callout warning">
+  <div class="callout-title">The Time Trap &mdash; Grand Campaign</div>
+  In the 42-turn Grand Campaign, both sides face a hidden time pressure: Axis supply constraints worsen with every turn the campaign drags on without decisive Axis advance; Allied material superiority grows with every turn the Axis fails to reach Suez. The Axis player who spends six turns carefully reducing Tobruk instead of bypassing it and pushing east may find that when they finally reach El Alamein, it is too late &mdash; Montgomery has arrived, American tanks are unloading at Alexandria, and the supply advantage has shifted irreversibly.
+</div>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+<section class="section" id="s12">
+<h1 class="section-title"><span class="sec-num">&sect; 12</span> Scenario Guide</h1>
+<p>SGS Afrika Korps includes eight scenarios covering every major phase of the desert war from Italy's 1940 offensive through to the decisive battles of El Alamein. Each provides a distinct strategic challenge and a different force balance. The shorter scenarios are excellent for learning the mechanics; the Grand Campaign is the definitive experience.</p>
+
+<div class="scenario-grid">
+  <div class="scenario-row header"><div>Scenario Name</div><div>Period</div><div>Turns</div></div>
+  <div class="scenario-row">
+    <div>
+      <div class="scenario-name">Operazione E (Italian Offensive)</div>
+      <div class="scenario-date">Italian Tenth Army's invasion of Egypt; O'Connor's Compass counter-offensive. Can Italy take the Suez Canal without Rommel? The most unusual scenario in the game.</div>
+    </div>
+    <div class="scenario-date">Sep 1940 &ndash; Feb 1941</div>
+    <div class="scenario-turns">8 turns</div>
+  </div>
+  <div class="scenario-row">
+    <div>
+      <div class="scenario-name">Operation Compass 1940</div>
+      <div class="scenario-date">O'Connor's brilliant two-month annihilation of the Italian Tenth Army. Allied player crushes a numerically superior but tactically rigid opponent. Excellent for learning Allied combat operations.</div>
+    </div>
+    <div class="scenario-date">Dec 1940 &ndash; Feb 1941</div>
+    <div class="scenario-turns">8 turns</div>
+  </div>
+  <div class="scenario-row">
+    <div>
+      <div class="scenario-name">Operation Battleaxe 1941</div>
+      <div class="scenario-date">Britain's failed attempt to relieve Tobruk after Rommel's first offensive. The 88mm guns at Halfaya Pass shatter British armour. Compact, intense, tactically demanding.</div>
+    </div>
+    <div class="scenario-date">June 1941</div>
+    <div class="scenario-turns">3 turns</div>
+  </div>
+  <div class="scenario-row">
+    <div>
+      <div class="scenario-name">Operation Crusader 1941</div>
+      <div class="scenario-date">The sprawling tank battle that finally relieves Tobruk. The most chaotic scenario in the game &mdash; fluid fronts, constant positional changes, a genuine test of operational flexibility for both sides.</div>
+    </div>
+    <div class="scenario-date">Nov&ndash;Dec 1941</div>
+    <div class="scenario-turns">8 turns</div>
+  </div>
+  <div class="scenario-row">
+    <div>
+      <div class="scenario-name">Grand Campaign 1941</div>
+      <div class="scenario-date">Rommel's arrival in February 1941 through to the end of Operation Crusader. The first comprehensive campaign experience: the Axis drives east, Crusader pushes them back, the pendulum swings.</div>
+    </div>
+    <div class="scenario-date">Feb&ndash;Dec 1941</div>
+    <div class="scenario-turns">~24 turns</div>
+  </div>
+  <div class="scenario-row">
+    <div>
+      <div class="scenario-name">Short 1942 Campaign</div>
+      <div class="scenario-date">Rommel's January 1942 counteroffensive through to the Gazala battles and the fall of Tobruk. Fast-moving and aggressive; Rommel is at the peak of his powers, Ritchie's Eighth Army is off-balance.</div>
+    </div>
+    <div class="scenario-date">Jan&ndash;July 1942</div>
+    <div class="scenario-turns">~16 turns</div>
+  </div>
+  <div class="scenario-row">
+    <div>
+      <div class="scenario-name">El Alamein 1942</div>
+      <div class="scenario-date">The decisive battle. Rommel's exhausted, supply-starved army faces Montgomery's methodically prepared Eighth Army. The desert is finally fixed &mdash; no southern flank exists. Attritional and intense.</div>
+    </div>
+    <div class="scenario-date">Oct&ndash;Nov 1942</div>
+    <div class="scenario-turns">6 turns</div>
+  </div>
+  <div class="scenario-row">
+    <div>
+      <div class="scenario-name">Grand Campaign (Full)</div>
+      <div class="scenario-date">The complete desert war from El Agheila in April 1941 to El Alamein in December 1942. Both sides' full order of battle. The definitive SGS Afrika Korps experience. Demands deep strategic planning across all phases.</div>
+    </div>
+    <div class="scenario-date">Apr 1941 &ndash; Dec 1942</div>
+    <div class="scenario-turns">42 turns</div>
+  </div>
+</div>
+
+<h2 class="sub-title">Recommended Play Order</h2>
+<ol class="guide-list">
+  <li><strong>Operazione E (8 turns)</strong> &mdash; Learn the map and supply mechanics with Italian forces before the complexity of German Panzer doctrine arrives.</li>
+  <li><strong>Battleaxe 1941 (3 turns)</strong> &mdash; The shortest scenario; perfect for learning combat resolution and air support timing without a long commitment.</li>
+  <li><strong>Crusader 1941 (8 turns)</strong> &mdash; Introduces the full complexity of both sides' forces in a fluid, competitive engagement.</li>
+  <li><strong>Grand Campaign 1941 (~24 turns)</strong> &mdash; Consolidates everything into a full campaign narrative before attempting the 42-turn behemoth.</li>
+  <li><strong>Grand Campaign (42 turns)</strong> &mdash; Only after you've fully understood all systems across smaller scenarios.</li>
+</ol>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+<section class="section" id="s13">
+<h1 class="section-title"><span class="sec-num">&sect; 13</span> Axis Strategy</h1>
+<p>The Axis strategic problem is beautifully clear and brutally difficult: you must advance faster than your supply line deteriorates, capture enough ports to extend your reach, and eliminate enough Allied formations to prevent the British from organising a coherent counter before you reach Suez. Every turn you spend consolidating is a turn the Allies use to build up. You are fighting the clock as much as the enemy.</p>
+
+<h2 class="sub-title">The Core Axis Problem</h2>
+<p>Your best asset &mdash; Rommel and the two Panzer divisions &mdash; is also your most fragile. The Afrika Korps has thin replacement pipelines, supply is always precarious, and every LP lost to a Panzer division is hard to recover. You cannot afford to use your Panzers for siege duty, static defence, or frontal assaults against fortified positions. They exist for one purpose: to rupture the enemy line, drive into his rear, and collapse his supply network. Everything else is secondary.</p>
+
+<div class="strat-phase axis">
+  <div class="strat-phase-title">Phase 1: The Opening Drive &mdash; Turns 1&ndash;6</div>
+  <p><strong>Objective:</strong> Seize Benghazi and push east as fast as supply allows; contain rather than besiege Tobruk; reach the Egyptian frontier.</p>
+  <p>Position Rommel with 15th or 21st Panzer at the spearhead and drive east along and parallel to the coast road. Use Italian infantry on the flanks to screen movement and prevent Allied formations from cutting your supply line. Do not stop to reduce Tobruk &mdash; contain it with the minimum Italian force necessary and continue east. A surrounded Tobruk starves itself; an Axis army that wastes three turns besieging it may find the Crusader offensive arriving before it has reached the frontier.</p>
+  <p>Play supply cards immediately. Never bank them. Your supply is stretched from the moment you leave Benghazi and will not improve until you activate Tobruk (captured or neutralised) as a relay.</p>
+</div>
+
+<div class="strat-phase axis">
+  <div class="strat-phase-title">Phase 2: The Egyptian Gamble &mdash; Turns 6&ndash;16</div>
+  <p><strong>Objective:</strong> Cross the Egyptian frontier, capture or neutralise Mersa Matruh, and reach El Alamein before Allied reinforcements harden the position.</p>
+  <p>This is the make-or-break phase. Your supply line now stretches the length of Libya; Allied interdiction events will begin reducing your logistics. Rommel must move fast &mdash; hold at any point for more than 2&ndash;3 turns and the Allied supply pipeline strengthens while yours weakens.</p>
+  <p>Use concentric attacks wherever possible. A frontal assault on a defended position is expensive; an encirclement that cuts the defenders' supply before combat is devastating. Send 90th Light around the southern flank while the Panzers hold the enemy frontally, then close the ring and let the supply attrition do the work.</p>
+  <p>Save leadership cards for the assault on El Alamein itself. If you reach El Alamein with Rommel, both Panzer divisions at reasonable strength, and an adequate supply chain, you have a genuine chance of breakthrough.</p>
+</div>
+
+<div class="strat-phase axis">
+  <div class="strat-phase-title">Phase 3: El Alamein or Withdrawal &mdash; Turns 16+</div>
+  <p><strong>Objective:</strong> Breach the El Alamein line before Allied reinforcements make it impenetrable; if the line holds, trade space for time while preserving Panzer strength.</p>
+  <p>El Alamein is fundamentally different from every previous battle in the campaign. The southern flank cannot be turned &mdash; the Qattara Depression runs from the Alamein position to the southwest and is impassable to vehicles. You must attack frontally, which plays against your strengths. Concentrate maximum force on one narrow sector, use air superiority cards, and throw Rommel at the decisive point. If the attack fails, you face a decision the historical Rommel refused to make honestly: withdraw to conserve your remaining Panzer strength, or continue a frontal attrition battle that destroys your army.</p>
+  <p>Withdrawing to Benghazi or even El Agheila while your Panzers remain intact is not a defeat in VP terms &mdash; you may still win on accumulated points. Fighting to the last man at El Alamein almost certainly is.</p>
+</div>
+
+<h2 class="sub-title">Axis Build Order Priorities</h2>
+<ol class="guide-list">
+  <li>Rommel with the leading Panzer element at all times.</li>
+  <li>Italian infantry to screen supply lines and hold bypassed positions.</li>
+  <li>Air support concentrated at the decisive battle each turn.</li>
+  <li>Supply cards played immediately, never banked.</li>
+  <li>Ports activated as supply relays as fast as each is secured.</li>
+</ol>
+
+<h2 class="sub-title">Common Axis Mistakes</h2>
+<ul class="guide-list">
+  <li><strong>Besieging Tobruk with Panzers:</strong> Tobruk has high fortification DEF bonuses; reducing it costs Panzer LP you cannot afford. Contain it with Italians and drive past.</li>
+  <li><strong>Frontal assaults on escarpment positions:</strong> Halfaya Pass defended by 88s is a killing ground for armour. Bypass if possible; if not, use indirect routes and heavy air support.</li>
+  <li><strong>Supply overextension:</strong> Driving to the Egyptian frontier before activating Benghazi and Tobruk as supply relays leaves your spearheads out of supply within 1&ndash;2 turns. Always verify supply path before advancing.</li>
+  <li><strong>Using Rommel in static defence:</strong> Rommel's value is in offensive momentum. If you are defending, his breakthrough bonuses are wasted. Position him to lead counterattacks rather than hold static positions.</li>
+  <li><strong>Ignoring the clock in the Grand Campaign:</strong> Every turn of delay benefits the Allies. A methodical approach that wins every battle but reaches El Alamein in January 1942 instead of July 1942 will face a wall of reinforced Allied strength.</li>
+</ul>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<section class="section" id="s14">
+<h1 class="section-title"><span class="sec-num">&sect; 14</span> Allied Strategy</h1>
+<p>The Allied strategic problem is the inverse of the Axis: time favours you. If you can survive the initial Axis offensive, trade space for time without losing your Panzer equivalents, and reach the El Alamein position intact, the campaign shifts dramatically in your favour. Your greatest enemies in the early game are poor leadership, tactical rigidity, and the temptation to fight the German on his own terms in open desert instead of choosing ground that negates Rommel's mobility.</p>
+
+<h2 class="sub-title">The Core Allied Problem</h2>
+<p>Early in the campaign, your armoured formations are not a match for the Afrika Korps in mobile desert combat. Your advantage is in firepower at the static level &mdash; dug-in positions, artillery, and air support &mdash; not in tank-on-tank engagement at range. The Allied players who try to fight Rommel as he fights them &mdash; fast, fluid, and aggressive &mdash; lose. The ones who choose terrain, maintain supply, and force him into attritional battles he cannot sustain ultimately win.</p>
+
+<div class="strat-phase allied">
+  <div class="strat-phase-title">Phase 1: Survive the First Offensive &mdash; Turns 1&ndash;8</div>
+  <p><strong>Objective:</strong> Hold Egypt; defend the frontier without getting encircled; maintain Tobruk as a threat to Axis supply; preserve armoured strength.</p>
+  <p>Do not try to hold every position on the Libyan frontier. Rommel's flanking moves will encircle any formation that stands still. Trade space for time: fall back to defensible terrain, maintain supply, and deny Rommel the decisive encirclements that would destroy your formations wholesale.</p>
+  <p>Keep your armoured formations concentrated, not dispersed. The historical Allied error of parcelling out armour in small packets in support of separate infantry formations allowed the Panzers to engage and defeat each in detail. In game terms, keep your armoured formations together and use them for decisive counterattacks rather than screening duty.</p>
+  <p>Tobruk is your best asset in this phase. A garrison in Tobruk pins down significant Axis forces and threatens the coast road even if the rest of Libya is lost. Reinforce the Tobruk garrison with your best infantry &mdash; Australian divisions and Indian formations are ideal.</p>
+</div>
+
+<div class="strat-phase allied">
+  <div class="strat-phase-title">Phase 2: Crusader-Style Relief and Counter &mdash; Turns 8&ndash;20</div>
+  <p><strong>Objective:</strong> Relieve Tobruk; destroy or severely damage the Panzer divisions; push Axis forces back toward Libya.</p>
+  <p>By this phase your supply is strengthening while Axis supply has been stretched for months. Use Malta event cards to disrupt Axis convoys before launching your major offensive. Mass your armour at one point, achieve local superiority, and drive through.</p>
+  <p>Target the Panzer divisions specifically. Italian formations left encircled and out of supply will attrite themselves; it is the German armour that must be destroyed to win the campaign. Use air superiority cards on turns when your armour engages German Panzer formations, ensuring the combat modifier swing works in your favour.</p>
+</div>
+
+<div class="strat-phase allied">
+  <div class="strat-phase-title">Phase 3: El Alamein and Beyond &mdash; Turns 20+</div>
+  <p><strong>Objective:</strong> Hold El Alamein if defending; attack methodically with overwhelming preparation if taking the offensive with Montgomery.</p>
+  <p>If defending El Alamein with Auchinleck or in the early-1942 scenarios, your position is strong. The terrain fixes both flanks; Rommel must attack frontally against your artillery-heavy defensive system. Let him exhaust himself, then counterattack when his supply and Panzer LP are at their lowest.</p>
+  <p>If playing the El Alamein scenario with Montgomery, the approach is the opposite: methodical preparation, artillery concentration, carefully co-ordinated armour-infantry-air assault, and the exploitation of overwhelming material advantage. Montgomery-era Allied play is about executing a set piece, not improvisation. Prepare thoroughly, then attack decisively.</p>
+</div>
+
+<h2 class="sub-title">Common Allied Mistakes</h2>
+<ul class="guide-list">
+  <li><strong>Dispersing armour:</strong> The number one Allied error, historical and in-game. Keep armoured formations concentrated. Two divisions together defeat a Panzer division; two independent brigades get destroyed one at a time.</li>
+  <li><strong>Abandoning Tobruk prematurely:</strong> Tobruk's garrison is an ongoing pain for the Axis. Even a small garrison forces the Axis to maintain a blocking force or accept a threat to their supply line.</li>
+  <li><strong>Launching counteroffensives before supply is ready:</strong> The historical Crusader operation succeeded partly by chance; numerous Allied counteroffensives in 1941&ndash;42 failed because formations were committed before supply was adequate. Always verify supply reaches your attacking formations before the offensive turn.</li>
+  <li><strong>Fighting in open desert against concentrated Panzers:</strong> In open terrain, German armour excels. Draw them onto escarpment positions, fortified boxes, or minefields where their mobility advantage is neutralised.</li>
+</ul>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<section class="section" id="s15">
+<h1 class="section-title"><span class="sec-num">&sect; 15</span> PBEM &amp; Multiplayer</h1>
+<p>SGS Afrika Korps supports <strong>Play By Email (PBEM)</strong> for two human players. The desert pendulum dynamic &mdash; constant reversals of fortune, dramatic supply crises, and the ever-present threat of encirclement &mdash; makes PBEM against a human opponent the game's most rewarding experience.</p>
+
+<h2 class="sub-title">How PBEM Works</h2>
+<ol class="guide-list">
+  <li>Player 1 (Axis) takes their turn, saves the game file, and sends it to Player 2.</li>
+  <li>Player 2 (Allies) receives the file, loads it, takes their turn, and returns the file.</li>
+  <li>This continues for the scenario's full turn count.</li>
+</ol>
+<p>Full PBEM setup instructions: <a href="https://strategygamestudio.com/sgs-rules/multiplayer/sgs-pbem-instructions/" target="_blank" rel="noreferrer">strategygamestudio.com/sgs-rules/multiplayer</a></p>
+
+<h2 class="sub-title">PBEM Strategic Differences</h2>
+<ul class="guide-list">
+  <li>Against a human opponent, flanking moves must be truly concealed &mdash; Fog of War matters more because human players will exploit every visible weakness rather than following predictable AI patterns.</li>
+  <li>Card hand management becomes critical. In PBEM your opponent cannot see your hand; a Malta card held until the decisive moment, or a Rommel leadership card saved for the breakthrough, can reverse an entire campaign's momentum.</li>
+  <li>Supply lines become tactical weapons. A human Allied player will deliberately target your supply chain rather than always seeking battle. Plan defensive screens around your supply relay ports as carefully as you plan offensives.</li>
+  <li>Agree on a turn cadence appropriate to the scenario. The 42-turn Grand Campaign played at one exchange every two days takes nearly three months; the shorter scenarios are more practical for PBEM play.</li>
+</ul>
+
+<div class="callout tip">
+  <div class="callout-title">PBEM Opening Advice &mdash; Axis Player</div>
+  In PBEM, your Turn 1 movements define the tempo of the entire campaign. A human Allied player who sees your opening axis of advance will position reserves accordingly. Consider sending a screening force north along the coast to occupy Allied attention while your main Panzer mass prepares a southern flanking move on Turn 2. The same strategy that works against the AI is more transparent against a human; introduce variety early.
+</div>
+</section>
+<div class="ornamental-divider">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+<section class="section" id="s16">
+<h1 class="section-title"><span class="sec-num">&sect; 16</span> Glossary</h1>
+<div class="glossary-grid">
+  <div class="gloss-item"><div class="gloss-term">88mm Flak</div><div class="gloss-def">German dual-purpose anti-aircraft/anti-tank gun; deadly against Allied armour at escarpment positions. Represented through unit combat bonuses and specific terrain modifier events.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Afrika Korps</div><div class="gloss-def">The German expeditionary force in North Africa, formally the Deutsches Afrika Korps. Comprised primarily of 15th and 21st Panzer Divisions plus 90th Light. The Axis' primary offensive instrument.</div></div>
+  <div class="gloss-item"><div class="gloss-term">ATK</div><div class="gloss-def">Attack factor; governs offensive combat die rolls. Modified by terrain, leader bonuses, and card effects.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Battle Morale</div><div class="gloss-def">Sum of unit morale values + leader bonus + terrain effects + card modifiers for one side in a battle. Reaches zero triggers rout and pursuit fire.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Bir Hakeim</div><div class="gloss-def">Southern anchor of the Gazala Line; defended by the 1&egrave;re Brigade Fran&ccedil;aise Libre against extended Axis assault in May&ndash;June 1942. A major event in the 1942 scenarios with VP and supply implications.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Breakthrough</div><div class="gloss-def">Post-victory advance by eligible units (armour, mechanised, leaders) into an adjacent region. Can chain with expert leaders like Rommel to cover multiple regions in one turn.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Concentric Attack</div><div class="gloss-def">Attacking a region simultaneously from multiple adjacent regions. Grants an ATK bonus reflecting the pressure of envelopment; the basis of all Rommel's encirclement tactics.</div></div>
+  <div class="gloss-item"><div class="gloss-term">DEF</div><div class="gloss-def">Defence factor; governs defensive combat rolls. Significantly modified by terrain: fortification and escarpment bonuses can make otherwise weak positions nearly impregnable.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Desert Air Force</div><div class="gloss-def">Allied air command in North Africa; reorganised under Coningham to provide closely integrated land-air support. Grows progressively stronger through 1942 in the relevant scenarios.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Eighth Army</div><div class="gloss-def">British Commonwealth combined army in North Africa from September 1941. Commanded successively by Cunningham, Ritchie, Auchinleck, and then Montgomery from August 1942.</div></div>
+  <div class="gloss-item"><div class="gloss-term">El Agheila</div><div class="gloss-def">Western extremity of the main campaign map; the point from which Rommel launched his offensive in April 1941 and to which the Afrika Korps retreated after Crusader. The campaign's western resetting point.</div></div>
+  <div class="gloss-item"><div class="gloss-term">El Alamein Line</div><div class="gloss-def">The defensive position between the sea and the Qattara Depression; 65 kilometres of unflanked terrain. The one position in the desert where a defensive line cannot be turned. Unique defensive terrain mechanics apply here.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Gazala Line</div><div class="gloss-def">Allied defensive position west of Tobruk in 1942; a series of mined and fortified "boxes" that Rommel ultimately outflanked. Represented through fortification terrain in the 1942 scenarios.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Halfaya Pass</div><div class="gloss-def">Escarpment crossing on the Egyptian frontier; the only practical vehicle route from the coastal plain to the interior plateau. High defence bonus; historically "Hellfire Pass" for British armour during Battleaxe.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Khamsin</div><div class="gloss-def">Hot desert wind event; reduces movement points for all units in affected regions. Represents the genuine operational constraint of seasonal desert weather.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Life Points</div><div class="gloss-def">Unit strength; at 0 LP the unit is eliminated. Replacements restore LP to maximum for supplied units. German Panzer LP losses are the most strategically significant in the game.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Malta</div><div class="gloss-def">Island fortress not on the main map but represented through event cards. Malta-based attacks on Axis convoys can reduce supply arrivals, delay reinforcements, and trigger logistical crises for the Axis player.</div></div>
+  <div class="gloss-item"><div class="gloss-term">MOR</div><div class="gloss-def">Morale factor; contributes to Battle Morale. Elite German and Axis formations (15th Panzer, 90th Light, Ariete) have high MOR; Italian garrison units lower.</div></div>
+  <div class="gloss-item"><div class="gloss-term">MOV</div><div class="gloss-def">Movement points per turn. Armoured and motorised units have high MOV enabling rapid exploitation; infantry's lower MOV limits their operational reach.</div></div>
+  <div class="gloss-item"><div class="gloss-term">PBEM</div><div class="gloss-def">Play By Email; asynchronous 2-player multiplayer mode. The recommended mode for the full desert campaign experience against a human opponent.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Pursuit</div><div class="gloss-def">Free round of fire against routed units after a rout result. Can be devastating against already-weakened formations, particularly Italian units with lower morale.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Qattara Depression</div><div class="gloss-def">Impassable salt marsh south of El Alamein. The geographic feature that made the Alamein position uniquely defensible; no southern flanking move is possible here.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Relay (Supply)</div><div class="gloss-def">Friendly structure (port, airfield, fortified town) or logistics unit extending supply range by the standard relay distance. Ports are the critical Axis supply relays; each one captured extends operational reach significantly.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Rout</div><div class="gloss-def">Catastrophic combat failure triggered when Battle Morale reaches zero; battle ends and routing units take Pursuit fire before withdrawing.</div></div>
+  <div class="gloss-item"><div class="gloss-term">SGS Engine</div><div class="gloss-def">Strategy Game Studio's area-based wargame engine. Afrika Korps uses weekly turns; the same engine powers Overlord (3-day turns), Fall Weiss (2-day turns), and others at different scales.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Supply Range</div><div class="gloss-def">Maximum 3&ndash;4 regions from a source or relay in Afrika Korps. Beyond this range units are unsupplied and begin losing LP through attrition.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Tobruk</div><div class="gloss-def">Port and fortified position; the campaign's most strategically significant single location. Axis besieging forces, Allied garrison, VP awards, and supply relay implications make it the constant focus of both sides' planning.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Via Balbia</div><div class="gloss-def">The coastal road running from Tripoli to Alexandria; the operational spine of the entire campaign. Supply flows along it; armies advance along it; the side that cuts it behind the other has won the immediate battle.</div></div>
+  <div class="gloss-item"><div class="gloss-term">VP</div><div class="gloss-def">Victory Points; accumulated each turn from controlled objectives (ports, key towns) and by destroying enemy formations. The Suez Canal capture is an immediate Axis victory in most scenarios.</div></div>
+</div>
+</section>
+</div><!-- /content -->
+<footer id="footer">
+  SGS Afrika Korps Strategy Guide &nbsp;&middot;&nbsp; Based on SGS Engine &nbsp;&middot;&nbsp; Avalon Digital / Strategy Game Studio &nbsp;&middot;&nbsp; Community Resource
+</footer>
+</div><!-- /main -->
+<a id="back-top" href="#hero" title="Back to top">&#8593;</a>
+<script>
+const bar=document.getElementById('progress-bar');
+const backTop=document.getElementById('back-top');
+const toggle=document.getElementById('sidebar-toggle');
+const sidebar=document.getElementById('sidebar');
+window.addEventListener('scroll',()=>{
+  const scrolled=window.scrollY;
+  const total=document.documentElement.scrollHeight-window.innerHeight;
+  bar.style.transform=`scaleX(${scrolled/total})`;
+  backTop.classList.toggle('visible',scrolled>400);
+},{passive:true});
+const sections=document.querySelectorAll('.section[id]');
+const navItems=document.querySelectorAll('.nav-item');
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      navItems.forEach(n=>n.classList.remove('active'));
+      const a=document.querySelector(`.nav-item[href="#${e.target.id}"]`);
+      if(a){a.classList.add('active');a.scrollIntoView({block:'nearest'});}
+    }
+  });
+},{rootMargin:'-20% 0px -70% 0px'});
+sections.forEach(s=>observer.observe(s));
+toggle.addEventListener('click',()=>sidebar.classList.toggle('open'));
+document.querySelectorAll('.nav-item').forEach(item=>{
+  item.addEventListener('click',()=>sidebar.classList.remove('open'));
+});
+document.querySelectorAll('.section').forEach((s,i)=>{
+  s.style.animationDelay=`${i*0.04}s`;
+});
+</script>
+</body>
+</html>

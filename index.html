@@ -192,6 +192,7 @@ body::before {
 .game-card[data-era="pre-ww2"] .game-card-bar  { background: linear-gradient(90deg, #7a3c1a, #c9943a); }
 .game-card[data-era="ww2"]     .game-card-bar  { background: linear-gradient(90deg, #1b3d5a, #4a8ab0); }
 .game-card[data-era="post-ww2"].game-card-bar  { background: linear-gradient(90deg, #1a5c3a, #4ab07a); }
+.game-card[data-era="scifi"]   .game-card-bar  { background: linear-gradient(90deg, #0d1a30, #2a6b8a); }
 
 .game-card-inner { padding: 20px 22px 22px; }
 
@@ -205,6 +206,7 @@ body::before {
 }
 .game-card[data-era="ww2"]     .game-card-era { color: #2a6080; }
 .game-card[data-era="post-ww2"].game-card-era { color: #1a6040; }
+.game-card[data-era="scifi"]   .game-card-era { color: #1a5c6b; }
 
 .game-card-title {
   font-family: var(--font-head);
@@ -340,6 +342,7 @@ body::before {
 .modal[data-era="pre-ww2"] .modal-bar { background: linear-gradient(90deg, #7a3c1a, #c9943a); }
 .modal[data-era="ww2"]     .modal-bar { background: linear-gradient(90deg, #1b3d5a, #4a8ab0); }
 .modal[data-era="post-ww2"].modal-bar { background: linear-gradient(90deg, #1a5c3a, #4ab07a); }
+.modal[data-era="scifi"]   .modal-bar { background: linear-gradient(90deg, #0d1a30, #2a6b8a); }
 
 .modal-header {
   padding: 24px 28px 18px;
@@ -359,6 +362,7 @@ body::before {
   margin-bottom: 5px;
 }
 .modal[data-era="ww2"]     .modal-era { color: #2a6080; }
+.modal[data-era="scifi"]   .modal-era { color: #1a5c6b; }
 .modal[data-era="post-ww2"].modal-era { color: #1a6040; }
 
 .modal-title {
@@ -602,9 +606,9 @@ body::before {
 <header class="site-hero">
   <div class="hero-inner">
     <div class="hero-eyebrow">Community Resource &nbsp;·&nbsp; Strategy Game Studio &nbsp;·&nbsp; Avalon Digital</div>
-    <h1 class="hero-title">SGS Strategy Guide Library</h1>
+    <h1 class="hero-title">Strategy Guide Library</h1>
     <div class="hero-rule"></div>
-    <p class="hero-desc">Comprehensive guides covering both sides, all systems, and every scenario — for the SGS Engine wargame series.</p>
+    <p class="hero-desc">Comprehensive guides covering both sides, all systems, and every scenario — for historical wargames and grand strategy titles.</p>
   </div>
 </header>
 
@@ -625,7 +629,7 @@ body::before {
   <!-- ── Available Guides ───────────────────────────────────── -->
   <div class="section-label">Available Guides</div>
   <h2 class="section-title">Complete Strategy Guides</h2>
-  <p class="section-intro">Full multi-section guides covering historical context, rules, both sides' strategies, all scenarios, and a complete glossary.</p>
+  <p class="section-intro">Full multi-section guides covering historical context, rules, strategies, all scenarios, and a complete glossary. SGS historical wargames and grand strategy titles.</p>
 
   <div class="games-grid" id="games-grid">
     <!-- Cards injected by JS -->
@@ -759,7 +763,7 @@ const GUIDES = [
     sides:     ['Wehrmacht', 'Polish Armed Forces'],
     hardest:   'Polish Armed Forces',
     desc:      'Germany\'s opening blitzkrieg and Poland\'s desperate defence. Fall Weiss covers the five-week September Campaign of 1939 — an asymmetric clash of modern armoured doctrine against a brave but outgunned opponent fighting on multiple fronts.',
-    detail:    'SGS Fall Weiss simulates the September 1939 invasion of Poland, the opening campaign of the Second World War. The German player commands a mechanised force with overwhelming air superiority and superior operational tempo, tasked with encircling and destroying the Polish army before it can withdraw to defensible lines. The Polish player must trade space for time, concentrate forces at critical chokepoints, and exploit terrain and weather to inflict enough attrition to deny Germany a clean, rapid victory.',
+    detail:    'SGS Fall Weiss simulates the September 1939 invasion of Poland, the opening campaign of the Second World War. The German player commands a mechanised force with overwhelming air superiority and superior operational tempo, tasked with encircling and destroying the Polish army before it can withdraw to defensible lines. The Polish player must trade space for time, concentrate forces at critical chokepoints, and exploit terrain and weather to inflict enough attrition to deny Germany a clean, rapid victory. Guide currently in production.',
     sideA: {
       label: 'Wehrmacht',
       body:  'Mechanised infantry, Panzer divisions, and total air superiority. Fast and powerful; the challenge is achieving decisive encirclements rather than pushing Poland back in a disorganised retreat.'
@@ -772,6 +776,36 @@ const GUIDES = [
     file:  'https://t1ckles.github.io/nadir/fall_weiss.html',
     steam: 'https://store.steampowered.com/app/1747580/SGS_Fall_Weiss/',
     site:  'https://strategygamestudio.com/shop/sgs-fall-weiss/',
+    wip:   true,
+  },
+  {
+    id:        'distant-worlds-universe',
+    title:     'Distant Worlds: Universe',
+    subtitle:  'Pausable Real-Time 4X Grand Strategy',
+    era:       'scifi',
+    period:    'Science Fiction',
+    engine:    'Distant Worlds Engine',
+    sections:  17,
+    scenarios: 5,
+    sides:     ['Your Empire', 'Rival Empires / Shakturi'],
+    hardest:   'Any Race (Automation Mastery Required)',
+    sidesLabel:'Your Faction & The Galaxy',
+    scenariosLabel: 'Victory Types',
+    ctalabel:  'Open Full Strategy Guide',
+    desc:      'A living galaxy of up to 2,000 star systems, a dual public/private economy, 22 playable races, and as much or as little automation as you want. One of the deepest 4X strategy games ever made \u2014 and one of the most misunderstood.',
+    detail:    'Distant Worlds: Universe is a vast, pausable real-time 4X grand strategy game covering exploration, expansion, and galactic domination on an epic scale. Its defining feature is the dual economy: a State economy you control directly and a Private economy operated autonomously by civilian AI ships. The galaxy is alive whether you are watching it or not. All four expansions are included in Universe \u2014 base game, Return of the Shakturi, Legends, and Shadows \u2014 each of which fundamentally transforms the experience. The guide covers all 22 playable races, all major systems, the Shakturi threat, government types, ship design, and full early/mid/late-game strategic frameworks.',
+    sideA: {
+      label: 'Your Empire',
+      body:  'Choose from 22 races across 7 biological families. Set policy, manage research, design ships, and govern \u2014 the private economy runs itself. The challenge is knowing what to automate and what to control personally.'
+    },
+    sideB: {
+      label: 'The Galaxy & Shakturi',
+      body:  'Rival empires, pirate factions, space monsters, and the looming Shakturi Return. The galaxy is a living, competitive environment that never waits for you to be ready.'
+    },
+    tags:  ['Real-Time Pausable','4X Grand Strategy','22 Races','Dual Economy','Shakturi','Automation'],
+    file:  'https://t1ckles.github.io/nadir/distant_worlds_universe.html',
+    steam: 'https://store.steampowered.com/app/261470/Distant_Worlds_Universe/',
+    site:  'https://www.matrixgames.com/game/distant-worlds-universe',
   },
 ];
 
@@ -794,6 +828,13 @@ const COMING_SOON = [
     era:      'ww2',
     period:   'Second World War',
     desc:     'Germany\'s last major offensive in the West. Fog, snow, and a desperate armoured thrust against an Allied line briefly caught off guard.',
+  },
+  {
+    title:    'SGS Fall Weiss',
+    subtitle: 'Invasion of Poland, September 1939',
+    era:      'ww2',
+    period:   'Second World War',
+    desc:     'The opening campaign of World War II. German blitzkrieg vs. determined Polish resistance across difficult terrain and limited timeframe.',
   },
 ];
 
@@ -893,14 +934,14 @@ function openModal(id) {
 
   const guideCta = g.wip
     ? '<div class="modal-cta" style="opacity:0.45;cursor:default;pointer-events:none;">Guide Coming Soon</div>'
-    : '<a class="modal-cta" href="' + g.file + '" target="_blank" rel="noopener">Open Full Strategy Guide &rsaquo;</a>';
+    : '<a class="modal-cta" href="' + g.file + '" target="_blank" rel="noopener">' + (g.ctalabel || 'Open Full Strategy Guide') + ' &rsaquo;</a>';
 
   document.getElementById('modal-body').innerHTML =
     wipNote +
     '<div class="modal-section-label">Overview</div>' +
     '<p class="modal-desc">' + g.detail + '</p>' +
 
-    '<div class="modal-section-label">The Two Sides</div>' +
+    '<div class="modal-section-label">' + (g.sidesLabel || 'The Two Sides') + '</div>' +
     '<div class="modal-sides">' +
       '<div class="modal-side">' +
         '<div class="modal-side-label">' + g.sideA.label + '</div>' +
@@ -916,7 +957,7 @@ function openModal(id) {
     '<div class="modal-meta-row">' +
       '<div class="modal-meta-cell"><div class="modal-meta-label">Engine</div><div class="modal-meta-value">' + g.engine + '</div></div>' +
       '<div class="modal-meta-cell"><div class="modal-meta-label">Sections</div><div class="modal-meta-value">' + g.sections + '</div></div>' +
-      '<div class="modal-meta-cell"><div class="modal-meta-label">Scenarios Covered</div><div class="modal-meta-value">' + g.scenarios + '</div></div>' +
+      '<div class="modal-meta-cell"><div class="modal-meta-label">' + (g.scenariosLabel || 'Scenarios Covered') + '</div><div class="modal-meta-value">' + g.scenarios + '</div></div>' +
       '<div class="modal-meta-cell"><div class="modal-meta-label">Hardest to Play</div><div class="modal-meta-value">' + g.hardest + '</div></div>' +
     '</div>' +
 

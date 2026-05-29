@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SGS Battle of the Bulge — The Winter War Manual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1410;--parchment:#f5efe4;--gold:#c9943a;--gold-dark:#8b6420;--gold-pale:#f0d9a8;
+  --mid:#4a3f32;--light:#f9f4ec;--border:rgba(201,148,58,0.3);--shadow:rgba(26,20,16,0.18);
+  --snow:#e8e4da;--grey:#2a3040;--grey-mid:#3a4255;
+  --pine:#1a3525;--pine-pale:#d5e8dc;--pine-border:rgba(26,53,37,0.35);
+  --frost:#1a2f4a;--frost-pale:#d5e0ef;--frost-border:rgba(26,47,74,0.35);
+  --font-head:'Cinzel','Times New Roman',serif;--font-body:'Crimson Pro','Georgia',serif;
+  --sidebar-w:288px;
+}
+html{scroll-behavior:smooth;font-size:17px}
+body{background:var(--parchment);color:var(--ink);font-family:var(--font-body);line-height:1.75;display:flex;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.5}
+a{color:inherit;text-decoration:none}button{cursor:pointer;font-family:inherit}
+#progress-bar{position:fixed;top:0;left:var(--sidebar-w);right:0;height:3px;background:var(--gold);transform-origin:left;transform:scaleX(0);z-index:500;transition:transform 0.1s linear}
+#sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--grey);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;border-right:2px solid var(--gold-dark);display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--gold-dark) var(--grey)}
+#sidebar-header{padding:28px 20px 20px;border-bottom:1px solid rgba(201,148,58,0.22);background:linear-gradient(180deg,#141820 0%,var(--grey) 100%)}
+#sidebar-title{font-family:var(--font-head);font-size:0.96rem;font-weight:900;color:var(--gold);letter-spacing:0.12em;text-transform:uppercase;line-height:1.3}
+#sidebar-sub{font-family:var(--font-body);font-size:0.7rem;color:rgba(255,255,255,0.42);margin-top:6px;letter-spacing:0.05em;font-style:italic}
+#sidebar-nav{padding:10px 0 40px;flex:1}
+.nav-section{padding:10px 20px 3px;font-family:var(--font-head);font-size:0.56rem;letter-spacing:0.2em;color:var(--gold-dark);text-transform:uppercase;margin-top:8px;opacity:0.85}
+.nav-item{display:block;padding:6px 20px 6px 28px;font-family:var(--font-body);font-size:0.8rem;color:rgba(245,239,228,0.68);text-decoration:none;border-left:2px solid transparent;transition:all 0.16s ease;line-height:1.35;position:relative}
+.nav-item::before{content:'›';position:absolute;left:14px;top:6px;color:var(--gold-dark);opacity:0;transition:opacity 0.12s}
+.nav-item:hover,.nav-item.active{color:var(--gold-pale);border-left-color:var(--gold);background:rgba(201,148,58,0.08);padding-left:30px}
+.nav-item:hover::before,.nav-item.active::before{opacity:1}
+#sidebar-toggle{display:none;position:fixed;top:10px;left:10px;z-index:200;background:var(--grey);border:1px solid var(--gold-dark);color:var(--gold);font-size:1.1rem;padding:5px 9px;border-radius:2px}
+#main{margin-left:var(--sidebar-w);flex:1;min-width:0}
+#hero{background:linear-gradient(160deg,#101418 0%,#1e2530 40%,#242c1a 80%,#141820 100%);min-height:460px;display:flex;flex-direction:column;justify-content:flex-end;padding:0 64px 64px;position:relative;overflow:hidden;border-bottom:3px solid var(--gold-dark)}
+#hero::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(-55deg,transparent,transparent 40px,rgba(201,148,58,0.025) 40px,rgba(201,148,58,0.025) 41px)}
+#hero::after{content:'';position:absolute;bottom:0;left:64px;right:64px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.hero-eyebrow{font-family:var(--font-head);font-size:0.7rem;letter-spacing:0.28em;color:var(--gold-dark);text-transform:uppercase;margin-bottom:14px;position:relative}
+.hero-title{font-family:var(--font-head);font-size:clamp(2.2rem,5vw,3.5rem);font-weight:900;color:var(--parchment);letter-spacing:0.04em;text-transform:uppercase;line-height:1.05;margin-bottom:8px;position:relative}
+.hero-subtitle{font-family:var(--font-body);font-size:1.05rem;font-style:italic;color:rgba(240,217,168,0.72);font-weight:300;margin-bottom:26px;position:relative}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;position:relative}
+.hero-tag{font-family:var(--font-head);font-size:0.63rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-pale);border:1px solid rgba(201,148,58,0.38);padding:3px 10px;background:rgba(201,148,58,0.07)}
+#content{padding:0 64px 80px;max-width:960px}
+.section{padding:54px 0 6px;animation:fadeUp 0.45s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.sec-num{display:inline-block;font-family:var(--font-head);font-size:0.8rem;font-weight:400;letter-spacing:0.1em;color:var(--gold-dark);margin-right:0.5em;vertical-align:middle}
+.section-title{font-family:var(--font-head);font-size:clamp(1.3rem,2.4vw,1.75rem);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink);padding-bottom:12px;margin-bottom:20px;border-bottom:2px solid var(--border);position:relative}
+.section-title::after{content:'';position:absolute;bottom:-2px;left:0;width:58px;height:2px;background:var(--gold)}
+.sub-title{font-family:var(--font-head);font-size:1.02rem;font-weight:600;letter-spacing:0.05em;color:var(--mid);margin:26px 0 9px;text-transform:uppercase}
+p{margin-bottom:1rem;font-size:1rem}
+.guide-list{margin:0.5rem 0 1rem 1.2rem}
+.guide-list li{margin-bottom:0.5rem;font-size:1rem}
+.guide-list li::marker{color:var(--gold-dark)}
+/* CALLOUTS */
+.callout{padding:15px 20px;margin:20px 0;border-left:4px solid var(--gold);background:var(--light);border-radius:0 3px 3px 0}
+.callout.pine{border-left-color:#2a6b40;background:var(--pine-pale)}
+.callout.frost{border-left-color:#2a4a7a;background:var(--frost-pale)}
+.callout.warning{border-left-color:#7a2a1a;background:#f5edda}
+.callout.tip{border-left-color:#3a5c1a;background:#edf5e4}
+.callout-title{font-family:var(--font-head);font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;margin-bottom:5px;color:var(--gold-dark)}
+.callout.pine .callout-title{color:#2a6b40}
+.callout.frost .callout-title{color:#2a4a7a}
+.callout.warning .callout-title{color:#7a2a1a}
+.callout.tip .callout-title{color:#3a5c1a}
+.callout p{font-size:0.94rem;margin-bottom:0.5rem}
+.callout p:last-child{margin-bottom:0}
+/* HISTORICAL FACT BOXES */
+.hist-fact{padding:16px 20px;margin:22px 0;border:1px solid rgba(26,47,74,0.45);background:rgba(26,47,74,0.06);position:relative}
+.hist-fact::before{content:'HISTORICAL RECORD';position:absolute;top:-0.6rem;left:1rem;font-family:var(--font-head);font-size:0.54rem;letter-spacing:0.22em;color:#2a4a7a;background:var(--parchment);padding:0 0.5rem}
+.hist-fact p{font-style:italic;color:#2a3a55;font-size:0.94rem;line-height:1.8}
+.hist-fact .source{font-family:var(--font-head);font-size:0.58rem;color:rgba(42,74,122,0.6);text-align:right;display:block;margin-top:0.6rem;letter-spacing:0.1em}
+/* DATA TABLES */
+.data-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.9rem}
+.data-table th{background:var(--grey);color:var(--gold-pale);font-family:var(--font-head);font-size:0.64rem;letter-spacing:0.12em;text-transform:uppercase;padding:8px 11px;text-align:left;border:1px solid rgba(201,148,58,0.2)}
+.data-table td{padding:7px 11px;border:1px solid var(--border);vertical-align:top;line-height:1.5;color:var(--ink)}
+.data-table tr:nth-child(even) td{background:var(--light)}
+.data-table tr:hover td{background:var(--snow)}
+/* PHASE BLOCKS */
+.phase{padding:16px 20px;margin:14px 0;border-left:4px solid var(--gold);background:rgba(201,148,58,0.05)}
+.phase.early{border-left-color:#2a4a7a;background:rgba(26,47,74,0.07)}
+.phase.mid{border-left-color:var(--gold-dark);background:rgba(201,148,58,0.06)}
+.phase.late{border-left-color:#7a2a1a;background:rgba(122,42,26,0.07)}
+.phase-title{font-family:var(--font-head);font-size:0.85rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:7px;color:var(--gold-dark)}
+.phase.early .phase-title{color:#2a4a7a}
+.phase.late .phase-title{color:#7a2a1a}
+.phase p{font-size:0.94rem;margin-bottom:0.6rem;color:var(--ink)}
+.phase p:last-child{margin-bottom:0}
+/* UNIT CARDS */
+.unit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin:16px 0}
+.unit-card{border:1px solid var(--border);background:var(--light);padding:14px 16px;border-top:3px solid var(--gold)}
+.unit-card.german{border-top-color:#555020}
+.unit-card.allied{border-top-color:#1a3a6a}
+.unit-name{font-family:var(--font-head);font-size:0.88rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink);margin-bottom:2px}
+.unit-type{font-family:var(--font-head);font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);margin-bottom:7px;display:block}
+.unit-card.german .unit-type{color:#555020}
+.unit-card.allied .unit-type{color:#1a3a6a}
+.unit-card p{font-size:0.88rem;line-height:1.6;color:var(--ink);margin-bottom:0}
+/* ORNAMENTAL DIVIDER */
+.orn{text-align:center;color:var(--gold);font-size:0.8rem;letter-spacing:0.35em;padding:28px 0 8px;opacity:0.65}
+/* GLOSSARY */
+.gloss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--border);margin-top:16px;border:1px solid var(--border)}
+.gloss-item{background:var(--light);padding:9px 13px;display:flex;gap:10px;align-items:flex-start}
+.gloss-item:nth-child(even){background:var(--parchment)}
+.gloss-term{font-family:var(--font-head);font-size:0.76rem;font-weight:700;color:var(--ink);white-space:normal;min-width:130px;max-width:155px;word-break:break-word;letter-spacing:0.04em;text-transform:uppercase}
+.gloss-def{font-size:0.86rem;color:var(--mid);line-height:1.55}
+/* BACK TO TOP */
+#back-top{position:fixed;bottom:26px;right:26px;width:40px;height:40px;background:var(--grey);border:1px solid var(--gold-dark);color:var(--gold);font-size:1rem;display:flex;align-items:center;justify-content:center;text-decoration:none;opacity:0;transform:translateY(8px);transition:opacity 0.3s,transform 0.3s;z-index:90}
+#back-top.visible{opacity:1;transform:none}
+#back-top:hover{background:var(--gold-dark);color:var(--parchment)}
+#footer{margin-top:40px;border-top:1px solid var(--border);padding:20px 64px;font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);text-align:center}
+@media(max-width:880px){
+  :root{--sidebar-w:0px}
+  #sidebar-toggle{display:flex;align-items:center;justify-content:center}
+  #sidebar{transform:translateX(-100%);transition:transform 0.26s ease;width:260px}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  #hero,#content,#footer{padding-left:22px;padding-right:22px}
+  #progress-bar{left:0}
+  .unit-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+<button id="sidebar-toggle" aria-label="Menu">&#9776;</button>
+
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <div id="sidebar-title">SGS Battle of the Bulge</div>
+    <div id="sidebar-sub">The Winter War Manual &mdash; Strategy Game Studio</div>
+  </div>
+  <div id="sidebar-nav">
+    <div class="nav-section">Background</div>
+    <a class="nav-item" href="#s01">01 &middot; The Ardennes, December 1944</a>
+    <a class="nav-item" href="#s02">02 &middot; Game Overview</a>
+    <a class="nav-item" href="#s03">03 &middot; The SGS Engine</a>
+    <div class="nav-section">Core Systems</div>
+    <a class="nav-item" href="#s04">04 &middot; The Initiative Gauge</a>
+    <a class="nav-item" href="#s05">05 &middot; Supply & Logistics</a>
+    <a class="nav-item" href="#s06">06 &middot; Terrain & Weather</a>
+    <a class="nav-item" href="#s07">07 &middot; Combat & Stacking</a>
+    <a class="nav-item" href="#s08">08 &middot; Air Power</a>
+    <a class="nav-item" href="#s09">09 &middot; Reinforcements</a>
+    <div class="nav-section">German Side</div>
+    <a class="nav-item" href="#s10">10 &middot; German Order of Battle</a>
+    <a class="nav-item" href="#s11">11 &middot; German Strategy</a>
+    <a class="nav-item" href="#s12">12 &middot; The 5th Panzer Army Axis</a>
+    <a class="nav-item" href="#s13">13 &middot; The 6th Panzer Army & Northern Shoulder</a>
+    <div class="nav-section">Allied Side</div>
+    <a class="nav-item" href="#s14">14 &middot; Allied Order of Battle</a>
+    <a class="nav-item" href="#s15">15 &middot; Allied Strategy</a>
+    <a class="nav-item" href="#s16">16 &middot; Holding the Shoulders</a>
+    <div class="nav-section">Scenarios</div>
+    <a class="nav-item" href="#s17">17 &middot; The Main Campaign (45 Turns)</a>
+    <a class="nav-item" href="#s18">18 &middot; Wacht am Rhein</a>
+    <a class="nav-item" href="#s19">19 &middot; Herbstnebel</a>
+    <a class="nav-item" href="#s20">20 &middot; Nuts! The Siege of Bastogne</a>
+    <a class="nav-item" href="#s21">21 &middot; Objective Li&egrave;ge</a>
+    <a class="nav-item" href="#s22">22 &middot; The Siegfried Line</a>
+    <div class="nav-section">Advanced</div>
+    <a class="nav-item" href="#s23">23 &middot; PBEM &amp; Multiplayer</a>
+    <a class="nav-item" href="#s24">24 &middot; Common Mistakes</a>
+    <div class="nav-section">Reference</div>
+    <a class="nav-item" href="#s25">25 &middot; Glossary</a>
+  </div>
+</nav>
+
+<div id="main">
+<div id="hero">
+  <div class="hero-eyebrow">Nadir Strategy Archive &nbsp;&middot;&nbsp; Strategy Game Studio &nbsp;&middot;&nbsp; SGS Engine v1.5</div>
+  <h1 class="hero-title">SGS Battle of the Bulge</h1>
+  <p class="hero-subtitle">The Winter War Manual &mdash; A Complete Operational Strategy Guide</p>
+  <div class="hero-tags">
+    <span class="hero-tag">Ardennes 1944</span>
+    <span class="hero-tag">25 Chapters</span>
+    <span class="hero-tag">Both Sides Covered</span>
+    <span class="hero-tag">All 6 Scenarios</span>
+    <span class="hero-tag">WW2 Historical Facts</span>
+    <span class="hero-tag">Full Glossary</span>
+  </div>
+</div>
+
+<div id="content">
+
+<!-- ═══ S01 ═══ -->
+<section class="section" id="s01">
+<h2 class="section-title"><span class="sec-num">&sect;01</span> The Ardennes, December 1944</h2>
+
+<div class="hist-fact">
+  <p>On September 16, 1944, Adolf Hitler announced to his startled generals his decision to mount a decisive counter-offensive in the West. The plan was breathtaking in its ambition: twenty-five divisions, drawn from every reserve Germany could muster, would punch through the lightly-held Ardennes sector, cross the Meuse River, and seize the vital port of Antwerp — cutting off the British 21st Army Group and four American corps from their supplies and precipitating a collapse of the Allied coalition. The generals listened in silence. Most privately believed it was impossible. None said so openly.</p>
+  <span class="source">// ARMY GROUP B WAR DIARY &middot; SEPTEMBER 1944 //</span>
+</div>
+
+<p>SGS Battle of the Bulge immerses you in the climactic winter battle that sealed Germany's fate on the Western Front. Released on December 16, 2024 — the 80th anniversary of the battle's opening — this operational simulation by Strategy Game Studio covers the entire arc of Operation Wacht am Rhein: from the thunderous German assault on a frozen, fog-blanketed Ardennes morning, through the desperate American defence at Bastogne and the Elsenborn Ridge, to Patton's famous armoured relief thrust and the grinding Allied counter-offensive that drove the Wehrmacht back to the Westwall in January 1945.</p>
+
+<p>To command effectively in this game, you must understand the world it represents. The Ardennes in December 1944 was a landscape of ancient forests, narrow winding roads, stone villages, and near-impassable terrain made more treacherous still by the worst winter in twenty years. The Germans had chosen this sector precisely because the Allies considered it unsuitable for major offensive operations. They were correct about the terrain. They had not accounted for what desperation can motivate.</p>
+
+<h2 class="sub-title">Why the Germans Chose the Ardennes</h2>
+<p>The Ardennes sector was held by only six American divisions stretched across an 85-mile front — a dangerously thin deployment that reflected Allied confidence that no serious offensive could navigate the terrain. The forests provided cover from Allied air observation. The poor road network, paradoxically, was an advantage for the attacker: it channelled the defence into predictable strong points while allowing infiltrating forces to exploit gaps between them.</p>
+<p>Hitler's plan — ultimately scaled back from the grandiose Antwerp objective to the more achievable goal of reaching the Meuse — called for a three-army assault: the 6th SS Panzer Army striking the northern axis toward Liège, the 5th Panzer Army driving through the centre toward Bastogne and the Meuse crossings, and the 7th Army protecting the southern flank. Over 200,000 men and nearly 1,000 armoured vehicles would attack on the morning of December 16.</p>
+
+<div class="hist-fact">
+  <p>The German operation was conducted under strict radio silence for weeks before the assault. Equipment moved only by night. Horse-drawn transport replaced motor vehicles to reduce noise. Luftwaffe patrols kept Allied reconnaissance aircraft away from the assembly areas. The deception was so complete that Allied intelligence — aware of German movements but uncertain of their scale and intent — assessed the activity as defensive preparation. When the artillery opened at 5:30 a.m. on December 16, 1944, the Americans in the Ardennes were genuinely, catastrophically surprised.</p>
+  <span class="source">// ALLIED INTELLIGENCE ASSESSMENT, SHAEF, NOVEMBER 1944 //</span>
+</div>
+
+<h2 class="sub-title">The Strategic Stakes</h2>
+<p>For Germany, this was the last reserve of strength. Every Panzer division, every Tiger tank, every experienced NCO committed to the Ardennes was unavailable for the Eastern Front, where Soviet armies were massing for the Vistula-Oder offensive that would begin in January. Hitler was gambling that a single stunning blow in the West would buy time — perhaps a negotiated peace with Britain and America, perhaps merely a breathing space. The failure of the offensive left Germany with nothing in reserve to meet the coming Soviet storm.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S02 ═══ -->
+<section class="section" id="s02">
+<h2 class="section-title"><span class="sec-num">&sect;02</span> Game Overview</h2>
+
+<p>SGS Battle of the Bulge is a <strong>turn-based operational simulation</strong> designed by the Strategy Game Studio, the house responsible for the acclaimed SGS Taipings, SGS Overlord, SGS Fall Weiss, and SGS Afrika Korps titles. Each turn represents one day, and the full campaign spans 45 turns from December 16, 1944 to January 30, 1945. The game is played on an operational map of the Ardennes and surrounding region at regimental scale — the level at which the tactical decisions of individual units translate into the operational results that shaped the campaign.</p>
+
+<p>The game was released on December 16, 2024, deliberately timed to coincide with the battle's 80th anniversary. It arrives with a full campaign scenario, four focused shorter scenarios, and a free alternative campaign — a substantial package that covers the battle from multiple angles and at multiple scales of time commitment.</p>
+
+<div class="callout">
+  <div class="callout-title">What Makes SGS Battle of the Bulge Distinctive</div>
+  <p>The Initiative Gauge is the most important original mechanic in SGS Battle of the Bulge. It simulates the historical reality that the German offensive had a limited window of momentum — roughly ten days before Allied reinforcements, logistics, and air power began to overwhelm German capabilities. As German player, you are racing against this gauge as much as against the Allied player. As Allied player, your early turns are about surviving long enough for the gauge to expire. Everything in the game flows from this fundamental tension.</p>
+</div>
+
+<h2 class="sub-title">Unit Scale</h2>
+<p>Ground forces are represented at <strong>regimental or equivalent level</strong> — brigades, combat commands, groups — with specialist battalions (heavy armour, reconnaissance, engineers, garrison units) also present. Corps-level command units represent the historical commanders and their staffs. Air forces operate at the scale of British wings, American groups, or German Geschwader, each representing 50 to 150 aircraft. The game explicitly notes that no unit represents its full force strength — each counter simulates a pattern of engagements and operations across its assigned zone rather than a single concentrated assault.</p>
+
+<h2 class="sub-title">Time Investment</h2>
+<p>SGS titles are designed to be completable in a reasonable session. The shortest scenario (<em>Nuts!</em>) takes approximately 30 minutes. The main campaign at full deliberate pace runs 6–10 hours. The game rewards careful operational planning but does not demand the exhausting micro-management of some wargame titles. Community feedback consistently rates the SGS approach as accessible to intermediate players while providing sufficient depth to satisfy veterans.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S03 ═══ -->
+<section class="section" id="s03">
+<h2 class="section-title"><span class="sec-num">&sect;03</span> The SGS Engine — Core Mechanics</h2>
+
+<p>The SGS Engine v1.5 represents a mature operational wargame system refined across multiple historical titles. Understanding its core conventions enables you to focus on strategy rather than rules interpretation.</p>
+
+<h2 class="sub-title">Turn Structure</h2>
+<p>Each turn represents one day of operations. Both sides alternate activating and moving units, conducting combat, and managing logistics. The sequence within a turn is:</p>
+<ol class="guide-list">
+  <li><strong>Supply Phase:</strong> Units check supply status; out-of-supply units suffer attrition and combat penalties.</li>
+  <li><strong>Movement Phase:</strong> Units move up to their full movement allowance, modified by terrain, weather, and enemy zones of control.</li>
+  <li><strong>Combat Phase:</strong> Attacking units resolve combat against adjacent enemy units using the combat factors system.</li>
+  <li><strong>Air Phase:</strong> Air units conduct interdiction, ground support, or supply missions subject to weather and availability.</li>
+  <li><strong>End of Turn:</strong> Initiative gauge updates; reinforcements may arrive; supply levels recalculate.</li>
+</ol>
+
+<h2 class="sub-title">Zones of Control</h2>
+<p>Units project zones of control (ZOC) into adjacent hexes. Enemy units entering or leaving a ZOC expend additional movement points and may be required to stop. Stacking limits — a maximum number of units per hex — create genuine bottlenecks in the narrow Ardennes road network. The SGS development notes explicitly warn that stacking rules "can cause severe and unexpected bottlenecks, and thus prevent your best units from fighting as you had planned, for lack of space to do so." This is not an abstraction — it is the Ardennes road problem modelled in hexes.</p>
+
+<div class="callout warning">
+  <div class="callout-title">The Stacking Trap</div>
+  <p>The single most common source of German operational failure in SGS Battle of the Bulge is failing to plan around stacking limits. The Ardennes has very few roads adequate for armour. If you pile three Panzer regiments into the same road hex, only one fights effectively while the others sit idle burning precious initiative turns. Plan your axis of advance to keep your heavy armour spread across multiple parallel routes wherever terrain permits.</p>
+</div>
+
+<h2 class="sub-title">Combat Resolution</h2>
+<p>Combat in the SGS Engine uses a differential system comparing attacker and defender combat strengths, modified by terrain, supply status, artillery support, and air support. Results range from attacker repulse through various levels of defender retreat and losses to complete unit destruction. The system rewards concentration of force and combined arms — infantry to open the line, armour to exploit the breakthrough — and punishes piecemeal attacks against prepared positions.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S04 ═══ -->
+<section class="section" id="s04">
+<h2 class="section-title"><span class="sec-num">&sect;04</span> The Initiative Gauge — Germany's Ticking Clock</h2>
+
+<div class="hist-fact">
+  <p>By December 25, 1944, Field Marshal Walter Model privately acknowledged that the offensive had failed. The 2nd SS Panzer Division's tanks had been stopped at Celles, just four miles from the Meuse, not by American combat power but by fuel exhaustion. The weather had cleared on December 23, unleashing Allied air power that had been grounded for the offensive's first week. Patton's relief columns were breaking through to Bastogne. The initiative — that mercurial quality that had given the Germans their early successes — had passed irrevocably to the Allies. Model recommended withdrawal to the Westwall. Hitler refused.</p>
+  <span class="source">// ARMY GROUP B WAR DIARY &middot; DECEMBER 25, 1944 //</span>
+</div>
+
+<p>The Initiative Gauge is the defining mechanic of SGS Battle of the Bulge and the feature that most distinguishes it from conventional operational wargames. It represents the historical reality that the German offensive had a window of operational momentum — roughly the first ten days — after which Allied reinforcements, air power, and supply advantages would irresistibly tip the balance.</p>
+
+<h2 class="sub-title">How the Gauge Works</h2>
+<p>The Initiative Gauge begins at maximum for Germany at Turn 0 (the night of December 15–16). It degrades based on several factors:</p>
+<ul class="guide-list">
+  <li><strong>Time:</strong> The gauge declines with each passing turn regardless of operations. You cannot stop the clock — only maximise what you accomplish before it runs out.</li>
+  <li><strong>Operational setbacks:</strong> Failure to secure key objectives, heavy losses, and supply failures accelerate the gauge's decline.</li>
+  <li><strong>Allied resistance:</strong> Holding the shoulders of the offensive (Elsenborn Ridge in the north, the Bastogne-St. Vith area in the centre) degrades the gauge by denying the breakthrough depth needed to maintain momentum.</li>
+  <li><strong>Weather improvement:</strong> When the weather clears and Allied air becomes effective (historically around December 23), the gauge degrades more rapidly as German supply lines come under air attack.</li>
+</ul>
+
+<h2 class="sub-title">Implications for Play</h2>
+<p>For the <strong>German player</strong>, the Initiative Gauge creates an absolute imperative: attack immediately, exploit every breakthrough, and push armoured spearheads forward even when doing so feels operationally reckless. Pausing to consolidate, waiting for perfect conditions, or investing too many resources in reducing bypassed strong points (like Bastogne) will drain the gauge without producing the decisive territorial gains that justify the expenditure. The historical German failure to prioritise St. Vith and Bastogne as bypassed obstacles rather than immediate objectives cost them days of irreplaceable initiative.</p>
+<p>For the <strong>Allied player</strong>, the Initiative Gauge is your strategic horizon. You do not need to defeat the German offensive — you need to survive until the gauge expires. Every turn you hold a key road junction, every turn your artillery bleeds a Panzer regiment, every turn Bastogne remains in American hands is a turn closer to the moment when Germany's momentum fails and the counter-offensive can begin.</p>
+
+<div class="callout pine">
+  <div class="callout-title">The Gauge and the Wacht am Rhein Variant</div>
+  <p>The alternative campaign <em>Wacht am Rhein</em> removes the Initiative Gauge entirely. This variant is described by the developers as "a wargamer's challenge stripped of certain special rules." Without the gauge, the German player has more operational freedom but loses the historical pressure that drove the offensive's desperate pace. New players should learn the gauge mechanics first — they are the heart of the game's historical authenticity.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S05 ═══ -->
+<section class="section" id="s05">
+<h2 class="section-title"><span class="sec-num">&sect;05</span> Supply & Logistics — The German Achilles Heel</h2>
+
+<div class="hist-fact">
+  <p>The 2nd Panzer Division reached Celles, Belgium, on December 23, 1944 — the farthest point of the entire German advance, just four miles from the Meuse. There it stopped, not because of Allied resistance, but because it had run out of fuel. The division's supply columns had been destroyed by Allied air attack and could not get through the Ardennes road network with new fuel. The Americans called in tank destroyers and infantry to encircle and destroy the stranded German armour at leisure. The division that came closest to reaching the Meuse was destroyed where it stood, its tanks burning in the frozen Belgian countryside.</p>
+  <span class="source">// U.S. ARMY OFFICIAL HISTORY: THE ARDENNES &middot; HUGH M. COLE //</span>
+</div>
+
+<p>Supply is the constraining factor on everything the German player does in SGS Battle of the Bulge. Germany began the offensive with a specific stockpile of fuel and ammunition — sufficient for approximately a week of intensive operations — on the assumption that captured American fuel dumps would sustain the advance to the Meuse. This assumption was catastrophically wrong. Understanding the supply model is understanding why the historical offensive failed, and why the game's German campaign is such a relentless race against logistics.</p>
+
+<h2 class="sub-title">German Supply Mechanics</h2>
+<p>German units draw supply through designated supply routes stretching back to depots east of the Our River. The capacity of these routes is limited by the Ardennes road network — the same bottleneck that constrains tactical movement also constrains the flow of ammunition, fuel, and replacements. Key supply principles:</p>
+<ul class="guide-list">
+  <li><strong>Protect your supply routes:</strong> Armoured spearheads that race ahead of their supply tail cut themselves off. Units that cannot trace a clear supply path to a depot become out-of-supply within one or two turns.</li>
+  <li><strong>Out-of-supply units fight at sharply reduced effectiveness</strong> and take attrition casualties each turn regardless of enemy action. A Panzer regiment that runs dry does not simply stop — it starts dying.</li>
+  <li><strong>Road nodes are supply bottlenecks:</strong> Key road junctions like Bastogne control not just tactical movement but the flow of supply to the forces beyond them. This is why Bastogne was so strategically vital to both sides — it was a cork in the German supply bottle.</li>
+  <li><strong>Allied air interdiction devastates supply convoys</strong> once the weather clears. Plan to maximise your territorial gains before December 23 when the skies open.</li>
+</ul>
+
+<h2 class="sub-title">Allied Supply</h2>
+<p>Allied supply, by contrast, flows from the enormous Allied logistical infrastructure built up over five months since Normandy. American units can be resupplied by air if ground routes are cut (historically, C-47s air-dropped supplies to Bastogne during the siege). The fundamental Allied logistical advantage — the ability to sustain prolonged operations that the Germans simply could not match — is the bedrock of American staying power in the game's later turns.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S06 ═══ -->
+<section class="section" id="s06">
+<h2 class="section-title"><span class="sec-num">&sect;06</span> Terrain & Weather — The Ardennes as Battlefield</h2>
+
+<div class="hist-fact">
+  <p>The Ardennes in December 1944 was a landscape at war with everyone. The Eifel highlands on the German side featured dense pine forests, deep river valleys, and roads that switchbacked up and down slopes at grades that defeated wheeled vehicles in mud and ice. The Belgian side was slightly better but still dominated by the forested high plateau of the Hautes Fagnes and the deeply incised valleys of the Amblève, Salm, Ourthe, and Lesse rivers. The weather was the worst in two decades: temperatures as low as -20°C, fog that grounded aircraft for the first week, and snow that turned unpaved tracks into impassable quagmires. The German planners had chosen the worst possible conditions for armoured operations — deliberately, because those conditions also grounded Allied air power.</p>
+  <span class="source">// WEATHER ANALYSIS, ARDENNES CAMPAIGN 1944 &middot; U.S. AIR FORCE HISTORICAL STUDY //</span>
+</div>
+
+<h2 class="sub-title">Terrain Effects</h2>
+<table class="data-table">
+  <thead><tr><th>Terrain Type</th><th>Movement Effect</th><th>Combat Effect</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Dense Forest</strong></td><td>Severely restricted; armour halved or prohibited</td><td>Strong defensive bonus; limits attacking arcs</td><td>Dominates northern and eastern sectors; German natural cover pre-assault</td></tr>
+    <tr><td><strong>River Crossings</strong></td><td>Must use bridges or engineer assets</td><td>Defenders at strong advantage; crossing under fire is very costly</td><td>Meuse, Our, Amblève, Ourthe all present major operational challenges</td></tr>
+    <tr><td><strong>Town/Village</strong></td><td>Normal for road movement</td><td>Strong defensive bonus; costly to attack</td><td>Road junctions in towns are the campaign's decisive terrain</td></tr>
+    <tr><td><strong>Road Hex</strong></td><td>Full movement allowance</td><td>No special modifier</td><td>There are very few high-quality roads. These hexes are gold.</td></tr>
+    <tr><td><strong>Open/Farm</strong></td><td>Normal infantry; somewhat restricted for armour</td><td>Limited cover; air attack more effective</td><td>Relatively rare in the Ardennes theatre</td></tr>
+    <tr><td><strong>Ridge/High Ground</strong></td><td>Restricted ascent; easier descent</td><td>Significant defensive bonus; observation advantage</td><td>Elsenborn Ridge is the key terrain feature of the northern sector</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Weather Phases</h2>
+<p>Weather in SGS Battle of the Bulge is divided into two broad phases that correspond to the historical reality:</p>
+<div class="phase early">
+  <div class="phase-title">Phase 1: Fog and Overcast (December 16–22)</div>
+  <p>Allied air power is grounded. German supply convoys move freely. German armoured columns can advance without fear of fighter-bomber attack. This is the critical window for German operational progress — exploit it relentlessly. Allied units are also more vulnerable to encirclement because air reconnaissance is limited.</p>
+</div>
+<div class="phase late">
+  <div class="phase-title">Phase 2: Clear Weather (December 23 onwards)</div>
+  <p>Allied air power returns in force. German supply routes come under sustained attack. Tank columns advancing in the open become priority targets for P-47 Thunderbolts and RAF Typhoons. The German player must already have secured their key objectives before this phase arrives, or the window has closed permanently.</p>
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">Historical Context — Why December 23 Mattered</div>
+  <p>The clearing of the weather on December 23, 1944 was one of the most consequential meteorological events in the history of the Second World War. Within 24 hours, the Allied Tactical Air Forces flew over 2,000 sorties against German positions and supply lines. Pilots reported truck convoys stretching for miles on roads they had never been allowed to attack before. German commanders later cited the return of Allied air as the single most decisive factor in the offensive's defeat, ahead of Bastogne's resistance and Patton's relief thrust.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S07 ═══ -->
+<section class="section" id="s07">
+<h2 class="section-title"><span class="sec-num">&sect;07</span> Combat & Stacking Rules</h2>
+
+<p>Combat in SGS Battle of the Bulge rewards the same principles that defined the actual fighting: concentrated force at the chosen breakthrough point, combined arms coordination between infantry and armour, and the ruthless acceptance of bypassed strong points rather than the costly reduction of every defended position.</p>
+
+<h2 class="sub-title">The Combined Arms Principle</h2>
+<p>Neither tanks nor infantry fight effectively alone in this game. Armoured units striking defended positions without infantry support suffer heavy losses and often fail to dislodge defenders. Infantry breaching a line without armoured exploitation allows defenders to retreat in good order and reconstitute a new defensive position. The German operational template — Volksgrenadier divisions to create the breach, Panzer divisions to drive through it — reflects this reality. Always think in combined arms packages.</p>
+
+<h2 class="sub-title">Stacking and Road Congestion</h2>
+<p>The stacking limit per hex reflects the physical capacity of the terrain to support forces. In the Ardennes, with its limited road network, this constraint is severe and historically accurate. Key stacking principles:</p>
+<ul class="guide-list">
+  <li><strong>Never stack your best units where they cannot fight.</strong> A Tiger battalion behind three infantry regiments on a single road cannot contribute anything. Either find a parallel route or send the infantry first to clear the road.</li>
+  <li><strong>Road hexes are linear.</strong> You cannot flank through forest easily — your columns will pile up behind each other. Plan multiple axes of advance before the operation begins.</li>
+  <li><strong>The 5th Panzer Army's central axis had better road options than the 6th Panzer Army in the north.</strong> This historical reality is reflected in the game's terrain layout and is a key reason why the 5th Army historically advanced further.</li>
+</ul>
+
+<h2 class="sub-title">Exploitation and Pursuit</h2>
+<p>When a defensive line is breached, the exploitation phase is where Panzer units earn their reputation. Armoured units that achieve a breakthrough should pursue immediately, driving deep behind enemy lines to cut supply routes, encircle retreating units, and reach road junctions before reserves can arrive. The Allied player's greatest vulnerability is the period between initial collapse and the arrival of reinforcements — typically the first three to five turns.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S08 ═══ -->
+<section class="section" id="s08">
+<h2 class="section-title"><span class="sec-num">&sect;08</span> Air Power — The Weather-Dependent Variable</h2>
+
+<div class="hist-fact">
+  <p>The Allied Tactical Air Forces in December 1944 were the most powerful ground-attack aviation ever assembled. The U.S. Ninth Air Force alone had over 1,000 aircraft. The RAF 2nd Tactical Air Force added hundreds more. Arrayed against them, the Luftwaffe's Operation Bodenplatte — a desperate surprise attack on Allied airfields launched on New Year's Day 1945 — temporarily neutralised hundreds of Allied aircraft but cost Germany 300 irreplaceable machines and 214 pilots, including 59 German formation leaders. It was the last major Luftwaffe offensive operation of the war, and it achieved nothing of lasting value.</p>
+  <span class="source">// LUFTWAFFE FINAL OPERATIONS RECORD &middot; JANUARY 1945 //</span>
+</div>
+
+<p>Air power in SGS Battle of the Bulge is conditional on weather — absolutely critical once the skies clear, largely absent during the fog phase that covered the offensive's opening week. Understanding the air system helps both sides plan around this asymmetry.</p>
+
+<h2 class="sub-title">Allied Air Capabilities</h2>
+<p>Allied air units — represented at wing/group scale with 50–150 aircraft each — can perform three missions in the game:</p>
+<ul class="guide-list">
+  <li><strong>Ground support:</strong> Attacking German units in combat, adding a significant combat modifier to Allied attacks and imposing penalties on German ones.</li>
+  <li><strong>Interdiction:</strong> Attacking German supply routes and movement hexes, degrading supply delivery and imposing movement penalties on units in targeted hexes.</li>
+  <li><strong>Supply drop:</strong> Delivering supplies to cut-off units (historically used at Bastogne). Expensive in air resources but potentially decisive for surrounded defenders.</li>
+</ul>
+
+<h2 class="sub-title">German Air</h2>
+<p>The Luftwaffe is present but significantly outmatched in numbers. German air missions are best used defensively — intercepting Allied air attacks on key supply routes — rather than as an offensive tool. The historical Luftwaffe's limited intervention in the ground battle is accurately reflected in the game's air balance. As German player, do not count on your air cover to protect your supply lines once December 23 arrives.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S09 ═══ -->
+<section class="section" id="s09">
+<h2 class="section-title"><span class="sec-num">&sect;09</span> Reinforcements & the Shifting Balance</h2>
+
+<div class="hist-fact">
+  <p>Eisenhower's response to the German attack on December 16 was immediate and decisive. Within 24 hours of the first reports, he had ordered the 82nd and 101st Airborne Divisions — then resting and refitting near Reims — to move to the Ardennes. The 101st reached Bastogne on the night of December 18–19, just hours before German forces closed the encirclement. On December 19, Eisenhower met with his senior commanders and asked Patton how quickly he could attack northward with the Third Army. Patton had already anticipated the question and had his staff preparing three different attack plans. He replied: "Two days." The room was silent with disbelief. He delivered on his word.</p>
+  <span class="source">// EISENHOWER: SOLDIER AND PRESIDENT &middot; STEPHEN E. AMBROSE //</span>
+</div>
+
+<p>The reinforcement schedule in SGS Battle of the Bulge reflects the historical cascade of Allied reserves moving into the Ardennes. The German player knows this reinforcement schedule exists — they cannot stop it — but can influence its impact by determining whether those reinforcements arrive into a stable defensive situation or a chaotic one.</p>
+
+<h2 class="sub-title">Allied Reinforcement Waves</h2>
+<div class="phase early">
+  <div class="phase-title">Days 1–4 (Dec 16–19): The Emergency Rush</div>
+  <p>The 82nd and 101st Airborne arrive. These veteran elite formations provide a critical defensive backbone at key points, particularly Bastogne and the northern shoulder. Their arrival marks the end of the initial complete surprise phase. For the German player, these turns are the last opportunity to achieve encirclements before experienced defenders plug gaps.</p>
+</div>
+<div class="phase mid">
+  <div class="phase-title">Days 5–10 (Dec 20–25): Armoured Reinforcements</div>
+  <p>Additional armoured divisions and corps-level assets begin arriving on the flanks. The southern flank under Patton grows progressively stronger. The northern shoulder under Hodges begins to stabilise. German ability to widen the breakthrough diminishes sharply as available reinforcement density rises.</p>
+</div>
+<div class="phase late">
+  <div class="phase-title">Days 11+ (Dec 26 onwards): Counter-Offensive Mass</div>
+  <p>Patton's Third Army pivots north and strikes the German southern flank. British 30 Corps elements shore up the Meuse crossings. The Allied player has transitioned from survival to counter-attack. The German player must now fight defensively with forces exhausted and out-of-supply from the offensive.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S10 ═══ -->
+<section class="section" id="s10">
+<h2 class="section-title"><span class="sec-num">&sect;10</span> German Order of Battle</h2>
+
+<p>Germany committed over twenty divisions to the Ardennes offensive — the largest concentration of force assembled on the Western Front since the Normandy breakout. The quality and equipment of these formations varied enormously, from elite Waffen-SS armoured divisions at peak strength to newly raised Volksgrenadier divisions still working up to operational readiness.</p>
+
+<div class="unit-grid">
+  <div class="unit-card german">
+    <div class="unit-name">6th SS Panzer Army</div>
+    <span class="unit-type">GERMAN &middot; NORTHERN AXIS &middot; SS-OBERSTGRUPPENFÜIHRER DIETRICH</span>
+    <p>The prestige force, given the priority supply allocation and the shortest route to Antwerp. Contains elite 1st and 2nd SS Panzer Divisions plus two more SS panzer divisions. Historically underperformed due to the Elsenborn Ridge blocking the northern axis. In the game, this army is powerful but faces the strongest American defensive terrain.</p>
+  </div>
+  <div class="unit-card german">
+    <div class="unit-name">5th Panzer Army</div>
+    <span class="unit-type">GERMAN &middot; CENTRAL AXIS &middot; GENERAL VON MANTEUFFEL</span>
+    <p>The true engine of the offensive. Hasso von Manteuffel's pragmatic, flexible command style exploited the more favourable central terrain to achieve the greatest territorial gains of the campaign. Includes the 2nd Panzer and Panzer Lehr divisions. The 5th Army axis through Bastogne and the Meuse crossings is where German offensive potential is highest in the game.</p>
+  </div>
+  <div class="unit-card german">
+    <div class="unit-name">7th Army</div>
+    <span class="unit-type">GERMAN &middot; SOUTHERN FLANK &middot; GENERAL BRANDENBERGER</span>
+    <p>The shield of the offensive. The 7th Army's mission is to protect the southern flank of the 5th Panzer Army from Allied counter-attack — primarily from Patton's Third Army. Under-resourced and largely infantry-based, the 7th Army must hold a wide front with limited means. Losing this shield exposes the 5th Army to encirclement.</p>
+  </div>
+  <div class="unit-card german">
+    <div class="unit-name">Volksgrenadier Divisions</div>
+    <span class="unit-type">GERMAN &middot; ASSAULT INFANTRY &middot; MULTIPLE UNITS</span>
+    <p>The assault infantry of the offensive. Volksgrenadier divisions were reorganised and partially rebuilt formations with strong anti-tank and automatic weapons complements but weaker in traditional infantry quality than pre-war standards. Their role is to breach the American line and create the corridors through which Panzer divisions exploit.</p>
+  </div>
+  <div class="unit-card german">
+    <div class="unit-name">Kampfgruppe Peiper</div>
+    <span class="unit-type">GERMAN &middot; 1ST SS PANZER &middot; SS-OBERSTURMBANNFÜHRER PEIPER</span>
+    <p>The spearhead of the 6th Army's northern thrust. A combined arms task force built around a Panther and Tiger tank battalion, Peiper's force penetrated nearly 30 miles before being stopped and cut off at La Gleize. Their route through Malmedy and Stavelot was the fastest road to the Meuse in the northern sector — and the scene of atrocities that stiffened American resistance throughout the campaign.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S11 ═══ -->
+<section class="section" id="s11">
+<h2 class="section-title"><span class="sec-num">&sect;11</span> German Strategy — The Race Against Time</h2>
+
+<div class="hist-fact">
+  <p>General Hasso von Manteuffel, commanding the 5th Panzer Army, rejected the standard artillery preparation and instead ordered his assault infantry to infiltrate American positions in the pre-dawn darkness of December 16, guided by moving searchlights bounced off the clouds to create artificial moonlight. His concept was speed over firepower: get infantry through the American line before they could organise resistance, then push the armour through the gaps before daylight revealed the attack's direction. In several sectors, this worked brilliantly. American battalions found themselves encircled before sunrise, their communications severed, their foxholes overrun by men they never saw coming through the forest darkness.</p>
+  <span class="source">// HASSO VON MANTEUFFEL, INTERVIEW WITH BASIL LIDDELL HART, 1950 //</span>
+</div>
+
+<p>The German player's strategic challenge is unique in the SGS library: you are the attacker operating on a strict countdown, with limited supply, against a defender who merely needs to survive. Every German strategic decision must be evaluated against the Initiative Gauge clock. There is no point in perfect positioning if the gauge expires before you use it.</p>
+
+<h2 class="sub-title">The Maximum Pressure Doctrine</h2>
+<p>Experienced German players in SGS Battle of the Bulge describe their approach as "maximum pressure" — maintaining offensive momentum on every viable axis simultaneously rather than concentrating all resources on a single thrust. The rationale: concentrated attacks on a single axis allow the Allied player to strip troops from quiet sectors and concentrate against your main effort. Multiple simultaneous threats force them to choose where to commit reserves and guarantee that at least one axis achieves progress.</p>
+
+<h2 class="sub-title">The Bypass vs. Reduce Dilemma</h2>
+<p>The most consequential German strategic decision in every game is whether to bypass or invest strong points. Historically, Hitler insisted on capturing Bastogne and St. Vith before continuing west — decisions that consumed days of irreplaceable initiative without producing the territorial gains that justified them. The game-historically optimal German strategy is aggressive bypass: leave strong points surrounded, push armoured columns west through the gaps, and let later-arriving infantry reduce the bypassed positions if time allows.</p>
+
+<div class="callout warning">
+  <div class="callout-title">The Bastogne Trap</div>
+  <p>Do not invest your best Panzer units in reducing Bastogne. Three German divisions historically spent a week attacking the 101st Airborne and achieved nothing except casualties and time — both of which Germany could not afford. In the game, surround Bastogne with enough force to prevent breakout, leave infantry to contain it, and drive your armour west. Bastogne's value is as a supply bottleneck; once you have alternative routes west, it becomes irrelevant whether you hold the town itself.</p>
+</div>
+
+<h2 class="sub-title">The Meuse as Psychological Objective</h2>
+<p>Even reaching the Meuse River with a small armoured force — even if that force cannot cross — creates a strategic and psychological shock that historically might have disrupted Allied planning significantly. The 2nd Panzer Division's fuel exhaustion at Celles prevented what would have been the first Axis crossing of the Meuse since 1940. In the game, reaching the Meuse bank registers significant VP gains and severely impacts the Allied player's ability to respond coherently. This is the German player's primary campaign-winning objective.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S12 ═══ -->
+<section class="section" id="s12">
+<h2 class="section-title"><span class="sec-num">&sect;12</span> The 5th Panzer Army Axis — The Main Effort</h2>
+
+<p>While the 6th Panzer Army was given priority of supply and the nominal role of main effort, it was von Manteuffel's 5th Panzer Army that came closest to the campaign's objectives. Understanding why — and replicating those conditions in the game — is the key to German success.</p>
+
+<h2 class="sub-title">The Central Axis Advantage</h2>
+<p>The 5th Panzer Army's attack sector offered several advantages unavailable to the 6th in the north:</p>
+<ul class="guide-list">
+  <li><strong>The Losheim Gap:</strong> A natural corridor through the Schnee Eifel ridgeline that permitted armoured movement at scales impossible further north.</li>
+  <li><strong>Multiple road networks:</strong> The central sector had somewhat better road options, allowing parallel axes of advance that could bypass strong points.</li>
+  <li><strong>The Skyline Drive:</strong> The N-26 highway running along the Our River valley provided a rapid advance route for leading elements.</li>
+  <li><strong>Weaker American defenders:</strong> The 28th Division's sector in the centre was more thinly held than the 2nd and 99th Divisions' sectors in the north.</li>
+</ul>
+
+<h2 class="sub-title">The Bastogne Road Junction</h2>
+<p>Bastogne controlled seven roads fanning out in all directions. A German force holding Bastogne could supply its westward-advancing armour through multiple alternate routes, making the entire supply problem east of the Meuse dramatically more manageable. This was the correct priority for the 5th Panzer Army — and in the game, securing Bastogne (or adequate bypass routes around it) within the first three to four turns is the single most important operational decision on the German central axis.</p>
+
+<h2 class="sub-title">St. Vith — The Delay That Killed the Schedule</h2>
+<p>The American 7th Armored Division's defence of St. Vith from December 17–22 was one of the most consequential defensive stands of the entire battle. Every day St. Vith held was a day the 5th Panzer Army's supply route was partially choked — and the town sat astride the road network that the 6th Army also needed. In the game, St. Vith will hold for several turns if properly garrisoned. The German player must decide whether to invest the forces to reduce it quickly or accept the supply penalty and drive west with what gets through.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S13 ═══ -->
+<section class="section" id="s13">
+<h2 class="section-title"><span class="sec-num">&sect;13</span> The 6th Panzer Army & the Northern Shoulder</h2>
+
+<div class="hist-fact">
+  <p>The American 99th Infantry Division had been in the Ardennes for only three weeks when Sepp Dietrich's 6th SS Panzer Army hit it on December 16. A "green" division, it had never seen serious combat. Yet alongside the veteran 2nd Infantry Division, the 99th held the Elsenborn Ridge against the elite 1st and 12th SS Panzer Divisions for ten straight days — inflicting over 11,000 German casualties while suffering approximately 5,000 of its own. The defence of Elsenborn Ridge is considered one of the finest defensive stands in the history of the U.S. Army. It denied the 6th Panzer Army its primary route of advance and forced the entire offensive to pivot south onto routes through the 5th Panzer Army sector.</p>
+  <span class="source">// U.S. ARMY CENTER OF MILITARY HISTORY &middot; THE ARDENNES CAMPAIGN //</span>
+</div>
+
+<p>The 6th Panzer Army's sector is the most historically and strategically complex part of the German offensive in SGS Battle of the Bulge. This is where Germany's best units were stopped by America's least-experienced ones, and understanding why that happened is essential for playing either side of the northern axis.</p>
+
+<h2 class="sub-title">Why the 6th Army Failed</h2>
+<p>Three factors destroyed the 6th Panzer Army's plan:</p>
+<ol class="guide-list">
+  <li><strong>The Elsenborn Ridge terrain:</strong> The ridge provided the Americans with a natural defensive line that concentrated the German approach into narrow corridors where numerical and armoured superiority could not be brought to bear.</li>
+  <li><strong>Traffic congestion:</strong> Kampfgruppe Peiper's route to the Amblève valley ran through roads inadequate for the traffic following behind. The entire 6th Army's supply and reinforcement schedule fell apart in the first days due to road congestion.</li>
+  <li><strong>American artillery:</strong> The massed artillery of the Elsenborn position — hundreds of guns on commanding ground — smashed German assault formations before they could close with the ridge's defenders.</li>
+</ol>
+
+<h2 class="sub-title">The Kampfgruppe Peiper Problem</h2>
+<p>In the game, Peiper's force represents the 6th Army's best opportunity for a deep penetration on the northern axis. He can be driven forward aggressively, trading the risk of isolation for the territorial and VP value of his westward penetration. But the route must be opened behind him — supply and support must follow. A Peiper that outran his supply historically was destroyed at La Gleize; a Peiper that reached the Meuse with his supply intact would have been something else entirely.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S14 ═══ -->
+<section class="section" id="s14">
+<h2 class="section-title"><span class="sec-num">&sect;14</span> Allied Order of Battle</h2>
+
+<p>The Allied forces in the Ardennes on December 16 were thin, tired, and, in many cases, entirely new to combat. They were about to become some of the most celebrated defenders in American military history.</p>
+
+<div class="unit-grid">
+  <div class="unit-card allied">
+    <div class="unit-name">VIII Corps (Middleton)</div>
+    <span class="unit-type">ALLIED &middot; PRIMARY DEFENDER &middot; 1ST ARMY</span>
+    <p>The corps holding the Ardennes on December 16. Spread across an 85-mile front with five divisions including the 28th and 106th. The 106th was less than a week from arriving in the sector when the offensive struck. Both regiments of the 106th were encircled and forced to surrender — the largest mass surrender of American troops since Bataan.</p>
+  </div>
+  <div class="unit-card allied">
+    <div class="unit-name">101st Airborne Division</div>
+    <span class="unit-type">ALLIED &middot; BASTOGNE GARRISON &middot; BRG. GEN. McAULIFFE</span>
+    <p>The "Screaming Eagles" rushed to Bastogne on December 18–19, arriving just before the German encirclement closed. Their eight-day siege became the most famous defensive stand of the battle. McAuliffe's one-word reply to the German surrender demand — "Nuts!" — captured the spirit of the entire American defence.</p>
+  </div>
+  <div class="unit-card allied">
+    <div class="unit-name">2nd & 99th Infantry Divisions</div>
+    <span class="unit-type">ALLIED &middot; ELSENBORN RIDGE &middot; V CORPS</span>
+    <p>The defenders of the critical northern shoulder. The 2nd Division (veteran) and 99th Division (inexperienced) together created the Elsenborn defensive position that stopped the entire 6th Panzer Army. In the game, these units form the anchor of the Allied northern line — if they hold, the German northern axis is strangled.</p>
+  </div>
+  <div class="unit-card allied">
+    <div class="unit-name">Patton's Third Army</div>
+    <span class="unit-type">ALLIED &middot; COUNTER-ATTACK FORCE &middot; GEN. PATTON</span>
+    <p>Historically the great Allied counter-stroke, pivoting 90 degrees north and attacking through appalling winter conditions to reach Bastogne on December 26. In the game, Patton's forces arrive progressively from the south, their effectiveness dependent on how well the German 7th Army shield has been maintained or broken by the player.</p>
+  </div>
+  <div class="unit-card allied">
+    <div class="unit-name">7th Armored Division</div>
+    <span class="unit-type">ALLIED &middot; ST. VITH DEFENCE &middot; BRIG. GEN. HASBROUCK</span>
+    <p>The defenders of St. Vith for six crucial days (December 17–23). Their stand bought the time needed for reinforcements to arrive at Bastogne and establish the defensive shoulders. In the game, St. Vith's value is enormous — every turn it holds degrades the German supply net in the critical central sector.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S15 ═══ -->
+<section class="section" id="s15">
+<h2 class="section-title"><span class="sec-num">&sect;15</span> Allied Strategy — Survive to Counter-Attack</h2>
+
+<div class="hist-fact">
+  <p>On December 19, 1944, General Eisenhower met his senior commanders at Verdun in what historians consider one of the finest command performances of the war. Rather than reacting defensively to the crisis, he opened the meeting by saying: "The present situation is to be regarded as one of opportunity for us and not of disaster. There will be only cheerful faces at this conference table." He then turned to Patton and asked how quickly he could attack northward. The confidence was not empty theatre — it reflected a genuine understanding that the German offensive, for all its shock, was extending itself into a logistical trap that would destroy it if the Allies simply held on long enough.</p>
+  <span class="source">// EISENHOWER, CRUSADE IN EUROPE, 1948 //</span>
+</div>
+
+<p>The Allied player's strategic philosophy is fundamentally different from the German player's. Where the Germans are racing the clock, the Americans are running out that clock. Every turn that passes without a German breakthrough to the Meuse is a German defeat. Your job is not to stop the offensive — your initial forces cannot do that — but to ensure it runs out of momentum before it reaches its objectives.</p>
+
+<h2 class="sub-title">The Three Critical Positions</h2>
+<p>Three terrain anchors determine whether the German offensive is channelled into manageable corridors or achieves the broad breakthrough that threatens the Meuse:</p>
+<ol class="guide-list">
+  <li><strong>The Elsenborn Ridge (North):</strong> If this holds, the 6th Panzer Army is confined to the Amblève valley and cannot use its primary routes. The ridge must be defended with your best available forces from Turn 1. Never cede this ground voluntarily.</li>
+  <li><strong>Bastogne (Centre):</strong> The road junction that controls both German supply and Allied counter-attack options. The 101st must reach it before the encirclement closes. Once it is garrisoned, make the German player pay a premium to reduce it. Every day Bastogne holds is a constraint on German supply.</li>
+  <li><strong>St. Vith (Centre-North):</strong> The delay fortress. It cannot be held indefinitely but must be held long enough for reinforcements to arrive and the defensive shoulders to solidify. Six days was the historical standard; aim to match it.</li>
+</ol>
+
+<h2 class="sub-title">Trading Space for Time</h2>
+<p>In the open ground west of Bastogne and along the German axes of advance, the Allied player should not attempt to stop every German penetration. Retreating to the next defensible line — river crossings, road junctions, ridge lines — is often more effective than trying to hold ground that cannot be held with available forces. The objective is to maintain coherent defensive lines, not to prevent all German movement. A German armoured column 20 miles into the Ardennes that is out of supply and cut off is more valuable to you than a German column 5 miles in that is surrounded by destroyed defending units.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S16 ═══ -->
+<section class="section" id="s16">
+<h2 class="section-title"><span class="sec-num">&sect;16</span> Holding the Shoulders — The Key to Allied Survival</h2>
+
+<p>The "shoulders" of the German breakthrough — the terrain anchors at the northern and southern extremes of the offensive sector — are the decisive terrain for the Allied player. If both shoulders hold, the German advance is channelled into a manageable salient. If either shoulder collapses, the offensive can widen into a true strategic breakthrough.</p>
+
+<h2 class="sub-title">The Northern Shoulder — Elsenborn Doctrine</h2>
+<p>The Elsenborn Ridge position requires its defenders to do three things:</p>
+<ul class="guide-list">
+  <li><strong>Anchor the line on the ridge itself.</strong> Do not defend forward of the crest — let the Germans advance uphill into your guns rather than advancing into the forest below where their infiltration tactics work best.</li>
+  <li><strong>Concentrate artillery.</strong> The historical Elsenborn defence was an artillery battle. Massed guns on commanding ground smashed German assault formations before they could close. In the game, supporting artillery units should be stacked behind the ridge defenders.</li>
+  <li><strong>Accept being flanked without abandoning the ridge.</strong> The Germans will find routes around the ridge through the Amblève valley. That is acceptable — Peiper in the valley cannot penetrate as deep as a 6th Army breakthrough through the ridge would allow. The ridge must not be abandoned to respond to flanking pressure.</li>
+</ul>
+
+<h2 class="sub-title">The Southern Shoulder — The Echternach-Trier Anchor</h2>
+<p>The southern shoulder is less dramatic than Elsenborn but equally important. If the German 7th Army breaks through the southern anchor, it threatens to encircle the forces defending Bastogne from the south and cut off Patton's relief approach. The 4th Infantry Division holding this sector was itself under heavy pressure in December 1944 and gave ground — but never broke. In the game, reinforcing this sector from your initial reserve before the attack develops is often worth the trade-off of reducing early defensive strength elsewhere.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S17 ═══ -->
+<section class="section" id="s17">
+<h2 class="section-title"><span class="sec-num">&sect;17</span> The Main Campaign — 45 Turns</h2>
+
+<p>The main campaign is the complete Battle of the Bulge experience: 45 turns from December 16, 1944 to January 30, 1945, covering both the German offensive and the Allied counter-offensive. It is the most historically comprehensive and the most strategically demanding of all the scenarios.</p>
+
+<h2 class="sub-title">Turn 0 — The Surprise Phase</h2>
+<p>Turn 0 represents the night of December 15–16 and allows certain pre-battle operational decisions that simulate the surprise element of the offensive. The German player makes initial deployment choices that affect breakthrough corridors; the Allied player is largely reactive, establishing initial defensive postures from limited information. This turn sets the conditions for everything that follows.</p>
+
+<h2 class="sub-title">Phase Structure</h2>
+<div class="phase early">
+  <div class="phase-title">Turns 1–10: The German Offensive Phase (Dec 16–25)</div>
+  <p>The critical period when the Initiative Gauge is active and German momentum must be translated into territorial gains. Both the northern and central axes must make progress simultaneously. By Turn 10, the German player should have Panzer elements approaching the Meuse and Bastogne either captured or bypassed with adequate containment forces.</p>
+</div>
+<div class="phase mid">
+  <div class="phase-title">Turns 11–20: The Transition Phase (Dec 26–Jan 4)</div>
+  <p>The Initiative Gauge has expired or is near zero. Allied reinforcements are flooding in on both flanks. Bastogne has been (or is being) relieved. The German player must transition from offensive to defensive, identifying the best ground to hold along the salient while surrendering untenable forward positions. The Allied player begins launching counter-attacks.</p>
+</div>
+<div class="phase late">
+  <div class="phase-title">Turns 21–45: The Allied Counter-Offensive Phase (Jan 5–30)</div>
+  <p>The Allies systematically reduce the Bulge, driving toward the Siegfried Line. The German player defends with exhausted, under-supplied forces against increasingly powerful Allied pressure. Victory here is measured in how slowly ground is yielded and how many Allied divisions are tied down in the reduction. The German player's goal becomes denying the Allies a clear-cut victory margin.</p>
+</div>
+
+<h2 class="sub-title">Victory Conditions</h2>
+<p>The main campaign victory is determined by a combination of territorial objectives (Meuse crossings, key cities and road junctions) and force destruction points. The German player cannot win a complete historical victory — reaching Antwerp is explicitly excluded as not represented in the game. But a German player who reaches the Meuse with substantial force achieves a "major achievement" that represents a devastating Allied operational defeat and a significant game win.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S18 ═══ -->
+<section class="section" id="s18">
+<h2 class="section-title"><span class="sec-num">&sect;18</span> Wacht am Rhein — The Free Alternative Campaign</h2>
+
+<p><em>Wacht am Rhein</em> (Guard on the Rhine — the original operational codename for the offensive before it was renamed Herbstnebel) is the alternative 45-turn campaign that removes the Initiative Gauge and provides freer initial deployment options for the German player. It is described by the developers as a game for experienced players who want to explore operational possibilities beyond the historical constraints.</p>
+
+<h2 class="sub-title">How It Differs</h2>
+<ul class="guide-list">
+  <li><strong>No Initiative Gauge:</strong> The German player is not racing a mandatory momentum clock. This allows more methodical operations, better supply management, and the consolidation of gains before the next push. It fundamentally changes the tempo of the game.</li>
+  <li><strong>Freer deployment:</strong> Initial German forces have more flexibility in placement, allowing the player to explore non-historical approaches to the breakthrough problem.</li>
+  <li><strong>Higher Allied challenge:</strong> Without the gauge compelling the German player forward, the Allied player faces a potentially more competent and better-supplied offensive. The longer the German player can maintain supply discipline, the harder it is to deny them the Meuse.</li>
+</ul>
+
+<h2 class="sub-title">Recommended For</h2>
+<p>The <em>Wacht am Rhein</em> campaign is recommended after you have thoroughly understood the main campaign's mechanics. Without the Initiative Gauge, the game plays differently — more like a conventional operational wargame and less like the historical race that makes the main campaign so compelling. It is excellent for exploring "what if" scenarios: what if the Germans had concentrated on a single axis? What if the 6th Army had been redirected south from the start?</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S19 ═══ -->
+<section class="section" id="s19">
+<h2 class="section-title"><span class="sec-num">&sect;19</span> Herbstnebel — The Shortened Offensive Campaign</h2>
+
+<p><em>Herbstnebel</em> (Autumn Mist — the final operational codename for the offensive) covers only the German offensive phase: 16 turns representing December 16–31. The scenario ends when the Initiative Gauge is broken — historically around Christmas Day, the game's approximate Turn 10 — or December 31 at the latest. This is the most historically focused of the campaign scenarios and provides the purest expression of the "race against time" mechanic.</p>
+
+<h2 class="sub-title">Why Play Herbstnebel</h2>
+<p>For players who want to test German offensive doctrine without the subsequent Allied counter-offensive phase, Herbstnebel is the ideal format. It is also an excellent teaching scenario: because the time horizon is shorter and the objectives more focused, the consequences of supply management decisions and stacking choices are felt more immediately. A German player who learns to maximise progress within 16 turns will be well-prepared for the full 45-turn campaign.</p>
+
+<h2 class="sub-title">The Allied Challenge in Herbstnebel</h2>
+<p>Playing the Allied side in Herbstnebel requires accepting that you will be primarily reactive for the first eight to ten turns. The goal is to deny the German player the VP threshold that constitutes a major or decisive victory by the gauge's expiration. This is more difficult than the full campaign because there is no counter-offensive phase in which to recover lost ground — every defensive position you hold must be held on its own merits from the first turn.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S20 ═══ -->
+<section class="section" id="s20">
+<h2 class="section-title"><span class="sec-num">&sect;20</span> Nuts! — The Siege of Bastogne</h2>
+
+<div class="hist-fact">
+  <p>On December 22, 1944, four German officers approached the American perimeter at Bastogne under a flag of truce carrying an ultimatum to the acting commander, Brigadier General Anthony McAuliffe. The ultimatum, signed by General Lüttwitz of the XLVII Panzer Corps, called for "honourable surrender" to save the encircled Americans from "total annihilation." McAuliffe read it, crumpled it up, and initially dismissed it with a single word: "Nuts!" When his officers asked how to phrase the formal written reply, McAuliffe reconsidered and simply had "NUTS!" typed on a message form. The German officers, confused by the American slang, were told by Colonel Harper: "In plain English? Go to hell."</p>
+  <span class="source">// BASTOGNE: THE FIRST EIGHT DAYS &middot; S. L. A. MARSHALL //</span>
+</div>
+
+<p><em>Nuts!</em> — The Siege of Bastogne is an 8-turn scenario (December 20–27) covering the encirclement and relief of Bastogne in concentrated, accessible form. It is the recommended entry point for new players and the most tightly focused of all the scenarios.</p>
+
+<h2 class="sub-title">Scenario Structure</h2>
+<p><strong>German objective:</strong> Reduce the Bastogne pocket and eliminate the 101st Airborne before Patton's relief force can break through. Three German divisions encircle the town; the German player must commit enough force to make progress while still screening against the approaching Third Army.</p>
+<p><strong>Allied objective:</strong> Hold Bastogne until December 26 when the relief force arrives. McAuliffe's troops are short of food, ammunition, and winter clothing. They are never short of determination. The Allied player must manage attrition carefully, concentrating defence where it matters and accepting localised retreats to preserve overall cohesion.</p>
+
+<h2 class="sub-title">Playing Nuts! as a Tutorial</h2>
+<p>The scenario teaches four fundamental SGS Battle of the Bulge lessons in concentrated form: the value of fortified urban terrain for defence; the supply attrition mechanics (Bastogne's garrison was historically at the edge of effective combat by December 25); the importance of road network control; and the impact of reinforcement timing on outcome. Completing Nuts! from both sides is the recommended preparation for any of the longer scenarios.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S21 ═══ -->
+<section class="section" id="s21">
+<h2 class="section-title"><span class="sec-num">&sect;21</span> Objective Li&egrave;ge — The Northern Thrust</h2>
+
+<div class="hist-fact">
+  <p>Kampfgruppe Peiper, commanding a combined arms battle group built around the 1st SS Panzer Regiment, was given 48 hours to reach the Meuse. He drove his column through roads choked with his own following units, past burning American vehicles, through towns where frightened civilians had locked themselves in their cellars. At Malmedy, a unit attached to his command committed what would become the most notorious German war crime on the Western Front: the murder of 84 American prisoners of war at a crossroads. The news spread through the American forces within hours. Commanders who had been considering whether to withdraw found that their men had made the decision for them. Nobody wanted to surrender to the SS. The Malmedy massacre stiffened American resistance for the remainder of the campaign.</p>
+  <span class="source">// PEIPER'S ROUTE, DECEMBER 17–24, 1944 //</span>
+</div>
+
+<p><em>Objective Liège</em> is a 10-turn scenario focused on the 6th Panzer Army's northern axis: the attack on Monschau and the Elsenborn heights, and Kampfgruppe Peiper's penetration through the Amblève valley. It provides an isolated examination of the battle that determined whether the entire German offensive's northern flank succeeded or failed.</p>
+
+<h2 class="sub-title">The Elsenborn Question</h2>
+<p>As German player in Objective Liège, you face the most concentrated version of the shoulder problem. The American position on the Elsenborn Ridge is pre-established and formidable. Your options are to attack it frontally — costly, slow, unlikely to succeed before the scenario ends — or to find and exploit routes around it through the forested terrain north of the Amblève valley. Peiper's historical route through Ligneuville and Stavelot is the available flanking option and is historically the correct play.</p>
+<p>As Allied player, the scenario tests pure defensive discipline. Elsenborn must hold. The flanking movement through the Amblève valley must be contained before Peiper reaches the Meuse. This scenario has a definitive historical benchmark: the ridge held and Peiper did not reach the Meuse. Replicating that outcome against a competent opponent is the Allied player's measure of success.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S22 ═══ -->
+<section class="section" id="s22">
+<h2 class="section-title"><span class="sec-num">&sect;22</span> The Siegfried Line — The Allied Counter-Offensive</h2>
+
+<p>The Siegfried Line scenario covers the second phase of the Battle of the Bulge: the 30-turn Allied counter-offensive from January 1 through the end of January, as American forces systematically reduce the Bulge and drive toward the Westwall (Siegfried Line) defences on the German border.</p>
+
+<h2 class="sub-title">The Reversed Dynamic</h2>
+<p>This scenario inverts the roles from the offensive campaign. The Allied player is now the attacker operating in the same terrain that favoured the German defender in December — with the same constraints of narrow roads, dense forests, and winter weather. The German player, though defending with exhausted and undersupplied forces, has the advantage of prepared positions, interior lines, and terrain that consistently favours the defender.</p>
+
+<h2 class="sub-title">Allied Operational Art in the Counter-Offensive</h2>
+<p>The Allied challenge in The Siegfried Line scenario is coordinating simultaneous attacks from multiple directions to prevent the German player from shifting reserves to threatened points. Patton from the south, Hodges from the north, with Collins' VII Corps attacking into the salient's tip — the historical triple convergence that compressed the Bulge back to its starting line by January 25.</p>
+
+<div class="hist-fact">
+  <p>The Allied counter-offensive in January 1945 has received far less historical attention than the dramatic German attack in December, but it was operationally impressive in its own right. American troops fought through some of the worst winter weather of the war — deep snow, temperatures well below freezing, and ice that disabled tracked and wheeled vehicles alike — in terrain that favoured the defender at every turn. The contrast with the optimistic predictions of a swift German defeat after the Bulge's elimination was striking. Hitler's last gamble had absorbed weeks of Allied operational momentum that could not be recovered before the spring.</p>
+  <span class="source">// THE BATTLE OF THE BULGE &middot; JOHN S. D. EISENHOWER //</span>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S23 ═══ -->
+<section class="section" id="s23">
+<h2 class="section-title"><span class="sec-num">&sect;23</span> PBEM & Multiplayer</h2>
+
+<p>SGS Battle of the Bulge supports <strong>Play By Email (PBEM)</strong> and asynchronous multiplayer in the SGS tradition. The PBEM system allows the full range of scenarios — including the 45-turn campaign — to be played between two human opponents at their own pace, typically one to three turns per day.</p>
+
+<h2 class="sub-title">Why PBEM Elevates the Game</h2>
+<p>Against the AI, both sides will eventually fall into predictable patterns — the German player learns the AI's defensive response and routes around it; the Allied player learns the German AI's breakthrough preferences. Against a human opponent, every game is genuinely uncertain. A human German player who identifies a weak point in your Elsenborn defence and concentrates three divisions there will not be deterred by the standard AI response formula. PBEM is the format that most closely approximates the historical command experience.</p>
+
+<h2 class="sub-title">PBEM Etiquette for Long Scenarios</h2>
+<p>For the 45-turn main campaign, agree before starting on a minimum turns-per-week commitment. Community experience suggests two to three turns per week keeps the game moving without becoming burdensome. Agree on how to handle rules questions (the manual, the community Discord, or a designated arbiter). The SGS Engine handles file transfer automatically; the social contract around pace is the player's responsibility.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S24 ═══ -->
+<section class="section" id="s24">
+<h2 class="section-title"><span class="sec-num">&sect;24</span> Common Mistakes — Learning from Both Sides</h2>
+
+<h2 class="sub-title">German Player Errors</h2>
+
+<div class="phase early">
+  <div class="phase-title">Error 1 — Investing Bastogne Instead of Bypassing It</div>
+  <p>The most common German mistake. Committing Panzer Lehr and two Volksgrenadier divisions to reduce Bastogne over eight days consumes time and armoured strength that should be driving west. Bypass with infantry containment, push armour past it, and let the road junction matter only when you have alternative supply routes established.</p>
+</div>
+
+<div class="phase early">
+  <div class="phase-title">Error 2 — Ignoring Stacking on the Road Network</div>
+  <p>Piling every available division onto a single road axis creates a traffic jam, not a breakthrough. Map your axes of advance before Turn 1 and ensure multiple parallel routes are assigned to different formations. The 5th Panzer Army had better road options than the 6th — use them.</p>
+</div>
+
+<div class="phase early">
+  <div class="phase-title">Error 3 — Letting the 6th Army Get Bogged at Elsenborn</div>
+  <p>If the 6th Army's primary assault fails at the ridge in the first two turns, do not reinforce failure. Divert available 6th Army reserves to the Peiper route through the Amblève valley, or transfer priority to von Manteuffel's 5th Army sector entirely. Throwing more troops at Elsenborn repeats Hitler's historical mistake.</p>
+</div>
+
+<div class="phase early">
+  <div class="phase-title">Error 4 — Failing to Protect the 7th Army Shield</div>
+  <p>The 7th Army's southern flank is the least glamorous assignment in the game and the one most often neglected. When Patton arrives, he arrives with overwhelming armoured force. The 7th Army must have adequate depth and prepared positions to delay him significantly — not to stop him, but to ensure his arrival comes too late to prevent German objectives west of the Meuse.</p>
+</div>
+
+<h2 class="sub-title">Allied Player Errors</h2>
+
+<div class="phase late">
+  <div class="phase-title">Error 1 — Fighting Forward Instead of Defending in Depth</div>
+  <p>Trying to hold every hex of the initial front line dissipates Allied forces trying to stop an unstoppable initial German assault. Accept ground loss in the first four turns. Trade space for time and concentrate on the three critical positions: Elsenborn, Bastogne, and St. Vith.</p>
+</div>
+
+<div class="phase late">
+  <div class="phase-title">Error 2 — Abandoning Elsenborn Under Flanking Pressure</div>
+  <p>The Amblève valley will be penetrated. German forces will appear in the Allied rear. The Elsenborn Ridge must not be abandoned to deal with this threat — the ridge itself is more valuable than any ground behind it. Contain the Amblève penetration with reserves while the ridge holds.</p>
+</div>
+
+<div class="phase late">
+  <div class="phase-title">Error 3 — Delaying the 101st's Move to Bastogne</div>
+  <p>The 101st must be in Bastogne before the encirclement closes. This is a race the Allied player controls — do not delay the airborne's movement waiting to see how the battle develops. Get them to Bastogne on Turn 2–3. Every turn you hesitate is a turn the German encirclement tightens.</p>
+</div>
+
+<div class="phase late">
+  <div class="phase-title">Error 4 — Using Patton's Army Piecemeal</div>
+  <p>The power of Patton's Third Army counter-attack is concentration. Feeding divisions into the battle one at a time as they arrive allows the German 7th Army to deal with them individually. Assemble a strike force before committing — even a delay of two turns to assemble four divisions for a coordinated thrust will produce better results than a continuous trickle of individual assaults.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S25 ═══ -->
+<section class="section" id="s25">
+<h2 class="section-title"><span class="sec-num">&sect;25</span> Glossary</h2>
+
+<div class="gloss-grid">
+  <div class="gloss-item"><div class="gloss-term">Amblève Valley</div><div class="gloss-def">River valley providing the primary flanking route for Kampfgruppe Peiper past the Elsenborn Ridge; site of Peiper's deepest penetration and eventual encirclement at La Gleize.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Ardennes</div><div class="gloss-def">The forested highland region of Belgium, Luxembourg, and Germany selected by Hitler as the terrain for the offensive; historically considered unsuitable for major armoured operations, which was the point.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Army Group B</div><div class="gloss-def">German army group under Field Marshal Walter Model commanding all forces in the Battle of the Bulge; comprised the 5th and 6th Panzer Armies and the 7th Army.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Bastogne</div><div class="gloss-def">Belgian road junction town controlling seven routes; defended by the 101st Airborne Division during an eight-day siege; the pivotal terrain feature of the campaign's central sector. Site of McAuliffe's famous reply: "Nuts!"</div></div>
+  <div class="gloss-item"><div class="gloss-term">Bodenplatte</div><div class="gloss-def">Operation Bodenplatte: Luftwaffe surprise attack on Allied airfields on New Year's Day 1945; temporarily damaged Allied air capacity but cost 300 aircraft and 214 pilots Germany could not replace.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Bulge</div><div class="gloss-def">The westward salient created by the German offensive's penetration into the Allied line; the shape of the German advance on maps gave the battle its popular name.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Combat Command</div><div class="gloss-def">American armoured division sub-unit; roughly regimental equivalent comprising tank and infantry battalions with supporting artillery; Combat Commands A, B, and R represent the three standard divisions of an armoured division's strength.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Elsenborn Ridge</div><div class="gloss-def">The commanding terrain feature at the northern shoulder of the German offensive; defended by the 2nd and 99th Infantry Divisions against the elite 6th Panzer Army; its defence channelled the entire northern German thrust into secondary routes.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Geschwader</div><div class="gloss-def">German Luftwaffe formation equivalent to an American group or British wing; represented as the air unit scale in SGS Battle of the Bulge, typically comprising 50–150 aircraft.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Herbstnebel</div><div class="gloss-def">"Autumn Mist" — the final operational codename for the German counter-offensive, used after the original Wacht am Rhein designation was compromised; also the name of the game's 16-turn shortened campaign covering the German offensive phase only.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Initiative Gauge</div><div class="gloss-def">The game's central mechanic representing German operational momentum; declines over time and through setbacks; when exhausted, the German offensive phase ends and Allied counter-offensive becomes dominant. Not present in the Wacht am Rhein variant.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Kampfgruppe Peiper</div><div class="gloss-def">Spearhead battle group of the 1st SS Panzer Division commanded by SS-Obersturmbannführer Joachim Peiper; penetrated 30 miles before being isolated at La Gleize; responsible for the Malmedy massacre and other war crimes.</div></div>
+  <div class="gloss-item"><div class="gloss-term">La Gleize</div><div class="gloss-def">Belgian village where Kampfgruppe Peiper was surrounded and destroyed; Peiper burned his vehicles and escaped with 800 survivors on foot on December 23, 1944.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Losheim Gap</div><div class="gloss-def">Natural corridor through the Schnee Eifel highlands providing the primary armoured approach route for the 6th Panzer Army's right flank and the 5th Panzer Army's left flank.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Malmedy Massacre</div><div class="gloss-def">The murder of 84 American prisoners of war at the Baugnez crossroads near Malmedy on December 17, 1944 by soldiers of Kampfgruppe Peiper; news spread rapidly through American forces and significantly stiffened resistance throughout the campaign.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Manteuffel, Hasso von</div><div class="gloss-def">General commanding the 5th Panzer Army; the most operationally innovative German commander of the battle; his infiltration tactics on December 16 achieved early success where Dietrich's more conventional assault at Elsenborn failed.</div></div>
+  <div class="gloss-item"><div class="gloss-term">McAuliffe, Anthony</div><div class="gloss-def">Brigadier General commanding the 101st Airborne Division during the Bastogne siege; delivered the single most famous reply in American military history when responding to the German surrender demand: "Nuts!"</div></div>
+  <div class="gloss-item"><div class="gloss-term">Meuse River</div><div class="gloss-def">The primary German operational objective — reaching the Meuse and seizing its crossings was the minimum threshold for German success; historically, German armour came within four miles before fuel exhaustion ended the advance.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Model, Walter</div><div class="gloss-def">Field Marshal commanding Army Group B; privately believed the offensive was unachievable but executed it loyally; recommended withdrawal to the Westwall on Christmas Day 1944; Hitler refused.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Nuts!</div><div class="gloss-def">Both a historic response and a game scenario; the 8-turn Siege of Bastogne scenario in SGS Battle of the Bulge, covering December 20–27 and recommended as the entry scenario for new players.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Objective Liège</div><div class="gloss-def">10-turn scenario covering the 6th Panzer Army's northern thrust against Monschau and the Elsenborn Ridge, plus Kampfgruppe Peiper's penetration through the Amblève valley.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Patton, George S.</div><div class="gloss-def">General commanding the U.S. Third Army; pivoted his entire army 90 degrees north in 48 hours to relieve Bastogne, arriving December 26, 1944; the manoeuvre is studied as a model of operational flexibility.</div></div>
+  <div class="gloss-item"><div class="gloss-term">PBEM</div><div class="gloss-def">Play By Email; the asynchronous multiplayer format supported by SGS Battle of the Bulge allowing human vs. human play across any distance.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Siegfried Line</div><div class="gloss-def">The Westwall defensive line on the German border; also the name of the 30-turn scenario covering the Allied counter-offensive in January 1945 as American forces drive back to these defences.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Stacking Limit</div><div class="gloss-def">Maximum number of units allowed in a single hex; reflects the physical capacity of Ardennes roads and terrain; exceeding this creates the bottlenecks that paralysed German supply and movement in December 1944.</div></div>
+  <div class="gloss-item"><div class="gloss-term">St. Vith</div><div class="gloss-def">Belgian road junction defended by the 7th Armored Division from December 17–23; its six-day resistance disrupted both German supply and the 6th Army's secondary routes; ultimately lost but not before serving its delaying purpose.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Turn 0</div><div class="gloss-def">The special pre-battle turn in the main campaign representing the night of December 15–16; allows operational decisions that simulate the surprise element of the German offensive before play officially begins.</div></div>
+  <div class="gloss-item"><div class="gloss-term">101st Airborne Division</div><div class="gloss-def">The "Screaming Eagles" deployed to hold Bastogne; their siege became the most famous American defensive stand of the Battle of the Bulge; their commander's "Nuts!" reply to the German surrender demand is among the most celebrated statements of the war.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Volksgrenadier Division</div><div class="gloss-def">Reorganised German infantry formation created in the late war period; emphasised automatic weapons and anti-tank capability to compensate for reduced manpower; the assault infantry that opened the initial breaches on December 16.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Wacht am Rhein</div><div class="gloss-def">"Guard on the Rhine" — the original operational codename for the German offensive; also the name of the alternative 45-turn campaign in SGS Battle of the Bulge, which removes the Initiative Gauge and allows freer initial deployment.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Westwall</div><div class="gloss-def">The German border defensive fortification line (known to the Allies as the Siegfried Line), which the German forces retreated behind after the failure of the offensive; the terminus of the Allied counter-offensive in January 1945.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Zone of Control</div><div class="gloss-def">The area of tactical influence projected by a unit into adjacent hexes; entering or leaving an enemy ZOC costs additional movement points and may force units to stop; fundamental to the game's operational movement system.</div></div>
+</div>
+</section>
+
+</div><!-- /content -->
+<footer id="footer">
+  SGS Battle of the Bulge Strategy Guide &nbsp;&middot;&nbsp; Strategy Game Studio &nbsp;&middot;&nbsp; SGS Engine v1.5 &nbsp;&middot;&nbsp; Nadir Strategy Archive
+</footer>
+</div><!-- /main -->
+
+<a id="back-top" href="#hero" title="Back to top">&#8593;</a>
+
+<script>
+const bar=document.getElementById('progress-bar');
+const bt=document.getElementById('back-top');
+const tog=document.getElementById('sidebar-toggle');
+const sb=document.getElementById('sidebar');
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;
+  bar.style.transform=`scaleX(${s/t})`;
+  bt.classList.toggle('visible',s>400);
+},{passive:true});
+const secs=document.querySelectorAll('.section[id]');
+const navs=document.querySelectorAll('.nav-item');
+const obs=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){navs.forEach(n=>n.classList.remove('active'));const a=document.querySelector(`.nav-item[href="#${e.target.id}"]`);if(a){a.classList.add('active');a.scrollIntoView({block:'nearest'});}}});
+},{rootMargin:'-20% 0px -70% 0px'});
+secs.forEach(s=>obs.observe(s));
+tog.addEventListener('click',()=>sb.classList.toggle('open'));
+document.querySelectorAll('.nav-item').forEach(i=>i.addEventListener('click',()=>sb.classList.remove('open')));
+document.querySelectorAll('.section').forEach((s,i)=>{s.style.animationDelay=`${i*0.03}s`;});
+</script>
+</body>
+</html>

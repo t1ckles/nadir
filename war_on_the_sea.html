@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>War on the Sea — The Iron Bottom Codex</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Share+Tech+Mono&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #122040;
+    --navy-light: #1e3560;
+    --steel: #2c3e50;
+    --steel-light: #3d5166;
+    --ocean: #0d3b55;
+    --ocean-light: #1a5e82;
+    --amber: #d4891a;
+    --amber-light: #f0a832;
+    --amber-pale: #f7c870;
+    --khaki: #c8b97a;
+    --khaki-light: #e0d09a;
+    --khaki-pale: #f2eacc;
+    --rust: #8b3a2a;
+    --rust-light: #c04a35;
+    --signal-red: #c0392b;
+    --signal-green: #27ae60;
+    --signal-yellow: #f39c12;
+    --body-font: 'Source Serif 4', Georgia, serif;
+    --head-font: 'Oswald', 'Impact', sans-serif;
+    --mono-font: 'Share Tech Mono', 'Courier New', monospace;
+    --deco-font: 'Bebas Neue', 'Impact', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--navy);
+    background-image:
+      radial-gradient(ellipse at 15% 10%, rgba(13,59,85,0.4) 0%, transparent 55%),
+      radial-gradient(ellipse at 85% 90%, rgba(10,22,40,0.8) 0%, transparent 60%),
+      repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(255,255,255,0.012) 60px, rgba(255,255,255,0.012) 61px),
+      repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(255,255,255,0.012) 60px, rgba(255,255,255,0.012) 61px);
+    color: var(--khaki-pale);
+    font-family: var(--body-font);
+    font-size: 17px;
+    line-height: 1.8;
+    min-height: 100vh;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative;
+    text-align: center;
+    padding: 5rem 2rem 4rem;
+    border-bottom: 2px solid rgba(212,137,26,0.4);
+    background: linear-gradient(to bottom, rgba(13,59,85,0.3) 0%, transparent 100%);
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 49px,
+      rgba(212,137,26,0.04) 49px,
+      rgba(212,137,26,0.04) 50px
+    );
+    pointer-events: none;
+  }
+
+  .hero-classification {
+    font-family: var(--mono-font);
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--signal-red);
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    border: 1px solid rgba(192,57,43,0.4);
+    display: inline-block;
+    padding: 0.2rem 1rem;
+  }
+
+  .hero-title {
+    font-family: var(--deco-font);
+    font-size: clamp(3rem, 8vw, 6rem);
+    letter-spacing: 0.08em;
+    color: var(--amber-light);
+    line-height: 0.95;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 40px rgba(212,137,26,0.25);
+  }
+
+  .hero-title-sub {
+    font-family: var(--head-font);
+    font-size: clamp(0.9rem, 2vw, 1.3rem);
+    font-weight: 300;
+    letter-spacing: 0.4em;
+    color: var(--khaki);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+
+  .hero-rule {
+    width: 100%;
+    max-width: 500px;
+    margin: 1.5rem auto;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--amber), transparent);
+  }
+
+  .hero-intro {
+    max-width: 680px;
+    margin: 0 auto;
+    font-style: italic;
+    color: var(--khaki-light);
+    font-size: 1.05rem;
+    line-height: 1.85;
+  }
+
+  .hero-coords {
+    font-family: var(--mono-font);
+    font-size: 0.7rem;
+    color: rgba(200,185,122,0.5);
+    letter-spacing: 0.2em;
+    margin-top: 2rem;
+    display: block;
+  }
+
+  /* ─── LAYOUT ─── */
+  .page-wrap {
+    max-width: 940px;
+    margin: 0 auto;
+    padding: 0 2rem 6rem;
+  }
+
+  /* ─── NAV ─── */
+  .toc {
+    background: rgba(18,32,64,0.8);
+    border: 1px solid rgba(212,137,26,0.25);
+    border-top: 3px solid var(--amber);
+    padding: 2rem 2.5rem;
+    margin: 3rem 0;
+  }
+
+  .toc-header {
+    font-family: var(--head-font);
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .toc-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(212,137,26,0.25);
+  }
+
+  .toc-list {
+    list-style: none;
+    columns: 2;
+    column-gap: 2.5rem;
+  }
+
+  @media (max-width: 580px) { .toc-list { columns: 1; } }
+
+  .toc-list li { margin-bottom: 0.45rem; break-inside: avoid; }
+
+  .toc-list a {
+    color: var(--khaki-light);
+    text-decoration: none;
+    font-size: 0.92rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    transition: color 0.2s;
+  }
+
+  .toc-list a:hover { color: var(--amber-light); }
+
+  .toc-num {
+    font-family: var(--mono-font);
+    font-size: 0.68rem;
+    color: var(--amber);
+    min-width: 2rem;
+  }
+
+  /* ─── SECTIONS ─── */
+  .section { margin-bottom: 5.5rem; }
+
+  .section-header {
+    position: relative;
+    padding: 1.5rem 0 1.25rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(212,137,26,0.2);
+  }
+
+  .section-eyebrow {
+    font-family: var(--mono-font);
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--amber);
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+
+  .section-title {
+    font-family: var(--head-font);
+    font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--amber-light);
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+
+  .section-subtitle {
+    font-family: var(--body-font);
+    font-style: italic;
+    color: var(--khaki);
+    font-size: 0.97rem;
+    margin-top: 0.4rem;
+  }
+
+  /* ─── SUBSECTION ─── */
+  .subsection { margin-bottom: 3.5rem; }
+
+  .subsection-title {
+    font-family: var(--head-font);
+    font-size: 1.2rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    padding-left: 1.2rem;
+    border-left: 3px solid var(--amber);
+  }
+
+  /* ─── BODY TEXT ─── */
+  p { margin-bottom: 1.1rem; color: var(--khaki-pale); }
+  p:last-child { margin-bottom: 0; }
+
+  /* ─── INTEL BLOCK (lore/quotes) ─── */
+  .intel-block {
+    background: rgba(10,22,40,0.7);
+    border: 1px solid rgba(212,137,26,0.18);
+    border-left: 3px solid var(--amber);
+    padding: 1.5rem 2rem;
+    margin: 2.5rem 0;
+    position: relative;
+  }
+
+  .intel-block::before {
+    content: 'FIELD INTELLIGENCE';
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    font-family: var(--mono-font);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--amber);
+    background: var(--navy);
+    padding: 0 0.5rem;
+  }
+
+  .intel-block p {
+    font-style: italic;
+    color: var(--khaki-light);
+    font-size: 0.97rem;
+    line-height: 1.85;
+  }
+
+  .intel-attribution {
+    font-family: var(--mono-font);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--amber);
+    margin-top: 0.75rem;
+    text-align: right;
+    display: block;
+    opacity: 0.8;
+  }
+
+  /* ─── HISTORICAL FACT ─── */
+  .hist-fact {
+    background: rgba(13,59,85,0.35);
+    border: 1px solid rgba(26,94,130,0.5);
+    border-top: 3px solid var(--ocean-light);
+    padding: 1.25rem 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .hist-fact-label {
+    font-family: var(--mono-font);
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    color: #4aacda;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .hist-fact p {
+    color: #aad4ec;
+    font-size: 0.93rem;
+    line-height: 1.75;
+  }
+
+  /* ─── CALLOUTS ─── */
+  .callout {
+    border-left: 3px solid var(--amber);
+    background: rgba(212,137,26,0.07);
+    padding: 1.25rem 1.5rem;
+    margin: 2rem 0;
+    border-radius: 0 2px 2px 0;
+  }
+
+  .callout-danger {
+    border-left-color: var(--signal-red);
+    background: rgba(192,57,43,0.08);
+  }
+
+  .callout-signal {
+    border-left-color: var(--signal-green);
+    background: rgba(39,174,96,0.07);
+  }
+
+  .callout-label {
+    font-family: var(--mono-font);
+    font-size: 0.62rem;
+    letter-spacing: 0.25em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .callout-danger .callout-label { color: #e07070; }
+  .callout-signal .callout-label { color: #5fd98a; }
+
+  .callout p { font-size: 0.95rem; margin-bottom: 0.6rem; }
+  .callout p:last-child { margin-bottom: 0; }
+
+  /* ─── CARDS ─── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .card {
+    border: 1px solid rgba(212,137,26,0.2);
+    background: rgba(18,32,64,0.5);
+    padding: 1.25rem;
+    border-radius: 2px;
+  }
+
+  .card-title {
+    font-family: var(--head-font);
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    color: var(--amber-light);
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .card p { font-size: 0.9rem; margin-bottom: 0; color: var(--khaki-light); }
+
+  .card-danger { border-color: rgba(192,57,43,0.3); background: rgba(139,26,26,0.08); }
+  .card-danger .card-title { color: #e07070; }
+
+  .card-ocean { border-color: rgba(26,94,130,0.4); background: rgba(13,59,85,0.18); }
+  .card-ocean .card-title { color: #5bbfda; }
+
+  .card-signal { border-color: rgba(39,174,96,0.3); background: rgba(39,174,96,0.06); }
+  .card-signal .card-title { color: #5fd98a; }
+
+  /* ─── TABLES ─── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .data-table thead tr {
+    background: rgba(18,32,64,0.8);
+    border-bottom: 2px solid rgba(212,137,26,0.4);
+  }
+
+  .data-table th {
+    font-family: var(--head-font);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--amber);
+    text-transform: uppercase;
+    padding: 0.7rem 0.9rem;
+    text-align: left;
+    font-weight: 500;
+  }
+
+  .data-table td {
+    padding: 0.65rem 0.9rem;
+    color: var(--khaki-light);
+    border-bottom: 1px solid rgba(212,137,26,0.08);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: rgba(212,137,26,0.04); }
+
+  /* ─── PILLS ─── */
+  .tag {
+    display: inline-block;
+    padding: 0.1rem 0.55rem;
+    font-family: var(--mono-font);
+    font-size: 0.68rem;
+    letter-spacing: 0.05em;
+    border-radius: 2px;
+  }
+  .tag-amber { background: rgba(212,137,26,0.2); color: var(--amber-light); }
+  .tag-red   { background: rgba(192,57,43,0.2);  color: #e07070; }
+  .tag-ocean { background: rgba(26,94,130,0.25); color: #6cc5e8; }
+  .tag-green { background: rgba(39,174,96,0.2);  color: #5fd98a; }
+
+  /* ─── NUMBERED LIST ─── */
+  .guide-list {
+    list-style: none;
+    margin: 1rem 0 1.5rem;
+    padding: 0;
+  }
+
+  .guide-list li {
+    display: flex;
+    gap: 1.1rem;
+    margin-bottom: 1rem;
+    align-items: flex-start;
+  }
+
+  .guide-list .num {
+    font-family: var(--mono-font);
+    font-size: 0.68rem;
+    color: var(--amber);
+    min-width: 2rem;
+    padding-top: 0.35rem;
+    letter-spacing: 0.05em;
+  }
+
+  .guide-list .text {
+    color: var(--khaki-pale);
+    font-size: 0.97rem;
+    line-height: 1.75;
+    flex: 1;
+  }
+
+  .guide-list .text strong { color: var(--amber-light); font-weight: 600; }
+
+  /* ─── BULLET LIST ─── */
+  .guide-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 1.5rem;
+  }
+
+  .guide-bullets li {
+    padding: 0.3rem 0 0.3rem 1.6rem;
+    position: relative;
+    color: var(--khaki-pale);
+    font-size: 0.97rem;
+    line-height: 1.75;
+  }
+
+  .guide-bullets li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--amber);
+    font-size: 0.75rem;
+    top: 0.55rem;
+  }
+
+  .guide-bullets li strong { color: var(--amber-light); font-weight: 600; }
+  .guide-bullets li em { color: #6cc5e8; font-style: italic; }
+
+  /* ─── PHASE BAR ─── */
+  .phase-strip {
+    display: flex;
+    gap: 0;
+    margin: 2rem 0;
+    border: 1px solid rgba(212,137,26,0.2);
+    overflow: hidden;
+  }
+
+  .phase {
+    flex: 1;
+    padding: 1rem 1.1rem;
+    text-align: center;
+    position: relative;
+  }
+
+  .phase:not(:last-child)::after {
+    content: '▶';
+    position: absolute;
+    right: -0.6rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.7rem;
+    color: rgba(212,137,26,0.5);
+    z-index: 1;
+  }
+
+  .phase-1 { background: rgba(10,22,40,0.7); }
+  .phase-2 { background: rgba(13,59,85,0.3); }
+  .phase-3 { background: rgba(18,32,64,0.5); }
+  .phase-4 { background: rgba(139,26,26,0.15); }
+
+  .phase-num {
+    font-family: var(--mono-font);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    display: block;
+    margin-bottom: 0.4rem;
+    color: var(--amber);
+  }
+
+  .phase-name {
+    font-family: var(--head-font);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    color: var(--amber-light);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  .phase-desc {
+    font-size: 0.78rem;
+    color: var(--khaki);
+    line-height: 1.4;
+  }
+
+  /* ─── HIGHLIGHT ─── */
+  .highlight-panel {
+    background: rgba(18,32,64,0.6);
+    border: 1px solid rgba(212,137,26,0.2);
+    border-top: 3px solid var(--amber);
+    padding: 1.75rem 2rem;
+    margin: 2.5rem 0;
+  }
+
+  .highlight-panel-title {
+    font-family: var(--head-font);
+    font-size: 0.8rem;
+    letter-spacing: 0.25em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+  }
+
+  /* ─── FOOTER ─── */
+  .page-footer {
+    text-align: center;
+    padding: 3rem 0 1.5rem;
+    border-top: 2px solid rgba(212,137,26,0.2);
+    margin-top: 4rem;
+  }
+
+  .footer-title {
+    font-family: var(--deco-font);
+    font-size: 2rem;
+    letter-spacing: 0.1em;
+    color: rgba(212,137,26,0.3);
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+
+  .footer-classification {
+    font-family: var(--mono-font);
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    color: rgba(200,185,122,0.35);
+  }
+
+  /* ─── CHAPTER NAV ─── */
+  .chapter-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 2.5rem 0;
+    padding: 1.25rem;
+    background: rgba(10,22,40,0.5);
+    border: 1px solid rgba(212,137,26,0.1);
+  }
+
+  .chapter-nav a {
+    font-family: var(--mono-font);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--khaki);
+    text-decoration: none;
+    padding: 0.3rem 0.75rem;
+    border: 1px solid rgba(212,137,26,0.15);
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  .chapter-nav a:hover {
+    color: var(--amber-light);
+    border-color: rgba(212,137,26,0.5);
+    background: rgba(212,137,26,0.07);
+  }
+
+  /* ─── INLINE ─── */
+  em { color: var(--amber-pale); font-style: italic; }
+  strong { color: var(--amber-light); font-weight: 600; }
+  hr { border: none; border-top: 1px solid rgba(212,137,26,0.1); margin: 3.5rem 0; }
+  h2 { scroll-margin-top: 2rem; }
+
+  /* ─── SPECIAL UNIT PANEL ─── */
+  .unit-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+  }
+
+  .unit-card {
+    background: rgba(10,22,40,0.7);
+    border: 1px solid rgba(212,137,26,0.15);
+    padding: 1rem 1.1rem;
+  }
+
+  .unit-name {
+    font-family: var(--head-font);
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    color: var(--amber-light);
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+    display: block;
+  }
+
+  .unit-role {
+    font-family: var(--mono-font);
+    font-size: 0.62rem;
+    color: var(--ocean-light);
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .unit-card p { font-size: 0.85rem; line-height: 1.55; color: var(--khaki-light); }
+
+  /* ─── STAT BARS ─── */
+  .stat-bars { margin: 1rem 0; }
+
+  .stat-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .stat-label {
+    font-family: var(--mono-font);
+    font-size: 0.65rem;
+    color: var(--khaki);
+    min-width: 100px;
+    letter-spacing: 0.05em;
+  }
+
+  .stat-bar-bg {
+    flex: 1;
+    height: 6px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 1px;
+  }
+
+  .stat-bar-fill {
+    height: 100%;
+    background: var(--amber);
+    border-radius: 1px;
+    transition: width 0.3s;
+  }
+
+  .stat-value {
+    font-family: var(--mono-font);
+    font-size: 0.65rem;
+    color: var(--amber);
+    min-width: 2.5rem;
+    text-align: right;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="hero-classification">// NADIR STRATEGY ARCHIVE — CLASSIFIED: EYES ONLY //</span>
+  <div class="hero-title">WAR ON THE SEA</div>
+  <div class="hero-title-sub">The Iron Bottom Codex — A Commander's Complete Guide</div>
+  <div class="hero-rule"></div>
+  <p class="hero-intro">
+    The South Pacific, 1942. The world is on fire, and the sea burns with it. From the shattered remnants of Pearl Harbor, the United States Navy claws its way back to relevance against an Imperial Japanese force that controls half an ocean. Every destroyer, every torpedo, every flight of dive bombers is a calculated gamble against a capable, experienced, and utterly ruthless enemy.
+    <br><br>
+    This codex exists so that you do not repeat the mistakes of Savo Island.
+  </p>
+  <span class="hero-coords">09°26'S 159°57'E · IRONBOTTOM SOUND · GUADALCANAL CAMPAIGN, 1942</span>
+</div>
+
+<div class="page-wrap">
+
+  <nav class="toc">
+    <div class="toc-header">MISSION BRIEFING — CONTENTS</div>
+    <ul class="toc-list">
+      <li><a href="#theater"><span class="toc-num">01.</span> Theater of Operations</a></li>
+      <li><a href="#factions"><span class="toc-num">02.</span> Choosing Your Side</a></li>
+      <li><a href="#strategic"><span class="toc-num">03.</span> Strategic Layer</a></li>
+      <li><a href="#fleetcomp"><span class="toc-num">04.</span> Fleet Composition</a></li>
+      <li><a href="#surface"><span class="toc-num">05.</span> Surface Combat</a></li>
+      <li><a href="#sensors"><span class="toc-num">06.</span> Radar, Sonar & Detection</a></li>
+      <li><a href="#air"><span class="toc-num">07.</span> Air Power & Carriers</a></li>
+      <li><a href="#submarine"><span class="toc-num">08.</span> Submarine Warfare</a></li>
+      <li><a href="#asw"><span class="toc-num">09.</span> Anti-Submarine Warfare</a></li>
+      <li><a href="#convoy"><span class="toc-num">10.</span> Convoys & Supply Lines</a></li>
+      <li><a href="#bases"><span class="toc-num">11.</span> Ports & Airfields</a></li>
+      <li><a href="#night"><span class="toc-num">12.</span> Night Combat Doctrine</a></li>
+      <li><a href="#damage"><span class="toc-num">13.</span> Damage Control</a></li>
+      <li><a href="#doctrine"><span class="toc-num">14.</span> Doctrines of Victory</a></li>
+    </ul>
+  </nav>
+
+  <section class="section" id="theater">
+    <div class="section-header">
+      <span class="section-eyebrow"// CHAPTER 01 //</span>
+      <h2 class="section-title">Theater of Operations</h2>
+      <div class="section-subtitle">Understanding the South Pacific and the campaign you're fighting.</div>
+    </div>
+
+    <div class="intel-block">
+      <p>The Solomon Islands chain stretches northwest to southeast for nearly a thousand miles, a jagged green spine rising from the Pacific. Between the islands runs a corridor of deep water — New Georgia Sound, which the men who sailed it called "The Slot." From the northwest, Japanese convoys and warships poured southward through The Slot every night, their wakes glowing with phosphorescence. Those sailors called it the Tokyo Express. The men who waited for them at the far end called it something different.</p>
+      <span class="intel-attribution">— Composite, from the oral histories of Pacific Theater veterans</span>
+    </div>
+
+    <p>War on the Sea, developed by Killerfish Games and released in 2021, is a real-time naval tactics and campaign strategy game set in the South Pacific during 1942–1943. It places you in command of either the United States Navy and Allied forces, or the Imperial Japanese Navy, fighting for control of the Solomon Islands and, ultimately, for control of the crucial airfield on Guadalcanal that both sides recognized as the pivot point of the Pacific War.</p>
+
+    <p>The campaign is played on two levels simultaneously. On the <strong>strategic map</strong>, you manage fleets, direct convoys, build infrastructure, and make high-level command decisions about where to commit your forces. When opposing forces meet, you drop into a <strong>real-time tactical battle</strong> where you personally direct your ships, planes, and submarines through the engagement. Mastering both layers — and understanding how decisions on one level shape outcomes on the other — is the core skill of the game.</p>
+
+    <div class="hist-fact">
+      <span class="hist-fact-label">// HISTORICAL RECORD — GUADALCANAL, 1942 //</span>
+      <p>On August 7, 1942, the United States launched its first major offensive operation of the Pacific War — a combined amphibious assault on Guadalcanal, Tulagi, and nearby islands. The Marines seized the nearly-completed Japanese airfield on Guadalcanal, which would become Henderson Field. What followed was six months of brutal attrition: seven major naval battles in the same waters, dozens of air engagements, and continuous fighting on the island itself. By February 1943, when the last Japanese troops were evacuated, over 50 vessels lay on the bottom of what sailors had named Ironbottom Sound.</p>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">The Key Objectives</h3>
+      <p>Both campaigns share the same map and the same central contested objective: <strong>Guadalcanal and its airfield</strong>. The airfield — Henderson Field historically — is the jewel of the campaign. Whoever controls a high-level airfield at Guadalcanal can project land-based air power across the entire operational theater, tipping the balance of every naval engagement within range.</p>
+      <p>Secondary objectives include the port facilities at Guadalcanal, Tulagi, and the Shortland Islands, as well as the ability to develop airfields at New Georgia and other strategic positions throughout the Solomon chain. Every island with a port or airfield is a piece of infrastructure that multiplies your ability to project power and sustain your forces at the front.</p>
+
+      <div class="phase-strip">
+        <div class="phase phase-1">
+          <span class="phase-num">PHASE 01</span>
+          <span class="phase-name">Opening Moves</span>
+          <div class="phase-desc">Establish dominance near Guadalcanal, build initial infrastructure, screen convoys</div>
+        </div>
+        <div class="phase phase-2">
+          <span class="phase-num">PHASE 02</span>
+          <span class="phase-name">Contest & Build</span>
+          <div class="phase-desc">Develop airfields and ports, destroy enemy convoys, contest key islands</div>
+        </div>
+        <div class="phase phase-3">
+          <span class="phase-num">PHASE 03</span>
+          <span class="phase-name">Air Superiority</span>
+          <div class="phase-desc">Achieve air dominance, level 5 airfield, neutralize enemy carriers</div>
+        </div>
+        <div class="phase phase-4">
+          <span class="phase-num">PHASE 04</span>
+          <span class="phase-name">Decisive Engagement</span>
+          <div class="phase-desc">Final fleet actions, secure all objectives, achieve campaign victory</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="factions">
+    <div class="section-header">
+      <span class="section-eyebrow">// CHAPTER 02 //</span>
+      <h2 class="section-title">Choosing Your Side</h2>
+      <div class="section-subtitle">The Americans and Japanese approach war very differently.</div>
+    </div>
+
+    <div class="intel-block">
+      <p>Two navies. Two doctrines. One ocean. The Americans put their faith in technology, industrial capacity, and the long game — radar, sonar, and the ability to replace every ship they lost with three more. The Japanese put their faith in training, night tactics, and a torpedo that no American engineer had yet conceived possible. Both approaches had their day. Neither was wrong. Both had their catastrophes.</p>
+      <span class="intel-attribution">— Pacific War Naval Analysis, Strategic Survey Division</span>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Allied Forces (United States Navy)</h3>
+      <p>The Americans are the more straightforward side to learn and the recommended starting point for new players. The USN's core advantages are <strong>radar</strong>, <strong>strong secondary batteries</strong>, and a powerful carrier aviation arm. Radar is an enormous benefit in night engagements and in rough weather — it allows detection of enemy surface ships at ranges where the Japanese are still searching by eye.</p>
+
+      <div class="card-grid">
+        <div class="card card-signal">
+          <div class="card-title">STRENGTHS</div>
+          <p>Surface and air radar on most vessels. Excellent secondary gun batteries. Strong carrier aviation (Wildcats, Dauntlesses, Avengers). Growing reinforcement over the campaign. Good destroyer gunnery.</p>
+        </div>
+        <div class="card card-danger">
+          <div class="card-title">WEAKNESSES</div>
+          <p>The Mark 14 torpedo was historically unreliable — and the game reflects this. No equivalent to the Long Lance torpedo. Light cruisers are weak in early campaign. Must take aggressive posture to win.</p>
+        </div>
+      </div>
+
+      <p>The American campaign playstyle is <strong>aggressive and offensive</strong>. Your primary goal is to capture Guadalcanal and develop its airfield to level 5. This requires active hunting of Japanese convoys, contesting The Slot, and eventually winning air superiority. You have the industrial production to absorb losses — but not to be complacent. Every ship lost in the early campaign matters.</p>
+
+      <div class="hist-fact">
+        <span class="hist-fact-label">// HISTORICAL RECORD — USN RADAR ADVANTAGE //</span>
+        <p>By mid-1942, nearly all US Navy cruisers and destroyers carried the SG surface search radar, a significant technological advantage. At the Battle of Cape Esperance on October 11–12, 1942, Rear Admiral Norman Scott's task force used radar to detect the Japanese column and initiate an ambush that sank one heavy cruiser and three destroyers. It was among the first times American radar had been used effectively in a night surface action — a preview of the technological edge that would eventually tip the naval balance.</p>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Imperial Japanese Navy</h3>
+      <p>Japan is the harder side to play correctly but deeply rewarding. The IJN's starting position is stronger — they hold more islands, more ports, and have a head start on Guadalcanal's airfield. Their strategic task is <strong>defensive</strong>: hold what you have, supply Guadalcanal through The Slot, and bleed the Americans dry before they can achieve air dominance.</p>
+
+      <div class="card-grid">
+        <div class="card card-signal">
+          <div class="card-title">STRENGTHS</div>
+          <p>The Type 93 "Long Lance" torpedo — the best torpedo in the game. Powerful heavy cruisers. Excellent battleships (particularly Yamato and Kongō class). Superior night-fighting training. Strong starting position with many islands secured.</p>
+        </div>
+        <div class="card card-danger">
+          <div class="card-title">WEAKNESSES</div>
+          <p>No surface radar on most vessels in the early campaign. Weak light cruisers. Heavy reliance on convoy protection consumes resources. Must be careful about losing capital ships — replacements are difficult. Gunnery is poor at long range.</p>
+        </div>
+      </div>
+
+      <p>Japan's strategic task is more complex. You must simultaneously <strong>protect your supply convoys</strong> running down The Slot to Guadalcanal while building up the island's defenses, and you must do so while avoiding decisive losses in surface engagements where American radar gives them a growing advantage. Your Long Lance torpedoes are your great equalizer — use them.</p>
+
+      <div class="hist-fact">
+        <span class="hist-fact-label">// HISTORICAL RECORD — THE TYPE 93 "LONG LANCE" //</span>
+        <p>Nicknamed the "Long Lance" by historian Samuel Eliot Morison, the Japanese Type 93 torpedo was without question the best torpedo of the entire Second World War. Powered by pure oxygen rather than compressed air, it left no bubble trail. Its 1,090-pound warhead could reach targets at over 11 miles while traveling at 49 knots — roughly twice the range of any American equivalent. The US Navy did not fully understand this weapon's capabilities until after Savo Island, and for months American commanders calculated "safe" engagement ranges that turned out to be well within Long Lance reach. The results were catastrophic.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="strategic">
+    <div class="section-header">
+      <span class="section-eyebrow">// CHAPTER 03 //</span>
+      <h2 class="section-title">The Strategic Layer</h2>
+      <div class="section-subtitle">On managing the campaign map and making command-level decisions.</div>
+    </div>
+
+    <div class="intel-block">
+      <p>A fleet does not win a war. A fleet wins a battle. Wars are won by the organization that appears at the right place with the right force at the right moment — and that requires planning that begins not at the tactical level, but two decisions higher, in the quiet of the operations room, where pins are moved across charts and admirals consider not just today's action but what resources they will need in three weeks' time.</p>
+      <span class="intel-attribution">— Fleet Operations Doctrine, Commander in Chief Pacific Fleet</span>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Task Force Management</h3>
+      <p>Your fleet is organized into <strong>Task Forces (TFs)</strong> on the strategic map. Each TF can contain a mix of ship types and can be assigned different patrol areas, search patterns, or directional orders. Managing your task forces efficiently — knowing which ships to group together, which missions to assign, and when to consolidate and when to disperse — is the foundation of campaign success.</p>
+
+      <ul class="guide-list">
+        <li><span class="num">01.</span><span class="text"><strong>Maintain dedicated escort formations.</strong> Your destroyers and light cruisers should generally not be traveling with your battleships and carriers in the early campaign. Build dedicated ASW (Anti-Submarine Warfare) escort teams and assign them to convoy protection. A convoy moving without escorts is an invitation to enemy submarines.</span></li>
+        <li><span class="num">02.</span><span class="text"><strong>Assign reconnaissance before committing forces.</strong> Before sending a surface TF into contested waters, dispatch a reconnaissance aircraft to reveal what lies ahead. Committing a task force to an engagement with an unexpectedly superior enemy force is one of the most expensive mistakes in the campaign.</span></li>
+        <li><span class="num">03.</span><span class="text"><strong>Stagger your task force movements.</strong> Never send everything at once. If one TF encounters the enemy and triggers a battle, your other forces should ideally be positioned to intervene or exploit the result. Having your entire fleet engaged simultaneously leaves you with no reserve.</span></li>
+        <li><span class="num">04.</span><span class="text"><strong>Watch the campaign timer and victory conditions.</strong> Both campaigns have a time limit and specific conditions for victory. Building a Level 5 airfield at Guadalcanal is the Americans' terminal objective. Building one and holding the island is Japan's. Track the build progress consistently — don't get so absorbed in naval battles that you neglect the infrastructure that determines the campaign's outcome.</span></li>
+        <li><span class="num">05.</span><span class="text"><strong>Repair damaged vessels promptly.</strong> A damaged ship sitting in a battle has reduced fighting effectiveness and takes up fleet slots that could be used by a healthy vessel. Route damaged ships to ports for repair as soon as the tactical situation permits.</span></li>
+      </ul>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Resource Economy</h3>
+      <p>The campaign has a resource economy driven by port production, convoy deliveries, and captured territory. <strong>Engineering, Fuel, and Supplies</strong> are the core resources required for building and upgrading ports and airfields. Understanding how these flow through your logistics chain — and how to protect that chain from enemy interdiction — is a critical campaign skill.</p>
+      <p>The single most impactful use of Engineering and Supplies in the early campaign is <strong>leveling up your Guadalcanal airfield</strong>. Higher-level airfields expand the size of the air wings you can base there, which in turn provides dramatically better air cover for your surface operations and convoy routes. Neglecting this investment in favor of fleet expansion is a common beginner error.</p>
+
+      <div class="callout callout-danger">
+        <div class="callout-label">// DANGER — SUPPLY LINE VULNERABILITY //</div>
+        <p>Enemy submarines will actively hunt your supply convoys. A single unescorted merchant ship is almost certain to be torpedoed if it transits a contested area. Always provide ASW escort for convoys, and consider routing convoys through areas where you have established air cover. The loss of even a few resource-laden transports can meaningfully set back your airfield construction timeline.</p>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Intelligence and Reconnaissance</h3>
+      <p>You cannot fight what you cannot see. Establishing a consistent reconnaissance pattern across your operational area is one of the first strategic priorities of either campaign. Single aircraft or small patrol flights assigned to specific patrol zones will reveal enemy task force positions and compositions, allowing you to plan interceptions and avoid unpleasant surprises.</p>
+      <p>For Japan specifically: the early campaign requires constant air reconnaissance over The Slot to detect American task forces before they can intercept your supply convoys. A network of patrol flights covering the approach routes from American bases can provide enough early warning to route convoys around enemy forces or time their runs for periods of reduced visibility.</p>
+    </div>
+  </section>
+
+  <section class="section" id="fleetcomp">
+    <div class="section-header">
+      <span class="section-eyebrow">// CHAPTER 04 //</span>
+      <h2 class="section-title">Fleet Composition</h2>
+      <div class="section-subtitle">On what to build, recruit, and how to organize your ships for war.</div>
+    </div>
+
+    <div class="intel-block">
+      <p>No captain fights with the fleet he wants. He fights with the fleet he has, shaped by what the shipyard has delivered and what the last battle left him. But understanding which vessels accomplish which tasks — and which combinations multiply each other's effectiveness — is the difference between a command that wins engagements and a command that merely survives them.</p>
+      <span class="intel-attribution">— Commander, Task Force 67, South Pacific Force</span>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Ship Classes and Their Roles</h3>
+
+      <div class="unit-panel">
+        <div class="unit-card">
+          <span class="unit-name">Destroyers (DD)</span>
+          <span class="unit-role">ESCORT · ASW · TORPEDO</span>
+          <p>The workhorses of the fleet. Fast, numerous, expendable. Primary roles: convoy escort, ASW patrols, screening heavier ships, and torpedo attacks on enemy capital ships. Keep your destroyers busy — idle destroyers are wasted destroyers.</p>
+        </div>
+        <div class="unit-card">
+          <span class="unit-name">Light Cruisers (CL)</span>
+          <span class="unit-role">ESCORT · FIRE SUPPORT</span>
+          <p>Bridge between destroyers and heavy cruisers. Solid anti-aircraft batteries make them valuable fleet escorts. American CLs improve significantly in the mid-campaign with newer classes arriving. IJN CLs are weak — Japan prefers its CAs.</p>
+        </div>
+        <div class="unit-card">
+          <span class="unit-name">Heavy Cruisers (CA)</span>
+          <span class="unit-role">SURFACE STRIKE · ESCORT</span>
+          <p>The primary surface combat units of the mid-campaign. High firepower, good range, and (for Japan) torpedo armament makes CAs the most versatile and cost-effective surface combatants. Protect them — they are difficult to replace.</p>
+        </div>
+        <div class="unit-card">
+          <span class="unit-name">Battleships (BB)</span>
+          <span class="unit-role">HEAVY FIRE SUPPORT</span>
+          <p>Enormous firepower and armor, but slow and resource-intensive. Do not use battleships in the early campaign — they are too valuable to risk and cannot be quickly replaced. Their moment comes when you have established clear dominance.</p>
+        </div>
+        <div class="unit-card">
+          <span class="unit-name">Carriers (CV/CVL)</span>
+          <span class="unit-role">AIR POWER · STRIKE</span>
+          <p>The decisive weapons of the Pacific War. A carrier's air wing provides reconnaissance, anti-submarine cover, strike capability against surface ships, and fighter cover for the fleet. Handle with extreme care — losing a carrier is a campaign-altering event.</p>
+        </div>
+        <div class="unit-card">
+          <span class="unit-name">Submarines (SS)</span>
+          <span class="unit-role">INTERDICTION · RECON</span>
+          <p>Silent hunters. Submarines are the most cost-effective way to destroy enemy supply convoys and harass capital ships. Difficult to coordinate but devastating when properly employed. Keep their dud torpedo settings in mind for Americans.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Task Force Templates</h3>
+      <p>Effective task force composition follows from function. Do not build multi-purpose task forces that do everything adequately but nothing well. Build specialized formations with clear missions:</p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>TF Type</th>
+            <th>Recommended Composition</th>
+            <th>Mission</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="tag tag-amber">Surface Strike</span></td>
+            <td>2–4 CA, 2 CL, 4–6 DD</td>
+            <td>Intercept enemy surface forces; conduct night torpedo attacks on enemy convoys and warships</td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-ocean">Carrier Battle Group</span></td>
+            <td>1–2 CV, 2 CA, 2 CL, 4 DD</td>
+            <td>Project air power; strike enemy surface forces; provide fleet-wide air cover. Keep carriers at rear</td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-green">Convoy Escort</span></td>
+            <td>2–4 DD, 1 CL</td>
+            <td>Escort supply convoys; provide ASW protection; deter surface raiders</td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-amber">ASW Hunter Group</span></td>
+            <td>4–6 DD in pairs</td>
+            <td>Systematic area denial against enemy submarines; escort critical convoys on dangerous routes</td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-red">Capital Ship Reserve</span></td>
+            <td>1–2 BB, 2 CA, 4 DD</td>
+            <td>Hold in reserve until decisive engagement opportunity. Do NOT deploy early. Preserve for endgame</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout">
+        <div class="callout-label">// COMMAND NOTE — ESCORT RATIOS //</div>
+        <p>A commonly recommended ASW escort ratio is at least <strong>two destroyers per battleship</strong>. More broadly, any task force operating in submarine-threatened waters should have at least one ASW-capable destroyer per major surface combatant. An unescorted battleship is a submarine's dream target — and a campaign-ending loss.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="surface">
+    <div class="section-header">
+      <span class="section-eyebrow">// CHAPTER 05 //</span>
+      <h2 class="section-title">Surface Combat</h2>
+      <div class="section-subtitle">Gunnery, torpedoes, formations, and the physics of naval war.</div>
+    </div>
+
+    <div class="intel-block">
+      <p>At 01:43 on the morning of August 9, 1942, USS Patterson broadcast the warning that came twelve minutes too late. Within seconds of the signal, Japanese floatplanes dropped flares over the Allied cruisers, silhouetting them against the dark water. Vice Admiral Mikawa's seven cruisers opened fire and launched their Long Lance torpedoes in a coordinated volley. In under an hour, four Allied heavy cruisers lay on the bottom of what would thenceforth be called Ironbottom Sound. The Japanese fleet, unscratched, retired northward.</p>
+      <span class="intel-attribution">— Battle of Savo Island, August 8–9, 1942. All four Allied cruisers were sunk without a single Japanese vessel lost.</span>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">The Firing Solution — How Gunnery Works</h3>
+      <p>Surface gunnery in War on the Sea is governed by a <strong>firing solution percentage</strong>. This represents how accurately your fire control systems have calculated the target's range, bearing, and speed. A low firing solution (below 50%) means your shells will fall wide. A high solution (80%+) means consistent hits.</p>
+      <p>The firing solution increases with:</p>
+      <ul class="guide-bullets">
+        <li><strong>Closing range:</strong> The most important factor. Get within 10,000 meters for serious results; within 7,500 meters for reliable gunnery.</li>
+        <li><strong>Radar use (US):</strong> American surface radar dramatically accelerates solution building, especially at night. Turn radar on as soon as enemy ships are suspected in the area.</li>
+        <li><strong>Spotting fire:</strong> Use the <em>SPOT</em> order for temporary solution accuracy boosts. Use it after initial ranging volleys to maximize hit rate during the decisive phase of an engagement.</li>
+        <li><strong>Good visibility:</strong> Daylight, clear weather, and calm seas all improve visual targeting. Darkness, rain, and fog degrade it significantly.</li>
+        <li><strong>Target identification:</strong> Knowing the target's exact ship class improves your fire control computer's ability to calculate the correct firing solution.</li>
+      </ul>
+      <p>The firing solution decreases when:</p>
+      <ul class="guide-bullets">
+        <li><em>The target maneuvers:</em> A ship that changes course or speed forces your fire control to recalculate. Irregular course changes (a gentle zigzag) can meaningfully reduce enemy accuracy against you without breaking formation.</li>
+        <li><em>The target lays smoke:</em> A smokescreen imposes a heavy penalty on visual targeting. Expect degraded gunnery whenever smoke is in play.</li>
+        <li><em>The target is on fire:</em> Paradoxically, a burning ship partly obscures visual targeting even as it is damaged.</li>
+        <li><em>You are moving very fast:</em> High speed helps you avoid enemy shells but can disrupt your own gunnery platform stability.</li>
+      </ul>
+
+      <div class="callout callout-danger">
+        <div class="callout-label">// DANGER — IJN GUNNERY REALITY //</div>
+        <p>Playing as Japan, you face a genuine gunnery disadvantage in daylight surface actions against American ships. Japanese gun crews are historically less accurate at long range. Do not attempt gunnery duels beyond 10,000 meters against American forces. Your answer to this is the torpedo — close to within 6,000 meters, launch your Type 93s, and let the Long Lance do the work that your guns cannot.</p>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Ammunition Types</h3>
+      <p>Surface ships in War on the Sea carry two main ammunition types, and selecting the correct one for the target matters:</p>
+
+      <div class="card-grid">
+        <div class="card card-danger">
+          <div class="card-title">AP — ARMOR PIERCING</div>
+          <p>Designed to penetrate armored hulls. Use against heavy cruisers and battleships at medium range (4,000–12,000m). AP shells that penetrate cause internal damage to machinery, magazines, and engineering spaces. Less effective against lightly-armored destroyers — it often passes straight through without detonating.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">HE — HIGH EXPLOSIVE</div>
+          <p>Devastating against lightly armored targets. Use HE against destroyers, light cruisers, and to set fires on any vessel. HE detonates on contact, causing topside damage and fires. Fires are one of the most dangerous secondary effects in the game — they reduce the target's speed and can cause magazine explosions.</p>
+        </div>
+      </div>
+
+      <p>The rule of thumb: <strong>AP against heavy ships, HE against light ships</strong>. In practice, starting a surface engagement with a few HE rounds to set fires and degrade the enemy's fighting effectiveness before switching to AP for hull penetration is a common and effective tactic.</p>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Formation and Maneuver</h3>
+      <p>Surface battles in War on the Sea are dynamic and require active ship management. Key principles of surface action:</p>
+
+      <ul class="guide-list">
+        <li><span class="num">01.</span><span class="text"><strong>Never travel in a straight line.</strong> A ship on a fixed course at fixed speed is the easiest possible gunnery target. Keep your lead ship's rudder slightly off-center — a gentle, continuous turn makes enemy fire control work much harder. Zigzag, but do not zigzag so aggressively that your formation falls apart.</span></li>
+        <li><span class="num">02.</span><span class="text"><strong>Bring your broadside to bear.</strong> A ship presents its maximum firepower when turned to place all gun turrets on the same side facing the enemy. Ships firing only their forward turrets at long range are wasting half their armament. Angling for broadside fire early in an engagement is worth the slight course deviation.</span></li>
+        <li><span class="num">03.</span><span class="text"><strong>Concentrate fire.</strong> Focus every ship in your formation on one enemy vessel at a time until it is sunk or driven off. A sunk ship contributes nothing; a damaged ship still fires back and will be repaired between engagements. Kill targets individually and completely.</span></li>
+        <li><span class="num">04.</span><span class="text"><strong>Detach destroyers for torpedo runs.</strong> Once the surface action is joined, detach your destroyer screen from the main formation and send them on a flanking torpedo approach. Their job is to get within torpedo range of the enemy's heaviest ships. The threat of destroyer torpedo attacks also forces enemy capital ships to maneuver defensively, which degrades their gunnery.</span></li>
+        <li><span class="num">05.</span><span class="text"><strong>Manage fires immediately.</strong> A ship that catches fire should be pulled back from the action and slowed to reduce the oxygen feeding the blaze. High speed fans flames and makes damage control impossible. A controlled withdrawal of a burning ship while the rest of the formation continues fighting is far better than losing the vessel entirely.</span></li>
+      </ul>
+
+      <div class="hist-fact">
+        <span class="hist-fact-label">// HISTORICAL RECORD — BATTLE OF TASSAFARONGA, 1942 //</span>
+        <p>On November 30, 1942, Rear Admiral Carleton Wright's cruiser-destroyer force intercepted a Japanese destroyer convoy running supplies to Guadalcanal. Wright had radar. He had the advantage of surprise. He opened fire first with his cruisers but delayed releasing his destroyers for torpedo attacks. Commander Tanaka's Japanese destroyers, reacting instantly, fired their Long Lance torpedoes blind — without radar, into the dark. Those torpedoes found their targets. Heavy cruisers USS Northampton, Minneapolis, Pensacola, and New Orleans were all hit. Northampton sank. It remains one of the most dramatic demonstrations of the Long Lance torpedo's capabilities, and a testament to the danger of hesitating to unleash your torpedo arm.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="sensors">
+    <div class="section-header">
+      <span class="section-eyebrow">// CHAPTER 06 //</span>
+      <h2 class="section-title">Radar, Sonar & Detection</h2>
+      <div class="section-subtitle">On the technologies of seeing and being seen.</div>
+    </div>
+
+    <div class="intel-block">
+      <p>The Pacific War was also a technology war — and its most decisive technological contest was not in weaponry but in sensors. The nation that could see the enemy first owned every engagement. By the spring of 1943, almost every American surface combatant carried reliable surface search radar. The Japanese had chosen optical superiority — better binoculars, better-trained lookouts, better night vision discipline. Both approaches produced victories. But only one of them could be manufactured in quantity at a rate of one thousand units per month.</p>
+      <span class="intel-attribution">— Naval Technology Assessment, Pacific Operations 1942–1945</span>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Radar</h3>
+      <p>Radar is the American player's single greatest battlefield advantage, and managing it correctly is critical to performance. Key radar rules:</p>
+
+      <ul class="guide-bullets">
+        <li><strong>Radar detects at extended range</strong> — far beyond visual range in all conditions, day or night, clear weather or heavy rain. It is the great equalizer of night combat.</li>
+        <li><strong>Emitting radar reveals your presence.</strong> A ship actively broadcasting radar can be detected at a range proportional to its radar strength — significantly farther than it can see passive contacts. This means that in some situations, running radar actively is a signal to the enemy. For surface actions where you want surprise, consider the trade-off carefully.</li>
+        <li><strong>Land interference:</strong> In coastal and littoral areas, radar performance is degraded by land returns. The island geography of the Solomons means that enemy ships hiding close to land may be harder to detect by radar than in open ocean.</li>
+        <li><strong>Radar does not detect submarines.</strong> A submerged submarine is invisible to surface radar. Only sonar and airborne radar can find submarines below the surface.</li>
+        <li><strong>Keep radar on during surface engagements.</strong> Once combat is joined, activate radar universally. The firing solution bonus and improved detection outweighs any concern about revealing your position to an enemy that has already found you.</li>
+      </ul>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Sonar</h3>
+      <p>Sonar is the primary anti-submarine detection tool. Destroyers and some lighter combatants carry both <strong>active</strong> and <strong>passive sonar</strong>, each with different properties:</p>
+
+      <div class="card-grid">
+        <div class="card card-ocean">
+          <div class="card-title">PASSIVE SONAR</div>
+          <p>Listens for engine and propeller noise from nearby submarines. Does not reveal the hunting vessel's position to the submarine. Most effective at very low speeds (2–4 knots). Use passive sonar when you suspect a submarine is nearby but have not yet pinpointed it.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">ACTIVE SONAR (ASDIC/PING)</div>
+          <p>Sends an acoustic pulse and listens for the echo from submarine hulls. More reliable for precise localization than passive sonar. However, the "ping" is audible to the submarine's crew and reveals the hunter's presence and bearing. Submarines will maneuver when they hear active pinging.</p>
+        </div>
+      </div>
+
+      <p>The optimal ASW approach combines both: use passive sonar first to detect general submarine presence, then switch to active to narrow down the position for a depth charge attack. When an enemy submarine is located, immediately slow the nearest destroyer to 4 knots or less and task it with passive contact while another approaches for an active sonar localization and depth charge run.</p>
+
+      <div class="hist-fact">
+        <span class="hist-fact-label">// HISTORICAL RECORD — SONAR AND THE SUBMARINE WAR //</span>
+        <p>American ASDIC (sonar) performance in 1942 was mixed. The equipment was sound, but training was inconsistent, and the shallow, turbulent waters of the Solomon Islands created difficult sonar conditions with thermal layers and strong currents that masked submarine signatures. The Japanese, meanwhile, found their submarine force largely ineffective in fleet actions — they scored relatively few kills on American warships despite numerous attempts, in part because American damage control had improved dramatically after Pearl Harbor. The US submarines, by contrast, were devastating against Japanese merchant shipping once their defective Mark 14 torpedo fuses were corrected in mid-1943.</p>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Visual Detection</h3>
+      <p>Not everything depends on electronics. Visual detection is affected by:</p>
+      <ul class="guide-bullets">
+        <li><strong>Time of day:</strong> Daylight allows visual detection at far greater range than darkness. Dawn and dusk create ambiguous conditions where one side may be silhouetted against the horizon.</li>
+        <li><strong>Weather:</strong> Rain squalls reduce visibility dramatically and can be used tactically — move through a rain front to break contact with pursuing enemy forces.</li>
+        <li><strong>Observer height:</strong> Higher observation posts can see further over the horizon. Floatplane observers above the fleet extend visual range significantly.</li>
+        <li><strong>Target size and speed:</strong> A battleship is visible at greater range than a destroyer. A fast-moving vessel creates a more visible wake. Submarines on the surface are much easier to spot than those at periscope depth.</li>
+        <li><strong>Smoke screens:</strong> Any ship can lay a smoke screen to break visual contact. This is extremely useful when retreating with a damaged vessel or when trying to disengage from an unfavorable surface action.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="air">
+    <div class="section-header">
+      <span class="section-eyebrow">// CHAPTER 07 //</span>
+      <h2 class="section-title">Air Power & Aircraft Carriers</h2>
+      <div class="section-subtitle">The decisive arm of Pacific naval warfare.</div>
+    </div>
+
+    <div class="intel-block">
+      <p>The Pacific War ended the age of the battleship. Before the last echo of Pearl Harbor had faded, the war had already changed its nature. Aircraft — cheap, fast, able to strike at three hundred miles — had made the dreadnought irrelevant. The Japanese understood this in 1941. The Americans learned it painfully through 1942. By 1943, every admiral in the Pacific knew the truth: whoever controlled the air controlled the sea, and whoever controlled the sea controlled the islands, and whoever controlled the islands won the war.</p>
+      <span class="intel-attribution">— Naval Analysis Division, Post-War Assessment</span>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Air Wing Composition</h3>
+      <p>Aircraft carriers and airfields deploy three types of aircraft, each with distinct tactical roles:</p>
+
+      <div class="unit-panel">
+        <div class="unit-card">
+          <span class="unit-name">Fighters (F4F Wildcat / A6M Zero)</span>
+          <span class="unit-role">AIR SUPERIORITY · FLEET DEFENSE</span>
+          <p>Protect the fleet from enemy air attack. Intercept enemy bombers before they can press their attacks. The Zero is more maneuverable; the Wildcat is more rugged and better suited to the "Thatch Weave" tactic. Keep fighters inside the fleet's AA envelope when defending against strike packages.</p>
+        </div>
+        <div class="unit-card">
+          <span class="unit-name">Dive Bombers (SBD Dauntless / D3A Val)</span>
+          <span class="unit-role">ANTI-SHIP STRIKE</span>
+          <p>The primary ship-killing aircraft. Dive bombers attack from steep angles, which is difficult for AA gunners to track. Target heavy ships — cruisers and battleships — with dive bombers first. Attack at approximately 45 degrees from the stern and attack one ship at a time to concentrate damage before repair crews intervene.</p>
+        </div>
+        <div class="unit-card">
+          <span class="unit-name">Torpedo Bombers (TBF Avenger / B5N Kate)</span>
+          <span class="unit-role">ANTI-SHIP STRIKE · ASW</span>
+          <p>Deliver the most devastating single hits on surface ships. Torpedo bombers must fly low and slow during the attack run, making them vulnerable to AA and fighters. Coordinate torpedo and dive bombing attacks simultaneously — while AA gunners track the dive bombers, torpedo bombers can approach with less opposition.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Carrier Operations — The Non-Negotiable Rules</h3>
+      <p>Carriers are the most powerful and most vulnerable ships in the game. Losing a carrier is potentially campaign-ending. These rules are not optional:</p>
+
+      <ul class="guide-list">
+        <li><span class="num">01.</span><span class="text"><strong>Never use carriers in the early campaign.</strong> Your carriers are too valuable and too vulnerable to risk before you have established sufficient fighter cover and a competent surface escort. Build your airfield on Guadalcanal first. Use land-based air to establish a defensive perimeter, then introduce carrier forces once you have some stability.</span></li>
+        <li><span class="num">02.</span><span class="text"><strong>Always protect carriers with heavy surface escorts.</strong> A carrier group should contain at minimum two heavy cruisers and four destroyers. The escort's job is to intercept enemy ships and provide anti-aircraft coverage. Carriers should never be the closest vessel to the enemy.</span></li>
+        <li><span class="num">03.</span><span class="text"><strong>Keep carriers at the rear of any formation.</strong> Carriers operate from the back. Your surface escorts form a screen that enemy forces must fight through before reaching the carrier. A carrier group drawn into a gun duel with surface ships is a dead carrier.</span></li>
+        <li><span class="num">04.</span><span class="text"><strong>Coordinate your strike packages.</strong> Send dive bombers and torpedo bombers simultaneously. The base game allows 24 aircraft per combat — a full strike of 12 Vals and 12 Kates or Avengers, all attacking the same target simultaneously, is devastating. Piecemeal strikes give the enemy time to defend.</span></li>
+        <li><span class="num">05.</span><span class="text"><strong>Target heavy ships first with dive bombers.</strong> Prioritize cruisers for your initial dive bombing attacks, as they are the most dangerous surface combatants. Damaged topside systems on a cruiser degrade its gunnery performance dramatically. Disable it, then sink it.</span></li>
+        <li><span class="num">06.</span><span class="text"><strong>Fight Zero fighters inside your AA envelope.</strong> Japanese Zero fighters are extremely agile. Don't fight them in a turning contest. Draw them into the AA fire of your surface escorts. Fighting Zeroes under your ships' guns turns their maneuverability advantage into a liability.</span></li>
+      </ul>
+
+      <div class="hist-fact">
+        <span class="hist-fact-label">// HISTORICAL RECORD — BATTLE OF MIDWAY, JUNE 1942 //</span>
+        <p>The Battle of Midway on June 4–7, 1942 — just two months before the Guadalcanal landings — had shattered Japan's carrier superiority. American codebreakers had revealed the Japanese plan, allowing Admiral Nimitz to position his three surviving carriers at Midway. In a single day, American dive bombers sank four Japanese fleet carriers — Akagi, Kaga, Sōryū, and Hiryū — while losing only one American carrier, USS Yorktown. Japan lost not just the ships but the experienced aircrew and the industrial capacity to replace them quickly. The campaign setting of War on the Sea begins in the shadow of this disaster for Japan.</p>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Land-Based Air Power</h3>
+      <p>Land-based air wings operating from developed airfields are in many ways more reliable than carrier aviation because they cannot be sunk. A Level 3 airfield supports meaningful air operations; a Level 5 airfield is a major power projection platform that changes the strategic balance of the entire operational area.</p>
+      <p>Prioritize the development of your Guadalcanal airfield above almost everything else. The difference in campaign experience between playing with and without a developed Guadalcanal airfield is dramatic. With Level 5 Guadalcanal air support, your surface convoys are shielded, your submarine hunters have air cover, and your enemy must contend with land-based bombers on every transit through The Slot.</p>
+
+      <div class="callout callout-signal">
+        <div class="callout-label">// TACTICAL NOTE — AIR PATROL PLACEMENT //</div>
+        <p>Extend aircraft patrol ranges to maximize detection coverage. Long-range patrol aircraft (B-17s, PBY Catalinas) can cover enormous amounts of ocean and are invaluable for spotting Japanese convoy movements. Assign dedicated reconnaissance patterns to cover the approaches from Rabaul and Bougainville — the primary Japanese staging areas. Intelligence on enemy convoy timing is worth more than almost any tactical action.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="submarine">
+    <div class="section-header">
+      <span class="section-eyebrow">// CHAPTER 08 //</span>
+      <h2 class="section-title">Submarine Warfare</h2>
+      <div class="section-subtitle">The silent service — interdiction, patience, and the ambush economy.</div>
+    </div>
+
+    <div class="intel-block">
+      <p>A submarine is not a weapon of battle. It is a weapon of ambush, of patience, of strategic starvation. It does not fight the enemy's navy — it dismantles the enemy's ability to sustain a navy. A torpedo struck against a merchant ship is worth more in the long calculation of war than the same torpedo fired at a destroyer. The supply line is the jugular. Find it. Sever it. Let the garrison at the end of it wither.</p>
+      <span class="intel-attribution">— Submarine Doctrine Manual, ComSubPac, 1943</span>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">How Submarines Work</h3>
+      <p>World War II era submarines — the game models both American fleet submarines (Tambor and Gato classes) and Japanese types — spent the vast majority of their time <strong>on the surface</strong>. Diesel engines drove them at significant speed while surfaced; electric batteries powered them underwater at a fraction of their surface speed. They submerged only to attack or evade — and underwater speed was slow enough that a submerged submarine was essentially static relative to the ocean.</p>
+      <p>The tactical cycle of a submarine attack:</p>
+
+      <ul class="guide-list">
+        <li><span class="num">01.</span><span class="text"><strong>Approach surfaced at night or in bad visibility.</strong> Use surface speed to close the distance to the target convoy. Approach from ahead or the beam — a stern approach may reveal your wake to lookouts.</span></li>
+        <li><span class="num">02.</span><span class="text"><strong>Dive at periscope depth for the attack run.</strong> Once the target is within range, dive to periscope depth. The submarine is now nearly invisible and protected from surface gunfire. Your speed drops dramatically, so positioning before diving is critical.</span></li>
+        <li><span class="num">03.</span><span class="text"><strong>Fire a spread of torpedoes.</strong> Fire multiple torpedoes at slightly diverging angles to account for target maneuvering. A single-torpedo shot that misses wastes the most dangerous moment of the attack. Fire at 3,000–6,000 meters for a reasonable hit probability.</span></li>
+        <li><span class="num">04.</span><span class="text"><strong>Evade after firing.</strong> The moment your torpedoes are away, maneuver to put distance between yourself and the target. Once alerted, escorts will come for you. Dive deeper, change course, reduce speed to minimum — anything to defeat sonar.</span></li>
+      </ul>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">US Torpedo Reliability</h3>
+      <p>The American Mark 14 torpedo was one of the most scandalous equipment failures of the war. Its contact exploder was defective — torpedoes that struck at a perfect 90-degree angle <em>failed to detonate</em>. Its depth-keeping mechanism ran systematically deeper than set. The result was that American submarines in 1942–1943 had depressingly low kill rates despite excellent shooting.</p>
+      <p>War on the Sea reflects this with a <strong>dud torpedo setting</strong> in the campaign options. With duds enabled, you will experience American torpedoes failing to detonate even on solid hits. This is historically accurate and deeply frustrating. Many players disable dud torpedoes for US submarines — the historical reality was corrected by mid-1943 anyway, which is outside the main campaign window. Consider this a personal preference and campaign difficulty setting.</p>
+
+      <div class="hist-fact">
+        <span class="hist-fact-label">// HISTORICAL RECORD — THE MARK 14 SCANDAL //</span>
+        <p>The Mark 14 torpedo defect is one of the great institutional failures of American military procurement. Submarine commanders reported detonation failures as early as 1941. The Bureau of Ordnance refused to believe them. It took multiple independent investigations, a direct order from Admiral Nimitz, and testing that involved dropping the contact exploders from a height to demonstrate the flaw before the Navy finally admitted the problem in September 1943. During the months the defect was known but unacknowledged, American submarines fired over three thousand torpedoes and achieved less than a third of the hits they should have expected.</p>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Strategic Submarine Employment</h3>
+      <p>Submarines are best used for <strong>strategic interdiction</strong> rather than fleet action. Position your submarine groups along the enemy's most-used convoy routes. For the American player, the Japanese supply route from Rabaul through The Slot to Guadalcanal is the primary target. For Japan, American supply routes from Espiritu Santo and Nouméa are the best targets.</p>
+      <p>A practical starting strategy: deploy submarines in groups of two, positioned astride the most-traveled enemy convoy lanes. Two submarines working together have better coverage and can catch convoy escorts attempting to pursue one while the other attacks. Never deploy submarines in close proximity to your own surface TFs — friendly fire incidents from confused surface ships are expensive and embarrassing.</p>
+    </div>
+  </section>
+
+  <section class="section" id="asw">
+    <div class="section-header">
+      <span class="section-eyebrow">// CHAPTER 09 //</span>
+      <h2 class="section-title">Anti-Submarine Warfare</h2>
+      <div class="section-subtitle">Hunting the hunters.</div>
+    </div>
+
+    <div class="intel-block">
+      <p>There is no work in naval warfare more grinding, more unglamorous, and more essential than anti-submarine patrol. The destroyer men who spent months dragging their sonar gear through the waters of the South Pacific received no headlines. They chased phantoms, prosecuted false contacts, and occasionally sank nothing at all. But when they did find a submarine, they killed it — and the transport that did not sink kept its cargo, and the cargo reached the garrison, and the garrison held its hill. That is how wars are won.</p>
+      <span class="intel-attribution">— BOX_HEAD_01, South Pacific Force, 1943</span>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">ASW Team Doctrine</h3>
+      <p>Effective anti-submarine warfare in War on the Sea requires dedicated team composition and procedural discipline. The recommended ASW team configuration is <strong>two destroyers working together</strong>:</p>
+
+      <ul class="guide-list">
+        <li><span class="num">01.</span><span class="text"><strong>Form dedicated ASW pairs from the start of the campaign.</strong> Do not mix ASW destroyers with surface strike task forces. An ASW destroyer that gets diverted to a surface gunnery action cannot protect your convoys. Assign at minimum 4–6 dedicated ASW destroyers in pairs from Turn 1.</span></li>
+        <li><span class="num">02.</span><span class="text"><strong>When a submarine is detected, slow the lead ship to 2–4 knots.</strong> Passive sonar performance degrades catastrophically at high speed. The moment you have a sonar contact, reduce to near-crawl speed on your leading destroyer to allow passive sonar to develop a proper contact solution.</span></li>
+        <li><span class="num">03.</span><span class="text"><strong>Use the second destroyer for depth charge attacks.</strong> While one destroyer maintains passive sonar contact at low speed, position the second for an active sonar localization and depth charge attack run. Once depth charges are dropped, the submarine will maneuver — the first destroyer's maintained contact provides backup tracking.</span></li>
+        <li><span class="num">04.</span><span class="text"><strong>Never stop prosecuting a contact until it is confirmed sunk or escaped.</strong> A submarine that has been forced to dive deep and evade is temporarily neutralized but will resurface and rejoin the hunt once you leave. Maintain the contact for as long as possible, and look for the telltale oil slick or debris that signals a kill.</span></li>
+      </ul>
+
+      <div class="callout callout-signal">
+        <div class="callout-label">// TACTICAL NOTE — AIRCRAFT AND ASW //</div>
+        <p>Patrol aircraft — particularly torpedo bombers and dedicated maritime patrol planes — are extremely effective submarine hunters. A submarine detected by air is in a very difficult position: it cannot outrun aircraft, it cannot shoot back effectively, and every maneuver it makes is visible from above. If you have air superiority in your convoy routes, use patrol aircraft as your primary ASW screen. They are faster, have more range, and require no fuel escort.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="convoy">
+    <div class="section-header">
+      <span class="section-eyebrow">// CHAPTER 10 //</span>
+      <h2 class="section-title">Convoys & Supply Lines</h2>
+      <div class="section-subtitle">The logistics of island warfare.</div>
+    </div>
+
+    <div class="intel-block">
+      <p>The Tokyo Express was not a naval achievement. It was a logistics achievement conducted under the constant threat of annihilation. Every night the destroyers ran south through The Slot, loaded with drums of fuel, food, and ammunition, was a calculated gamble. Every night the Americans tried to stop them was a test of radar against experience, of technology against doctrine, of a nation that could replace its losses against a nation that could not. The supply line was everything.</p>
+      <span class="intel-attribution">— Analysis of IJN Destroyer Operations, Guadalcanal Campaign 1942–1943</span>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Convoy Organization</h3>
+      <p>Convoys in War on the Sea carry the engineering materials, fuel, and supplies that build ports and airfields and sustain your forces at the front. Their protection is not optional — it is the foundation of strategic progress. Every merchant ship sunk while carrying supplies to Guadalcanal is a delay in your airfield construction, which means more enemy air raids, which means more fleet losses, which means the campaign deteriorates.</p>
+
+      <p>Practical convoy rules:</p>
+      <ul class="guide-bullets">
+        <li><strong>Never send unescorted merchants</strong> through waters where enemy submarines or surface forces have been reported. A single submarine can destroy an entire convoy.</li>
+        <li><strong>Time convoys to arrive at their destination in daylight or under air cover.</strong> Night arrivals in contested anchorages are dangerous — enemy surface forces conducting night raids can devastate ships in port.</li>
+        <li><strong>Use multiple smaller convoys rather than one large convoy</strong> when resources allow. A single large convoy is a high-value target; multiple smaller convoys force the enemy to split their interdiction forces.</li>
+        <li><strong>Provide air cover along the convoy route</strong> whenever possible. Land-based patrol aircraft can cover convoy routes within their range — extend your Guadalcanal airfield's reach to cover the approach from Espiritu Santo or Nouméa.</li>
+        <li><strong>Prioritize engineering supplies</strong> over pure military supplies in the early campaign. A finished Level 5 airfield is worth more than an extra destroyer squadron.</li>
+      </ul>
+
+      <div class="hist-fact">
+        <span class="hist-fact-label">// HISTORICAL RECORD — THE TOKYO EXPRESS //</span>
+        <p>Between August and December 1942, the Imperial Japanese Navy ran a series of high-speed destroyer supply missions from Rabaul and the Shortland Islands down New Georgia Sound — "The Slot" — to Guadalcanal, typically operating at night to avoid Henderson Field aircraft. American sailors dubbed these missions the "Tokyo Express." At their peak, Japanese destroyers ran up to a dozen supply missions per month, delivering drums of supplies that were pushed overboard offshore for swimming infantry to retrieve. Despite repeated American attempts to intercept these runs — at the battles of Cape Esperance, Guadalcanal, Tassafaronga, and Kula Gulf — the Japanese delivered enough supplies to maintain their garrison for months. The Express was only defeated when American air power made the approach route prohibitively dangerous.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="bases">
+    <div class="section-header">
+      <span class="section-eyebrow">// CHAPTER 11 //</span>
+      <h2 class="section-title">Ports & Airfield Construction</h2>
+      <div class="section-subtitle">Building the infrastructure of victory.</div>
+    </div>
+
+    <div class="intel-block">
+      <p>The SeaBees had a motto: "Can do." They arrived on captured islands — often still under fire — with bulldozers, steel matting, and an institutional arrogance about what was and was not buildable in a given timeframe. What they constructed, the enemy tried to destroy from the air. What the enemy destroyed, the SeaBees rebuilt in a night. The airfield was never just an airfield. It was the reason everyone was fighting.</p>
+      <span class="intel-attribution">— U.S. Naval Construction Battalions, Combat History of Pacific Operations</span>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Infrastructure Priority Order</h3>
+      <p>Both the port and airfield systems have five upgrade levels, and each level requires substantial quantities of Engineering, Fuel, and Supplies. Prioritizing where those resources go is the single most important strategic decision in the campaign.</p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Priority</th>
+            <th>Objective</th>
+            <th>Impact</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="tag tag-red">HIGHEST</span></td>
+            <td>Guadalcanal Airfield → Level 3, then 5</td>
+            <td>Determines air cover range across the entire theater. Level 5 is the campaign objective for both sides.</td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-amber">HIGH</span></td>
+            <td>Guadalcanal Port Development</td>
+            <td>Allows larger vessels to repair and rearm locally, reducing transit time to rear bases. Essential for sustaining operations.</td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-amber">HIGH</span></td>
+            <td>Shortland/New Georgia Airfield</td>
+            <td>Establishes forward air coverage, closing the gap between your bases and The Slot. Dramatically improves convoy escort coverage.</td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-ocean">MEDIUM</span></td>
+            <td>Forward Port Development</td>
+            <td>Enables resupply closer to the front, reducing convoy transit distance and exposure to interdiction.</td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-green">LOWER</span></td>
+            <td>Rear Base Enhancement</td>
+            <td>Increases production capacity but is not the bottleneck in most campaigns. Invest once forward priorities are secured.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Defending Your Bases</h3>
+      <p>Ports and airfields under construction are attractive targets for enemy surface raids and air strikes. A Japanese surface bombardment of Henderson Field historically delayed operations for days. In-game, enemy bombardments can significantly damage your airfield development.</p>
+      <ul class="guide-bullets">
+        <li><strong>Station a surface defense force near your developing bases.</strong> Even two or three destroyers can deter or disrupt a light raiding force that would otherwise bombard your airfield unopposed.</li>
+        <li><strong>Use your land-based fighters for base air defense.</strong> When an enemy air strike is inbound, scramble your fighter cover. Airfield-based fighters are the best defense against air bombardment, and protecting the airfield means protecting the fighters that protect the airfield.</li>
+        <li><strong>Maintain port capacity for damage repair.</strong> A damaged port cannot repair your ships as efficiently. Prioritize keeping your port infrastructure intact, even at the cost of diverting resources from offensive operations.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="night">
+    <div class="section-header">
+      <span class="section-eyebrow">// CHAPTER 12 //</span>
+      <h2 class="section-title">Night Combat Doctrine</h2>
+      <div class="section-subtitle">The dark hours belong to whoever prepares for them.</div>
+    </div>
+
+    <div class="intel-block">
+      <p>The Japanese sailor of 1942 was trained for the night. For years before the war, the Imperial Navy had drilled its crews in darkness — binocular technique, target identification, torpedo firing solutions, all accomplished without the benefit of searchlights or radar. When American sailors encountered Japanese forces at night in the waters off Savo Island, off Tassafaronga, at Kula Gulf, they often found that the darkness was already occupied — by an enemy who had been living in it for years.</p>
+      <span class="intel-attribution">— Pacific War Naval Analysis, Night Combat Assessment 1942</span>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Star Shells and Illumination</h3>
+      <p><strong>Star shells</strong> are the most important opening move in any night surface action. These illumination rounds burst overhead and descend on parachutes, casting brilliant white light across the battle area. Any enemy ships caught in their glow are suddenly visible — silhouetted, their range and bearing readable by your gunners. Any enemy ships outside the illuminated zone retain their advantage of darkness.</p>
+
+      <p>Star shell doctrine in War on the Sea:</p>
+      <ul class="guide-bullets">
+        <li><strong>Open every night surface action with star shells.</strong> Fire before your gun duel begins. A well-placed illumination round tells you exactly where the enemy is and what you are dealing with before either side has found its gunnery solution.</li>
+        <li><strong>Illuminate the enemy, not yourself.</strong> Fire star shells to fall beyond the enemy formation — this silhouettes them against the light while keeping your own ships in relative darkness. Illuminating in front of your own formation is a gift to the enemy gunners.</li>
+        <li><strong>Star shells are available to those who have cruisers with the right ordnance.</strong> Check your ships' ammunition loadout before committing to night action — running out of star shells in the middle of a night engagement is a severe handicap.</li>
+      </ul>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">American Night Fighting — Radar Offset</h3>
+      <p>The American answer to Japanese night-fighting superiority was radar. American SG surface search radar could detect enemy ships at 15–20 kilometers in complete darkness, long before any visual contact was possible. This gave American commanders a choice: engage at radar range in the dark (using radar fire control) or close to visual range and use a combination of radar and optical fire control for better accuracy.</p>
+      <p>The optimal American night surface action doctrine:</p>
+      <ul class="guide-bullets">
+        <li><strong>Use radar to set up a flanking ambush.</strong> Radar gives you the ability to know the enemy's position, course, and speed before they know you are there. Use this information to position your destroyers for a torpedo attack on the enemy's flank while your cruisers engage frontally.</li>
+        <li><strong>Fire star shells immediately upon contact to confirm targets.</strong> Even with radar, visual confirmation before committing your main batteries prevents fratricide and ensures your gunnery solution is targeting the right ships.</li>
+        <li><strong>Do not delay destroyer torpedo releases.</strong> The lesson of Tassafaronga was stark: American commanders hesitated to release their destroyers for independent torpedo attack, and the result was catastrophic. When the tactical situation is clear, release your destroyers immediately and let them attack with torpedoes.</li>
+      </ul>
+
+      <div class="hist-fact">
+        <span class="hist-fact-label">// HISTORICAL RECORD — NAVAL BATTLE OF GUADALCANAL, NOV 13–15, 1942 //</span>
+        <p>The Naval Battle of Guadalcanal was in fact three separate engagements over three nights. In the first night action, Rear Admiral Daniel Callaghan's cruiser-destroyer force intercepted a Japanese battleship group in pitch darkness — and was nearly destroyed in the resulting melee. Callaghan was killed, along with Rear Admiral Norman Scott, and several cruisers and destroyers were lost. But the Japanese bombardment mission was disrupted. On the second night, the newly arrived USS Washington and South Dakota intercepted Kirishima. Using radar fire control in total darkness, Washington put nine 16-inch shells into Kirishima in seven minutes — the first decisive radar-directed surface gunnery action of the war. Kirishima sank the following day. It was a turning point.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="damage">
+    <div class="section-header">
+      <span class="section-eyebrow">// CHAPTER 13 //</span>
+      <h2 class="section-title">Damage Control</h2>
+      <div class="section-subtitle">The difference between a retreating ship and a sunken one.</div>
+    </div>
+
+    <div class="intel-block">
+      <p>Every ship in the fleet has a damage control party — men whose sole purpose is to die if necessary so that the ship does not. They plug holes below the waterline, fight fires in magazine passageways, shore up bulkheads against flooding, and maintain power to the engines under conditions that would be unimaginable on land. The navy that keeps its ships alive the longest wins the war of attrition. The navy whose damage control fails loses its fleet one catastrophe at a time.</p>
+      <span class="intel-attribution">— Damage Control Manual, Pacific Fleet, 1943</span>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Fire Management</h3>
+      <p>Fire is the most dangerous ongoing threat to a ship that has been hit. In War on the Sea, fires can spread, drain crew effectiveness, and ultimately cause magazine explosions that destroy a vessel. Managing fires correctly when they occur can be the difference between a ship that withdraws and returns to fight another day, and one that explodes:</p>
+
+      <ul class="guide-bullets">
+        <li><strong>Slow down immediately when a ship catches fire.</strong> High speed fans flames and prevents damage control from containing the blaze. Drop to minimum safe speed the moment a fire is detected.</li>
+        <li><strong>Pull burning ships out of the battle line.</strong> A burning ship is a liability — it is more visible to enemy gunners (reducing your solution advantage), its own fire control is degraded, and it risks explosion. Withdraw it to the rear of the formation while damage control works.</li>
+        <li><strong>Do not immediately retreat from the engagement.</strong> Pulling a burning ship back 2–3 kilometers from the front of the action is very different from retreating entirely. Keep the ship in the area so it can rejoin once the fire is controlled. Only fully retreat if the damage is severe.</li>
+        <li><strong>Damage control fixes fires over time automatically.</strong> Your crew will fight fires without explicit micro-management, but slowing down and withdrawing from direct combat dramatically accelerates their effectiveness. Think of fire management as "creating the conditions for damage control to work" rather than direct intervention.</li>
+      </ul>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Flooding and Structural Damage</h3>
+      <p>Torpedo hits cause flooding. Flooding reduces a ship's speed and eventually sinks it if not controlled. Monitor your ships' status indicators closely — a ship showing flooding and speed reduction needs to be managed differently than a ship that is merely taking gun damage. Flooding ships need to be turned to reduce the rate of ingress (heading away from the sea state) and slowed to allow pump capacity to catch up.</p>
+      <p>Between engagements on the strategic map, ships repair their damage automatically when routed to a port. <strong>Prioritize routing damaged vessels to port immediately after a battle.</strong> Damage control between engagements is not optional — a ship that enters a second battle with unrepaired flooding from the first is likely to be lost.</p>
+
+      <div class="callout">
+        <div class="callout-label">// COMMAND NOTE — BETWEEN-BATTLE REPAIR PRIORITY //</div>
+        <p>Damage control repairs damage between engagements, but only meaningfully when a ship has time to apply itself. A damaged ship that immediately re-enters combat will likely carry accumulated damage into the new fight, compounding its vulnerability. If your campaign allows it, always give damaged vessels at least one campaign turn of transit to a repair facility before re-committing them to action. This applies especially to cruisers — they are too valuable to lose to preventable accumulated damage.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="doctrine">
+    <div class="section-header">
+      <span class="section-eyebrow">// CHAPTER 14 //</span>
+      <h2 class="section-title">The Doctrines of Victory</h2>
+      <div class="section-subtitle">Forty standing orders for the fleet commander.</div>
+    </div>
+
+    <div class="intel-block">
+      <p>Wars are not won by heroism. They are won by logistics, by information, by the disciplined application of force at the right moment and place, and by the avoidance of catastrophic error. Heroism can win a battle. None of that wins a war. What wins a war is not losing the battle you were not expecting to fight — and that requires doctrine, and the discipline to follow it even when the instinct to improvise whispers otherwise.</p>
+      <span class="intel-attribution">— Composite Doctrine Summary, Pacific Theater Command, 1943</span>
+    </div>
+
+    <div class="highlight-panel">
+      <div class="highlight-panel-title">// STANDING ORDERS — FLEET COMMANDER //</div>
+    </div>
+
+    <ul class="guide-list">
+      <li><span class="num">01.</span><span class="text"><strong>Never use battleships in the early campaign.</strong> They are too valuable to risk against a capable enemy before you have established air cover and intelligence dominance. Their moment comes in the final phase.</span></li>
+      <li><span class="num">02.</span><span class="text"><strong>Never use carriers until your airfield is developed.</strong> A land-based air wing cannot be sunk. Build your airfield first, then introduce carriers as a force multiplier — not as a substitute for solid land-based air power.</span></li>
+      <li><span class="num">03.</span><span class="text"><strong>The Guadalcanal airfield is always Priority One.</strong> Every engineering resource in the early campaign should flow toward this objective. The airfield wins the campaign; everything else is context.</span></li>
+      <li><span class="num">04.</span><span class="text"><strong>Never travel in a straight line at constant speed.</strong> Zigzag. A gentle turn is always on. Predictable courses are how ships get sunk by torpedoes they never saw coming.</span></li>
+      <li><span class="num">05.</span><span class="text"><strong>Radar on, always, in contested waters.</strong> For American commanders: the marginal tactical risk of detection is vastly outweighed by the advantage of continuous contact solution building. Blind fighting is how Savo Island happened.</span></li>
+      <li><span class="num">06.</span><span class="text"><strong>Reconnoiter before committing.</strong> Never send a task force into an area where enemy forces have not been recently scouted. What you do not know about will kill you.</span></li>
+      <li><span class="num">07.</span><span class="text"><strong>Concentrate fire on one target at a time.</strong> A sunk ship is out of the battle. A damaged ship is still shooting. Kill targets completely — do not distribute fire until your initial target is gone.</span></li>
+      <li><span class="num">08.</span><span class="text"><strong>Release destroyers for torpedo attacks when the opportunity presents.</strong> The lesson of Tassafaronga. When destroyers have a clean torpedo solution on heavy enemy ships, the attack must be immediate. Hesitation costs the engagement.</span></li>
+      <li><span class="num">09.</span><span class="text"><strong>Open night actions with star shells.</strong> Before your first main battery salvo, illuminate the enemy. Information first, then fire. Always.</span></li>
+      <li><span class="num">10.</span><span class="text"><strong>Never convoy unescorted through submarine-threatened waters.</strong> A convoy without ASW escorts is a target. There are no exceptions to this rule in contested waters.</span></li>
+      <li><span class="num">11.</span><span class="text"><strong>Build dedicated ASW teams of destroyer pairs from the very first turn.</strong> Do not mix ASW destroyers with surface strike forces. Their job is too important to share with other missions.</span></li>
+      <li><span class="num">12.</span><span class="text"><strong>Slow to 2–4 knots when prosecuting a sonar contact.</strong> Speed destroys passive sonar performance. Contact first, then prosecute.</span></li>
+      <li><span class="num">13.</span><span class="text"><strong>As Japan, your Long Lance is your great equalizer.</strong> Close to 6,000 meters and launch. A well-executed Japanese torpedo attack from multiple angles is the decisive answer to American radar and gunnery advantage.</span></li>
+      <li><span class="num">14.</span><span class="text"><strong>Damage control begins the moment a fire is detected.</strong> Slow down, withdraw from the line, reduce speed. Let your crew work. A fire that goes unmanaged becomes a magazine explosion.</span></li>
+      <li><span class="num">15.</span><span class="text"><strong>Route damaged ships to repair immediately after battle.</strong> An unrepaired ship entering its second engagement carries its first battle's wounds. The price of this neglect is ship loss.</span></li>
+      <li><span class="num">16.</span><span class="text"><strong>Coordinate air and surface attacks simultaneously.</strong> A carrier strike that coordinates dive bombers and torpedo bombers arriving at the same time overwhelms both AA and fighter defense. A piecemeal strike is a costly failure.</span></li>
+      <li><span class="num">17.</span><span class="text"><strong>Carriers always at the rear of the formation.</strong> They are never the closest ship to the enemy. The escort dies first. The carrier must not die at all.</span></li>
+      <li><span class="num">18.</span><span class="text"><strong>Use weather and visibility to your advantage.</strong> Rain squalls break contact. Night covers convoy runs. Dawn silhouettes the enemy while you remain in shadow. Read the environment and exploit it.</span></li>
+      <li><span class="num">19.</span><span class="text"><strong>For Japan: nightfall is an operational window.</strong> American radar advantage is partially offset by closing the range in darkness. Night convoy runs, night surface actions, and night torpedo attacks are the IJN's answer to technological inferiority.</span></li>
+      <li><span class="num">20.</span><span class="text"><strong>Keep a reserve force.</strong> Never commit 100% of your surface strength to a single engagement. If the battle goes wrong, a reserve allows a fighting withdrawal. Without one, a reversal becomes a catastrophe.</span></li>
+      <li><span class="num">21.</span><span class="text"><strong>AP against armored targets; HE against light ships.</strong> Applying the wrong ammunition at the wrong target means hits that do not sink ships. Manage your ammunition type selection throughout the engagement.</span></li>
+      <li><span class="num">22.</span><span class="text"><strong>Lay smoke when retreating under fire.</strong> Smoke breaks the enemy's visual targeting solution and buys time for damaged ships to disengage. Use it freely when withdrawing — pride about "fighting to the last" serves no strategic purpose.</span></li>
+      <li><span class="num">23.</span><span class="text"><strong>Your submarine's greatest target is the enemy's merchant fleet.</strong> A cargo ship sunk is a delay in enemy base construction. Sink the convoys, and the campaign grinds to a halt.</span></li>
+      <li><span class="num">24.</span><span class="text"><strong>Establish air reconnaissance patterns over every likely convoy route.</strong> You cannot intercept what you cannot see. Patrol aircraft are cheap. Missed convoy intercepts are expensive.</span></li>
+      <li><span class="num">25.</span><span class="text"><strong>The best TF is one with a clear, single mission.</strong> Multi-purpose task forces do nothing well. Escort groups escort. Strike groups strike. ASW teams hunt submarines. Specialize.</span></li>
+      <li><span class="num">26.</span><span class="text"><strong>Closing range improves both gunnery and torpedo effectiveness.</strong> Hesitating to close the range when you have a combat advantage surrenders the initiative to the enemy. Aggressive commanders who close and dominate the engagement win; cautious commanders who fight at long range struggle.</span></li>
+      <li><span class="num">27.</span><span class="text"><strong>For the US: disable dud torpedoes if you want a historical but less frustrating experience.</strong> The Mark 14 defect is historically accurate, but the corrected exploders arrived in 1943 anyway. This is a personal difficulty setting, not a moral commitment.</span></li>
+      <li><span class="num">28.</span><span class="text"><strong>The Slot is always dangerous.</strong> It does not matter which side you are playing or how strong your fleet is. New Georgia Sound is where ships die. Every transit through it should be planned with multiple contingencies.</span></li>
+      <li><span class="num">29.</span><span class="text"><strong>Fights inside your air umbrella are fights you can win.</strong> Outside it, every engagement carries disproportionate risk. Extend your air cover before extending your surface operations. The airfield leads, the fleet follows.</span></li>
+      <li><span class="num">30.</span><span class="text"><strong>Target enemy merchants with everything available when you find them.</strong> Damaged warships fight. Sunk merchants do not resupply. An enemy starved of supplies is an enemy who cannot build, cannot repair, and cannot reinforce. Strike the logistics.</span></li>
+    </ul>
+
+    <hr>
+
+    <div class="callout callout-signal">
+      <div class="callout-label">// FINAL DISPATCH — IRONBOTTOM SOUND //</div>
+      <p>Over the six months of the Guadalcanal Campaign, more than fifty Allied and Japanese vessels were sunk in the waters around Guadalcanal — a graveyard of steel and sacrifice that earned the sea its lasting name: Ironbottom Sound. The campaign cost both sides enormously. For Japan, it was the beginning of the end — a strategic defeat from which their navy never recovered. For the United States, it was a proof of concept: that American industrial power, combined with growing tactical sophistication and technological advantage, could overcome any opponent given sufficient time and resolution. Every year, on the anniversary of the battle's climax, an American vessel sails into those waters and drops a wreath for the men still down there.</p>
+      <p style="margin-top: 0.75rem;">The game you are playing was built in their memory. Honor it by learning from their mistakes.</p>
+    </div>
+
+  </section>
+
+  <nav class="chapter-nav" aria-label="Chapter navigation">
+    <a href="#theater">01 · Theater</a>
+    <a href="#factions">02 · Factions</a>
+    <a href="#strategic">03 · Strategy</a>
+    <a href="#fleetcomp">04 · Fleet</a>
+    <a href="#surface">05 · Surface</a>
+    <a href="#sensors">06 · Sensors</a>
+    <a href="#air">07 · Air Power</a>
+    <a href="#submarine">08 · Submarines</a>
+    <a href="#asw">09 · ASW</a>
+    <a href="#convoy">10 · Convoys</a>
+    <a href="#bases">11 · Bases</a>
+    <a href="#night">12 · Night Battle</a>
+    <a href="#damage">13 · Damage</a>
+    <a href="#doctrine">14 · Doctrine</a>
+  </nav>
+
+</div>
+
+<footer class="page-footer">
+  <span class="footer-title">WAR ON THE SEA</span>
+  <div class="footer-classification">// NADIR STRATEGY ARCHIVE · KILLERFISH GAMES · IRONBOTTOM SOUND CODEX //</div>
+  <div style="margin-top: 0.75rem; font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; color: rgba(200,185,122,0.25); letter-spacing: 0.1em;">END TRANSMISSION</div>
+</footer>
+
+</body>
+</html>

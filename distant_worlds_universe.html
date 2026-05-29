@@ -110,11 +110,23 @@ p{margin-bottom:1rem;font-size:1rem}
 .turn-num{font-family:var(--font-head);font-size:1.5rem;font-weight:900;color:var(--gold);line-height:1;margin-bottom:4px}
 .turn-label{font-family:var(--font-head);font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);margin-bottom:6px}
 .turn-desc{font-size:0.85rem;line-height:1.55;color:var(--ink)}
+
+/* ─── GLOSSARY FIX ─────────────────────────────────────────────────────────
+   Two targeted changes:
+   1. .gloss-item  — align-items:flex-start (was baseline) so the term column
+      never vertically overruns its own cell when it wraps onto two lines.
+   2. .gloss-term  — removed white-space:nowrap; added word-break:break-word
+      and a max-width so long terms like "UTOPIAN PARADISE" / "WAY OF THE
+      ANCIENTS" / "WORLD DESTROYER" wrap within their column instead of
+      overflowing into the definition.
+   Nothing else in the file has been changed.
+   ──────────────────────────────────────────────────────────────────────── */
 .glossary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--border);margin-top:16px;border:1px solid var(--border)}
-.gloss-item{background:var(--light);padding:10px 14px;display:flex;gap:10px;align-items:baseline}
+.gloss-item{background:var(--light);padding:10px 14px;display:flex;gap:10px;align-items:flex-start}
 .gloss-item:nth-child(even){background:var(--parchment)}
-.gloss-term{font-family:var(--font-head);font-size:0.8rem;font-weight:700;color:var(--ink);white-space:nowrap;min-width:130px;letter-spacing:0.04em;text-transform:uppercase}
+.gloss-term{font-family:var(--font-head);font-size:0.8rem;font-weight:700;color:var(--ink);white-space:normal;min-width:140px;max-width:160px;word-break:break-word;letter-spacing:0.04em;text-transform:uppercase}
 .gloss-def{font-size:0.88rem;color:var(--mid);line-height:1.5}
+
 .ornamental-divider{text-align:center;color:var(--gold);font-size:0.85rem;letter-spacing:0.3em;padding:28px 0 8px;opacity:0.7}
 #back-top{position:fixed;bottom:28px;right:28px;width:42px;height:42px;background:var(--space);border:1px solid var(--gold-dark);color:var(--gold);font-size:1.1rem;display:flex;align-items:center;justify-content:center;text-decoration:none;opacity:0;transform:translateY(10px);transition:opacity 0.3s,transform 0.3s;z-index:90}
 #back-top.visible{opacity:1;transform:none}

@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Task Force Admiral — The Admiral's War Manual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ocean-deep:#060e18;--ocean-mid:#0b1a2e;--ocean-light:#122240;
+  --steel:#1e3252;--steel-light:#2a4468;
+  --brass:#c8952a;--brass-light:#e8b84a;--brass-pale:#f5d98a;
+  --khaki:#d4c89a;--khaki-mid:#b8aa7a;--khaki-dim:#8a7e5a;
+  --signal-red:#c03020;--signal-green:#2a7a40;--signal-yellow:#c8a020;
+  --text:#e8e0cc;--text-mid:#c0b8a0;--text-dim:#887e68;
+  --border:rgba(200,149,42,0.25);
+  --font-head:'Oswald',sans-serif;--font-body:'Libre Baskerville',Georgia,serif;--font-mono:'Share Tech Mono',monospace;
+  --sidebar-w:290px;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--ocean-deep);color:var(--text);font-family:var(--font-body);line-height:1.8;display:flex;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;
+  background-image:radial-gradient(1px 1px at 10% 15%,rgba(255,255,255,0.35) 0%,transparent 0%),
+  radial-gradient(1px 1px at 30% 60%,rgba(255,255,255,0.25) 0%,transparent 0%),
+  radial-gradient(1px 1px at 55% 25%,rgba(255,255,255,0.3) 0%,transparent 0%),
+  radial-gradient(1px 1px at 70% 70%,rgba(255,255,255,0.2) 0%,transparent 0%),
+  radial-gradient(1px 1px at 85% 40%,rgba(255,255,255,0.3) 0%,transparent 0%),
+  radial-gradient(1px 1px at 95% 85%,rgba(255,255,255,0.25) 0%,transparent 0%);
+  opacity:0.4}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:inherit}
+#progress-bar{position:fixed;top:0;left:var(--sidebar-w);right:0;height:3px;background:var(--brass);transform-origin:left;transform:scaleX(0);z-index:500;transition:transform 0.1s linear}
+/* SIDEBAR */
+#sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--ocean-mid);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;border-right:2px solid var(--brass);display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--brass) var(--ocean-mid)}
+#sidebar-header{padding:24px 18px 18px;border-bottom:1px solid rgba(200,149,42,0.2);background:linear-gradient(180deg,#020810 0%,var(--ocean-mid) 100%)}
+#sidebar-emblem{font-family:var(--font-head);font-size:1.6rem;font-weight:700;color:var(--brass);letter-spacing:0.08em;line-height:1}
+#sidebar-title{font-family:var(--font-head);font-size:0.78rem;font-weight:400;color:var(--brass-light);letter-spacing:0.2em;text-transform:uppercase;margin-top:4px}
+#sidebar-sub{font-family:var(--font-mono);font-size:0.6rem;color:rgba(200,149,42,0.5);margin-top:6px;letter-spacing:0.1em}
+#sidebar-nav{padding:10px 0 40px;flex:1}
+.nav-section{padding:10px 18px 3px;font-family:var(--font-head);font-size:0.55rem;letter-spacing:0.22em;color:var(--brass);text-transform:uppercase;margin-top:8px;opacity:0.7}
+.nav-item{display:block;padding:6px 18px 6px 26px;font-family:var(--font-body);font-size:0.78rem;color:rgba(232,224,204,0.65);text-decoration:none;border-left:2px solid transparent;transition:all 0.15s ease;line-height:1.3;position:relative}
+.nav-item::before{content:'▸';position:absolute;left:12px;top:6px;color:var(--brass);opacity:0;transition:opacity 0.12s;font-size:0.65rem}
+.nav-item:hover,.nav-item.active{color:var(--brass-pale);border-left-color:var(--brass);background:rgba(200,149,42,0.07);padding-left:28px}
+.nav-item:hover::before,.nav-item.active::before{opacity:1}
+#sidebar-toggle{display:none;position:fixed;top:10px;left:10px;z-index:200;background:var(--ocean-mid);border:1px solid var(--brass);color:var(--brass);font-size:1.1rem;padding:5px 9px;border-radius:2px}
+/* MAIN */
+#main{margin-left:var(--sidebar-w);flex:1;min-width:0}
+/* HERO */
+#hero{min-height:480px;display:flex;flex-direction:column;justify-content:flex-end;padding:0 64px 64px;position:relative;overflow:hidden;border-bottom:3px solid var(--brass);
+  background:linear-gradient(170deg,#020a14 0%,#040e20 30%,#0a1828 60%,#060e18 100%)}
+#hero::before{content:'';position:absolute;inset:0;
+  background-image:repeating-linear-gradient(-60deg,transparent,transparent 60px,rgba(200,149,42,0.025) 60px,rgba(200,149,42,0.025) 61px),
+  repeating-linear-gradient(30deg,transparent,transparent 60px,rgba(200,149,42,0.015) 60px,rgba(200,149,42,0.015) 61px)}
+#hero::after{content:'';position:absolute;bottom:0;left:64px;right:64px;height:1px;background:linear-gradient(90deg,transparent,var(--brass),transparent)}
+.hero-rank{font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.28em;color:var(--brass);text-transform:uppercase;margin-bottom:12px;position:relative}
+.hero-title{font-family:var(--font-head);font-size:clamp(2.4rem,5.5vw,4.2rem);font-weight:700;letter-spacing:0.06em;color:var(--brass-light);line-height:1.0;margin-bottom:6px;position:relative;text-transform:uppercase}
+.hero-subtitle{font-family:var(--font-body);font-size:1.0rem;font-style:italic;color:rgba(212,200,154,0.7);font-weight:400;margin-bottom:28px;position:relative}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;position:relative}
+.hero-tag{font-family:var(--font-head);font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--brass-pale);border:1px solid rgba(200,149,42,0.35);padding:3px 9px;background:rgba(200,149,42,0.06)}
+/* CONTENT */
+#content{padding:0 64px 80px;max-width:980px}
+.section{padding:52px 0 6px;animation:fadeUp 0.4s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.sec-num{font-family:var(--font-mono);font-size:0.72rem;color:var(--brass);letter-spacing:0.08em;display:block;margin-bottom:5px}
+.section-title{font-family:var(--font-head);font-size:clamp(1.4rem,2.5vw,1.9rem);font-weight:600;letter-spacing:0.06em;color:var(--brass-light);text-transform:uppercase;padding-bottom:12px;margin-bottom:20px;border-bottom:2px solid var(--border);position:relative}
+.section-title::after{content:'';position:absolute;bottom:-2px;left:0;width:55px;height:2px;background:var(--brass)}
+.sub-title{font-family:var(--font-head);font-size:1rem;font-weight:500;letter-spacing:0.08em;color:var(--khaki);margin:26px 0 9px;text-transform:uppercase}
+p{margin-bottom:1rem;font-size:1rem;color:var(--text)}
+p:last-child{margin-bottom:0}
+.guide-list{margin:0.5rem 0 1rem 1.2rem}
+.guide-list li{margin-bottom:0.5rem;font-size:1rem;color:var(--text)}
+.guide-list li::marker{color:var(--brass)}
+/* CALLOUTS */
+.callout{padding:14px 18px;margin:18px 0;border-left:4px solid var(--brass);background:rgba(200,149,42,0.07);border-radius:0 2px 2px 0}
+.callout.red{border-left-color:var(--signal-red);background:rgba(192,48,32,0.08)}
+.callout.green{border-left-color:var(--signal-green);background:rgba(42,122,64,0.07)}
+.callout.mono{border-left-color:var(--steel-light);background:rgba(42,68,104,0.18)}
+.callout-title{font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:5px;color:var(--brass)}
+.callout.red .callout-title{color:#e07060}
+.callout.green .callout-title{color:#5dd080}
+.callout.mono .callout-title{color:#6ab0da}
+.callout p{font-size:0.94rem;margin-bottom:0.5rem;color:var(--text-mid)}
+.callout p:last-child{margin-bottom:0}
+/* FACT BOXES */
+.hist-fact{padding:16px 20px;margin:22px 0;border:1px solid rgba(42,68,104,0.6);background:rgba(11,26,46,0.7);position:relative}
+.hist-fact::before{content:'HISTORICAL RECORD';position:absolute;top:-0.6rem;left:1rem;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.22em;color:#5aacda;background:var(--ocean-deep);padding:0 0.5rem}
+.hist-fact p{font-style:italic;color:#aaccdc;font-size:0.94rem;line-height:1.8}
+.hist-fact .source{font-family:var(--font-mono);font-size:0.58rem;color:rgba(90,172,218,0.6);text-align:right;display:block;margin-top:0.6rem;letter-spacing:0.1em}
+/* DATA TABLES */
+.data-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:0.88rem}
+.data-table th{background:var(--ocean-light);color:var(--brass-pale);font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;padding:8px 11px;text-align:left;border:1px solid rgba(200,149,42,0.2)}
+.data-table td{padding:7px 11px;border:1px solid rgba(200,149,42,0.1);vertical-align:top;line-height:1.5;color:var(--text-mid)}
+.data-table tr:nth-child(even) td{background:rgba(11,26,46,0.4)}
+.data-table tr:hover td{background:rgba(200,149,42,0.04)}
+/* PHASE BLOCKS */
+.phase-block{padding:16px 20px;margin:14px 0;border-left:4px solid var(--brass);background:rgba(200,149,42,0.05)}
+.phase-block.phase-early{border-left-color:#5aacda;background:rgba(42,68,104,0.15)}
+.phase-block.phase-mid{border-left-color:var(--brass);background:rgba(200,149,42,0.07)}
+.phase-block.phase-late{border-left-color:var(--signal-red);background:rgba(192,48,32,0.07)}
+.phase-title{font-family:var(--font-head);font-size:0.82rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:7px;color:var(--brass)}
+.phase-block.phase-early .phase-title{color:#6abce8}
+.phase-block.phase-late .phase-title{color:#e07060}
+.phase-block p{font-size:0.94rem;margin-bottom:0.6rem;color:var(--text-mid)}
+.phase-block p:last-child{margin-bottom:0}
+/* UNIT CARDS */
+.unit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin:16px 0}
+.unit-card{border:1px solid var(--border);background:rgba(11,26,46,0.5);padding:14px 16px}
+.unit-card-name{font-family:var(--font-head);font-size:0.9rem;letter-spacing:0.08em;color:var(--brass-light);text-transform:uppercase;margin-bottom:3px}
+.unit-card-type{font-family:var(--font-mono);font-size:0.58rem;color:var(--brass);letter-spacing:0.1em;margin-bottom:8px;display:block}
+.unit-card p{font-size:0.86rem;line-height:1.6;color:var(--text-mid);margin-bottom:0}
+/* TAGS */
+.tag{display:inline-block;padding:0.1rem 0.5rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.06em;border-radius:1px}
+.tag-brass{background:rgba(200,149,42,0.18);color:var(--brass-pale)}
+.tag-red{background:rgba(192,48,32,0.2);color:#e07060}
+.tag-blue{background:rgba(42,68,104,0.3);color:#6abce8}
+.tag-green{background:rgba(42,122,64,0.2);color:#5dd080}
+/* GLOSSARY */
+.gloss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--border);margin-top:14px;border:1px solid var(--border)}
+.gloss-item{background:rgba(11,26,46,0.7);padding:9px 13px;display:flex;gap:10px;align-items:flex-start}
+.gloss-item:nth-child(even){background:rgba(6,14,24,0.8)}
+.gloss-term{font-family:var(--font-head);font-size:0.75rem;font-weight:600;color:var(--brass-light);white-space:normal;min-width:130px;max-width:150px;word-break:break-word;letter-spacing:0.05em;text-transform:uppercase}
+.gloss-def{font-size:0.84rem;color:var(--text-dim);line-height:1.55}
+/* ORNAMENTAL DIVIDER */
+.orn{text-align:center;color:var(--brass);font-size:0.75rem;letter-spacing:0.35em;padding:26px 0 6px;opacity:0.6}
+/* BACK TO TOP */
+#back-top{position:fixed;bottom:24px;right:24px;width:40px;height:40px;background:var(--ocean-mid);border:1px solid var(--brass);color:var(--brass);font-size:1rem;display:flex;align-items:center;justify-content:center;text-decoration:none;opacity:0;transform:translateY(8px);transition:opacity 0.3s,transform 0.3s;z-index:90}
+#back-top.visible{opacity:1;transform:none}
+#back-top:hover{background:var(--brass);color:var(--ocean-deep)}
+#footer{margin-top:40px;border-top:1px solid var(--border);padding:18px 64px;font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);text-align:center}
+@media(max-width:880px){
+  :root{--sidebar-w:0px}
+  #sidebar-toggle{display:flex;align-items:center;justify-content:center}
+  #sidebar{transform:translateX(-100%);transition:transform 0.26s ease;width:260px}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  #hero,#content,#footer{padding-left:22px;padding-right:22px}
+  #progress-bar{left:0}
+  .unit-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+<button id="sidebar-toggle" aria-label="Menu">&#9776;</button>
+
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <div id="sidebar-emblem">TF ★ ADM</div>
+    <div id="sidebar-title">The Admiral's War Manual</div>
+    <div id="sidebar-sub">// DRYDOCK DREAMS · MICROPROSE · 1942 //</div>
+  </div>
+  <div id="sidebar-nav">
+    <div class="nav-section">Background</div>
+    <a class="nav-item" href="#s01">01 · The Pacific in 1942</a>
+    <a class="nav-item" href="#s02">02 · Game Overview</a>
+    <a class="nav-item" href="#s03">03 · The Command Interface</a>
+    <div class="nav-section">Core Systems</div>
+    <a class="nav-item" href="#s04">04 · Fog of War & Intelligence</a>
+    <a class="nav-item" href="#s05">05 · Search & Reconnaissance</a>
+    <a class="nav-item" href="#s06">06 · Combat Air Patrol</a>
+    <a class="nav-item" href="#s07">07 · Strike Planning & Launch</a>
+    <a class="nav-item" href="#s08">08 · Torpedo Warfare</a>
+    <a class="nav-item" href="#s09">09 · Dive Bombing Doctrine</a>
+    <a class="nav-item" href="#s10">10 · Damage & Damage Control</a>
+    <div class="nav-section">Fleet & Aircraft</div>
+    <a class="nav-item" href="#s11">11 · Aircraft of the Air Groups</a>
+    <a class="nav-item" href="#s12">12 · Ship Classes & Roles</a>
+    <a class="nav-item" href="#s13">13 · Task Force Formation</a>
+    <a class="nav-item" href="#s14">14 · Weather & the Pacific Environment</a>
+    <div class="nav-section">Scenarios</div>
+    <a class="nav-item" href="#s15">15 · The Battle of the Coral Sea</a>
+    <a class="nav-item" href="#s16">16 · The Battle of Midway</a>
+    <a class="nav-item" href="#s17">17 · Hypothetical Variants</a>
+    <a class="nav-item" href="#s18">18 · The Battle Generator</a>
+    <div class="nav-section">Strategy</div>
+    <a class="nav-item" href="#s19">19 · Early Game Strategy</a>
+    <a class="nav-item" href="#s20">20 · The Decisive Engagement</a>
+    <a class="nav-item" href="#s21">21 · Advanced Doctrine</a>
+    <a class="nav-item" href="#s22">22 · Common Mistakes</a>
+    <div class="nav-section">Reference</div>
+    <a class="nav-item" href="#s23">23 · Realism & Difficulty Settings</a>
+    <a class="nav-item" href="#s24">24 · Glossary</a>
+  </div>
+</nav>
+
+<div id="main">
+<div id="hero">
+  <div class="hero-rank">// NADIR STRATEGY ARCHIVE · DRYDOCK DREAMS GAMES · MICROPROSE SOFTWARE //</div>
+  <h1 class="hero-title">Task Force Admiral</h1>
+  <p class="hero-subtitle">Vol. 1: American Carrier Battles — The Admiral's War Manual</p>
+  <div class="hero-tags">
+    <span class="hero-tag">Pacific War 1942</span>
+    <span class="hero-tag">24 Chapters</span>
+    <span class="hero-tag">Carrier Operations</span>
+    <span class="hero-tag">Historical Scenarios</span>
+    <span class="hero-tag">Full Analysis</span>
+    <span class="hero-tag">WW2 Historical Facts</span>
+  </div>
+</div>
+
+<div id="content">
+
+<!-- ═══════════════ S01 ═══════════════ -->
+<section class="section" id="s01">
+<span class="sec-num">// CHAPTER 01 //</span>
+<h2 class="section-title">The Pacific in 1942 — Setting the Stage</h2>
+
+<div class="hist-fact">
+  <p>On December 7, 1941, the Imperial Japanese Navy launched a surprise attack on the United States Pacific Fleet at Pearl Harbor, Hawaii. In under two hours, 353 Japanese aircraft sank or damaged 21 American naval vessels, destroyed 188 aircraft, and killed 2,403 Americans. The battleship fleet that had been the backbone of American Pacific strategy was neutralised overnight. By terrible fortune — or excellent intelligence — all three of America's Pacific aircraft carriers were at sea and survived.</p>
+  <span class="source">// USS ARIZONA MEMORIAL · PEARL HARBOR, HAWAII · DECEMBER 7, 1941 //</span>
+</div>
+
+<p>Task Force Admiral: Vol. 1 — American Carrier Battles drops you into the most consequential naval theatre of the twentieth century at its most pivotal moment: 1942, the year when the Imperial Japanese Navy's seemingly unstoppable expansion was halted, reversed, and ultimately broken. Developed by Drydock Dreams Games and published by MicroProse Software, this simulation does not merely represent these events — it attempts to recreate them at a level of tactical and physical fidelity that no previous game has achieved.</p>
+
+<p>To command effectively in Task Force Admiral, you must understand not just the game's mechanics but the world those mechanics represent. Every design decision in the game flows from a genuine attempt to simulate how carrier warfare was actually conducted in 1942: in a vast, featureless ocean, with imperfect communications, unreliable intelligence, exhausted pilots, and the constant weight of knowing that a single wrong decision could cost thousands of lives and alter the course of a world war.</p>
+
+<h2 class="sub-title">The Strategic Context</h2>
+<p>By the opening of 1942, Japan controlled an empire stretching from Burma to the Central Pacific, from the Aleutians to the Dutch East Indies. The American military was reeling from Pearl Harbor, the fall of Wake Island, the Philippines disaster, and a string of Allied defeats that had cost Britain, the Netherlands, and Australia vast territories. The Pacific Fleet's carrier force — the USS Lexington, Yorktown, Enterprise, Saratoga, Hornet, and the newly arrived Wasp — was the only instrument capable of contesting Japanese power in the short term.</p>
+
+<p>The strategic problem facing American naval commanders was stark: Japan had six fleet carriers with experienced air groups hardened by four years of fighting in China. America had fewer carriers, less-experienced crews, and no margin for catastrophic error. Every carrier was irreplaceable in 1942; the shipyards that would produce Essex-class carriers by the dozen were still laying keels. You command in a time when every ship, every aircraft, and every pilot is a resource that cannot easily be replaced.</p>
+
+<div class="hist-fact">
+  <p>The Japanese carrier force — the Kido Butai — was considered the most powerful concentration of naval air power in the world at the start of 1942. Its six fleet carriers (Akagi, Kaga, Soryu, Hiryu, Shokaku, and Zuikaku) had participated in the Pearl Harbor attack, the invasion of the Dutch East Indies, the Indian Ocean Raid, and numerous other operations. The air groups aboard these ships had more than two years of combat experience. American carrier pilots in early 1942 had, in most cases, none.</p>
+  <span class="source">// PACIFIC FLEET INTELLIGENCE ASSESSMENT · JANUARY 1942 //</span>
+</div>
+
+<h2 class="sub-title">Why Carrier Warfare Changed Everything</h2>
+<p>Before 1942, naval doctrine worldwide was built around the battleship — the armoured, gun-armed capital ship that had dominated sea power since Trafalgar. The Battle of the Coral Sea in May 1942 shattered this doctrine forever. For the first time in history, two opposing naval forces fought a battle in which neither fleet ever saw the other. Every blow was struck by aircraft flying hundreds of miles beyond the visual horizon. The era of the gun-armed capital ship was over; the age of the carrier had arrived.</p>
+<p>Task Force Admiral is built around this transformation. Your battleships and cruisers, if you have them, are escorts and anti-aircraft screens — they protect the carriers. The carriers are the weapons. The aircraft on their decks are the bullets. You are the shooter.</p>
+</section>
+
+<div class="orn">★ &nbsp; ★ &nbsp; ★</div>
+
+<!-- ═══════════════ S02 ═══════════════ -->
+<section class="section" id="s02">
+<span class="sec-num">// CHAPTER 02 //</span>
+<h2 class="section-title">Game Overview — What Task Force Admiral Is</h2>
+
+<p>Task Force Admiral is a <strong>pausable real-time simulation-wargame</strong> developed by Drydock Dreams Games (a studio founded by veterans of classic Pacific War simulations) and published by MicroProse — the legendary house that brought the genre titles like <em>Pacific Air War</em> and <em>Task Force 1942</em> in the 1990s. The game entered Early Access on January 28, 2026, and represents an ambitious attempt to wed the depth of a serious naval wargame with the immersion of a modern 3D simulation.</p>
+
+<p>Its defining characteristic is its refusal to abstract. Most naval wargames represent carrier operations through tables, counters, and probability modifiers. Task Force Admiral simulates them: aircraft physically move across the flight deck before launch, travel across hundreds of miles of ocean in real time (with optional time compression), find or fail to find their targets based on genuine search mechanics, and attack using ballistic physics. A torpedo that misses does so because of geometry and timing, not a dice roll.</p>
+
+<div class="callout">
+  <div class="callout-title">What Makes This Game Unique</div>
+  <p>The developers themselves describe their mission as filling a gap that has existed for thirty years: a game that recreates carrier operations at a granular level within a continuous 3D environment across an entire multi-day battle, without separating "operational" and "tactical" phases. In Task Force Admiral, a search plane found three hours ago is now returning to land on your carrier while your strike is airborne and an enemy attack is forming up on your radar. Everything is happening simultaneously, in real time, in the same space.</p>
+</div>
+
+<h2 class="sub-title">Early Access State</h2>
+<p>As of the current Early Access build, Task Force Admiral includes:</p>
+<ul class="guide-list">
+  <li><strong>The Battle of the Coral Sea</strong> (May 7–8, 1942) — historical scenario and variant</li>
+  <li><strong>The Battle of Midway</strong> (June 4, 1942) — historical scenario and variant</li>
+  <li><strong>Battle Generator sets</strong> for both engagements — semi-randomised scenarios</li>
+  <li><strong>Playable fighter aircraft</strong> — direct combat aircraft control</li>
+  <li><strong>Savegame support</strong> and <strong>TacView-compatible battle replay</strong></li>
+  <li><strong>Over 90 ship classes</strong> and <strong>more than 40 aircraft types</strong> modelled</li>
+</ul>
+
+<p>The full release roadmap promises 30+ scenarios covering the complete 1942 Pacific carrier campaign from the Wake Island strikes through Guadalcanal, Santa Cruz, and beyond, along with a full scenario editor, interactive tutorials, a museum section, and campaign functions. This guide covers the systems and scenarios present in the current build, with commentary on how those systems will apply to expanded content as it arrives.</p>
+
+<h2 class="sub-title">The Two Command Perspectives</h2>
+<p>Task Force Admiral gives you two ways to experience your command:</p>
+<div class="unit-grid">
+  <div class="unit-card">
+    <div class="unit-card-name">Flag Plot View</div>
+    <span class="unit-card-type">FIRST PERSON · OPERATIONAL COMMAND</span>
+    <p>Experience command from inside the carrier's Combat Information Centre. Claustrophobic, information-limited, and intensely atmospheric. Fog of war is at its heaviest here. This is how Admiral Fletcher and Admiral Spruance experienced their battles: through reports, radio, and plotting boards.</p>
+  </div>
+  <div class="unit-card">
+    <div class="unit-card-name">God's Eye View</div>
+    <span class="unit-card-type">OVERHEAD · STRATEGIC COMMAND</span>
+    <p>A traditional wargame overhead perspective showing the full tactical situation. Clearer, more controllable, and better for managing multiple simultaneous operations. Less atmospheric but more strategically legible. New players should start here.</p>
+  </div>
+</div>
+<p>Both perspectives can be used freely during play. Many experienced players use the God's Eye view for planning and fleet management, then drop into Flag Plot for the immersive experience of watching their attack arrive over the target or their CAP intercept an incoming strike.</p>
+</section>
+
+<div class="orn">★ &nbsp; ★ &nbsp; ★</div>
+
+<!-- ═══════════════ S03 ═══════════════ -->
+<section class="section" id="s03">
+<span class="sec-num">// CHAPTER 03 //</span>
+<h2 class="section-title">The Command Interface — Learning Your Operations Room</h2>
+
+<p>The heart of Task Force Admiral's gameplay is its orders system. As admiral, you issue orders from a 2D tactical map interface; the game translates these orders into events that play out in the 3D world. Understanding the orders system completely is the prerequisite for everything else in the game.</p>
+
+<h2 class="sub-title">The Orders System</h2>
+<p>Orders in Task Force Admiral are issued by selecting the order type from the operations menu, configuring its parameters, and committing it. The major order categories are:</p>
+
+<div class="callout mono">
+  <div class="callout-title">Core Order Categories</div>
+  <p><strong>Search:</strong> Dispatch aircraft on reconnaissance missions. Configure direction, arc, range, timing, and whether aircraft should shadow contacts they discover.<br>
+  <strong>Strike:</strong> Launch an attack on a known or suspected enemy position. Configure target, aircraft type composition, numbers, and launch time.<br>
+  <strong>CAP:</strong> Establish combat air patrol patterns over your fleet. Configure patrol zone shape, size, altitude, and fighter allocation.<br>
+  <strong>Navigation:</strong> Set course, speed, and formation for your task force.<br>
+  <strong>Damage Control:</strong> Issue repair and firefighting priorities to damaged vessels.</p>
+</div>
+
+<h2 class="sub-title">Time Compression</h2>
+<p>Task Force Admiral takes place across real operational timescales. Aircraft searching at 200 miles cover the ocean at realistic speeds; a strike group launched at 0700 may not arrive at a target 180 miles away until nearly 0900. Time compression is essential for managing the long periods between events without reducing the game to a waiting simulator. Use it confidently — the game will alert you to significant events, and you can pause at any moment to issue new orders or reassess your situation.</p>
+<p>The key discipline is <em>knowing when not to use time compression</em>. During the critical phases — when a search is about to return, when your strike is in the target area, when enemy aircraft are inbound — compress time minimally or not at all. The decisions you make in these windows are the ones that determine the battle's outcome.</p>
+
+<h2 class="sub-title">The Strike Information Window</h2>
+<p>When planning a strike, the Strike Information Window is your most important tool. It shows the estimated arrival time of your strike at the target based on current positions and courses. It also shows the composition of your strike: how many of each aircraft type is committed. Use this window to <em>coordinate arrival timing</em> — your dive bombers and torpedo planes need to arrive at the target approximately simultaneously. A torpedo attack that arrives five minutes before the dive bombers gives the enemy time to manoeuvre their carriers into wind for evasion; a coordinated attack that forces the enemy to deal with both simultaneously is dramatically more effective.</p>
+
+<div class="callout">
+  <div class="callout-title">Tactical Note — Coordination</div>
+  <p>A standard tactical doctrine of 1942 was to time dive bomber arrival slightly ahead of torpedoes — approximately five minutes — because dive bombers need more time to set up their attack runs. The falling bombs force enemy carriers to manoeuvre at the exact moment their course is critical for torpedo evasion. In practice at Midway, the simultaneous arrival of McClusky's and Leslie's dive bombers over three Japanese carriers without fighter opposition was the decisive factor. In Task Force Admiral, replicating this coordination is achievable and highly rewarding.</p>
+</div>
+
+<h2 class="sub-title">Pausing and Real-Time Play</h2>
+<p>The game is designed to be manageable without constant pausing — the pace of events in carrier warfare is deliberately measured. Scouts take hours to return. Strikes take 90 minutes to arrive and attack. Between dawn and the first contact report, you have time to think through your search pattern, set your CAP rotations, and ensure your strike group is ready to launch the moment a position comes in. This is not a frantic RTS; it is a command simulation that rewards deliberate planning over reflexive clicking.</p>
+</section>
+
+<div class="orn">★ &nbsp; ★ &nbsp; ★</div>
+
+<!-- ═══════════════ S04 ═══════════════ -->
+<section class="section" id="s04">
+<span class="sec-num">// CHAPTER 04 //</span>
+<h2 class="section-title">Fog of War & Intelligence — Seeing Through the Smoke</h2>
+
+<div class="hist-fact">
+  <p>During the Battle of the Coral Sea, Japanese scout planes misidentified the fleet oiler USS Neosho and her escorting destroyer USS Sims as a carrier and cruiser respectively. The Japanese sent their entire strike package against these minor vessels, sinking both but wasting the majority of their attack aircraft. Meanwhile, the actual American carriers remained undiscovered for several critical hours. The misidentification was caused by poor visibility, pilot inexperience with recognition, and the universal tendency to see what one expects to see. It was one of many fog-of-war catastrophes of the 1942 campaign.</p>
+  <span class="source">// CORAL SEA BATTLE ANALYSIS · USN AFTER ACTION REPORT · MAY 1942 //</span>
+</div>
+
+<p>Task Force Admiral's fog of war is not a gameplay abstraction — it is a simulation of the genuine uncertainty that pervaded every carrier engagement of the Pacific War. You do not know where the enemy is unless a scouting report tells you. You do not know what the enemy is doing unless signals intelligence or visual contact reveals it. And the information you do receive is subject to the same delays, misidentifications, and errors that plagued the actual commanders of 1942.</p>
+
+<h2 class="sub-title">What You Know and When You Know It</h2>
+<p>At the start of any scenario, you receive an intelligence briefing: the enemy's last known position, estimated course and speed, and your orders. This is the foundation on which all planning must be built. But it is a foundation on sand. Last known position means exactly that — last known. The enemy has been moving since that report was filed.</p>
+<p>The golden rule of Task Force Admiral intelligence is this: <em>always calculate forward from a report, never treat it as current.</em> If a scout reported enemy carriers at grid position X at 0600, and it is now 0800, those carriers have moved roughly 40 miles in an unknown direction. Your search plan must account for this uncertainty. Your strike plan must account for it. Your CAP positioning must account for it.</p>
+
+<h2 class="sub-title">Types of Intelligence</h2>
+<table class="data-table">
+  <thead><tr><th>Source</th><th>Reliability</th><th>Delay</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Scouting Report</strong></td><td>Good to excellent</td><td>Transmission + flight time</td><td>Primary source of contact data. Position may shift during transit.</td></tr>
+    <tr><td><strong>Radar Contact</strong></td><td>Excellent</td><td>Real-time</td><td>Range-limited; reveals bearing and approximate distance, not composition.</td></tr>
+    <tr><td><strong>Shadowing Aircraft</strong></td><td>Good</td><td>Variable</td><td>Scout ordered to shadow will provide ongoing updates but risks being shot down.</td></tr>
+    <tr><td><strong>Signal Intelligence</strong></td><td>Variable</td><td>Scenario-specific</td><td>Pre-battle codebreaking data; built into scenario briefings historically.</td></tr>
+    <tr><td><strong>Search Returns</strong></td><td>Variable</td><td>Hours</td><td>Scout reports on return may be hours old. Plot against likely movement.</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">The Problem of Communications</h2>
+<p>In 1942, radio silence was a critical tactical tool. A carrier emitting radio traffic revealed its position to enemy direction-finding equipment. Task Force Admiral models communication realism: orders take time to reach units, reports take time to return, and the chain of command has real friction. This is not a game where you click and your fleet responds instantly. Issue orders with lead time built in.</p>
+
+<div class="callout red">
+  <div class="callout-title">Critical Warning — Acting on Stale Intelligence</div>
+  <p>The most common cause of failed strikes in Task Force Admiral is launching against a position that was reported hours ago without calculating where the enemy fleet has moved since. If your scout found the enemy at 0700 and it is now 0900, add at least 30–45 miles to the enemy's reported position along their last known heading before planning your strike waypoint. Failure to do this results in your strike package searching an empty ocean.</p>
+</div>
+</section>
+
+<div class="orn">★ &nbsp; ★ &nbsp; ★</div>
+
+<!-- ═══════════════ S05 ═══════════════ -->
+<section class="section" id="s05">
+<span class="sec-num">// CHAPTER 05 //</span>
+<h2 class="section-title">Search & Reconnaissance — Eyes Over the Pacific</h2>
+
+<div class="hist-fact">
+  <p>At Midway, a single Japanese search plane — one of eight deployed in a fan pattern covering the eastern and northeastern sectors — was delayed on takeoff and flew its sector 30 minutes late. This particular aircraft was responsible for the sector where the American carriers were located. As a result, the Japanese carriers were already committed to a second strike on Midway before the report of American carriers arrived. This half-hour delay contributed directly to the destruction of four Japanese carriers and the turning point of the Pacific War.</p>
+  <span class="source">// MIDWAY AFTER ACTION ANALYSIS · COMBINED FLEET ASSESSMENT · JUNE 1942 //</span>
+</div>
+
+<p>If there is one mechanic that defines Task Force Admiral more than any other, it is the search. Everything in carrier warfare flows from reconnaissance. You cannot strike what you have not found. You cannot defend against what you have not detected. The allocation, timing, and geometry of your search missions is the most consequential planning activity of any engagement.</p>
+
+<h2 class="sub-title">Configuring a Search Mission</h2>
+<p>When issuing a search order, you configure the following parameters:</p>
+<ul class="guide-list">
+  <li><strong>Direction:</strong> The central bearing of the search sector, pointing toward the expected enemy area.</li>
+  <li><strong>Arc:</strong> The angular width of the search cone. A wider arc covers more ocean but with lower aircraft density; a narrower arc is more thorough within a specific sector.</li>
+  <li><strong>Range:</strong> How far your scouts will fly before turning back.</li>
+  <li><strong>Timing:</strong> When the search departs. Dawn launches are standard doctrine — aircraft can cover maximum distance in daylight and return before night complicates deck operations.</li>
+  <li><strong>Aircraft count:</strong> More planes cover more ocean more reliably. Too few and gaps appear in your coverage that the enemy can slip through.</li>
+  <li><strong>Shadow order:</strong> Whether scouts are instructed to shadow contacts they find and continue reporting position updates, or simply report and return. Shadowing provides ongoing intelligence but risks losing the aircraft to enemy combat air patrol.</li>
+</ul>
+
+<h2 class="sub-title">Search Sector Planning</h2>
+<p>The art of search planning is allocating a finite number of aircraft across the sectors that the enemy most plausibly occupies, while accepting that you cannot cover everything. The standard approach:</p>
+
+<div class="phase-block phase-early">
+  <div class="phase-title">Step 1 — Calculate the Enemy's Most Probable Position</div>
+  <p>From their last known position, speed, and course, calculate where they could realistically be at the expected moment of contact. If they were moving at 25 knots, they have covered 25 miles per hour since the last report. Draw a circle of uncertainty around the updated estimated position.</p>
+</div>
+
+<div class="phase-block phase-mid">
+  <div class="phase-title">Step 2 — Identify the High-Value Sectors</div>
+  <p>Within your uncertainty circle, some sectors are more likely than others. Enemy carriers approaching to launch a strike will be moving toward your fleet. Enemy carriers retiring after a strike will be moving away. Apply your knowledge of enemy objectives and doctrine to prioritise your search allocation accordingly.</p>
+</div>
+
+<div class="phase-block phase-late">
+  <div class="phase-title">Step 3 — Commit Aircraft Accordingly</div>
+  <p>Allocate more planes to high-probability sectors, fewer to low-probability ones. Never send zero — the enemy may surprise you. Reserve enough aircraft for a second search wave if the first returns empty.</p>
+</div>
+
+<h2 class="sub-title">The SBD Dauntless as Scout</h2>
+<p>In 1942 American carrier doctrine, the primary search aircraft was the SBD Dauntless dive bomber. This dual role — scout and striker — was not ideal. A Dauntless committed to a three-hour search sector was not available for the first strike wave. Experienced admirals balanced this tension by using search-capable aircraft for reconnaissance while keeping dedicated strike aircraft on standby, ready to launch the moment a contact report arrived.</p>
+<p>In Task Force Admiral, you face exactly this dilemma. Every SBD you send on search is one fewer in your strike. The commander who solves this allocation problem most efficiently has an enormous advantage.</p>
+</section>
+
+<div class="orn">★ &nbsp; ★ &nbsp; ★</div>
+
+<!-- ═══════════════ S06 ═══════════════ -->
+<section class="section" id="s06">
+<span class="sec-num">// CHAPTER 06 //</span>
+<h2 class="section-title">Combat Air Patrol — The Shield of the Fleet</h2>
+
+<div class="hist-fact">
+  <p>At the Battle of Midway, the USS Yorktown's combat air patrol was so effective that Japanese torpedo bombers were forced into a slow, low-altitude approach that resulted in 35 of 40 attacking aircraft being shot down. Eleven torpedoes were launched; none struck. When the second Japanese strike arrived — dive bombers attacking from high altitude under CAP-disrupted conditions — the defenders were harder to coordinate, and three bombs struck Yorktown, eventually leading to her loss. The difference in outcomes illustrated the critical importance of CAP altitude, positioning, and fighter reserve management.</p>
+  <span class="source">// MIDWAY BATTLE REPORT · YORKTOWN AIR GROUP · JUNE 1942 //</span>
+</div>
+
+<p>Your Combat Air Patrol is the defensive foundation of every operation. Without it, your carriers are naked to enemy air attack. With it, you have a fighting chance to intercept and break up enemy strikes before they can score decisive hits. Managing your CAP is not a set-and-forget operation — it requires continuous attention throughout the battle.</p>
+
+<h2 class="sub-title">CAP Configuration</h2>
+<p>When establishing a CAP, you define a patrol zone — a geometric area centred on or near your fleet where your fighters will continuously orbit and engage enemy aircraft that enter. Key parameters:</p>
+<ul class="guide-list">
+  <li><strong>Patrol zone size:</strong> A larger zone covers more sky but means your fighters spend more time in transit between positions, creating momentary gaps. A smaller, tighter zone is more effective at the centre but may allow aircraft approaching from unexpected angles to avoid detection.</li>
+  <li><strong>Patrol zone position:</strong> Place it between your fleet and the most likely enemy approach direction. A CAP centred on your carriers is reactive; one positioned toward the threat is proactive.</li>
+  <li><strong>Range setting:</strong> How far from the fleet centre the CAP extends. Community experience suggests the middle setting provides the best balance of detection time and interception reliability.</li>
+  <li><strong>Fighter allocation:</strong> More fighters in the CAP means more interceptions but fewer available for escort duties on your strike. Reserve fighters ensure you always have something to scramble for unexpected threats.</li>
+</ul>
+
+<h2 class="sub-title">The 3/6 Rule</h2>
+<p>Experienced Task Force Admiral players recommend maintaining approximately 3 fighters per carrier actively patrolling, with another 3 per carrier held in reserve at standby. This provides meaningful interception capability while retaining flexibility. Adjust based on threat level — when scouts report enemy strike planes launching, increase CAP immediately by scrambling reserves.</p>
+
+<div class="callout">
+  <div class="callout-title">Tactical Note — CAP Rotation</div>
+  <p>Fighters on CAP eventually run low on fuel and must return to land. If your entire CAP returns simultaneously for refuelling, there will be a window where your fleet is undefended. Stagger your CAP launches so half the patrol is always fresh while the other half returns. This requires deliberate planning and is one of the most important habits to develop in Task Force Admiral.</p>
+</div>
+
+<h2 class="sub-title">CAP vs. Strike Trade-off</h2>
+<p>Every fighter assigned to CAP is a fighter not escorting your strike. Unescorted strike aircraft — particularly the slow TBD Devastator torpedo bombers — suffer catastrophically heavy losses against defended targets with active enemy CAP. At Midway, Torpedo Squadron 8 launched unescorted and all fifteen aircraft were destroyed without scoring a hit. The entire escort question in Task Force Admiral is a constant balancing act between defending your fleet and protecting your attack.</p>
+</section>
+
+<div class="orn">★ &nbsp; ★ &nbsp; ★</div>
+
+<!-- ═══════════════ S07 ═══════════════ -->
+<section class="section" id="s07">
+<span class="sec-num">// CHAPTER 07 //</span>
+<h2 class="section-title">Strike Planning & Launch — Sending the Sword</h2>
+
+<div class="hist-fact">
+  <p>On the morning of June 4, 1942, Rear Admiral Raymond Spruance faced one of the most consequential decisions of the Pacific War. His scouts had found the Japanese carriers, but they were at extreme range. To launch immediately with maximum aircraft risked his bombers running out of fuel on the return trip. To wait and close the range risked the Japanese launching their own strike first. Spruance launched everything immediately, accepting the fuel risk. His decision to commit fully — rather than holding back a reserve — put dive bombers over the Japanese carriers at the precise moment when their decks were crowded with re-arming aircraft. Within six minutes, three fleet carriers were mortally wounded.</p>
+  <span class="source">// OFFICIAL BIOGRAPHY OF RAYMOND SPRUANCE · E.P. FORRESTEL //</span>
+</div>
+
+<p>The strike is the payoff of all your planning. A well-executed strike, arriving in coordinated waves over a surprised enemy, can end a carrier engagement decisively in minutes. A poorly planned strike — launched prematurely, against a stale position, or without coordination between aircraft types — can result in a costly failure that leaves your carriers exposed for a counter-strike.</p>
+
+<h2 class="sub-title">Building the Strike Package</h2>
+<p>A standard 1942 American carrier strike combined three aircraft types, each contributing a different threat profile that forced the enemy to choose between responses:</p>
+
+<table class="data-table">
+  <thead><tr><th>Aircraft Type</th><th>Threat</th><th>Optimal Timing</th><th>Vulnerability</th></tr></thead>
+  <tbody>
+    <tr><td><strong>F4F Wildcat (Fighters)</strong></td><td>Escort — suppress enemy CAP</td><td>Arrive ahead of bombers, clear the sky</td><td>Outnumbered by Zeroes; must use tactics carefully</td></tr>
+    <tr><td><strong>SBD Dauntless (Dive Bombers)</strong></td><td>Flight deck destruction, fires</td><td>~5 min before torpedoes; setup requires altitude</td><td>Vulnerable during steep dive approach</td></tr>
+    <tr><td><strong>TBD Devastator (Torpedo)</strong></td><td>Below-waterline flooding; fires</td><td>Simultaneous with dive bombers or shortly after</td><td>Extremely slow; vulnerable during long approach run</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">The Timing Imperative</h2>
+<p>Coordinating the arrival of dive bombers and torpedo planes is the single most important skill in Task Force Admiral's strike planning. Use the Strike Information Window to compare estimated arrival times. Adjust launch timing for each aircraft type to bring them over the target within a five-minute window of each other. A carrier forced to manoeuvre against incoming torpedoes cannot maintain a stable course for its gunners to track dive bombers above. One that can focus its entire anti-aircraft battery on a single threat type is far harder to damage.</p>
+
+<div class="callout red">
+  <div class="callout-title">Critical Error — Uncoordinated Strikes</div>
+  <p>Sending torpedo planes ahead of dive bombers means all anti-aircraft fire, all fighters, and all evasive manoeuvring is concentrated on the torpedo threat. The dive bombers, arriving into a fully prepared and alerted defence, face maximum opposition. This is how strike packages were defeated in 1942, and it is how they will be defeated in Task Force Admiral.</p>
+</div>
+
+<h2 class="sub-title">Strike Size and Reserve Management</h2>
+<p>The temptation is to send everything. Resist it. Sending your entire air group on a single strike leaves your carriers defenceless against a counter-strike that arrives before your planes return. A standard doctrine of experienced players: commit 60–70% of your strike capacity to the initial attack, retaining the remainder for immediate CAP reinforcement, a second-wave attack, or an emergency if the first strike misdirects.</p>
+<p>The exception to this rule is when you have decisive positional advantage — when you know the enemy has not yet found you, when your attack will catch their decks crowded with aircraft, or when the scenario's victory conditions require maximum initial damage. In those moments, Spruance's decision at Midway is your model: launch everything, accept the risk, win decisively.</p>
+</section>
+
+<div class="orn">★ &nbsp; ★ &nbsp; ★</div>
+
+<!-- ═══════════════ S08 ═══════════════ -->
+<section class="section" id="s08">
+<span class="sec-num">// CHAPTER 08 //</span>
+<h2 class="section-title">Torpedo Warfare — The Underwater Blade</h2>
+
+<div class="hist-fact">
+  <p>The American Mark 13 aerial torpedo of 1942 had a troubled history. Its depth mechanism ran too deep, causing many torpedoes to pass harmlessly under their targets. Its contact exploders were unreliable, failing to detonate even when direct hits were scored. And the torpedo required a long, steady, low-altitude approach run that left attacking aircraft exposed to defensive fire for dangerously long periods. The heroic torpedo bomber crews of 1942 pressed home their attacks in the face of overwhelming odds, often achieving no hits, always suffering catastrophic losses. Their sacrifice was not in vain — it disrupted enemy fighter coverage and set the conditions for the dive bombers that followed.</p>
+  <span class="source">// NAVAL WEAPONS ASSESSMENT · BUREAU OF ORDNANCE · 1942 //</span>
+</div>
+
+<p>In Task Force Admiral, torpedo warfare represents the highest-risk, highest-reward attack option in your arsenal. A torpedo hit below the waterline causes flooding that, if not controlled, sinks ships. Multiple torpedo hits can sink a carrier regardless of its other damage. But the approach to deliver those torpedoes exposes your aircraft to the most concentrated defensive fire on the battlefield.</p>
+
+<h2 class="sub-title">Torpedo Bomber Mechanics</h2>
+<p>TBD Devastators (and in later scenarios, the TBF Avenger) approach their targets at low altitude and low speed — their torpedo release parameters require this. The approach run is long, predictable, and gives enemy gunners and fighters the maximum possible tracking time. In game terms, this means:</p>
+<ul class="guide-list">
+  <li>Unescorted torpedo bombers against a defended carrier with active CAP will suffer devastating losses.</li>
+  <li>Torpedo bombers arriving after dive bombers have already struck and pulled away their fighter cover have a vastly improved survival rate.</li>
+  <li>Bad weather, smoke, or enemy fire suppression from a coordinated attack all reduce torpedo bomber losses.</li>
+  <li>Multiple simultaneous torpedo approach vectors from different angles force the enemy carrier to choose one evasive direction and accept vulnerability from the other side.</li>
+</ul>
+
+<h2 class="sub-title">Approach Geometry</h2>
+<p>The ideal torpedo attack is a multi-axis approach — two groups of torpedo bombers arriving from different bearings simultaneously. An enemy carrier that manoeuvres hard to starboard to avoid one group turns her flank squarely toward the other. Achieving this geometry requires splitting your torpedo element into sub-groups and assigning different approach routes, timed to arrive simultaneously. It is complex to execute but the payoff — multiple torpedo hits — is decisive.</p>
+
+<div class="callout green">
+  <div class="callout-title">Tactical Success — The Lexington's Fate</div>
+  <p>The USS Lexington at Coral Sea was struck by two torpedoes and three bombs in a coordinated Japanese attack that arrived from multiple directions in less than three minutes. The coordinated nature of the attack made evasion impossible and left the damage control teams overwhelmed. The fires that eventually destroyed Lexington were started by the bomb hits, but the torpedoes prevented the speed and manoeuvring necessary to contain them. This is the model outcome for a well-executed coordinated strike in Task Force Admiral.</p>
+</div>
+</section>
+
+<div class="orn">★ &nbsp; ★ &nbsp; ★</div>
+
+<!-- ═══════════════ S09 ═══════════════ -->
+<section class="section" id="s09">
+<span class="sec-num">// CHAPTER 09 //</span>
+<h2 class="section-title">Dive Bombing Doctrine — The Vertical Kill</h2>
+
+<div class="hist-fact">
+  <p>At 10:20 a.m. on June 4, 1942, Lieutenant Commander Clarence Wade McClusky led 37 SBD Dauntless dive bombers from USS Enterprise toward the Japanese fleet. He had been searching for 35 minutes beyond his briefed search limit when he spotted the wake of a Japanese destroyer rushing to rejoin the carrier force. He followed it. What he found — four fleet carriers with decks crowded with aircraft, their fighters down at low altitude after repelling torpedo attacks — was the decisive moment of the Pacific War. In five minutes, McClusky's bombers and their comrades from USS Yorktown hit three Japanese carriers: Akagi, Kaga, and Soryu. All three were destroyed. The Battle of Midway, and arguably the war, turned in those five minutes.</p>
+  <span class="source">// BATTLE OF MIDWAY · AFTER ACTION REPORT · LCDR C.W. McCLUSKY · JUNE 1942 //</span>
+</div>
+
+<p>The SBD Dauntless dive bomber is the decisive weapon of Task Force Admiral's early scenarios. Its ability to deliver a 1,000-pound bomb with great accuracy against a moving carrier — if the attack is set up correctly — makes it the primary ship-killing instrument in the American arsenal of 1942. Understanding how dive bombing works in the game enables you to maximise its effectiveness.</p>
+
+<h2 class="sub-title">Why Dive Bombing Works</h2>
+<p>A conventional horizontal bomber must predict where a moving ship will be when a bomb released from altitude reaches sea level — a calculation that requires accurate speed, course, and altitude data and still produces only modest hit rates. A dive bomber solves this problem by following the target throughout the entire descent, continuously correcting aim. The pilot sees the carrier below and steers into it. The result, when executed correctly, is dramatically higher accuracy against manoeuvring targets.</p>
+<p>In Task Force Admiral, the physics of dive bombing are modelled realistically. Bombs released from the correct altitude and dive angle strike with the accuracy the historical record would predict. The game engine simulates the approach, release, and ballistic trajectory. Your job is to ensure your dive bombers arrive in the correct tactical conditions to execute their attacks.</p>
+
+<h2 class="sub-title">What Conditions Maximise Dive Bombing Success</h2>
+<ul class="guide-list">
+  <li><strong>Fighter cover:</strong> Dive bombers attacked by enemy fighters during their approach or recovery are likely to be destroyed before releasing. Provide escorts or time the attack to coincide with the enemy CAP being occupied by torpedo attacks.</li>
+  <li><strong>Arrive at altitude:</strong> Dive bombers need to be at altitude before beginning their attack run. Arriving at low altitude — as sometimes happens after long flights or combat manoeuvres — dramatically reduces their effectiveness.</li>
+  <li><strong>Target in open water:</strong> A carrier with room to manoeuvre is harder to hit than one constrained by formation geometry. If the enemy task force is tightly formed, their evasive options are limited.</li>
+  <li><strong>Clear weather:</strong> Heavy cloud cover, rain squalls, and poor visibility all reduce bombing accuracy. The Japanese carrier Zuikaku survived the Coral Sea battle partly because she sheltered in a convenient rain squall. In Task Force Admiral, weather is a genuine tactical factor.</li>
+</ul>
+
+<div class="callout">
+  <div class="callout-title">The First Hit Changes Everything</div>
+  <p>A carrier that has taken a bomb hit faces an immediate crisis. Fires on the flight deck prevent aircraft recovery and launch. Damage to the hangar can set off stored ammunition and aviation fuel. Even a single well-placed hit dramatically reduces a carrier's fighting effectiveness — not just from the damage itself but from the manpower diverted to damage control. In Task Force Admiral, every bomb hit counts. Aim for the flight deck and hangar area.</p>
+</div>
+</section>
+
+<div class="orn">★ &nbsp; ★ &nbsp; ★</div>
+
+<!-- ═══════════════ S10 ═══════════════ -->
+<section class="section" id="s10">
+<span class="sec-num">// CHAPTER 10 //</span>
+<h2 class="section-title">Damage & Damage Control — Keeping Ships Alive</h2>
+
+<div class="hist-fact">
+  <p>After the Battle of the Coral Sea, USS Yorktown returned to Pearl Harbor with bomb damage that the Navy's engineers initially estimated would require 90 days to repair. Admiral Nimitz gave them 72 hours. Three days later, with repair crews still aboard, Yorktown sailed for Midway. Her improbable resurrection allowed America to deploy three carriers at Midway instead of two — a margin that proved decisive. The repair work was done by 1,400 workers labouring around the clock; they accomplished in three days what anyone who knew carrier engineering would have said was impossible. The damage control that kept Yorktown operational after Coral Sea made the victory at Midway possible.</p>
+  <span class="source">// USS YORKTOWN WAR DIARY · MAY–JUNE 1942 //</span>
+</div>
+
+<p>Task Force Admiral models damage to individual ship systems. Hits are not abstracted into hit-point reductions — they affect specific components: flight decks, elevators, engineering spaces, fire control systems, fuel storage, and crew spaces. A carrier with bomb damage to its flight deck cannot launch aircraft until the damage is repaired or the debris cleared. One with torpedo flooding may lose speed and the ability to maintain its heading into the wind. Each type of damage creates specific tactical limitations that you must manage.</p>
+
+<h2 class="sub-title">Categories of Damage</h2>
+<table class="data-table">
+  <thead><tr><th>Damage Type</th><th>Cause</th><th>Primary Effect</th><th>Priority</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Flight Deck Damage</strong></td><td>Bomb hits, near misses</td><td>Unable to launch/recover aircraft</td><td><span class="tag tag-red">Critical</span></td></tr>
+    <tr><td><strong>Fire</strong></td><td>Bomb hits, aviation fuel ignition</td><td>Spreads to fuel/ammo; crew casualties</td><td><span class="tag tag-red">Critical</span></td></tr>
+    <tr><td><strong>Flooding</strong></td><td>Torpedo hits, near misses</td><td>Speed reduction, list, potential sinking</td><td><span class="tag tag-red">Critical</span></td></tr>
+    <tr><td><strong>Engineering Damage</strong></td><td>Deep penetrating hits</td><td>Speed reduction or loss</td><td><span class="tag tag-brass">High</span></td></tr>
+    <tr><td><strong>Radar/Communications</strong></td><td>Near misses, fragments</td><td>Reduced situational awareness</td><td><span class="tag tag-blue">Medium</span></td></tr>
+    <tr><td><strong>Anti-Aircraft Battery</strong></td><td>Strafing, fragmentation</td><td>Reduced defensive capacity</td><td><span class="tag tag-blue">Medium</span></td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Damage Control Priorities</h2>
+<p>In Task Force Admiral, damage control teams are a finite resource that must be prioritised. When multiple damage types occur simultaneously — which they will after a well-executed enemy strike — you must decide what to address first. The priority hierarchy is generally:</p>
+<ol class="guide-list">
+  <li><strong>Fire first:</strong> Uncontrolled fire on a carrier reaches the aviation fuel storage or ordnance magazine, causing catastrophic secondary explosions. The USS Lexington at Coral Sea was destroyed not by the initial torpedo and bomb hits but by fires that ignited aviation gasoline vapour hours later.</li>
+  <li><strong>Flooding second:</strong> Torpedo flooding sinks ships slowly but inevitably if not countered-flooded and pumped. Address immediately before the ship develops an uncontrollable list.</li>
+  <li><strong>Engineering third:</strong> A slow carrier is a vulnerable carrier, but it continues to fight. Restore speed when fires and flooding are under control.</li>
+  <li><strong>Flight deck last:</strong> If you have controlled fires and flooding, deck repair can wait until the immediate threat has passed.</li>
+</ol>
+
+<div class="callout mono">
+  <div class="callout-title">The Abandonment Decision</div>
+  <p>In some scenarios, a carrier will reach a state where continued operation is impossible and loss is inevitable. Recognising this moment and ordering the crew to abandon ship — rather than continuing to fight a losing battle with a crippled vessel — is not a defeat but a command decision. The crew who survive can fight again. A carrier that explodes with all hands because its captain refused to accept the inevitable is a greater loss than an orderly abandonment and scuttling.</p>
+</div>
+</section>
+
+<!-- ═══════════════ S11 ═══════════════ -->
+<section class="section" id="s11">
+<span class="sec-num">// CHAPTER 11 //</span>
+<h2 class="section-title">Aircraft of the Air Groups — Know Your Weapons</h2>
+
+<div class="hist-fact">
+  <p>The Mitsubishi A6M Zero fighter was, at the start of the Pacific War, the finest carrier-based fighter in the world. It was faster than any Allied carrier fighter, had a range of over 1,600 miles, and was supremely manoeuvrable. Its weakness was structural fragility — it achieved its extraordinary performance by eliminating armour protection for the pilot and self-sealing fuel tanks. An American aviator who took it head-on in a turning fight would almost certainly lose. An aviator who dived away at high speed, then zoomed back up for a quick burst, exploited the Zero's poor high-speed roll rate and its tendency to break up under stress. The "Thatch Weave" — a two-plane defensive tactic developed by Lieutenant Commander John Thach — gave Wildcat pilots a fighting chance against superior Zero numbers.</p>
+  <span class="source">// TACTICAL INTELLIGENCE BULLETIN · FIGHTER DOCTRINE DEVELOPMENT · 1942 //</span>
+</div>
+
+<p>Task Force Admiral models over 40 aircraft types with accurate performance characteristics. Understanding what each aircraft can and cannot do determines how you deploy them, what missions you assign, and how much you can expect from your air groups in a given tactical situation.</p>
+
+<h2 class="sub-title">American Aircraft (1942)</h2>
+<div class="unit-grid">
+  <div class="unit-card">
+    <div class="unit-card-name">F4F Wildcat</div>
+    <span class="unit-card-type">FIGHTER · USN/USMC · GRUMMAN</span>
+    <p>The standard American carrier fighter of 1942. Inferior to the Zero in manoeuvre, climb, and range. Superior in dive speed, structural strength, and pilot survivability. Fly the Thatch Weave; never turn-fight a Zero. Best used for CAP, strike escort, and boom-and-zoom attacks.</p>
+  </div>
+  <div class="unit-card">
+    <div class="unit-card-name">SBD Dauntless</div>
+    <span class="unit-card-type">DIVE BOMBER / SCOUT · USN · DOUGLAS</span>
+    <p>The workhorse of American carrier aviation. Flew more Pacific War missions than any other aircraft. Excellent accuracy in the dive, good range, reliable. Also functions as the primary search aircraft. Sank more Japanese warships than any other Allied aircraft type.</p>
+  </div>
+  <div class="unit-card">
+    <div class="unit-card-name">TBD Devastator</div>
+    <span class="unit-card-type">TORPEDO BOMBER · USN · DOUGLAS</span>
+    <p>Obsolescent by 1942. Slow, low-flying, and extremely vulnerable to fighters during the long torpedo approach run. Required fighter escort to survive. At Midway, three unescorted Devastator squadrons were essentially destroyed. Despite this, torpedo hits from TBDs that did survive proved deadly. Replaced by the TBF Avenger in late 1942.</p>
+  </div>
+  <div class="unit-card">
+    <div class="unit-card-name">TBF Avenger</div>
+    <span class="unit-card-type">TORPEDO BOMBER · USN · GRUMMAN</span>
+    <p>The Devastator's successor and a vast improvement. Faster, better defended, with a larger bomb and torpedo payload. Made its combat debut at Midway (six aircraft; five were lost in their first attack, but the type proved its potential). Became the standard USN torpedo bomber from late 1942 onward.</p>
+  </div>
+  <div class="unit-card">
+    <div class="unit-card-name">PBY Catalina</div>
+    <span class="unit-card-type">PATROL / MARITIME RECONNAISSANCE · USN</span>
+    <p>Long-range flying boat patrol aircraft. Crucial for long-distance ocean search missions extending beyond carrier-based aircraft range. Not a combat aircraft in any conventional sense, but invaluable for finding the enemy at extreme distances. Historically, a PBY crew's discovery of the Japanese fleet before Midway was one of the most important sightings of the Pacific War.</p>
+  </div>
+  <div class="unit-card">
+    <div class="unit-card-name">B-17 Flying Fortress</div>
+    <span class="unit-card-type">STRATEGIC BOMBER (LAND-BASED) · USAAF</span>
+    <p>Available in some scenarios via land-based air support. Effective at high altitude against fixed targets; largely ineffective against manoeuvring ships, despite enormous expenditure of ordnance at Midway. At Midway, 56 B-17 sorties were flown against Japanese ships; no hits were scored on moving warships.</p>
+  </div>
+</div>
+
+<h2 class="sub-title">Japanese Aircraft Threats</h2>
+<div class="unit-grid">
+  <div class="unit-card">
+    <div class="unit-card-name">A6M Zero</div>
+    <span class="unit-card-type">FIGHTER · IJN · MITSUBISHI</span>
+    <p>Dominant fighter of 1942. Do not turn-fight it with your Wildcats. Deploy in CAP and escort roles and exploit its weaknesses: poor high-speed roll, structural fragility under stress, no armour or self-sealing tanks. CAP fighters should use diving attack, then disengage — never commit to a prolonged turning engagement.</p>
+  </div>
+  <div class="unit-card">
+    <div class="unit-card-name">D3A Val</div>
+    <span class="unit-card-type">DIVE BOMBER · IJN · AICHI</span>
+    <p>The Japanese equivalent of the Dauntless and equally dangerous. Fixed undercarriage and relatively slow, but highly accurate in the dive. Sank more Allied ships than any other Axis aircraft type in the Pacific. A well-coordinated Val attack against your carriers is a serious threat that your CAP must intercept high.</p>
+  </div>
+  <div class="unit-card">
+    <div class="unit-card-name">B5N Kate</div>
+    <span class="unit-card-type">TORPEDO BOMBER · IJN · NAKAJIMA</span>
+    <p>The Japanese torpedo bomber and the primary instrument of the Pearl Harbor attack. Larger payload than the Devastator, more robust than it looks. Approaches similarly — low and slow — but with better performance numbers. Multiple torpedo hits from coordinated Kate attacks sank the USS Lexington, USS Yorktown (temporarily), and many other ships.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">★ &nbsp; ★ &nbsp; ★</div>
+
+<!-- ═══════════════ S12 ═══════════════ -->
+<section class="section" id="s12">
+<span class="sec-num">// CHAPTER 12 //</span>
+<h2 class="section-title">Ship Classes & Roles — Your Fleet Composition</h2>
+
+<div class="hist-fact">
+  <p>The heavy cruisers of the 1942 Pacific War were not merely escorts — they were weapons platforms in their own right, carrying catapult-launched floatplane scouts that extended a task force's search and spotting capability considerably. In the night battles around Guadalcanal that followed Midway, these same cruisers became the primary surface combatants as both sides fought brutal torpedo-and-gun engagements in the confined waters of Ironbottom Sound. The cruiser Pensacola, Minneapolis, New Orleans, and Northampton were all damaged or sunk in the November–December 1942 night battles. A cruiser admiral knew he was never far from danger, day or night.</p>
+  <span class="source">// CRUISER DIVISION HISTORIES · PACIFIC FLEET · 1942–1943 //</span>
+</div>
+
+<p>Task Force Admiral models over 90 ship classes, from fleet carriers to destroyers. Understanding each class's role allows you to form your task force intelligently and deploy its elements to their best advantage.</p>
+
+<h2 class="sub-title">American Ship Classes</h2>
+<table class="data-table">
+  <thead><tr><th>Class</th><th>Role</th><th>Task Force Function</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Fleet Carrier (CV)</strong><br><small>Yorktown, Lexington, Enterprise, Hornet, Saratoga</small></td><td>Primary air operations platform</td><td>The reason everything else exists. Protect at all costs. Carriers are the decisive weapon.</td></tr>
+    <tr><td><strong>Light Carrier (CVL)</strong></td><td>Supplementary air operations</td><td>Provides additional air group capacity at lower cost in screening resources.</td></tr>
+    <tr><td><strong>Heavy Cruiser (CA)</strong><br><small>Astoria, Minneapolis, Vincennes, Pensacola classes</small></td><td>Anti-surface, anti-air, screening</td><td>Primary surface combatant; floatplane scouts extend search capability; AA screen for carriers.</td></tr>
+    <tr><td><strong>Light Cruiser (CL)</strong></td><td>Anti-aircraft, screening</td><td>AA screen; destroyer leader; secondary surface combatant.</td></tr>
+    <tr><td><strong>Destroyer (DD)</strong></td><td>Anti-submarine, torpedo attack, screening</td><td>ASW screen around carriers; torpedo attack in surface engagements; picket duty.</td></tr>
+    <tr><td><strong>Oiler (AO)</strong></td><td>Fleet replenishment</td><td>Extends task force operational radius; extremely vulnerable; always keep well back from surface action.</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">The Screening Formation</h2>
+<p>In task force formation, your carriers occupy the centre and your screening vessels — cruisers and destroyers — form a protective ring around them. This ring serves multiple functions simultaneously: anti-submarine sonar pickets, anti-aircraft gun platforms, and the first defensive line against surface threats. The geometry of this screen is not cosmetic; it affects how effective each element is at its assigned role.</p>
+<p>In Task Force Admiral, your formation affects how effectively your escort ships can engage enemy aircraft, how quickly they can respond to submarine contacts, and how much sea room your carriers have to manoeuvre into the wind for flight operations. A loosely formed task force is more flexible but less defensible; a tight formation maximises AA coverage but reduces manoeuvre room.</p>
+</section>
+
+<div class="orn">★ &nbsp; ★ &nbsp; ★</div>
+
+<!-- ═══════════════ S13 ═══════════════ -->
+<section class="section" id="s13">
+<span class="sec-num">// CHAPTER 13 //</span>
+<h2 class="section-title">Task Force Formation & Navigation</h2>
+
+<p>Your task force moves as a unit, but the relationship between carriers and their escorts constantly shifts based on operational requirements. The most fundamental of these requirements is <strong>flight operations</strong>, which demand that your carriers maintain a steady course into the wind during aircraft launch and recovery.</p>
+
+<h2 class="sub-title">Wind and Flight Operations</h2>
+<p>Aircraft carriers launch and recover aircraft into the wind — not because of tradition but because relative wind over the flight deck reduces the aircraft's required airspeed for takeoff and landing. A carrier steaming at 25 knots into a 10-knot wind has 35 knots of wind over the deck. This is critical for heavily loaded strike aircraft that need every knot of relative wind they can get.</p>
+<p>In Task Force Admiral, this means that whenever you are launching or recovering aircraft, you are constrained to a course that puts the wind across your bow. If the wind is from the east, you must steam east during flight operations — regardless of whether that course takes you toward the enemy or away from the safety of cloud cover. This constraint is a tactical reality that the enemy knows about and can exploit.</p>
+
+<div class="callout">
+  <div class="callout-title">Tactical Principle — Wind as a Tactical Factor</div>
+  <p>Before planning any operation, check the wind. Your carriers will need to turn into wind for launch and recovery — calculate when and where that will be, and ensure that heading does not take you into enemy attack range during a vulnerable period. Experienced admirals planned their task force course to bring them to a favourable position relative to the enemy at exactly the moment their strike could launch.</p>
+</div>
+
+<h2 class="sub-title">Task Force Speed and Positioning</h2>
+<p>Your task force's speed determines how rapidly you can reposition between engagements, how quickly you can close the range for a strike, and how well you can evade a pursuing enemy force. Slow ships constrain your entire force to their speed. In 1942, an American carrier task force typically steamed at 25–30 knots when operational conditions permitted. This speed allowed aggressive repositioning between dawn and the first contact reports — a window that experienced players use to close the range before the enemy finds them.</p>
+
+<h2 class="sub-title">Night Operations and Course Changes</h2>
+<p>After dark, aircraft operations cease on both sides. This creates a window of relative safety in which you can manoeuvre your task force without risk of air attack. The most important decisions about your position at dawn are made during the night. Many experienced players spend the night transit phase planning their dawn search, strike, and CAP orders so they are ready to execute the moment light permits.</p>
+</section>
+
+<div class="orn">★ &nbsp; ★ &nbsp; ★</div>
+
+<!-- ═══════════════ S14 ═══════════════ -->
+<section class="section" id="s14">
+<span class="sec-num">// CHAPTER 14 //</span>
+<h2 class="section-title">Weather & the Pacific Environment</h2>
+
+<div class="hist-fact">
+  <p>Weather was not a neutral backdrop to Pacific carrier battles — it was an active participant. At the Coral Sea, the Japanese carrier Zuikaku escaped destruction entirely by sheltering under a rain squall as American dive bombers were setting up their attack runs. The planes from USS Lexington that found Shokaku could not locate Zuikaku despite knowing her approximate position; the squall rendered her effectively invisible. Zuikaku's survival, and the consequent loss of her aircraft complement at Coral Sea, meant she was absent from Midway — a battle where four carriers instead of two might have produced a very different outcome.</p>
+  <span class="source">// NAVAL WEATHER SERVICE ANALYSIS · CORAL SEA ENGAGEMENT · MAY 1942 //</span>
+</div>
+
+<p>The Pacific Ocean in 1942 was not the placid blue expanse of peacetime travel photographs. Tropical weather systems produced squalls, reduced visibility, heavy cloud cover, and sea states that complicated flight operations. Task Force Admiral models weather as a genuine tactical factor that affects every aspect of your operations.</p>
+
+<h2 class="sub-title">Weather Effects on Operations</h2>
+<table class="data-table">
+  <thead><tr><th>Weather Condition</th><th>Effect on Air Operations</th><th>Effect on Surface Operations</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Clear skies, calm sea</strong></td><td>Maximum visibility; ideal for search and attack; no cover from enemy search</td><td>Best AA accuracy; no concealment; maximum radar range</td></tr>
+    <tr><td><strong>Scattered cloud</strong></td><td>Some concealment; reduced bombing accuracy in heavy cloud patches</td><td>Minimal effect; occasional radar interference</td></tr>
+    <tr><td><strong>Rain squall</strong></td><td>Severe visibility reduction; bombs and searches highly degraded</td><td>Speed possible; radar partially degraded; fire control reduced</td></tr>
+    <tr><td><strong>Heavy overcast</strong></td><td>Difficult search; dive bombing from cloud cover possible (high-to-low attack)</td><td>Surface radar advantage increases relative to visual-range aircraft</td></tr>
+    <tr><td><strong>High seas</strong></td><td>Flight deck operations complicated; some aircraft unable to operate</td><td>Light ships' speed and comfort affected; damage risk from waves</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Using Weather Tactically</h2>
+<p>Weather creates opportunities as well as limitations. A rain squall that conceals your fleet from enemy search is a tactical asset. Positioning your task force to enter a weather system during your vulnerable flight operations window buys time and protection. Conversely, weather between your strike aircraft and the enemy reduces bombing accuracy — sometimes to the point where a strike on a weather-covered target is not worth the losses your aircraft will take in making the approach.</p>
+
+<p>Before committing to any major operation, assess the weather in the operational area. If the enemy fleet is sheltering in poor visibility, your dive bombers will struggle to find and hit it. In such cases, a reduced search commitment to confirm the enemy's presence, followed by a delayed strike timed to coincide with improving conditions, often produces better results than an immediate but ineffective attack.</p>
+</section>
+
+<div class="orn">★ &nbsp; ★ &nbsp; ★</div>
+
+<!-- ═══════════════ S15 ═══════════════ -->
+<section class="section" id="s15">
+<span class="sec-num">// CHAPTER 15 //</span>
+<h2 class="section-title">The Battle of the Coral Sea — Scenario Analysis</h2>
+
+<div class="hist-fact">
+  <p>The Battle of the Coral Sea, fought May 7–8, 1942, was the first naval battle in history where opposing fleets never saw each other. Every blow was struck by carrier aircraft. When it ended, America had lost the fleet carrier Lexington, a destroyer, and a fleet oiler; Japan had lost the light carrier Shoho and suffered damage to Shokaku severe enough to remove her from the Midway operation. Both sides claimed victory; both were at least partially right. But the strategic consequence was unambiguous: Japan's invasion of Port Moresby, which would have threatened Australia, was turned back. The strategic war in the Pacific had changed direction for the first time.</p>
+  <span class="source">// PACIFIC WAR STRATEGIC ASSESSMENT · COMMANDER IN CHIEF PACIFIC FLEET //</span>
+</div>
+
+<p>The Coral Sea scenario is typically the first engagement in Task Force Admiral's current build and functions as the game's primary tutorial environment (though formal tutorials are still in development). Understanding the historical situation helps you understand the tactical challenges the scenario presents.</p>
+
+<h2 class="sub-title">Historical Situation — May 7–8, 1942</h2>
+<p><strong>American forces:</strong> Task Force 17 under Rear Admiral Frank Jack Fletcher, built around fleet carriers USS Lexington (CV-2) and USS Yorktown (CV-5). Combined air group of approximately 140 aircraft, including F4F Wildcats, SBD Dauntlesses, and TBD Devastators.</p>
+<p><strong>Japanese forces:</strong> Carrier Division 5 under Rear Admiral Takeo Takagi, built around fleet carriers Shokaku and Zuikaku — the newest and most powerful carriers in the Japanese fleet. Light carrier Shoho under Vice Admiral Inoe's invasion covering force. Combined air strength superior in aircraft numbers and aircrew experience.</p>
+
+<div class="phase-block phase-early">
+  <div class="phase-title">May 7 — The Opening Day</div>
+  <p>Both sides made significant search errors on May 7. Japanese scouts misidentified the fleet oiler Neosho and her escort as a carrier and cruiser — and sent their entire strike force against these minor vessels, sinking both but wasting their attack on the wrong targets. American forces found and sank the Japanese light carrier Shoho in a coordinated attack. "Scratch one flattop!" became the most famous signal of the Coral Sea battle.</p>
+</div>
+
+<div class="phase-block phase-mid">
+  <div class="phase-title">May 8 — The Decisive Engagement</div>
+  <p>Both sides launched maximum strikes simultaneously. Weather played a critical role: Shokaku and Zuikaku were operating in different visibility conditions. Shokaku took three bomb hits from Yorktown's air group and was forced to retire. Zuikaku sheltered in a rain squall and was untouched. The Japanese struck both American carriers: Lexington took two torpedo hits and three bomb hits; Yorktown took one bomb hit. Lexington seemed to recover, but aviation fuel vapour ignited internally hours later, causing devastating fires that forced her abandonment and scuttling.</p>
+</div>
+
+<h2 class="sub-title">Scenario Strategy — American Player</h2>
+<p>The Coral Sea scenario presents the American player with a fundamental lesson in the cost of split focus. Your objective is to turn back the Port Moresby invasion, which means sinking or disabling enough of the covering carrier force to make the Japanese abort. You do not need to destroy both fleet carriers — forcing Shokaku out of action achieves your objective.</p>
+<ul class="guide-list">
+  <li><strong>Dawn search priority:</strong> Your first search must cover the northeastern sectors where the Japanese carriers are most likely positioned. Use SBDs from both carriers in a fan pattern, timing return for mid-morning to allow processing time before launching strikes.</li>
+  <li><strong>Weather awareness:</strong> The historical Zuikaku rain squall may repeat in your playthrough. Factor weather conditions into your targeting decisions. Hitting a weather-covered carrier requires better planning than hitting one in the open.</li>
+  <li><strong>Protect Lexington:</strong> Lexington's survival is a key personal objective. She is a magnificent ship and a powerful weapon. Her damage control is capable of surviving torpedo and bomb hits if you manage fires aggressively. Keep her at speed whenever possible — a slow carrier is easier to hit and to burn.</li>
+  <li><strong>The Shoho opportunity:</strong> The light carrier Shoho with the invasion covering force is the most vulnerable Japanese carrier in the scenario. Sinking her eliminates Japanese air support for the invasion fleet. This can be done on Day 1 while your main carriers search for the fleet carriers.</li>
+</ul>
+
+<div class="callout">
+  <div class="callout-title">Historical Lesson in the Scenario</div>
+  <p>The Coral Sea outcome was a strategic American victory won at significant tactical cost. The tactical cost — Lexington lost, Yorktown damaged — came from fighting at close range against carriers whose air groups were experienced and competently led. The strategic gain — Port Moresby saved, Shokaku and Zuikaku absent from Midway — proved decisive. In Task Force Admiral, achieving the strategic objective while minimising tactical losses is the mark of excellent play.</p>
+</div>
+</section>
+
+<div class="orn">★ &nbsp; ★ &nbsp; ★</div>
+
+<!-- ═══════════════ S16 ═══════════════ -->
+<section class="section" id="s16">
+<span class="sec-num">// CHAPTER 16 //</span>
+<h2 class="section-title">The Battle of Midway — Scenario Analysis</h2>
+
+<div class="hist-fact">
+  <p>At 10:25 a.m. on June 4, 1942, the course of the Second World War changed. SBD Dauntless dive bombers from Enterprise and Yorktown hit three Japanese carriers — Akagi, Kaga, and Soryu — within five minutes. All three were fatally damaged. Hours later, the fourth carrier Hiryu was found and destroyed by a second American strike. In a single day, Japan lost four fleet carriers, 248 aircraft, and most critically, the experienced aircrew that had formed the backbone of Japanese naval air power since 1937. The carriers could be replaced; the pilots could not. The Imperial Japanese Navy never recovered offensive initiative in the Pacific.</p>
+  <span class="source">// BATTLE OF MIDWAY OFFICIAL HISTORY · SAMUEL ELIOT MORISON //</span>
+</div>
+
+<p>Midway is Task Force Admiral's most historically significant and most dramatically demanding scenario. The American player arrives with a decisive intelligence advantage — the codebreakers of Station HYPO have revealed the Japanese plan — but faces a carrier force that substantially outnumbers them in aircraft and aircrew experience. Victory requires converting intelligence advantage into tactical surprise before the Japanese locate your fleet and use their numerical superiority.</p>
+
+<h2 class="sub-title">The American Situation — June 4, 1942</h2>
+<p><strong>American forces:</strong> Task Force 16 under Rear Admiral Raymond Spruance (USS Enterprise CV-6, USS Hornet CV-8) and Task Force 17 under Rear Admiral Frank Jack Fletcher (USS Yorktown CV-5). Total aircraft approximately 233, including the air group from Midway island itself.</p>
+<p><strong>Japanese forces:</strong> The First Mobile Force (Kido Butai) under Vice Admiral Chuichi Nagumo, consisting of fleet carriers Akagi, Kaga, Soryu, and Hiryu with approximately 248 aircraft. The entire Japanese Combined Fleet is in the area, including Yamamoto's Main Body with battleships and additional cruisers — but these surface units play no role in the carrier battle.</p>
+
+<h2 class="sub-title">The Intelligence Advantage and Its Limits</h2>
+<p>You know where the Japanese fleet is going and approximately when it will arrive. This is an extraordinary advantage. But intelligence advantage only wins battles if it is translated into tactical action before the enemy reacts. The Japanese know they are attacking Midway. They do not know you are there. Every hour before they find your carriers is an hour to position, search, and prepare to strike first.</p>
+
+<div class="phase-block phase-early">
+  <div class="phase-title">First Light — The Critical Window</div>
+  <p>Your task forces should be in position northeast of Midway before dawn, at approximately 200 miles from the Japanese fleet's anticipated position. The first wave of Japanese aircraft will attack Midway's airfield around 0630; this attack will reveal the precise position of the Japanese carriers to any search aircraft you have in the area. Launch your dawn search sector specifically to confirm the Japanese position when the Midway strike departs — their carriers must turn into wind to launch, which fixes their position momentarily.</p>
+</div>
+
+<div class="phase-block phase-mid">
+  <div class="phase-title">The Strike Decision</div>
+  <p>When the Japanese position is confirmed, the strike decision mirrors Spruance's historical dilemma: launch now at extreme range (high attrition on return) or close the range and risk being found? The historical answer — launch immediately with everything available — exploits the critical window when Japanese decks are crowded with aircraft being re-armed for a second strike against Midway. A strike that arrives during this re-arming window finds carriers in their most vulnerable state. A strike that arrives 30 minutes later finds carriers launching their own attack aircraft, with cleared decks and fully alerted crews.</p>
+</div>
+
+<div class="phase-block phase-late">
+  <div class="phase-title">Managing the Counter-Strike</div>
+  <p>After your strike lands, the surviving Japanese carriers — particularly Hiryu — will launch counter-strikes immediately. Hiryu's two strikes historically found and crippled USS Yorktown. In Task Force Admiral, managing your CAP disposition during this period is critical. Your carriers that participated in the first strike have reduced CAP capability because their fighters are returning from escort duties. Scramble every available fighter and position your CAP aggressively between your fleet and the Japanese position to the northwest.</p>
+</div>
+
+<h2 class="sub-title">Scenario Victory Conditions</h2>
+<p>Victory at Midway in Task Force Admiral requires destroying the Japanese carrier force while preserving your own. Sinking all four carriers wins decisively; sinking three wins a major victory; sinking two produces a draw at best. Losing Yorktown is a tactical defeat but strategically acceptable if the Japanese carrier force is destroyed. Losing Enterprise or Hornet represents a catastrophic outcome that may prevent completion of the victory conditions.</p>
+
+<div class="callout green">
+  <div class="callout-title">The Torpedo Squadron Sacrifice</div>
+  <p>In the historical battle, the three torpedo bomber squadrons — VT-3, VT-6, and VT-8 — pressed home their attacks with extreme courage against overwhelming opposition, suffering devastating losses while scoring no torpedo hits. Their attacks drew the Japanese CAP down to low altitude and concentrated their attention on the torpedo threat. This left the skies above the carriers clear when McClusky's and Leslie's dive bombers arrived moments later. In Task Force Admiral, accepting losses among your torpedo bombers as the price of drawing off enemy CAP is not a failure — it is doctrine.</p>
+</div>
+</section>
+
+<div class="orn">★ &nbsp; ★ &nbsp; ★</div>
+
+<!-- ═══════════════ S17 ═══════════════ -->
+<section class="section" id="s17">
+<span class="sec-num">// CHAPTER 17 //</span>
+<h2 class="section-title">Hypothetical Variants — The Roads Not Taken</h2>
+
+<div class="hist-fact">
+  <p>History is full of counterfactuals in 1942. What if Shokaku and Zuikaku had not been damaged at Coral Sea and were available for Midway — giving Japan six carriers against three? What if Admiral Nagumo had ordered the second wave against American ships instead of re-arming for a second Midway strike? What if the Yorktown had been sunk at Coral Sea and only Enterprise and Hornet faced the Kido Butai at Midway? Military historians have debated these questions for eighty years. Task Force Admiral puts them directly in your hands.</p>
+    <span class="source">// WHAT IF: PACIFIC WAR COUNTERFACTUALS · MULTIPLE HISTORIANS //</span>
+</div>
+
+<p>Each historical scenario in Task Force Admiral comes with variant versions that alter the historical conditions: different carrier compositions, different intelligence situations, or different opening positions. These variants are not merely difficulty adjustments — they are genuine historical counterfactuals that explore how differently the battles might have gone under slightly different circumstances.</p>
+
+<h2 class="sub-title">Current Variant Scenarios</h2>
+<table class="data-table">
+  <thead><tr><th>Variant</th><th>Historical Change</th><th>Strategic Implication</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Cranes, Patriots, and Friends</strong></td><td>Additional Japanese carriers at Coral Sea beyond Shokaku and Zuikaku</td><td>Japanese numerical superiority is even greater; American survival and objective achievement requires exceptional play</td></tr>
+    <tr><td><strong>Fortress Midway</strong></td><td>Standard Midway scenario with variant starting conditions</td><td>Core Midway scenario; tests standard historical doctrine</td></tr>
+    <tr><td><strong>Busy Morning at Point Luck</strong></td><td>Midway scenario where Japanese find American carriers in time</td><td>America loses its intelligence advantage; both sides launch simultaneously; outcome depends entirely on tactical skill</td></tr>
+    <tr><td><strong>Busy Morning (Hard)</strong></td><td>Japanese detect Americans early</td><td>The hardest variant; American player must fight a symmetrical engagement without positional advantage</td></tr>
+    <tr><td><strong>The Flight to Somewhere?</strong></td><td>Kakuta's Second Mobile Unit (Aleutian force) redirected to Midway</td><td>Japanese have additional carriers; American carriers face potentially six opponents rather than four</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Playing the Variants</h2>
+<p>The variant scenarios reveal the fragility of historical outcomes. The American victory at Midway was not inevitable — it required the precise alignment of intelligence advantage, poor Japanese search planning, American tactical courage, and a significant element of fortune. The variants strip away one or more of these advantages and test whether tactical skill alone can produce victory against a superior force. They are excellent tools for developing the advanced doctrines covered in Chapter 21.</p>
+</section>
+
+<div class="orn">★ &nbsp; ★ &nbsp; ★</div>
+
+<!-- ═══════════════ S18 ═══════════════ -->
+<section class="section" id="s18">
+<span class="sec-num">// CHAPTER 18 //</span>
+<h2 class="section-title">The Battle Generator — Creating Your Own Engagements</h2>
+
+<p>The Battle Generator allows you to create semi-randomised carrier engagements using the same ship and aircraft assets as the historical scenarios, within the same operational environments. This is Task Force Admiral's sandbox mode — a way to explore carrier warfare mechanics outside the constraints of specific historical scenarios.</p>
+
+<h2 class="sub-title">What the Generator Provides</h2>
+<ul class="guide-list">
+  <li><strong>Variable task force compositions:</strong> Different carrier and escort combinations create different tactical situations with different strengths and limitations.</li>
+  <li><strong>Random starting positions:</strong> Unlike the historical scenarios where starting positions are fixed, the generator places forces at various distances and bearings, requiring genuine search planning rather than scenario-knowledge shortcuts.</li>
+  <li><strong>Adjustable parameters:</strong> Scale the scenario to your available time and desired complexity.</li>
+  <li><strong>Stability advantage:</strong> Community testing has found that generator scenarios tend to be more stable than the standalone historical scenarios in the current build, with fewer bugs and more reliable execution of orders.</li>
+</ul>
+
+<h2 class="sub-title">Using the Generator for Learning</h2>
+<p>The Battle Generator is excellent for developing specific skills in isolation. If you want to practise CAP management without the pressure of a specific historical outcome, generate a scenario and focus exclusively on your defensive setup. If you want to practise strike coordination, generate a scenario specifically to work on the timing and composition of your attacks. The generator's randomised starting conditions ensure you cannot rely on scenario-knowledge; you must use genuine tactical reasoning.</p>
+
+<div class="callout">
+  <div class="callout-title">Recommended Learning Sequence</div>
+  <p>New players: Start with a Battle Generator scenario before the historical missions. Familiarise yourself with the interface, the search system, and the basic strike-planning flow without the pressure of replicating historical outcomes. Once comfortable, move to the Coral Sea historical scenario. After mastering that, advance to Midway.</p>
+</div>
+</section>
+
+<div class="orn">★ &nbsp; ★ &nbsp; ★</div>
+
+<!-- ═══════════════ S19 ═══════════════ -->
+<section class="section" id="s19">
+<span class="sec-num">// CHAPTER 19 //</span>
+<h2 class="section-title">Early Game Strategy — The Dawn Watch</h2>
+
+<p>Every scenario in Task Force Admiral begins at approximately the same phase of operations: pre-dawn, with both fleets in motion toward a general contact area and the critical decisions of the coming day still unmade. The actions you take in this opening window — before first light, before the first search returns, before the first radar contact — set the conditions for everything that follows.</p>
+
+<h2 class="sub-title">Pre-Dawn Priorities</h2>
+<div class="phase-block phase-early">
+  <div class="phase-title">Priority 1 — Review the Weather</div>
+  <p>Before any other planning decision, open the weather display and note conditions in the operational area. Is there a front moving through? Are there squalls that might conceal the enemy — or conceal your fleet? Where is the wind and from which direction? The wind determines which course your carriers must maintain during flight operations, which in turn determines your approach vectors. Plan around the weather, not despite it.</p>
+</div>
+
+<div class="phase-block phase-early">
+  <div class="phase-title">Priority 2 — Plot the Enemy's Most Probable Position</div>
+  <p>Using the intelligence briefing's last-known position, speed, and course data, calculate where the enemy fleet is most likely to be at first light. Add your uncertainty margin — at least 30–40 miles in all directions from the calculated position. The centre of this uncertainty area is your primary search target. The edges of it define your search arc's required coverage.</p>
+</div>
+
+<div class="phase-block phase-mid">
+  <div class="phase-title">Priority 3 — Plan and Pre-Set the Dawn Search</div>
+  <p>Programme your search orders before first light. Assign aircraft types, quantities, sectors, ranges, and departure times. Have everything ready to execute the moment conditions permit. Dawn is the critical launch window — aircraft that depart at first light can cover maximum distance in daylight and return before dark. A search that departs an hour late may find the enemy an hour too late for an effective strike.</p>
+</div>
+
+<div class="phase-block phase-mid">
+  <div class="phase-title">Priority 4 — Establish Initial CAP</div>
+  <p>As dawn breaks, your first CAP rotation must be in the air. You do not know where the enemy strike will come from yet; your CAP should be set to cover the most likely approach sectors based on the enemy's estimated position. Be ready to scramble reserves immediately when a contact report arrives.</p>
+</div>
+
+<h2 class="sub-title">The First Contact Report</h2>
+<p>The moment a scout reports an enemy contact, time becomes critical. The clock on a useful strike window — before the enemy finds your fleet, before they can re-spot their decks, before they can take defensive action — is running. The key decisions to make immediately upon first contact:</p>
+<ul class="guide-list">
+  <li><strong>Is the report recent enough to be reliable?</strong> How long ago was the contact made? How far has the enemy moved since then?</li>
+  <li><strong>Is the strike package ready?</strong> Are your attack aircraft on deck, armed, fuelled, and ready to launch? If not, launch immediately and accept minor delay — do not wait for optimal conditions while the window closes.</li>
+  <li><strong>What is the range?</strong> Can your aircraft reach the target, attack, and return with adequate fuel reserves? Pushing range to the limit is sometimes necessary — but know what you are accepting when you do it.</li>
+</ul>
+</section>
+
+<div class="orn">★ &nbsp; ★ &nbsp; ★</div>
+
+<!-- ═══════════════ S20 ═══════════════ -->
+<section class="section" id="s20">
+<span class="sec-num">// CHAPTER 20 //</span>
+<h2 class="section-title">The Decisive Engagement — Winning the Battle</h2>
+
+<div class="hist-fact">
+  <p>The destruction of the Kido Butai at Midway took approximately five minutes for the first three carriers and several hours for the fourth. But the preparation for those five minutes had taken months: months of codebreaking, months of training, months of recovery from Pearl Harbor, and the accumulated decisions of every previous engagement of the Pacific War. The decisive engagement was the product of everything that came before it. When McClusky's bombers found the Japanese carriers, they were in the right place at the right time because every preceding decision had been correct — or correct enough.</p>
+    <span class="source">// MIDWAY AFTERMATH ASSESSMENT · ADMIRAL CHESTER W. NIMITZ //</span>
+</div>
+
+<p>The decisive engagement in Task Force Admiral is the moment when your strike reaches the enemy carriers. Everything before this was preparation; everything after this is consequence. Managing this moment correctly determines whether your planning is rewarded with a decisive blow or wastes away in a confused melee.</p>
+
+<h2 class="sub-title">The Strike's Arrival</h2>
+<p>When your strike reaches the target area, several things happen simultaneously:</p>
+<ul class="guide-list">
+  <li>Dive bombers begin climbing to attack altitude, setting up their approach runs</li>
+  <li>Torpedo bombers begin their long, low approach toward the enemy fleet</li>
+  <li>Enemy CAP fighters vector to intercept</li>
+  <li>Enemy AA fire begins tracking aircraft</li>
+  <li>Enemy carriers begin manoeuvring to present their sterns to torpedo approach angles</li>
+</ul>
+<p>The geometry of this moment determines how many hits you score. A simultaneous coordinated arrival — torpedo planes from one vector, dive bombers from above — creates a targeting dilemma for the defence. A sequential arrival — torpedoes arriving three minutes before dive bombers — gives the defence time to deal with each threat in turn.</p>
+
+<h2 class="sub-title">Concentration of Force</h2>
+<p>Focus your strike on the highest-value target first. At Midway, three carriers struck simultaneously is more valuable than three carriers struck sequentially; a crippled carrier can still defend, while a destroyed one cannot strike back. If you have enough aircraft to saturate one carrier's defences completely, do so — ensure that carrier cannot operate aircraft — then move to the next.</p>
+
+<h2 class="sub-title">Exploiting a Hit</h2>
+<p>The moment a carrier is hit — flight deck damaged, fires burning, speed reduced — it becomes more vulnerable to follow-up attacks. A carrier struggling with damage cannot manoeuvre freely; its AA battery may be reduced; its CAP may be disrupted. If you have aircraft available for a follow-up strike while the first carrier is still in this vulnerable state, use them. The window between the first hit and damage control restoring a carrier to operational status is the best possible strike opportunity.</p>
+</section>
+
+<div class="orn">★ &nbsp; ★ &nbsp; ★</div>
+
+<!-- ═══════════════ S21 ═══════════════ -->
+<section class="section" id="s21">
+<span class="sec-num">// CHAPTER 21 //</span>
+<h2 class="section-title">Advanced Doctrine — Playing at Depth</h2>
+
+<p>Once the fundamental systems are understood, Task Force Admiral's full tactical depth becomes accessible. Advanced play involves not just executing the standard operational cycle correctly, but exploiting every element of the simulation's physics and decision mechanics.</p>
+
+<h2 class="sub-title">The Staggered CAP Rotation</h2>
+<p>As noted in Chapter 6, returning fighters must be replaced immediately to avoid gaps in coverage. Advanced players maintain a three-tier CAP system: one rotation actively patrolling, one returning to refuel, one on standby ready to scramble. Launch timings are staggered so that as one rotation approaches the limits of its endurance, its replacement is already climbing to patrol altitude. This eliminates defensive gaps entirely at the cost of reduced fighter availability for strike escort.</p>
+
+<h2 class="sub-title">The False Contact Problem</h2>
+<p>In fog-of-war conditions, scout reports are not always reliable. Pilots misidentify ships; range estimates are imprecise; a "carrier" may be a cruiser and a "cruiser" may be a destroyer. Advanced players approach contact reports with appropriate scepticism and send a confirming scout or use shadowing aircraft to develop the contact before committing their primary strike. The cost of attacking the wrong target — a scout ship rather than a carrier — is enormous.</p>
+
+<div class="hist-fact">
+  <p>At the Battle of Midway, Lieutenant Howard Ady's PBY Catalina sent the famous contact report: "Two carriers and Main Body." Minutes later, Lieutenant William Chase radioed: "Many planes heading Midway bearing 320 degrees, distance 150." These reports gave Admiral Nimitz the confirmation he needed to commit. But the reports were also imperfect — the "many planes" was the Midway strike, not the entirety of the fleet; the "two carriers" was a portion of a four-carrier force. Acting on partial intelligence, while accounting for its incompleteness, was the art these admirals practised.</p>
+  <span class="source">// MIDWAY COMMUNICATIONS LOG · JUNE 4, 1942 //</span>
+</div>
+
+<h2 class="sub-title">Reserve Management</h2>
+<p>Never commit everything to the first strike. An experienced player maintains reserves in three categories:</p>
+<ol class="guide-list">
+  <li><strong>Fighter reserve:</strong> Always have fighters on standby that can be scrambled immediately. The enemy counter-strike will arrive, and you need something to meet it.</li>
+  <li><strong>Strike reserve:</strong> Hold back a portion of your attack aircraft — perhaps one squadron of dive bombers — for a follow-up strike against damaged targets or any carriers not hit in the first wave.</li>
+  <li><strong>Search reserve:</strong> Maintain at least a minimal search capability throughout the engagement. If the enemy fleet splits, or a new contact appears, you need aircraft to investigate without entirely dismantling your CAP.</li>
+</ol>
+
+<h2 class="sub-title">Asymmetric Search Coverage</h2>
+<p>Standard doctrine sends scouts in a symmetric fan pattern equally distributed across the uncertainty area. Advanced doctrine concentrates the search on the sectors where enemy activity is most probable — based on their objectives, their last reported course, and the logic of their operational plan. If you know the Japanese are planning to strike Midway from the northwest, you do not need equal search coverage in the southeast. Weight your searches intelligently, and accept the risk of thin coverage in low-probability sectors.</p>
+
+<h2 class="sub-title">Post-Strike Management — The Vulnerable Window</h2>
+<p>The period immediately after your strike departs is your most vulnerable moment. Your best fighters are escorting the attack; your dive bombers and torpedo planes are committed and returning in a few hours with spent ammunition; your carriers must turn into wind to receive returning aircraft. This is when an enemy counter-strike will hurt you most. Plan for it: ensure your CAP reserve is in the air before the strike departs, position your task force to minimise exposure during recovery operations, and have your damage control parties at readiness stations.</p>
+</section>
+
+<div class="orn">★ &nbsp; ★ &nbsp; ★</div>
+
+<!-- ═══════════════ S22 ═══════════════ -->
+<section class="section" id="s22">
+<span class="sec-num">// CHAPTER 22 //</span>
+<h2 class="section-title">Common Mistakes — Learning from the Flag Plot</h2>
+
+<div class="hist-fact">
+  <p>Admiral Frank Jack Fletcher at the Battle of Santa Cruz, October 1942, was criticised for turning away from the enemy after USS Hornet was disabled. His critics argued he should have pressed the fight with Enterprise. His defenders countered that he had one carrier remaining and could not afford to lose it on a damaged enemy whose combat power was still substantially intact. The tension between preserving strength and pressing advantage is the eternal dilemma of carrier command, and there is no universally correct answer. What there is, is doctrine — and the judgement to know when to follow it and when to deviate.</p>
+    <span class="source">// BATTLE OF SANTA CRUZ ANALYSIS · NAVAL WAR COLLEGE //</span>
+</div>
+
+<p>The Task Force Admiral community and its veterans have identified a consistent set of mistakes that account for the majority of defeats. Internalising these patterns is the fastest route to competency.</p>
+
+<h2 class="sub-title">The Twelve Fatal Errors</h2>
+
+<div class="phase-block phase-late">
+  <div class="phase-title">Error 1 — Acting on Stale Intelligence</div>
+  <p>Striking at a position that was reported two hours ago without adjusting for enemy movement. Always calculate forward from the report time. At 25 knots, the enemy moves over 50 miles per hour from their last known position.</p>
+</div>
+
+<div class="phase-block phase-late">
+  <div class="phase-title">Error 2 — Uncoordinated Strike Timing</div>
+  <p>Sending torpedo bombers ahead of dive bombers, allowing the enemy to concentrate all defences on one threat type. Use the Strike Information Window to synchronise arrival timing.</p>
+</div>
+
+<div class="phase-block phase-late">
+  <div class="phase-title">Error 3 — Neglecting CAP Rotation</div>
+  <p>Allowing your entire CAP to return for refuelling simultaneously, creating a window of complete carrier exposure. Stagger launches to maintain continuous coverage.</p>
+</div>
+
+<div class="phase-block phase-late">
+  <div class="phase-title">Error 4 — Oversized Patrol Zones</div>
+  <p>Setting your CAP patrol zone too large creates gaps in coverage as fighters transit between position limits. Use a compact, well-positioned patrol zone at mid-range rather than a sprawling maximum-range zone with intermittent coverage.</p>
+</div>
+
+<div class="phase-block phase-late">
+  <div class="phase-title">Error 5 — Committing All Aircraft in One Strike</div>
+  <p>Sending every aircraft means no CAP, no reserve, and no second strike capability. Keep 3–6 fighters on CAP at minimum, always.</p>
+</div>
+
+<div class="phase-block phase-late">
+  <div class="phase-title">Error 6 — Ignoring Wind When Planning Course</div>
+  <p>Planning a course that requires carriers to turn into wind during a vulnerable moment — close to the enemy, during an ongoing enemy strike. Plan your wind calculations as part of every course decision.</p>
+</div>
+
+<div class="phase-block phase-late">
+  <div class="phase-title">Error 7 — Distributing Fire Across Too Many Targets</div>
+  <p>Splitting your strike evenly across all enemy carriers results in each getting a small attack that their defences can handle. Concentrate on destroying one carrier completely before moving to the next.</p>
+</div>
+
+<div class="phase-block phase-late">
+  <div class="phase-title">Error 8 — Neglecting Damage Control</div>
+  <p>Not prioritising fires immediately after your carriers are hit. Aviation fuel fires spread rapidly and kill carriers that a more focused damage control response could have saved.</p>
+</div>
+
+<div class="phase-block phase-late">
+  <div class="phase-title">Error 9 — Poor Search Coverage</div>
+  <p>Sending too few aircraft on search, or covering the wrong sectors based on incorrect enemy movement assumptions. Always err on the side of more search coverage in higher-probability sectors.</p>
+</div>
+
+<div class="phase-block phase-late">
+  <div class="phase-title">Error 10 — Using Time Compression at Critical Moments</div>
+  <p>Running at high time compression when your strike is in the target area, your search is returning, or your CAP is engaging incoming aircraft. Compress time only during transit phases; be at 1x speed for all significant events.</p>
+</div>
+
+<div class="phase-block phase-late">
+  <div class="phase-title">Error 11 — Sending Unescorted Torpedo Bombers</div>
+  <p>Torpedo bombers without fighter escort against a defended target will be destroyed. Always assign a fighter escort element; the losses they prevent save more than the CAP reduction costs.</p>
+</div>
+
+<div class="phase-block phase-late">
+  <div class="phase-title">Error 12 — Waiting for Perfect Information</div>
+  <p>Delaying the strike waiting for a more precise position report, better weather, or a larger force to be ready, while the window of opportunity closes. Good enough information at the right moment beats perfect information an hour too late. Launch when the opportunity is clear.</p>
+</div>
+</section>
+
+<div class="orn">★ &nbsp; ★ &nbsp; ★</div>
+
+<!-- ═══════════════ S23 ═══════════════ -->
+<section class="section" id="s23">
+<span class="sec-num">// CHAPTER 23 //</span>
+<h2 class="section-title">Realism & Difficulty Settings</h2>
+
+<p>One of Task Force Admiral's most player-friendly features is its fully adjustable realism system. The game is designed to be playable as a serious historical simulation or as a more accessible real-time strategy experience, with every dimension of realism independently tunable.</p>
+
+<h2 class="sub-title">Realism Dimensions</h2>
+<table class="data-table">
+  <thead><tr><th>Setting</th><th>Full Simulation</th><th>Accessible Mode</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Fog of War</strong></td><td>Full historical uncertainty; enemy positions unknown without scouting</td><td>Reduced fog; enemy positions more visible; easier to plan strikes</td></tr>
+    <tr><td><strong>Communications Delay</strong></td><td>Orders take realistic time to reach units; reports have realistic delay</td><td>Near-instant order execution and reporting</td></tr>
+    <tr><td><strong>Damage Model</strong></td><td>Full component-level damage with realistic consequences</td><td>Simplified damage; ships more resilient to individual hits</td></tr>
+    <tr><td><strong>Aircraft Reliability</strong></td><td>Realistic mechanical failures, fuel limits, crew fatigue</td><td>Reduced failure rates; longer endurance</td></tr>
+    <tr><td><strong>Enemy AI Competence</strong></td><td>Historically realistic search patterns and strike doctrine</td><td>Reduced AI efficiency; gives player more time to respond</td></tr>
+    <tr><td><strong>Scenario Scripting</strong></td><td>Historical events may trigger as scripted</td><td>Some historical constraints relaxed</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Recommended Starting Configuration</h2>
+<p>For new players, the recommended approach is to begin with fog of war at medium, communications delay reduced but not eliminated, and damage at standard. This preserves the atmosphere and the core fog-of-war tension while removing some of the most punishing aspects of the historical simulation. As proficiency develops, incrementally increase simulation depth — first restore full communications delay, then full fog of war, then full damage modelling. Each step reveals new depth in the game's systems.</p>
+
+<div class="callout green">
+  <div class="callout-title">The Full Simulation Experience</div>
+  <p>Playing at full historical realism settings with full fog of war and communications delay is the most demanding and most rewarding experience Task Force Admiral offers. It is the closest any game has come to replicating what Fletcher and Spruance experienced at the Coral Sea and Midway. The uncertainty, the delayed information, the incomplete picture — these are not game limitations. They are the game. When you finally find the enemy fleet after two hours of searching with incomplete data and launch your strike with no certainty it will arrive at the right place, the tension is unlike anything a modern wargame typically provides.</p>
+</div>
+</section>
+
+<div class="orn">★ &nbsp; ★ &nbsp; ★</div>
+
+<!-- ═══════════════ S24 ═══════════════ -->
+<section class="section" id="s24">
+<span class="sec-num">// CHAPTER 24 //</span>
+<h2 class="section-title">Glossary — Reference Terms for the Carrier Commander</h2>
+
+<div class="gloss-grid">
+  <div class="gloss-item"><div class="gloss-term">Air Group</div><div class="gloss-def">The full complement of aircraft assigned to an individual carrier; typically comprising fighter, dive bomber, and torpedo bomber squadrons.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Battle Generator</div><div class="gloss-def">Task Force Admiral's semi-randomised scenario creation system, producing engagements with variable starting conditions outside the fixed historical scenarios.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Boom and Zoom</div><div class="gloss-def">Fighter tactic: diving attack at high speed, single burst, then climbing away before the enemy can respond. The correct counter-tactic to the Zero's superior maneuverability.</div></div>
+  <div class="gloss-item"><div class="gloss-term">CAP</div><div class="gloss-def">Combat Air Patrol. Fighter aircraft orbiting above the fleet in a defined zone to intercept and engage incoming enemy air attacks before they reach the carriers.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Carrier Division</div><div class="gloss-def">An operational grouping of two or more carriers under a single tactical commander; the building block of carrier task force organisation.</div></div>
+  <div class="gloss-item"><div class="gloss-term">CIC</div><div class="gloss-def">Combat Information Centre. The nerve centre of a warship from which radar contacts, communications, and tactical decisions are managed; the setting of Task Force Admiral's Flag Plot view.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Coral Sea</div><div class="gloss-def">The May 7–8, 1942 carrier battle between American Task Force 17 and Japanese Carrier Division 5; the first naval engagement in history where opposing fleets never came within visual range of each other.</div></div>
+  <div class="gloss-item"><div class="gloss-term">D3A Val</div><div class="gloss-def">Japanese carrier dive bomber (Aichi Type 99). Fixed undercarriage, highly accurate. Primary Japanese ship-killing aircraft in 1941–42; sank more Allied ships than any other Axis aircraft.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Damage Control</div><div class="gloss-def">The active management of battle damage — fighting fires, countering flooding, repairing systems — to maintain a vessel's fighting capability after it has been hit.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Devastator</div><div class="gloss-def">TBD Devastator; the US Navy's standard carrier torpedo bomber in 1941–42. Slow, poorly defended, obsolescent. Famous for the catastrophic losses at Midway, where entire squadrons were destroyed without scoring hits.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Dive Bomber</div><div class="gloss-def">Aircraft that attacks ships by diving steeply toward the target, releasing ordnance at close range. Superior accuracy to horizontal bombing against moving ships; the decisive weapon of 1942 Pacific carrier warfare.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Drydock Dreams</div><div class="gloss-def">The development studio behind Task Force Admiral; founded by veterans of the naval simulation genre with the explicit goal of creating the definitive Pacific carrier warfare simulation.</div></div>
+  <div class="gloss-item"><div class="gloss-term">EMCON</div><div class="gloss-def">Emissions Control. Radio silence doctrine to prevent direction-finding equipment from locating a task force by its radio transmissions. Historically, American carriers maintained radio silence on approach to ambush positions at Midway.</div></div>
+  <div class="gloss-item"><div class="gloss-term">F4F Wildcat</div><div class="gloss-def">Grumman F4F Wildcat; the standard US carrier fighter of 1942. Slower and less manoeuvrable than the Zero but more rugged and better armed. Operated effectively using hit-and-run tactics and the Thatch Weave formation.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Flag Plot</div><div class="gloss-def">The admiral's command space aboard a warship; the first-person command perspective in Task Force Admiral, showing the operational picture as the admiral himself would see it.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Fletcher, Frank Jack</div><div class="gloss-def">Rear Admiral; commander of American carrier forces at Coral Sea and Midway. Commanded Task Force 17 at Coral Sea; overall tactical commander at Midway until transferring command to Spruance after Yorktown was damaged.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Fog of War</div><div class="gloss-def">The uncertainty of the battlefield; in Task Force Admiral, the genuine simulation of intelligence limitations that prevents a player from knowing enemy positions without scouting.</div></div>
+  <div class="gloss-item"><div class="gloss-term">God's Eye View</div><div class="gloss-def">The overhead strategic perspective in Task Force Admiral; a traditional wargame view showing the full operational picture from above.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Henderson Field</div><div class="gloss-def">The airfield on Guadalcanal captured from the Japanese in August 1942, which became the strategic objective of the entire Guadalcanal campaign; planned as a future Task Force Admiral scenario.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Hiryu</div><div class="gloss-def">Japanese fleet carrier; the sole survivor of the first American dive bomber strikes at Midway. Launched two counter-strikes that crippled USS Yorktown before being destroyed herself by a second American strike.</div></div>
+  <div class="gloss-item"><div class="gloss-term">JN-25</div><div class="gloss-def">The Imperial Japanese Navy's operational cipher, partially broken by American codebreakers by May 1942. The intelligence derived from JN-25 breaks provided the advance warning of both the Coral Sea operation and the Midway attack.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Kido Butai</div><div class="gloss-def">"Striking Force" — the Japanese carrier strike force; in 1942, the most powerful concentration of naval air power in the world, comprising up to six fleet carriers and their escorts.</div></div>
+  <div class="gloss-item"><div class="gloss-term">McClusky, Wade</div><div class="gloss-def">Lieutenant Commander; led Enterprise's dive bomber force at Midway. Extended his search beyond briefed limits when the Japanese fleet was not at the expected position; found it by following a destroyer's wake. His decision to press on rather than turn back changed the course of the Pacific War.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Midway</div><div class="gloss-def">The June 4–7, 1942 carrier battle at Midway Atoll; the decisive turning point of the Pacific War in which four Japanese fleet carriers were sunk for the loss of one American carrier.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Nagumo, Chuichi</div><div class="gloss-def">Vice Admiral; commander of the Kido Butai at Pearl Harbor, Coral Sea, and Midway. His decision to re-arm his strike aircraft for a second Midway strike at the critical moment of June 4, 1942, contributed directly to the catastrophic Japanese defeat.</div></div>
+  <div class="gloss-item"><div class="gloss-term">PBY Catalina</div><div class="gloss-def">Consolidated PBY Catalina; long-range US Navy patrol flying boat. Crucial for extended ocean search; the PBY crews that spotted the Japanese fleet before Midway were among the most important scouts of the Pacific War.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Point Luck</div><div class="gloss-def">The code name for the American carrier rendezvous point northeast of Midway where Enterprise, Hornet, and Yorktown assembled before the battle; the location of the American ambush.</div></div>
+  <div class="gloss-item"><div class="gloss-term">SBD Dauntless</div><div class="gloss-def">Douglas SBD Dauntless; primary US carrier scout/dive bomber. Sank more Japanese shipping than any other Allied aircraft; the decisive weapon of the Midway battle. Often described as the aircraft that won the Pacific War.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Scramble</div><div class="gloss-def">Emergency launch of aircraft in response to an inbound threat; fighters on standby scramble to reinforce the active CAP when a strike is detected inbound.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Search Pattern</div><div class="gloss-def">The planned coverage arc for a reconnaissance mission; defined by direction, angular width, range, and aircraft count to systematically search a defined area of ocean.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Shadowing</div><div class="gloss-def">The tactic of keeping a scout aircraft in contact with a detected enemy force to provide continuous position updates; risks the scout being shot down by enemy CAP but provides invaluable ongoing intelligence.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Shoho</div><div class="gloss-def">Japanese light carrier sunk during the Coral Sea battle on May 7, 1942; the first Japanese carrier sunk by US forces. The famous sighting report "Scratch one flattop!" commemorates her destruction.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Shokaku</div><div class="gloss-def">Japanese fleet carrier; part of Carrier Division 5 with Zuikaku. Heavily damaged at Coral Sea by three bomb hits; absent from Midway due to damage and pilot losses. One of the most powerful carriers in the IJN.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Spruance, Raymond</div><div class="gloss-def">Rear Admiral; commander of Task Force 16 at Midway. His decision to launch a full strike at extreme range when the Japanese carriers were first spotted — accepting the fuel risk — proved decisive. Often described as the most important command decision of the Pacific War.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Station HYPO</div><div class="gloss-def">The US Navy's Pearl Harbor-based codebreaking unit, led by Commander Joseph Rochefort. Their breaking of the JN-25 cipher provided the intelligence advantage that allowed America to ambush the Japanese at Midway.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Strike Information Window</div><div class="gloss-def">Task Force Admiral's planning interface element showing estimated arrival time and composition of a strike package; essential for coordinating simultaneous multi-aircraft-type attacks.</div></div>
+  <div class="gloss-item"><div class="gloss-term">TacView</div><div class="gloss-def">Third-party battle replay software compatible with Task Force Admiral; allows post-battle review of the engagement from any angle to analyse decisions and outcomes.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Task Force</div><div class="gloss-def">An operational grouping of naval vessels assembled for a specific mission; in 1942 Pacific warfare, typically built around one or two carriers with cruiser and destroyer escorts.</div></div>
+  <div class="gloss-item"><div class="gloss-term">TBF Avenger</div><div class="gloss-def">Grumman TBF Avenger; the successor to the TBD Devastator as the US Navy's carrier torpedo bomber from late 1942. Faster, more capable, and better armed than the Devastator.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Thatch Weave</div><div class="gloss-def">A two-aircraft defensive fighter tactic developed by Lieutenant Commander John Thach, using mutual support between paired Wildcats to defend against Zero attacks; significantly improved American fighter survival rates against the superior Zero.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Time Compression</div><div class="gloss-def">Task Force Admiral's speed-up feature for managing the long transit and waiting periods between operational events; always return to 1x speed during significant events.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Torpedo Bomber</div><div class="gloss-def">Aircraft designed to deliver aerial torpedoes against surface ships; requires a long, low, slow approach run; extremely vulnerable to defending fighters; potentially devastating in coordinated multi-axis attacks.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Uncertainty Circle</div><div class="gloss-def">The planning concept of a circle drawn around the calculated position of enemy forces, accounting for movement since last known position; the area that must be covered by search aircraft to guarantee contact.</div></div>
+  <div class="gloss-item"><div class="gloss-term">USS Enterprise</div><div class="gloss-def">CV-6; the most decorated US Navy vessel of World War II. Present at Midway, Eastern Solomons, Santa Cruz, and virtually every major Pacific carrier engagement; nicknamed "The Big E" by her crew and "The Grey Ghost" by the Japanese who repeatedly reported her sunk.</div></div>
+  <div class="gloss-item"><div class="gloss-term">USS Lexington</div><div class="gloss-def">CV-2; fleet carrier lost at the Battle of the Coral Sea on May 8, 1942, after fires reached aviation fuel vapour. The explosion that finally destroyed her was so large it was seen from the Japanese fleet 60 miles away.</div></div>
+  <div class="gloss-item"><div class="gloss-term">USS Yorktown</div><div class="gloss-def">CV-5; damaged at Coral Sea, repaired in 72 hours at Pearl Harbor, fought at Midway where she was crippled by Hiryu's strikes and later sunk by a Japanese submarine. Her presence at Midway, made possible by extraordinary repair work, proved decisive.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Zero (A6M)</div><div class="gloss-def">Mitsubishi A6M Zero; dominant Japanese carrier fighter of 1941–42. Superior in manoeuvrability, range, and climb to any Allied carrier fighter; inferior in structural strength, pilot armour, and self-sealing fuel tanks.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Zuikaku</div><div class="gloss-def">Japanese fleet carrier; part of Carrier Division 5 with Shokaku. Survived Coral Sea under a rain squall; lost her aircraft complement there, preventing participation at Midway. Survived until October 1944, when she was sunk at the Battle of Leyte Gulf.</div></div>
+</div>
+
+<div class="callout" style="margin-top:2rem">
+  <div class="callout-title">Final Dispatch — Admiral's Orders</div>
+  <p>You command in the most consequential year of the most consequential naval war in human history. The men who flew from Yorktown, Enterprise, Lexington, and Hornet in 1942 did not know they were turning the tide of a world war — they knew only their briefing, their aircraft, their wingman, and the target. They flew toward uncertain outcomes with imperfect information and insufficient reserves, and they won.</p>
+  <p style="margin-top:0.8rem">Task Force Admiral gives you the tools to understand what that experience meant — not through statistics and probability tables, but through the actual physics of carrier warfare, playing out in real time across hundreds of miles of Pacific Ocean. Every decision you make, every search you plan, every strike you launch is an echo of decisions that actually happened and that actually mattered.</p>
+  <p style="margin-top:0.8rem">Command well, Admiral. The Pacific is waiting.</p>
+</div>
+</section>
+
+
+</div><!-- /content -->
+<footer id="footer">
+  Task Force Admiral: American Carrier Battles &nbsp;·&nbsp; Drydock Dreams Games &nbsp;·&nbsp; MicroProse Software &nbsp;·&nbsp; Nadir Strategy Archive
+</footer>
+</div><!-- /main -->
+
+<a id="back-top" href="#hero" title="Back to top">↑</a>
+
+<script>
+const bar=document.getElementById('progress-bar');
+const bt=document.getElementById('back-top');
+const tog=document.getElementById('sidebar-toggle');
+const sb=document.getElementById('sidebar');
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;
+  bar.style.transform=`scaleX(${s/t})`;
+  bt.classList.toggle('visible',s>400);
+},{passive:true});
+const secs=document.querySelectorAll('.section[id]');
+const navs=document.querySelectorAll('.nav-item');
+const obs=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){navs.forEach(n=>n.classList.remove('active'));const a=document.querySelector(`.nav-item[href="#${e.target.id}"]`);if(a){a.classList.add('active');a.scrollIntoView({block:'nearest'});}}});
+},{rootMargin:'-20% 0px -70% 0px'});
+secs.forEach(s=>obs.observe(s));
+tog.addEventListener('click',()=>sb.classList.toggle('open'));
+document.querySelectorAll('.nav-item').forEach(i=>i.addEventListener('click',()=>sb.classList.remove('open')));
+document.querySelectorAll('.section').forEach((s,i)=>{s.style.animationDelay=`${i*0.03}s`;});
+</script>
+</body>
+</html>

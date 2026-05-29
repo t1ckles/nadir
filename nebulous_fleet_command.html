@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nebulous: Fleet Command — The Commodore's Tactical Codex</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Orbitron:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void: #060810;
+  --deep-space: #0b0f1a;
+  --station: #101828;
+  --hull: #172035;
+  --panel: #1e2d47;
+  --cyan: #00d4e8;
+  --cyan-dim: #0099aa;
+  --cyan-pale: #7de8f4;
+  --cyan-ghost: rgba(0,212,232,0.08);
+  --amber: #e8a020;
+  --amber-dim: #c07818;
+  --amber-pale: #f4c870;
+  --teal: #00b89c;
+  --teal-dim: #008a74;
+  --rust: #c04428;
+  --rust-light: #e85530;
+  --text: #d0e4f0;
+  --text-mid: #96b4cc;
+  --text-dim: #607890;
+  --head-font: 'Orbitron', monospace;
+  --title-font: 'Rajdhani', sans-serif;
+  --body-font: 'Crimson Pro', Georgia, serif;
+  --mono-font: 'Space Mono', monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background-color:var(--void);
+  background-image:
+    radial-gradient(ellipse at 20% 15%, rgba(0,180,200,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 85%, rgba(0,140,100,0.05) 0%, transparent 50%),
+    radial-gradient(1px 1px at 15% 25%, rgba(255,255,255,0.4) 0%, transparent 0%),
+    radial-gradient(1px 1px at 45% 70%, rgba(255,255,255,0.3) 0%, transparent 0%),
+    radial-gradient(1px 1px at 75% 35%, rgba(255,255,255,0.35) 0%, transparent 0%),
+    radial-gradient(1px 1px at 85% 60%, rgba(255,255,255,0.25) 0%, transparent 0%),
+    radial-gradient(1px 1px at 30% 80%, rgba(255,255,255,0.3) 0%, transparent 0%),
+    radial-gradient(1px 1px at 60% 10%, rgba(255,255,255,0.4) 0%, transparent 0%),
+    radial-gradient(1px 1px at 5% 50%, rgba(255,255,255,0.2) 0%, transparent 0%),
+    radial-gradient(1px 1px at 95% 20%, rgba(255,255,255,0.35) 0%, transparent 0%);
+  color:var(--text);
+  font-family:var(--body-font);
+  font-size:17px;
+  line-height:1.8;
+  min-height:100vh;
+}
+/* HERO */
+.hero{
+  position:relative;
+  text-align:center;
+  padding:5rem 2rem 4rem;
+  border-bottom:1px solid rgba(0,212,232,0.2);
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:
+    repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(0,212,232,0.03) 59px,rgba(0,212,232,0.03) 60px),
+    repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(0,212,232,0.03) 59px,rgba(0,212,232,0.03) 60px);
+  pointer-events:none;
+}
+.hero-tag{
+  font-family:var(--mono-font);
+  font-size:0.62rem;
+  letter-spacing:0.3em;
+  color:var(--cyan-dim);
+  border:1px solid rgba(0,212,232,0.3);
+  display:inline-block;
+  padding:0.2rem 1rem;
+  margin-bottom:2rem;
+}
+.hero-title{
+  font-family:var(--head-font);
+  font-size:clamp(2rem,6vw,4.5rem);
+  font-weight:900;
+  letter-spacing:0.06em;
+  color:var(--cyan);
+  line-height:0.95;
+  margin-bottom:0.3rem;
+  text-shadow:0 0 60px rgba(0,212,232,0.2);
+}
+.hero-subtitle{
+  font-family:var(--title-font);
+  font-size:clamp(0.85rem,1.8vw,1.15rem);
+  font-weight:300;
+  letter-spacing:0.5em;
+  color:var(--text-mid);
+  text-transform:uppercase;
+  margin-bottom:2rem;
+}
+.hero-rule{
+  width:100%;
+  max-width:480px;
+  margin:1.5rem auto;
+  height:1px;
+  background:linear-gradient(to right,transparent,var(--cyan-dim),transparent);
+}
+.hero-intro{
+  max-width:660px;
+  margin:0 auto;
+  font-style:italic;
+  color:var(--text-mid);
+  font-size:1.05rem;
+  line-height:1.85;
+}
+.hero-coords{
+  font-family:var(--mono-font);
+  font-size:0.62rem;
+  color:rgba(0,212,232,0.35);
+  letter-spacing:0.2em;
+  margin-top:2rem;
+  display:block;
+}
+/* LAYOUT */
+.page-wrap{max-width:940px;margin:0 auto;padding:0 2rem 6rem;}
+/* TOC */
+.toc{
+  background:rgba(16,24,40,0.9);
+  border:1px solid rgba(0,212,232,0.15);
+  border-top:2px solid var(--cyan);
+  padding:2rem 2.5rem;
+  margin:3rem 0;
+}
+.toc-title{
+  font-family:var(--head-font);
+  font-size:0.65rem;
+  letter-spacing:0.35em;
+  color:var(--cyan);
+  text-transform:uppercase;
+  margin-bottom:1.25rem;
+  display:flex;
+  align-items:center;
+  gap:1rem;
+}
+.toc-title::after{content:'';flex:1;height:1px;background:rgba(0,212,232,0.15);}
+.toc-list{list-style:none;columns:2;column-gap:2.5rem;}
+@media(max-width:560px){.toc-list{columns:1;}}
+.toc-list li{margin-bottom:0.45rem;break-inside:avoid;}
+.toc-list a{color:var(--text-mid);text-decoration:none;font-size:0.92rem;display:flex;align-items:baseline;gap:0.5rem;transition:color 0.2s;}
+.toc-list a:hover{color:var(--cyan-pale);}
+.toc-num{font-family:var(--mono-font);font-size:0.62rem;color:var(--cyan-dim);min-width:2rem;}
+/* SECTIONS */
+.section{margin-bottom:5.5rem;}
+.section-header{padding:1.5rem 0 1.25rem;margin-bottom:2rem;border-bottom:1px solid rgba(0,212,232,0.12);}
+.section-eyebrow{font-family:var(--mono-font);font-size:0.6rem;letter-spacing:0.3em;color:var(--cyan-dim);display:block;margin-bottom:0.4rem;}
+.section-title{font-family:var(--head-font);font-size:clamp(1.4rem,3vw,2.2rem);font-weight:700;letter-spacing:0.06em;color:var(--cyan-pale);line-height:1.1;text-transform:uppercase;}
+.section-lead{font-family:var(--body-font);font-style:italic;color:var(--text-dim);font-size:0.97rem;margin-top:0.4rem;}
+/* SUBSECTIONS */
+.subsection{margin-bottom:3.5rem;}
+.subsection-title{
+  font-family:var(--title-font);
+  font-size:1.2rem;
+  font-weight:600;
+  letter-spacing:0.12em;
+  color:var(--cyan);
+  text-transform:uppercase;
+  margin-bottom:1rem;
+  padding-left:1.2rem;
+  border-left:2px solid var(--cyan-dim);
+}
+/* BODY */
+p{margin-bottom:1.1rem;color:var(--text);}
+p:last-child{margin-bottom:0;}
+/* LORE / TRANSMISSION */
+.transmission{
+  background:rgba(6,8,16,0.8);
+  border:1px solid rgba(0,212,232,0.12);
+  border-left:2px solid var(--cyan-dim);
+  padding:1.5rem 2rem;
+  margin:2.5rem 0;
+  position:relative;
+}
+.transmission::before{
+  content:'TRANSMISSION';
+  position:absolute;
+  top:-0.6rem;
+  left:1rem;
+  font-family:var(--mono-font);
+  font-size:0.55rem;
+  letter-spacing:0.25em;
+  color:var(--cyan-dim);
+  background:var(--void);
+  padding:0 0.5rem;
+}
+.transmission p{font-style:italic;color:var(--text-mid);font-size:0.97rem;line-height:1.85;}
+.tx-source{font-family:var(--mono-font);font-size:0.6rem;letter-spacing:0.15em;color:var(--cyan-dim);margin-top:0.75rem;text-align:right;display:block;opacity:0.75;}
+/* CALLOUTS */
+.callout{border-left:2px solid var(--cyan-dim);background:var(--cyan-ghost);padding:1.2rem 1.5rem;margin:2rem 0;}
+.callout-warn{border-left-color:var(--rust-light);background:rgba(192,68,40,0.07);}
+.callout-success{border-left-color:var(--teal);background:rgba(0,184,156,0.06);}
+.callout-amber{border-left-color:var(--amber);background:rgba(232,160,32,0.06);}
+.callout-label{font-family:var(--mono-font);font-size:0.58rem;letter-spacing:0.25em;color:var(--cyan);text-transform:uppercase;margin-bottom:0.5rem;display:block;}
+.callout-warn .callout-label{color:var(--rust-light);}
+.callout-success .callout-label{color:var(--teal);}
+.callout-amber .callout-label{color:var(--amber);}
+.callout p{font-size:0.95rem;margin-bottom:0.6rem;color:var(--text);}
+.callout p:last-child{margin-bottom:0;}
+/* CARDS */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:1.5rem 0;}
+.card{border:1px solid rgba(0,212,232,0.15);background:rgba(16,24,40,0.6);padding:1.25rem;border-radius:1px;}
+.card-title{font-family:var(--title-font);font-size:0.88rem;letter-spacing:0.12em;color:var(--cyan-pale);text-transform:uppercase;margin-bottom:0.6rem;}
+.card p{font-size:0.9rem;margin-bottom:0;color:var(--text-mid);}
+.card-warn{border-color:rgba(232,85,48,0.25);background:rgba(192,68,40,0.07);}
+.card-warn .card-title{color:#f07060;}
+.card-teal{border-color:rgba(0,184,156,0.25);background:rgba(0,184,156,0.05);}
+.card-teal .card-title{color:#5de8d8;}
+.card-amber{border-color:rgba(232,160,32,0.25);background:rgba(232,160,32,0.05);}
+.card-amber .card-title{color:var(--amber-pale);}
+/* TABLES */
+.data-table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.9rem;}
+.data-table thead tr{background:rgba(16,24,40,0.9);border-bottom:1px solid rgba(0,212,232,0.3);}
+.data-table th{font-family:var(--title-font);font-size:0.65rem;letter-spacing:0.2em;color:var(--cyan);text-transform:uppercase;padding:0.7rem 0.9rem;text-align:left;font-weight:600;}
+.data-table td{padding:0.65rem 0.9rem;color:var(--text-mid);border-bottom:1px solid rgba(0,212,232,0.06);vertical-align:top;line-height:1.5;}
+.data-table tr:last-child td{border-bottom:none;}
+.data-table tr:hover td{background:rgba(0,212,232,0.03);}
+/* TAGS */
+.tag{display:inline-block;padding:0.1rem 0.5rem;font-family:var(--mono-font);font-size:0.62rem;letter-spacing:0.05em;border-radius:1px;}
+.tag-cyan{background:rgba(0,212,232,0.15);color:var(--cyan-pale);}
+.tag-warn{background:rgba(192,68,40,0.2);color:#f07060;}
+.tag-teal{background:rgba(0,184,156,0.18);color:#5de8d8;}
+.tag-amber{background:rgba(232,160,32,0.18);color:var(--amber-pale);}
+/* LISTS */
+.guide-list{list-style:none;margin:1rem 0 1.5rem;padding:0;}
+.guide-list li{display:flex;gap:1.1rem;margin-bottom:1.1rem;align-items:flex-start;}
+.guide-list .num{font-family:var(--mono-font);font-size:0.62rem;color:var(--cyan-dim);min-width:2.2rem;padding-top:0.35rem;letter-spacing:0.05em;}
+.guide-list .text{color:var(--text);font-size:0.97rem;line-height:1.75;flex:1;}
+.guide-list .text strong{color:var(--cyan-pale);font-weight:600;}
+.guide-bullets{list-style:none;padding:0;margin:0.5rem 0 1.5rem;}
+.guide-bullets li{padding:0.3rem 0 0.3rem 1.6rem;position:relative;color:var(--text);font-size:0.97rem;line-height:1.75;}
+.guide-bullets li::before{content:'▸';position:absolute;left:0;color:var(--cyan-dim);font-size:0.72rem;top:0.55rem;}
+.guide-bullets li strong{color:var(--cyan-pale);font-weight:600;}
+.guide-bullets li em{color:#70d8e8;font-style:italic;}
+/* PHASE BAR */
+.phase-strip{display:flex;gap:0;margin:2rem 0;border:1px solid rgba(0,212,232,0.12);overflow:hidden;}
+.phase{flex:1;padding:1rem 1.1rem;text-align:center;}
+.phase:not(:last-child){border-right:1px solid rgba(0,212,232,0.1);}
+.phase-a{background:rgba(11,15,26,0.8);}
+.phase-b{background:rgba(0,212,232,0.04);}
+.phase-c{background:rgba(0,184,156,0.06);}
+.phase-d{background:rgba(192,68,40,0.08);}
+.phase-num{font-family:var(--mono-font);font-size:0.55rem;letter-spacing:0.2em;color:var(--cyan-dim);display:block;margin-bottom:0.35rem;}
+.phase-name{font-family:var(--head-font);font-size:0.72rem;letter-spacing:0.08em;color:var(--cyan-pale);text-transform:uppercase;display:block;margin-bottom:0.3rem;}
+.phase-desc{font-size:0.78rem;color:var(--text-dim);line-height:1.45;}
+/* HIGHLIGHT */
+.highlight-panel{background:rgba(16,24,40,0.7);border:1px solid rgba(0,212,232,0.15);border-top:2px solid var(--cyan);padding:1.75rem 2rem;margin:2.5rem 0;}
+.highlight-panel-title{font-family:var(--head-font);font-size:0.68rem;letter-spacing:0.3em;color:var(--cyan);text-transform:uppercase;margin-bottom:1.25rem;}
+/* UNIT CARDS */
+.unit-panel{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0.75rem;margin:1.5rem 0;}
+.unit-card{background:rgba(6,8,16,0.8);border:1px solid rgba(0,212,232,0.12);padding:1rem 1.1rem;}
+.unit-name{font-family:var(--title-font);font-size:0.88rem;letter-spacing:0.1em;color:var(--cyan-pale);text-transform:uppercase;margin-bottom:0.3rem;display:block;}
+.unit-role{font-family:var(--mono-font);font-size:0.58rem;color:var(--cyan-dim);letter-spacing:0.1em;display:block;margin-bottom:0.55rem;}
+.unit-card p{font-size:0.85rem;line-height:1.55;color:var(--text-mid);}
+/* NAV */
+.chapter-nav{display:flex;flex-wrap:wrap;gap:0.45rem;margin:2.5rem 0;padding:1.25rem;background:rgba(11,15,26,0.7);border:1px solid rgba(0,212,232,0.1);}
+.chapter-nav a{font-family:var(--mono-font);font-size:0.6rem;letter-spacing:0.1em;color:var(--text-dim);text-decoration:none;padding:0.3rem 0.7rem;border:1px solid rgba(0,212,232,0.1);transition:all 0.2s;text-transform:uppercase;}
+.chapter-nav a:hover{color:var(--cyan-pale);border-color:rgba(0,212,232,0.4);background:rgba(0,212,232,0.06);}
+/* FOOTER */
+.page-footer{text-align:center;padding:3rem 0 1.5rem;border-top:1px solid rgba(0,212,232,0.1);margin-top:4rem;}
+.footer-title{font-family:var(--head-font);font-size:1.8rem;letter-spacing:0.1em;color:rgba(0,212,232,0.2);display:block;margin-bottom:0.75rem;}
+.footer-sub{font-family:var(--mono-font);font-size:0.6rem;letter-spacing:0.25em;color:rgba(0,212,232,0.18);}
+/* MISC */
+em{color:var(--cyan-pale);font-style:italic;}
+strong{color:var(--cyan-pale);font-weight:600;}
+hr{border:none;border-top:1px solid rgba(0,212,232,0.08);margin:3.5rem 0;}
+h2{scroll-margin-top:2rem;}
+</style>
+</head>
+<body>
+<!-- HERO -->
+<div class="hero">
+  <span class="hero-tag">// NADIR STRATEGY ARCHIVE — CLASSIFIED: COMMODORE EYES ONLY //</span>
+  <div class="hero-title">NEBULOUS</div>
+  <div class="hero-subtitle">Fleet Command — The Commodore's Tactical Codex</div>
+  <div class="hero-rule"></div>
+  <p class="hero-intro">
+    Somewhere between two asteroid belts and a gas giant, with no reinforcements coming and a hostile fleet on your radar that you cannot yet identify, you will feel it for the first time — the particular weight of command. Every decision you make in the next thirty minutes will have been determined in the sixty minutes before the battle even began.
+    <br><br>
+    This codex exists to make sure those decisions were the right ones.
+  </p>
+  <span class="hero-coords">// ALLIANCE NAVY · OUTLYING SYSTEMS PROTECTORATE · FLEET COMMAND DOCTRINE //</span>
+</div>
+
+<div class="page-wrap">
+<!-- TOC -->
+<nav class="toc">
+  <div class="toc-title">MISSION BRIEF — CONTENTS</div>
+  <ul class="toc-list">
+    <li><a href="#setting"><span class="toc-num">01.</span> The Setting & Lore</a></li>
+    <li><a href="#factions"><span class="toc-num">02.</span> ANS vs. OSP — The Two Doctrines</a></li>
+    <li><a href="#fleet"><span class="toc-num">03.</span> Fleet Building & Points</a></li>
+    <li><a href="#hulls-ans"><span class="toc-num">04.</span> ANS Hull Breakdown</a></li>
+    <li><a href="#hulls-osp"><span class="toc-num">05.</span> OSP Hull Breakdown</a></li>
+    <li><a href="#radar"><span class="toc-num">06.</span> Radar & Detection</a></li>
+    <li><a href="#ew"><span class="toc-num">07.</span> Electronic Warfare</a></li>
+    <li><a href="#missiles"><span class="toc-num">08.</span> Missile Design</a></li>
+    <li><a href="#pd"><span class="toc-num">09.</span> Point Defense</a></li>
+    <li><a href="#weapons"><span class="toc-num">10.</span> Kinetics & Energy Weapons</a></li>
+    <li><a href="#movement"><span class="toc-num">11.</span> Movement & Positioning</a></li>
+    <li><a href="#damage"><span class="toc-num">12.</span> Damage & Repair</a></li>
+    <li><a href="#doctrines"><span class="toc-num">13.</span> Fleet Doctrines</a></li>
+    <li><a href="#codex"><span class="toc-num">14.</span> The Commodore's Codex</a></li>
+  </ul>
+</nav>
+
+<!-- ─── 01. SETTING ─── -->
+<section class="section" id="setting">
+  <div class="section-header">
+    <span class="section-eyebrow">// CHAPTER 01 //</span>
+    <h2 class="section-title">The Setting & Lore</h2>
+    <div class="section-lead">Understanding the world you're fighting in.</div>
+  </div>
+  <div class="transmission">
+    <p>The record of what happened to the old Pantokrator is sealed. What is not sealed — what every spacer from the Core to the Rim knows — is what was left behind. The Alliance inherited a fractured civilization stretched across seventeen inhabited systems. The Outlying Systems Protectorate inherited eight worlds nobody else wanted. And now, with the Integration breaking down, both sides have rediscovered a truth as old as politics: the only argument that ends a border dispute is the one delivered by a fleet.</p>
+    <span class="tx-source">// PREFECT COMMAND LOG, RECLASSIFIED FOR GENERAL BRIEFING //</span>
+  </div>
+  <p>Nebulous: Fleet Command is a simulation-heavy real-time tactical space combat game developed by Eridanus Industries and published under Hooded Horse. It entered Early Access in February 2022 and has been continuously developed since, receiving major updates including the Missile Update, OSP Update, and most recently, the Carrier Update. The game distinguishes itself through a commitment to plausible near-future physics — ships have momentum, weapons have realistic propagation speeds, and the electromagnetic spectrum is a battleground as contested as physical space.</p>
+  <p>The lore is sparse by design, delivered almost entirely through the flavour text of individual ship and component descriptions in the fleet editor. There are two factions locked in a civil war that has not yet been officially declared a civil war:</p>
+
+  <div class="subsection">
+    <h3 class="subsection-title">The Alliance Navy (ANS)</h3>
+    <p>The Alliance Navy is the formal military arm of the Shelter Alliance — a multi-system polity that emerged from the consolidation of humanity's space presence over the past several centuries. ANS ships reflect this institutional history: they are the product of a <strong>standardization initiative</strong> launched roughly 150 years before the campaign's events, in which Fleet Command commissioned uniform hull designs to replace the patchwork of legacy vessels inherited from pre-Alliance polities.</p>
+    <p>ANS ships are purpose-built warships. They look like warships, fight like warships, and are designed by people whose entire career is warship design. The result is a faction with consistent, professional hull characteristics: strong armor, excellent electronics integration, purpose-built weapons mounts, and reliable — if expensive — systems across the board. ANS electronic warfare systems, particularly their radar suite and jamming capabilities, are class-leading. Their missile technology is sophisticated, with the ability to construct complex multi-seeker hybrid missiles that can challenge any point defense network.</p>
+    <div class="callout">
+      <div class="callout-label">// ANS DESIGN PHILOSOPHY //</div>
+      <p>The ANS philosophy is: <em>fewer, better ships</em>. Each ANS hull is an investment. Lose one and you feel it. The faction rewards players who master their individual platforms and deploy them with surgical precision — radar lock, missile salvo, kinetic follow-through. ANS fleets tend to be smaller in ship count but individually more capable.</p>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3 class="subsection-title">The Outlying Systems Protectorate (OSP)</h3>
+    <p>The Outlying Systems Protectorate occupies eight worlds on the furthest rimward edge of Alliance space, bordering nothing of political significance and historically receiving next to nothing in terms of Alliance military attention or resource allocation. For generations, the OSP has been an afterthought in Alliance politics — which is precisely why, when the Integration began to fail, they were the last faction anyone expected to show up with a fleet.</p>
+    <p>And what a fleet it is. OSP ships are not warships. They are <strong>repurposed civilian and industrial vessels</strong> — cargo freighters, bulk transporters, container liners, tugboats, and shuttles — fitted with weapons mounts, casemate batteries, and whatever electronics could be sourced or improvised from available materials. They are cheap, numerous, and profoundly idiosyncratic. A fleet of OSP vessels looks nothing like a military formation because it isn't one. It is a collection of armed industrial assets operating under a flag of convenience.</p>
+    <p>What the OSP lacks in sophistication, it compensates for in <strong>volume and specialization</strong>. OSP weapons tend toward kinetic casemate guns — burst-fire, autoloaded, and devastating at close range. Their ships carry enormous ammunition reserves relative to their points cost. And because most OSP hulls are so cheap, they can field a fleet of a dozen vessels for the same cost as an ANS fleet of five. The Protectorate fights the way insurgencies fight: with mass, improvisation, and the willingness to absorb losses that would end an ANS engagement.</p>
+    <div class="callout callout-warn">
+      <div class="callout-label">// OSP WARNING — DO NOT IMPORT ANS DOCTRINE //</div>
+      <p>The most common OSP mistake made by new players is attempting to play OSP ships like ANS ships. They cannot. OSP lacks the radar suite, the missile sophistication, and the individual hull toughness to brawl in an ANS-style engagement at ANS-style ranges. OSP must be played as OSP: close, fast, in volume, exploiting cover aggressively, and using cheap expendable vessels as screens for the lethal guns that follow.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 02. FACTIONS ─── -->
+<section class="section" id="factions">
+  <div class="section-header">
+    <span class="section-eyebrow">// CHAPTER 02 //</span>
+    <h2 class="section-title">ANS vs. OSP — The Two Doctrines</h2>
+    <div class="section-lead">Two philosophies. One battlespace.</div>
+  </div>
+  <div class="transmission">
+    <p>I have served in the Alliance Navy for twenty-two years. I have fought pirates, insurrectionists, and derelict AI. Nothing in that experience prepared me for the first time an OSP bulk freighter absorbed three of my best missiles, shrugged off the resulting fires with its damage control teams, and put a casemate salvo through my Axford's armor belt. They fight differently. They think differently. And if your doctrine does not account for that difference, you will lose.</p>
+    <span class="tx-source">// AFTER ACTION REVIEW, COMMODORE ERIS VANCE, ANS 4TH FLEET //</span>
+  </div>
+
+  <div class="card-grid">
+    <div class="card card-teal">
+      <div class="card-title">ANS STRENGTHS</div>
+      <p>Superior radar systems with burnthrough capability. Sophisticated hybrid missiles with multi-seeker capability. Excellent ECCM. Purpose-built armour layouts. Better individual ship survivability. Strong medium-to-long range engagement profile.</p>
+    </div>
+    <div class="card card-warn">
+      <div class="card-title">ANS WEAKNESSES</div>
+      <p>Expensive. Smaller fleet sizes per point budget. Fewer hulls per match. Losing a capital ship is catastrophic. Requires significant game knowledge to use missiles effectively. Can be overwhelmed by OSP point defense saturation from volume fire.</p>
+    </div>
+    <div class="card card-teal">
+      <div class="card-title">OSP STRENGTHS</div>
+      <p>Cheap hulls allow vastly more ships per fleet. Autoloading casemate weapons deliver crushing close-range DPS. Enormous raw ammunition capacity. Highly resilient to missile attacks (cheap PD, hull volume absorbs damage). Strong at point capture through numbers.</p>
+    </div>
+    <div class="card card-warn">
+      <div class="card-title">OSP WEAKNESSES</div>
+      <p>No radar burnthrough on most hulls. Fragile individual ships (many are converted freighters). Dependent on closing range — engaging at long range favors ANS. Weak comms on most hulls (CR-10) making them vulnerable to jamming. Poor light cruiser equivalents in early lineup.</p>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3 class="subsection-title">Engagement Range Doctrine</h3>
+    <p>The most important tactical concept in Nebulous is <strong>engagement range</strong>, and it breaks differently for each faction:</p>
+    <p>For ANS, the ideal engagement band is <strong>medium to long range (8–25km)</strong>. At these ranges, ANS missile systems can execute complex approach profiles before the enemy's point defense can intercept them, while ANS radar systems provide firing solutions that OSP cannot match. An ANS player who controls range controls the engagement.</p>
+    <p>For OSP, the ideal engagement band is <strong>close range (under 5km)</strong>. At this distance, the raw kinetic output of OSP casemate batteries overwhelms most ANS point defense networks, and OSP's radar disadvantage becomes irrelevant because solutions are being computed at near-knife-fight distances. An OSP player whose fleet gets to brawl range is in their element.</p>
+    <p>The great tactical tension of Nebulous: <strong>ANS wants to stay far; OSP wants to close the gap.</strong> Every map decision, cover usage, and fleet approach is filtered through this fundamental asymmetry.</p>
+
+    <div class="phase-strip">
+      <div class="phase phase-a">
+        <span class="phase-num">25KM+</span>
+        <span class="phase-name">Long Range</span>
+        <div class="phase-desc">ANS missile engagement. OSP cannot effectively respond. ANS dominant.</div>
+      </div>
+      <div class="phase phase-b">
+        <span class="phase-num">8–25KM</span>
+        <span class="phase-name">Medium Range</span>
+        <div class="phase-desc">Contested. ANS missiles effective; OSP guns not yet viable. EW critical.</div>
+      </div>
+      <div class="phase phase-c">
+        <span class="phase-num">3–8KM</span>
+        <span class="phase-name">Close Range</span>
+        <div class="phase-desc">Transitional. OSP casemates start delivering. ANS point defense stressed.</div>
+      </div>
+      <div class="phase phase-d">
+        <span class="phase-num">&lt;3KM</span>
+        <span class="phase-name">Brawl Range</span>
+        <div class="phase-desc">OSP dominant. Casemate DPS and volume fire devastating. Missiles mostly irrelevant.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 03. FLEET BUILDING ─── -->
+<section class="section" id="fleet">
+  <div class="section-header">
+    <span class="section-eyebrow">// CHAPTER 03 //</span>
+    <h2 class="section-title">Fleet Building & the Point Budget</h2>
+    <div class="section-lead">Every match begins in the fleet editor. Win or lose before first contact.</div>
+  </div>
+  <div class="transmission">
+    <p>The fleet editor is where the war is decided. Every missile in your magazine, every radar panel on your hull, every point of armor — it was all chosen before the battle began. Your opponent is doing the same. Neither of you knows what the other is bringing. The question is not which fleet is stronger in absolute terms. The question is which fleet wins the specific matchup that random chance has arranged today — and which commander planned for more contingencies.</p>
+    <span class="tx-source">// FLEET COMMAND TRAINING DOCTRINE, MODULE 4 — PRE-MISSION PLANNING //</span>
+  </div>
+  <p>The standard competitive fleet budget is <strong>3,000 points</strong>, though matches can be configured for other values. Every ship hull costs a base number of points, and every component installed on that hull costs additional points. The fleet editor is where you make every meaningful decision about your fleet's capabilities before the match even begins.</p>
+
+  <div class="subsection">
+    <h3 class="subsection-title">The Five Doctrinal Roles</h3>
+    <p>A well-constructed fleet should address five functional roles. Not every fleet needs all five in every match, but understanding these roles tells you what your fleet can and cannot do:</p>
+    <ul class="guide-list">
+      <li><span class="num">R-01</span><span class="text"><strong>Information Acquisition:</strong> The ability to detect, identify, and track enemy ships. Radars, ELINT suites, scouts, and long-range tracking systems fill this role. Without information, you cannot effectively engage targets and will be reacting to enemy contacts rather than initiating your own.</span></li>
+      <li><span class="num">R-02</span><span class="text"><strong>Capturing Points:</strong> The ability to physically move vessels onto capture objectives. Fast, cheap hulls are ideal here — Sprinter corvettes and OSP Shuttles. Sending expensive capital ships to capture points is a waste of their capabilities and risks losing the engagement's most decisive assets.</span></li>
+      <li><span class="num">R-03</span><span class="text"><strong>Defending Points:</strong> The ability to deny enemy forces from capturing objectives while retaining them yourself. Durable hulls with strong point defense and good staying power excel here. ANS Axfords and OSP Ocellos are natural defenders.</span></li>
+      <li><span class="num">R-04</span><span class="text"><strong>Denying Space:</strong> Area denial — making it dangerous or impossible for the enemy to transit through certain areas of the map. Minefields, long-range missiles, and ECM coverage all contribute to space denial.</span></li>
+      <li><span class="num">R-05</span><span class="text"><strong>Killing Ships:</strong> Raw destruction of enemy hulls. Your strike missiles, heavy cannons, and beam weapons serve this role. Killing ships tends to emerge from successfully executing the other four roles — good information leads to good fires, which leads to kills.</span></li>
+    </ul>
+  </div>
+
+  <div class="subsection">
+    <h3 class="subsection-title">Fleet Archetypes</h3>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-title">Elite Few (ANS)</div>
+        <p>2–4 purpose-built ships, each highly capable. Maximum individual survivability and firepower. Demands excellent micro-management but rewards it with decisive firepower.</p>
+      </div>
+      <div class="card card-teal">
+        <div class="card-title">Missile Carrier (ANS)</div>
+        <p>Dedicated missile launch platforms with escort. Win by landing a devastating volley before the enemy can close range. Requires careful missile design and approach sequencing.</p>
+      </div>
+      <div class="card card-amber">
+        <div class="card-title">Swarm (OSP)</div>
+        <p>8–12+ cheap hulls flooding the battlespace. Overwhelms enemy PD with volume. Loses individual engagements but wins the attrition math. Demands good formation discipline.</p>
+      </div>
+      <div class="card card-warn">
+        <div class="card-title">Hybrid/Mixed</div>
+        <p>Combines elements of both factions and doctrines. Higher skill floor but resilient to counter-strategies. The Ocello hull enables interesting mixed builds.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3 class="subsection-title">Point Budget Principles</h3>
+    <ul class="guide-bullets">
+      <li><strong>Never spend points on capabilities you won't use.</strong> A missile launcher you haven't designed good missiles for is a wasted mount. A fire control radar on a ship that has no weapons requiring lock is dead weight.</li>
+      <li><strong>Components have synergies — plan for them.</strong> A Bullseye fire control radar is pointless without missiles that require radar lock. An illuminator is useless without missiles that home on reflected illumination. Build coherent capability packages, not random assortments.</li>
+      <li><strong>Redundancy for critical systems.</strong> A ship with one radar that gets destroyed becomes effectively blind. Key systems — radar, communications, fire control — benefit from redundancy. Not always possible within budget, but always worth considering.</li>
+      <li><strong>The cheapest ship that does the job is the right ship.</strong> Do not send an Axford to capture points when a Sprinter costs a fraction of the price and moves faster. Match hull investment to tactical role.</li>
+      <li><strong>Your missile magazine is your fleet's decisive capability.</strong> For ANS especially, your missile loadout is a one-use-per-engagement resource. Design it carefully. You cannot resupply mid-battle.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ─── 04. ANS HULLS ─── -->
+<section class="section" id="hulls-ans">
+  <div class="section-header">
+    <span class="section-eyebrow">// CHAPTER 04 //</span>
+    <h2 class="section-title">ANS Hull Breakdown</h2>
+    <div class="section-lead">Six hulls. Six distinct roles in the Alliance fleet.</div>
+  </div>
+  <div class="transmission">
+    <p>The standardization initiative produced six hull classes for the Alliance Navy, each designed from the keel up for a specific tactical envelope. The theory was that any combination of two or three of these hulls should be able to address any threat scenario the fleet would face. The theory, as most theories do, met the OSP and required immediate revision.</p>
+    <span class="tx-source">// FLEET DESIGN ASSESSMENT, ANS BUREAU OF SHIPS //</span>
+  </div>
+
+  <div class="unit-panel">
+    <div class="unit-card">
+      <span class="unit-name">Sprinter Class</span>
+      <span class="unit-role">CORVETTE · SCOUT · CAPTURE</span>
+      <p>The smallest ANS hull and the fastest. Light armor, minimal weapons capacity, but extremely cheap and highly mobile. Best role: point capture, early reconnaissance, and flanking screens. A Sprinter fitted with a small radar and a few missiles is an excellent cheap scout. Sprinters die if targeted seriously — keep them out of the main engagement line.</p>
+    </div>
+    <div class="unit-card">
+      <span class="unit-name">Raines Class</span>
+      <span class="unit-role">FRIGATE · ESCORT · MISSILE</span>
+      <p>The ANS workhorse frigate. Good all-around stats, affordable, and flexible. Can be fitted as a dedicated missile frigate (VLS launchers), a gunboat escort, or a support vessel with ECM and radar. The Raines is where most ANS builds put their mid-tier missile capacity. Multiple Raines frigates in a fleet provide redundant fire assets that are harder to neutralize than a single capital ship.</p>
+    </div>
+    <div class="unit-card">
+      <span class="unit-name">Keystone Class</span>
+      <span class="unit-role">DESTROYER · MULTI-ROLE</span>
+      <p>The Keystone sits between the Raines frigate and the Vauxhall light cruiser in the ANS lineup. It offers a balanced complement of weapons mounts, decent survivability, and enough space for a meaningful electronics suite. Best used as a mid-range combatant that can threaten multiple target classes without excelling at any single one.</p>
+    </div>
+    <div class="unit-card">
+      <span class="unit-name">Vauxhall Class</span>
+      <span class="unit-role">LIGHT CRUISER · SKIRMISHER</span>
+      <p>Fast, well-armed, and surprisingly durable for its cost — the Vauxhall is arguably the most important ANS hull for fighting OSP. Five Mk64 gun mounts combined with the Vauxhall's speed and evasiveness makes it a devastating close-range combatant. Vauxhalls can hold their own against every OSP hull and are the primary ANS answer to OSP close-range doctrine. In gun-heavy builds, the Vauxhall is the tip of the spear.</p>
+    </div>
+    <div class="unit-card">
+      <span class="unit-name">Axford Class</span>
+      <span class="unit-role">HEAVY CRUISER · CAPITAL</span>
+      <p>The ANS capital combatant. Extremely durable, powerful main battery options, excellent armour belt, and large missile capacity. The Axford is the ANS response to every threat — it can mount 450mm main guns, a full missile VLS array, and a comprehensive electronic warfare suite simultaneously. Losing an Axford hurts significantly, both in battle effectiveness and in points. Protect it. It is worth protecting.</p>
+    </div>
+    <div class="unit-card">
+      <span class="unit-name">Solomon Class</span>
+      <span class="unit-role">BATTLESHIP · SIEGE</span>
+      <p>The ANS battleship and the largest conventional warship in the game's base lineup. Carries the heaviest weapons, deepest armour, and most powerful sensors available to the Alliance. The Solomon is a siege weapon — it arrives, it fires its devastating main battery, and things stop existing. It is also enormously expensive and slow. Lose a Solomon and the fleet point balance swings catastrophically. Use with extreme caution.</p>
+    </div>
+  </div>
+
+  <div class="callout callout-amber">
+    <div class="callout-label">// ANS HULL SELECTION GUIDELINE //</div>
+    <p>A common ANS 3,000-point fleet template: one Axford as the fleet's anchor, two Raines frigates as missile carriers, and two Sprinters for reconnaissance and objective capture. This covers all five doctrinal roles at the cost of being predictable in structure. Adding a Vauxhall to fight OSP specifically — at the cost of a Raines or both Sprinters — is worth considering when OSP brawling doctrine is expected.</p>
+  </div>
+</section>
+
+<!-- ─── 05. OSP HULLS ─── -->
+<section class="section" id="hulls-osp">
+  <div class="section-header">
+    <span class="section-eyebrow">// CHAPTER 05 //</span>
+    <h2 class="section-title">OSP Hull Breakdown</h2>
+    <div class="section-lead">Freighters, tugs, and miners — dressed for war.</div>
+  </div>
+  <div class="transmission">
+    <p>The Protectorate shipwright tradition is not a tradition. It is a series of improvisations that accumulated over two generations of resource scarcity and Alliance indifference until they resembled, from a sufficient distance, something like doctrine. What the Alliance Navy calls a frigate, the OSP calls a cargo feeder with extra guns. What the Alliance Navy calls a heavy cruiser, the OSP calls a bulk freighter that survived its first three engagements. The names are different. The results, when executed well, are not.</p>
+    <span class="tx-source">// PROTECTORATE NAVAL INTELLIGENCE ASSESSMENT, ANS INTERNAL DOCUMENT //</span>
+  </div>
+
+  <div class="unit-panel">
+    <div class="unit-card">
+      <span class="unit-name">Shuttle Class</span>
+      <span class="unit-role">CORVETTE · SCOUT · SWARM</span>
+      <p>Tiny, fast, and essentially expendable. The OSP equivalent of the ANS Sprinter but even cheaper and even more fragile. Excellent for objective capture, forward scouting, and jamming enemy sensors from multiple directions simultaneously. In swarm builds, a dozen Shuttles flood the battlefield with targets, diluting enemy missile fire and overloading point defense prioritization.</p>
+    </div>
+    <div class="unit-card">
+      <span class="unit-name">Tugboat Class</span>
+      <span class="unit-role">SUPPORT · SENSOR · EW</span>
+      <p>The OSP's electronics specialist. Cheap to field and able to mount meaningful radar and ECM payloads, including the Early Warning Radar that gives the OSP meaningful long-range detection capability. The Tugboat is the OSP Information Acquisition platform. Protect it — the OSP's sensor disadvantage becomes even more severe if their Tugs are eliminated early.</p>
+    </div>
+    <div class="unit-card">
+      <span class="unit-name">Cargo Feeder Class</span>
+      <span class="unit-role">LIGHT COMBATANT · GUN</span>
+      <p>A converted light freighter that represents the core of many OSP middle-weight builds. The Cargo Feeder can mount useful casemate guns and serves well as a support combatant, providing fire support for heavier OSP hulls while using its light displacement to maintain speed and avoid being a priority target. Plasma guns fitted to Cargo Feeders are a particularly effective way to strip ANS armour at medium range.</p>
+    </div>
+    <div class="unit-card">
+      <span class="unit-name">Ocello Class</span>
+      <span class="unit-role">COMMAND CRUISER · ANCHOR</span>
+      <p>The OSP's most sophisticated hull and the sole exception to the Protectorate's "repurposed civilian vessel" doctrine — the Ocello is a purpose-built warship designed for command and control. It carries ANS-compatible electronics (including Bullseye FCR), significantly better armour than other OSP ships, and up to 8 point defense turrets. The Ocello is the OSP's answer to ANS electronic warfare dominance. It is expensive by OSP standards — protect it accordingly.</p>
+    </div>
+    <div class="unit-card">
+      <span class="unit-name">Bulk Freighter (Lineship)</span>
+      <span class="unit-role">CAPITAL · HEAVY GUN</span>
+      <p>The OSP capital combatant and one of the most unique hulls in the game. The Bulk Freighter "Lineship" is a massive repurposed cargo vessel fitted with casemate heavy guns. Its single most important characteristic: it is cheap. A 450mm-armed Lineship costs roughly 1,000 points — less than half the equivalent ANS Axford. This allows OSP to bring a capital-calibre heavy gun platform while spending their remaining budget on escort, scouts, and support vessels.</p>
+    </div>
+    <div class="unit-card">
+      <span class="unit-name">Container Liner Class</span>
+      <span class="unit-role">CARRIER · MASS LAUNCHER</span>
+      <p>A large repurposed container ship that serves as the OSP's heavy platform option. In some configurations it functions as a missile carrier alternative. Its size gives it hull volume that absorbs significant damage, making it surprisingly survivable against smaller calibre weapons. Not the most elegant choice — but in the right hands, effective.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 06. RADAR ─── -->
+<section class="section" id="radar">
+  <div class="section-header">
+    <span class="section-eyebrow">// CHAPTER 06 //</span>
+    <h2 class="section-title">Radar & Detection</h2>
+    <div class="section-lead">If you cannot see it, you cannot kill it. If you can be seen, you can be killed.</div>
+  </div>
+  <div class="transmission">
+    <p>In space combat, the electromagnetic spectrum is not a battlefield tool. It is the battlefield. Every radar emission you produce is a signal the enemy can measure, locate, and target. Every radar panel you keep cold is a choice between blindness and silence. The commodore who wins is not the one with the most sensors active — it is the one who knows precisely which sensors to activate, for how long, and when to go dark before the response arrives.</p>
+    <span class="tx-source">// ELECTRONIC SYSTEMS TACTICAL MANUAL, ANS FLEET COMMAND //</span>
+  </div>
+
+  <div class="subsection">
+    <h3 class="subsection-title">Radar Detection Fundamentals</h3>
+    <p>Radar in Nebulous operates on physically plausible principles. Each ship has a <strong>radar cross-section (RCS)</strong> — a measure of how visible it is to enemy radar. Larger ships have larger signatures; multiple ships in close proximity produce a combined signature that is even more detectable. Enemy radars compare their resolution against your ship's RCS and the distance between you to determine if they can detect you.</p>
+    <p>There are two forms of detection:</p>
+    <ul class="guide-bullets">
+      <li><strong>Radar detection:</strong> Detected contacts are shared across the entire fleet via ship-to-ship communications as long as comms are online. All of your ships can fire on a radar-detected contact even if only one ship has the radar contact. This is the primary detection mode.</li>
+      <li><strong>Visual detection:</strong> Applies within 3km of any ship. Visual contacts are <em>not</em> shared fleet-wide — only the ship that has visual contact can see it, and only if that specific ship is selected. Useful for confirming visual identification of contacts but not for fleet-wide engagement.</li>
+    </ul>
+    <p><strong>Occlusion by terrain is real and significant.</strong> Asteroids, gas clouds, and the geometry of the map can completely block radar detection. A ship hiding behind a large asteroid cluster is invisible to radar from the far side. This is not a gameplay abstraction — it is a core tactical reality. Position your fleet to use terrain masking aggressively.</p>
+  </div>
+
+  <div class="subsection">
+    <h3 class="subsection-title">EMCON — Emissions Control</h3>
+    <p><strong>EMCON (EMissions CONtrol)</strong> is one of the most important tactical decisions you make in Nebulous. Every radar emission from your ship is a beacon the enemy's ELINT systems can locate. Running your search radar tells the enemy your position, your heading, and (through your radar type's signature) something about your hull class.</p>
+    <p>EMCON choices:</p>
+    <ul class="guide-bullets">
+      <li><strong>Full EMCON silence:</strong> All radar emissions off. The enemy cannot detect you electromagnetically, but you also cannot see the enemy by radar. Excellent for approach phases through cover, or when waiting in ambush.</li>
+      <li><strong>Passive-only:</strong> ELINT listening active, no active radar emissions. You can detect the enemy's radar emissions without broadcasting your own position. Strong intelligence gathering with minimal signature.</li>
+      <li><strong>Active radar:</strong> Full search radar active. You see everything your radar can reach, but the enemy knows you're there. Acceptable once contact has been made — you gain nothing from silence once the enemy has already located you.</li>
+    </ul>
+    <div class="callout callout-success">
+      <div class="callout-label">// TACTICAL NOTE — EMCON APPROACH //</div>
+      <p>The standard approach doctrine: advance under EMCON silence using terrain masking, listening passively for enemy radar emissions. Break EMCON when you have committed to an engagement and need your own radar solutions. Going active earlier than necessary costs you the initiative advantage that EMCON silence provides. The enemy should see you when <em>you</em> choose to be seen — not when their sensors find you.</p>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3 class="subsection-title">Radar Signature Management</h3>
+    <p>Your fleet's radar signature is not fixed. Ship spacing, active emitters, and certain equipment all affect how visible your fleet is. Key signature considerations:</p>
+    <ul class="guide-bullets">
+      <li><strong>Spread your formation.</strong> Ships in close proximity contribute their individual RCS to a combined signature that is larger than any single vessel. Dispersed formations are harder to detect at long range than tight columns.</li>
+      <li><strong>The ANS Masquerade Signal Booster</strong> allows a ship to disguise its signature as a different hull class. This is deceptive intelligence warfare — making the enemy misidentify your ships can cause them to assign incorrect threat priorities to your targets.</li>
+      <li><strong>Fire control radars (FCRs) have directional sidelobe patterns.</strong> Enemy ELINT can detect these sidelobes at reduced range even when the FCR is not pointed directly at them. Blanket jamming of FCRs can degrade enemy targeting before the first missile is ever launched.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ─── 07. EW ─── -->
+<section class="section" id="ew">
+  <div class="section-header">
+    <span class="section-eyebrow">// CHAPTER 07 //</span>
+    <h2 class="section-title">Electronic Warfare</h2>
+    <div class="section-lead">The invisible war that precedes the visible one.</div>
+  </div>
+  <div class="transmission">
+    <p>My kill total for the engagement was six confirmed ships. My missile total was zero — I fired none. What I did fire was two cycles of blanket jamming on their fire control radars, which bought my Vauxhalls eighteen seconds to close range unmolested, and one ELINT-confirmed burn that told me they had no radar burnthrough capability. After that, the physics took care of themselves. Electronic warfare does not win battles by itself. It wins battles by making everything else easier.</p>
+    <span class="tx-source">// AFTER ACTION STATEMENT, LIEUTENANT COMMANDER T. HAWKES, ANS VAUXHALL WING //</span>
+  </div>
+
+  <div class="subsection">
+    <h3 class="subsection-title">Jamming</h3>
+    <p>Electronic jamming in Nebulous is implemented as a contest between <strong>jamming power</strong> and <strong>target radar performance</strong>. A jammer radiates electronic noise on the enemy's radar frequencies, degrading or eliminating their ability to detect and track targets. The critical variable is the power balance: one sufficiently powerful jammer can neutralize an enemy radar, but a dedicated <strong>Floodlight</strong> counter-jammer can restore function.</p>
+    <p>As a practical rule: <strong>one floodlight counters approximately two jammers</strong>. This means you need to bring more jammers than the enemy has floodlights, or accept that your jamming effort will be partially countered. In fleet building, this becomes an arms race in the pre-match design phase — neither player knows how much jamming or anti-jamming the other is bringing.</p>
+    <p>Types of jamming approach:</p>
+    <ul class="guide-bullets">
+      <li><strong>Blanket jamming:</strong> Broad-spectrum noise that degrades all enemy radar in range. Effective for suppressing enemy fire control during a critical approach window. Best used offensively, timed to coincide with a missile salvo or a closing maneuver.</li>
+      <li><strong>Targeted jamming:</strong> Focus jamming power on specific enemy radar types. More efficient than blanket jamming if you know what the enemy is running, which is where your ELINT intelligence becomes valuable.</li>
+    </ul>
+    <div class="callout callout-amber">
+      <div class="callout-label">// E-WAR NOTE — OSP VULNERABILITY //</div>
+      <p>Most OSP ships carry only the CR-10 communications system, which provides poor resistance to jamming. ANS Blanket and Hangup jammers are particularly effective against OSP fleets because of this weakness. OSP's answer is the Ocello, which carries better ECCM. Destroying or suppressing the enemy Ocello early dramatically reduces their fleet's ability to resist your EW effort.</p>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3 class="subsection-title">ELINT — Electronic Intelligence</h3>
+    <p>ELINT systems passively listen for enemy radar and communications emissions, building a picture of enemy fleet composition without revealing your own position. The <strong>Scryer module</strong> is particularly significant: it can analyze incoming missiles and identify their seeker types, allowing you to mount appropriate countermeasures.</p>
+    <p>ELINT provides the following actionable intelligence:</p>
+    <ul class="guide-bullets">
+      <li>Rough position of enemy radar-emitting ships even before visual or active radar contact.</li>
+      <li>Identity of enemy radar systems, which helps infer hull classes and loadouts.</li>
+      <li>Incoming missile seeker types (via Scryer), enabling targeted softkill countermeasures.</li>
+      <li>Enemy communications activity, which can reveal fleet positioning through traffic analysis.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ─── 08. MISSILES ─── -->
+<section class="section" id="missiles">
+  <div class="section-header">
+    <span class="section-eyebrow">// CHAPTER 08 //</span>
+    <h2 class="section-title">Missile Design</h2>
+    <div class="section-lead">The most powerful and most customizable weapon system in the game.</div>
+  </div>
+  <div class="transmission">
+    <p>A missile is not a weapon. It is a weapon system — an autonomous killing machine that you design from its warhead to its avionics, test against anticipated threats, and then release at precisely the right moment. Design it poorly, and the enemy will laugh as their point defense swats your entire salvo before it reaches terminal range. Design it well — the right seeker, the right terminal maneuver, the right warhead — and even a competent defense will not stop them all. The question is always: how many get through?</p>
+    <span class="tx-source">// MISSILE SYSTEMS DESIGN NOTES, FLEET COMMAND ORDNANCE SECTION //</span>
+  </div>
+  <p>The missile system is Nebulous's deepest and most complex mechanical layer. Missiles are custom-built in the fleet editor using a modular system: you select a <strong>body</strong> (which determines speed, range, agility, and carrying capacity), then fill it with a <strong>warhead</strong>, a <strong>seeker</strong>, and optional <strong>modules</strong> that add capabilities like terminal maneuvers, additional seekers, or electronic countermeasures.</p>
+
+  <div class="subsection">
+    <h3 class="subsection-title">Missile Bodies — Size Classes</h3>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-title">Size 1 (S1) — Small</div>
+        <p>Cheap, fast, light. Low damage individually but can be fielded in enormous quantities. Effective as point defense saturators — throw enough S1s at an enemy PD net and some will penetrate purely through volume. Also useful as anti-craft missiles in carrier configurations.</p>
+      </div>
+      <div class="card card-amber">
+        <div class="card-title">Size 2 (S2) — Medium</div>
+        <p>The tactical sweet spot. Good balance of damage, range, agility, and seeker options. The majority of competitive ANS missile builds use S2 bodies as their primary strike package. An S2 with a well-chosen seeker and terminal maneuver is the backbone of most missile strategies.</p>
+      </div>
+      <div class="card card-warn">
+        <div class="card-title">Size 3 (S3/Hybrid) — Heavy</div>
+        <p>Large damage, strong armour penetration, but fewer can be carried and they are more vulnerable to anti-missile missiles. S3 "hybrid" missiles combine multiple seekers to make them harder to softkill. Requires significant launch platform investment (larger ships or VLS systems).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3 class="subsection-title">Seekers — How Missiles Find Their Targets</h3>
+    <p>The seeker is the most important component choice in missile design. Each seeker type has specific requirements for target acquisition and specific vulnerabilities to countermeasures:</p>
+    <table class="data-table">
+      <thead>
+        <tr><th>Seeker Type</th><th>Acquisition Method</th><th>Vulnerability</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Active Radar</strong></td>
+          <td>Self-guided via onboard radar</td>
+          <td>ECM jamming, active decoys</td>
+          <td><span class="tag tag-cyan">Fire &amp; Forget</span> — no lock required from launch ship</td>
+        </tr>
+        <tr>
+          <td><strong>Semi-Active Radar</strong></td>
+          <td>Homes on reflected radar from ship illuminator</td>
+          <td>Illuminator destroyed, target breaks lock</td>
+          <td>Requires continuous illuminator lock; very accurate</td>
+        </tr>
+        <tr>
+          <td><strong>Command (CL)</strong></td>
+          <td>Direct datalink control from operator</td>
+          <td>Comms jamming breaks the link</td>
+          <td>Requires active operator attention; most accurate guidance</td>
+        </tr>
+        <tr>
+          <td><strong>EO (Electro-Optical)</strong></td>
+          <td>Homes on visual/infrared signature</td>
+          <td>Flares, decoys, gas cloud obscuration</td>
+          <td>Cannot be jammed electronically — must be softkilled physically</td>
+        </tr>
+        <tr>
+          <td><strong>Wake Homing</strong></td>
+          <td>Follows engine exhaust plume</td>
+          <td>Flares (from side or above), maneuver</td>
+          <td>Excellent for targeting retreating or maneuvering ships</td>
+        </tr>
+        <tr>
+          <td><strong>HOJ (Home-on-Jam)</strong></td>
+          <td>Homes on jamming emissions from target</td>
+          <td>Target ceases jamming (EMCON)</td>
+          <td>Forces a choice: keep jamming and attract HOJ, or go dark and lose EW</td>
+        </tr>
+        <tr>
+          <td><strong>ARAD (Anti-Radiation)</strong></td>
+          <td>Homes on radar emissions</td>
+          <td>Target turns off radar</td>
+          <td>Forces EMCON choices on enemy; destroys radar systems specifically</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="subsection">
+    <h3 class="subsection-title">Hybrid Missiles — The Multi-Seeker Threat</h3>
+    <p>The most sophisticated ANS missile configuration is the <strong>hybrid missile</strong> — a single body carrying two or more different seeker types. A hybrid might carry an Active Radar primary seeker and an EO secondary seeker. If the enemy jams the radar seeker, the missile switches to EO. If they then deploy flares to defeat the EO, the missile may reacquire via radar once the jamming is lifted.</p>
+    <p>Hybrid missiles dramatically increase the complexity of the softkill problem facing the enemy. Each additional seeker type requires the defender to run a different countermeasure — and running those countermeasures simultaneously may require more system capacity than the defending ship has available.</p>
+    <div class="callout">
+      <div class="callout-label">// DESIGN PRINCIPLE — VALIDATOR PAIRING //</div>
+      <p>Validators are components that check whether a seeker's contact actually matches the target profile before guiding to it. Setting a validator to "reject unvalidated" makes the missile much harder to fool with decoys — the missile will not chase a fake contact that doesn't match the target's radar or thermal profile. Adding validators to high-value hybrid missiles makes them dramatically more difficult to softkill.</p>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3 class="subsection-title">Terminal Maneuvers</h3>
+    <p>A missile flying a predictable straight line into a point defense net is the easiest possible target. <strong>Terminal maneuvers</strong> are programmed flight behaviors that the missile executes in its final approach, making it harder to intercept:</p>
+    <ul class="guide-bullets">
+      <li><strong>Corkscrew:</strong> Spiraling approach trajectory. Very effective against 20mm Defender-type PD, which struggles to track rapidly changing target geometry. Requires high maneuverability rating (3.2G minimum recommended).</li>
+      <li><strong>Evasive:</strong> Random lateral movements in the terminal phase. General-purpose evasion against both hardkill and softkill.</li>
+      <li><strong>Sprint:</strong> Accelerates to maximum speed in the terminal phase. Reduces the engagement window for PD by shortening intercept time.</li>
+      <li><strong>Approach from Above/Below:</strong> Changes the approach vector to exploit blind spots in PD coverage. Particularly effective against ships whose PD turrets have coverage gaps.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ─── 09. PD ─── -->
+<section class="section" id="pd">
+  <div class="section-header">
+    <span class="section-eyebrow">// CHAPTER 09 //</span>
+    <h2 class="section-title">Point Defense</h2>
+    <div class="section-lead">Hardkill and softkill — the two philosophies of missile defense.</div>
+  </div>
+  <div class="transmission">
+    <p>There is no good answer to a well-designed missile. There is only the less bad answer. Hardkill says: destroy the missile before it reaches you. Softkill says: convince the missile you are not worth killing. Both have their proponents, both have their limitations, and a commodore who relies exclusively on either one is a commodore who will die to the other. Layered defense. Always layered defense.</p>
+    <span class="tx-source">// POINT DEFENSE DOCTRINE SUMMARY, FLEET TACTICS SCHOOL //</span>
+  </div>
+
+  <div class="subsection">
+    <h3 class="subsection-title">Hardkill Systems</h3>
+    <p>Hardkill means physically destroying incoming missiles before they reach your ship. Two primary system types:</p>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-title">20mm PDC (Defender / Pavise)</div>
+        <p>High rate-of-fire autocannon. Exceptional DPS in a continuous stream — can shred missiles if it gets a sustained track. Weakness: struggles to track rapidly maneuvering missiles (corkscrew, evasive). The 2022 PD balance improvements made these significantly more effective against most missile types. Pairs best with flak for maneuvering targets.</p>
+      </div>
+      <div class="card card-teal">
+        <div class="card-title">Flak / Burst PD</div>
+        <p>Proximity-fused area denial. Less accurate than 20mm PDC but much more effective against maneuvering targets because it doesn't require a direct tracking solution. Flak creates a kill zone that missiles must fly through — a maneuvering missile can evade a gun barrel but not a cloud of shrapnel. Pair flak and 20mm for layered hardkill.</p>
+      </div>
+    </div>
+    <p>The critical hardkill principle: <strong>prioritize coverage, not power.</strong> A single PD mount with perfect coverage is worth more than three mounts with blind spots. Check your PD turret arcs in the ship editor and ensure every approach vector is covered. Blind spots in PD coverage are exactly what experienced missile designers will target.</p>
+  </div>
+
+  <div class="subsection">
+    <h3 class="subsection-title">Softkill Systems</h3>
+    <p>Softkill means defeating the missile's guidance system — convincing it that you are not its target, or causing it to lose lock and fly past. Softkill is more knowledge-intensive than hardkill (you need to know what seekers the incoming missiles have) but significantly more resource-efficient if executed correctly.</p>
+    <ul class="guide-bullets">
+      <li><strong>Chaff:</strong> Disperses radar-reflective material. Effective against Active Radar and Semi-Active Radar seekers. The missile's seeker detects the chaff cloud as multiple targets and loses track of the ship.</li>
+      <li><strong>Flares:</strong> Hot infrared sources. Effective against EO/IR seekers and Wake-homing missiles (when deployed laterally — deploying flares directly behind the ship can actually attract wake-homers into a hit). Careful placement matters.</li>
+      <li><strong>Active Decoys:</strong> Dedicated electronic systems that broadcast a false radar signature, drawing missiles away from the ship. Effective but requires careful placement — an active decoy that generates its signature too close to the ship can still catch proximity-fused warheads.</li>
+      <li><strong>EMCON:</strong> Turning off radar and jamming emissions denies guidance to HOJ and ARAD seekers. The cost is your own situational awareness.</li>
+    </ul>
+    <div class="callout callout-success">
+      <div class="callout-label">// SOFTKILL DOCTRINE — THE SCRYER ADVANTAGE //</div>
+      <p>The Scryer ELINT module can identify the seeker types of incoming missiles in real time. A ship with a Scryer can precisely match countermeasures to incoming threats — deploying chaff for radar-homing missiles and flares for EO missiles simultaneously, rather than wasting countermeasures against missiles with different guidance systems. In a contested engagement, correct Scryer-guided countermeasures can reduce incoming missile effectiveness by 50% or more compared to blind countermeasure deployment.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 10. WEAPONS ─── -->
+<section class="section" id="weapons">
+  <div class="section-header">
+    <span class="section-eyebrow">// CHAPTER 10 //</span>
+    <h2 class="section-title">Kinetics & Energy Weapons</h2>
+    <div class="section-lead">When missiles aren't enough — or cost too many points to be practical.</div>
+  </div>
+  <div class="transmission">
+    <p>Kinetics have two virtues no missile designer can replicate: they travel at the speed of physics, and they never run out of guidance. A 450mm shell at 12km range does not care what countermeasures you have deployed. It does not have a seeker that can be jammed, a fuze that can be fooled, or an approach vector that can be anticipated and blocked. It is a mass traveling at a significant fraction of orbital velocity, and its only negotiating position is that you should not be standing in its way when it arrives.</p>
+    <span class="tx-source">// NAVAL GUNNERY DOCTRINE, ORDNANCE REVIEW //</span>
+  </div>
+
+  <div class="subsection">
+    <h3 class="subsection-title">Gun Systems</h3>
+    <table class="data-table">
+      <thead>
+        <tr><th>Weapon</th><th>Faction</th><th>Role</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>120mm Cannon</strong></td>
+          <td><span class="tag tag-cyan">ANS</span></td>
+          <td>Anti-ship, anti-craft</td>
+          <td>Reliable medium-caliber option for Sprinters and Raines. RPF (Rate of Fire) rounds available for burst damage.</td>
+        </tr>
+        <tr>
+          <td><strong>Mk64 250mm</strong></td>
+          <td><span class="tag tag-cyan">ANS</span></td>
+          <td>Multi-role</td>
+          <td>The Vauxhall's signature weapon. Accurate, decent RoF, effective against most OSP hulls. AP rounds penetrate armour; HE sets fires. Five mounts on a Vauxhall makes it lethal.</td>
+        </tr>
+        <tr>
+          <td><strong>450mm Main Battery</strong></td>
+          <td><span class="tag tag-cyan">ANS</span></td>
+          <td>Capital ship anti-capital</td>
+          <td>The Axford and Solomon's devastating main armament. Penetrates all but the heaviest armour at moderate range. Slow rate of fire — every shot matters.</td>
+        </tr>
+        <tr>
+          <td><strong>100mm Casemate</strong></td>
+          <td><span class="tag tag-teal">OSP</span></td>
+          <td>Close/medium range</td>
+          <td>Fast-firing and effective at moderate range. Autoloaders on OSP hulls give these weapons exceptional sustained DPS. Standard OSP medium combatant weapon.</td>
+        </tr>
+        <tr>
+          <td><strong>250mm Casemate</strong></td>
+          <td><span class="tag tag-teal">OSP</span></td>
+          <td>Capital engagement</td>
+          <td>OSP heavy gun. Effective against ANS cruisers in HE mode; AP required against Axfords. Mounted on Ocellos and some Lineship configurations.</td>
+        </tr>
+        <tr>
+          <td><strong>450mm Casemate</strong></td>
+          <td><span class="tag tag-teal">OSP</span></td>
+          <td>Heavy capital</td>
+          <td>The Lineship's main battery. Equal in calibre to the ANS's heaviest guns at roughly half the platform cost. Devastating when it lands; slow and not particularly accurate at long range.</td>
+        </tr>
+        <tr>
+          <td><strong>Plasma / Beam</strong></td>
+          <td>Both</td>
+          <td>Armour stripping</td>
+          <td>Plasma weapons bypass conventional armour by heating it beyond structural limits rather than penetrating it. Excellent for stripping ANS armour before kinetic follow-through.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ─── 11. MOVEMENT ─── -->
+<section class="section" id="movement">
+  <div class="section-header">
+    <span class="section-eyebrow">// CHAPTER 11 //</span>
+    <h2 class="section-title">Movement, Positioning & the Battlespace</h2>
+    <div class="section-lead">Space is three-dimensional. Use all of it.</div>
+  </div>
+  <div class="transmission">
+    <p>The most common error I see in officers fresh from Academy is the failure to think in three dimensions. They position their fleets in a plane — they advance, they retreat, they flank, all on the same horizontal surface. The enemy is not obligated to meet them there. The asteroid above their formation, the gas cloud below — these are cover. The vector from the enemy's stern quarter, the dive from high solar angle — these are approach routes. Space is not the ocean. Stop fighting as though it were.</p>
+    <span class="tx-source">// TACTICAL COMMAND TRAINING REMARKS, VICE ADMIRAL CHEN //</span>
+  </div>
+
+  <div class="subsection">
+    <h3 class="subsection-title">Movement Controls</h3>
+    <p>Ships in Nebulous obey real physics — they have <strong>momentum</strong> and require thrust to change their vectors. This is not a pointing-and-clicking game; commanding a fleet requires anticipating where your ships will be in thirty seconds, not just where they are now. Key movement modes:</p>
+    <ul class="guide-bullets">
+      <li><strong>ORB (Orbit):</strong> The ship maintains a position orbiting around a designated point or target. Places all weapons mounts in a consistent engagement arc. Weakness: continuously exposes the same armour face to incoming fire, which can be exploited by focused gunfire.</li>
+      <li><strong>HDG (Hold Heading):</strong> Maintains a fixed directional heading. Useful for avoiding engine exposure to the enemy — the drive module and reactor are rear-mounted on most hulls and are critical to survival. HDG lets you present your bow or side armor rather than your vulnerable stern.</li>
+      <li><strong>ROL (Roll Ship):</strong> Rotates the ship on its longitudinal axis. Used to present specific armour faces toward incoming fire, or to angle specific weapon mounts at a target.</li>
+    </ul>
+  </div>
+
+  <div class="subsection">
+    <h3 class="subsection-title">Cover and Terrain</h3>
+    <p>Every map in Nebulous features asteroid clusters and gas clouds that provide radar shadow — genuine cover from detection. Using terrain correctly is one of the highest-value skills in the game. Key terrain tactics:</p>
+    <ul class="guide-list">
+      <li><span class="num">T-01</span><span class="text"><strong>Advance under asteroid shadow.</strong> Move your fleet along radar-occluded routes toward the engagement zone. The enemy cannot target what they cannot see. An approach that keeps you in asteroid shadow until you reach your desired engagement range is worth more than any electronic countermeasure.</span></li>
+      <li><span class="num">T-02</span><span class="text"><strong>Use gas clouds for concealment without full occlusion.</strong> Gas clouds attenuate but don't fully block radar, providing partial signature reduction. They also make visual identification difficult and can disrupt EO missile seekers. Parking your fleet in a gas cloud during the mid-engagement phase degrades enemy missile guidance.</span></li>
+      <li><span class="num">T-03</span><span class="text"><strong>Fight from cover positions.</strong> A ship behind an asteroid can fire missiles over or around the asteroid while remaining radar-invisible to direct search beams. This requires careful three-dimensional positioning but creates enormous tactical advantages — you can engage without being engageable.</span></li>
+      <li><span class="num">T-04</span><span class="text"><strong>Control the sightlines that control the objectives.</strong> Objectives are placed in specific locations on each map. The team that controls the radar sightlines around objectives controls when and whether enemy ships can approach them. Planning your approach around sightline dominance rather than direct charge wins engagements.</span></li>
+    </ul>
+    <div class="callout callout-warn">
+      <div class="callout-label">// POSITIONING DANGER — REACTOR AND DRIVE EXPOSURE //</div>
+      <p>Your ship's drive module and reactor are located at the stern. These are the most critical systems aboard — a destroyed drive module leaves your ship adrift; a breached reactor is a time bomb. Never give the enemy a direct stern shot if you can avoid it. Maneuver to keep your bow or broadside armor toward the threat, even at the cost of some weapon efficiency.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 12. DAMAGE ─── -->
+<section class="section" id="damage">
+  <div class="section-header">
+    <span class="section-eyebrow">// CHAPTER 12 //</span>
+    <h2 class="section-title">Damage & Repair</h2>
+    <div class="section-lead">Component-level damage means component-level decisions.</div>
+  </div>
+  <div class="transmission">
+    <p>The hit that destroys a ship is rarely the hit you see coming. It is the third radar panel lost, leaving you blind. It is the fire control computer that takes shrapnel damage and starts computing solutions at 40% efficiency. It is the drive module running at 60% power after two glancing hits, leaving you unable to hold your engagement range. Ship destruction in Nebulous is usually the accumulation of a dozen individually survivable hits — until suddenly it is not.</p>
+    <span class="tx-source">// TECHNICAL ANALYSIS, COMPONENT DAMAGE PATTERNS IN FLEET ENGAGEMENT //</span>
+  </div>
+  <p>Nebulous models damage at the individual component level. When your ship takes a hit, the game calculates what internal components that hit passed through and damages them accordingly. A hit through the forward section might damage a radar panel, a weapons mount, and some crew compartments. A hit through the engineering section might damage the drive module or, catastrophically, the reactor.</p>
+
+  <div class="subsection">
+    <h3 class="subsection-title">Damage Control Teams</h3>
+    <p>Damage control (DC) teams move through your ship autonomously, prioritizing the most critical repairs — fires first, then structural damage, then component repairs. DC teams cannot be directly controlled, but you can influence their effectiveness by:</p>
+    <ul class="guide-bullets">
+      <li><strong>Withdraw from active fire to allow repair.</strong> DC teams work faster when the ship is not actively taking new hits. A brief tactical withdrawal to repair critical systems — radar, fire control, drives — before returning to engagement is not a sign of weakness. It is good resource management.</li>
+      <li><strong>Plan for DC capability in ship construction.</strong> DC team count is determined by crew size, which is influenced by ship size and some components. Larger ships have more DC capacity; smaller hulls may have so little DC capacity that a single bad hit can cascade into uncontrolled fires.</li>
+      <li><strong>Fires are the most dangerous secondary effect.</strong> A fire that spreads to a magazine or reactor is potentially fatal. If your ship is on fire and you cannot extinguish it through movement or DC, consider whether the ship is already effectively lost.</li>
+    </ul>
+  </div>
+
+  <div class="subsection">
+    <h3 class="subsection-title">Reactor Breach — The Last Resort</h3>
+    <p>When a ship's reactor is critically damaged, it enters a countdown to catastrophic failure — a reactor explosion that destroys the ship and deals significant damage to anything nearby. This is not purely negative. A ship that is already fatally damaged can be deliberately positioned to <em>maximize the blast damage to the enemy</em> before it goes.</p>
+    <p>A deliberate reactor detonation against an enemy hull at close range can destroy or cripple ships that survived every other weapon in your arsenal. This requires composure under pressure and a certain philosophical acceptance of the loss — but it is a recognized tactical option, not a desperation move. Plan for it when you see a ship approaching critical status.</p>
+  </div>
+</section>
+
+<!-- ─── 13. DOCTRINES ─── -->
+<section class="section" id="doctrines">
+  <div class="section-header">
+    <span class="section-eyebrow">// CHAPTER 13 //</span>
+    <h2 class="section-title">Fleet Doctrines</h2>
+    <div class="section-lead">Common fleet builds and the philosophies behind them.</div>
+  </div>
+  <div class="transmission">
+    <p>A doctrine is not a plan. A plan fails on contact with the enemy. A doctrine is a set of principles that generates good plans from whatever situation you find yourself in. The commodore who goes to battle with a doctrine wins more than the commodore who goes to battle with a plan, because the doctrine survives the first five minutes and the plan often does not.</p>
+    <span class="tx-source">// FLEET COMMAND DOCTRINE MANUAL, INTRODUCTION //</span>
+  </div>
+
+  <div class="subsection">
+    <h3 class="subsection-title">ANS: The Missile Carrier Doctrine</h3>
+    <p>The most common ANS approach: build a fleet around maximizing the quality and quantity of a single decisive missile volley. One or two Axfords (or equivalent) serve as the anchor and missile platform. Raines frigates provide additional VLS capacity and escorts. The entire battle plan is oriented around achieving a firing position for a well-coordinated multi-missile salvo that overwhelms enemy PD.</p>
+    <p>This doctrine requires:</p>
+    <ul class="guide-bullets">
+      <li>Excellent missile design (hybrid seekers with validators, terminal maneuvers tailored to expected PD).</li>
+      <li>A coordinated EW effort to suppress enemy fire control radar during the missile approach.</li>
+      <li>Information about enemy PD before the volley — adapt missile approach profiles to known PD blind spots.</li>
+      <li>Fire control locks from Bullseye FCR or equivalent to ensure missile guidance is not denied.</li>
+    </ul>
+  </div>
+
+  <div class="subsection">
+    <h3 class="subsection-title">ANS: The Gun Line (Vauxhall-Heavy)</h3>
+    <p>A more aggressive ANS doctrine built around the Vauxhall class. Instead of committing to missile range, this doctrine uses the Vauxhall's speed and five Mk64 gun mounts to close aggressively and win at medium range. Effective specifically against OSP doctrines, because the Vauxhall can out-fight every OSP ship in a gun duel while remaining too fast and agile to be reliably hit by OSP casemate fire.</p>
+    <p>Works best paired with EW support to suppress OSP sensor capability during the approach, limiting OSP point defense efficiency against Vauxhalls closing to gun range.</p>
+  </div>
+
+  <div class="subsection">
+    <h3 class="subsection-title">OSP: The Swarm</h3>
+    <p>The quintessential OSP doctrine: field as many ships as possible, use their combined volume to overwhelm enemy PD with sheer numbers, and win through attrition and presence. A 3,000-point fleet of 10–12 Shuttles and Cargo Feeders presents so many targets that enemy missiles must distribute across all of them — and individually cheap ships absorb those missiles without meaningful impact on fleet capability.</p>
+    <p>The swarm wins by making the enemy's missiles cost more per kill than they can afford. If each missile kills a 150-point Shuttle, and the ANS player has 400 points of missiles, they have killed 400 points of OSP fleet at a 1:1 exchange ratio — which OSP accepts because their full fleet cost is 3,000 points and the ANS player is out of missiles.</p>
+  </div>
+
+  <div class="subsection">
+    <h3 class="subsection-title">OSP: The Lineship Hammer</h3>
+    <p>A more structured OSP doctrine centered on the Bulk Freighter Lineship's 450mm armament. One or two Lineships form the heavy strike element; cheap Tugboats with Early Warning Radar provide the information acquisition capability the Lineships lack; Shuttles capture objectives and dilute enemy fire. The Lineship advances under cover and positions for a close-to-medium range engagement where its heavy guns become decisive.</p>
+    <p>Against ANS, this doctrine requires aggressive use of terrain — a Lineship caught in the open at long range by ANS missiles before it reaches gun range has a very bad day. The key is covering the approach in asteroid shadow and arriving at brawl range intact.</p>
+  </div>
+
+  <div class="subsection">
+    <h3 class="subsection-title">Mixed Doctrine: The Ocello Centerpiece</h3>
+    <p>The Ocello-centered build is uniquely OSP in chassis but ANS in electronics philosophy. By equipping the Ocello with ANS Bullseye FCRs, Blanket jammers, and ECCM systems, OSP gains credible electronic warfare capability while retaining the raw OSP kinetic striking power of 250mm or 450mm casemates. The rest of the fleet is built around enabling the Ocello — Tugs for additional sensor coverage, Lineships for heavy firepower, and Shuttles for objective pressure.</p>
+    <p>This doctrine is the hardest to play correctly but among the most difficult to counter, because it denies ANS their expected electronic dominance while retaining OSP's volume-fire characteristics.</p>
+  </div>
+</section>
+
+<!-- ─── 14. CODEX ─── -->
+<section class="section" id="codex">
+  <div class="section-header">
+    <span class="section-eyebrow">// CHAPTER 14 //</span>
+    <h2 class="section-title">The Commodore's Codex</h2>
+    <div class="section-lead">Standing orders for every engagement.</div>
+  </div>
+  <div class="transmission">
+    <p>Commodore. Before you deploy, read these. After you lose, read them again. When you find yourself wondering why a battle went wrong, one of these is usually the answer. They are not original observations — every one of them has been learned the hard way by someone in a command chair facing a contact they didn't expect, with a fleet they hadn't adequately prepared, firing missiles at a seeker their opponent had already planned around. Learn from their engagements so that you don't have to repeat them.</p>
+    <span class="tx-source">// CLASSIFIED: COMMODORE-LEVEL EYES ONLY — FLEET COMMAND TACTICAL ARCHIVE //</span>
+  </div>
+
+  <div class="highlight-panel">
+    <div class="highlight-panel-title">// STANDING ORDERS — COMMODORE CLASSIFICATION //</div>
+  </div>
+
+  <ul class="guide-list">
+    <li><span class="num">01.</span><span class="text"><strong>Win the information battle before the shooting battle.</strong> Approach under EMCON silence using terrain masking. Know where the enemy is before they know where you are. First contact should be on your terms.</span></li>
+    <li><span class="num">02.</span><span class="text"><strong>Your missile design is your fleet's decisive capability — treat it accordingly.</strong> Test your missiles against anticipated PD before deploying. A missile with the wrong terminal maneuver for the target's PD is a wasted point expenditure. Design deliberately.</span></li>
+    <li><span class="num">03.</span><span class="text"><strong>Every fleet must address all five doctrinal roles.</strong> Information. Capture. Defense. Denial. Kills. A fleet that addresses four of these and ignores the fifth will be beaten by that fifth role's exploitation.</span></li>
+    <li><span class="num">04.</span><span class="text"><strong>Do not play OSP like ANS.</strong> The Protectorate fights through volume, close range, and kinetic saturation. Attempting to match ANS at their preferred engagement range with OSP equipment is a losing proposition at any skill level.</span></li>
+    <li><span class="num">05.</span><span class="text"><strong>The Vauxhall is the ANS answer to OSP.</strong> When facing OSP doctrine, Vauxhall-heavy builds with aggressive EW support consistently outperform missile-heavy builds. Know when to switch doctrinal approach based on expected opponent.</span></li>
+    <li><span class="num">06.</span><span class="text"><strong>Terrain is not scenery.</strong> Every map feature that provides asteroid shadow or gas cloud concealment is a tactical tool. Plan your approach through terrain, not across open space.</span></li>
+    <li><span class="num">07.</span><span class="text"><strong>A withdrawing ship is not a retreating fleet.</strong> Pulling a damaged ship back to allow damage control to work is resource management, not cowardice. A repaired ship that re-engages is worth more than a destroyed ship that stayed in the line until the end.</span></li>
+    <li><span class="num">08.</span><span class="text"><strong>Match countermeasures to seeker types.</strong> Chaff for radar seekers. Flares for EO and wake-homing. EMCON for HOJ and ARAD. Deploying the wrong countermeasure against an incoming missile is not a defense — it is theatre.</span></li>
+    <li><span class="num">09.</span><span class="text"><strong>The Scryer is the most important softkill component you can carry.</strong> Knowing the seeker type of incoming missiles in real time transforms countermeasure deployment from guesswork into precision. Field a Scryer on every capital ship.</span></li>
+    <li><span class="num">10.</span><span class="text"><strong>PD coverage must be complete — not merely powerful.</strong> Three PD turrets with one blind spot are inferior to two PD turrets with none. Map every approach vector against your PD arcs in the ship editor. Experienced missile designers will find and exploit any gap.</span></li>
+    <li><span class="num">11.</span><span class="text"><strong>Never expose your drive module or reactor to the enemy.</strong> Your stern is your most vulnerable aspect. Maneuver to present bow or broadside armor to incoming fire. A destroyed drive module is a death sentence in almost every engagement.</span></li>
+    <li><span class="num">12.</span><span class="text"><strong>Flak and 20mm PD are complementary, not alternatives.</strong> 20mm PDC is excellent against non-maneuvering missiles; flak is excellent against corkscrew and evasive profiles. Layer both for comprehensive hardkill coverage.</span></li>
+    <li><span class="num">13.</span><span class="text"><strong>OSP players: the Ocello is your fleet's electronic spine.</strong> Lose it and you lose your ECCM, your Bullseye locks, and your ability to contest ANS electronic warfare. Protect it with the same priority an ANS player gives to protecting a Solomon.</span></li>
+    <li><span class="num">14.</span><span class="text"><strong>Floodlights counter jammers at roughly 1:2.</strong> If the enemy brings two jammers and you have one floodlight, your radar is still impaired. Bring more floodlights than you think you need, or plan your fighting doctrine around the assumption of radar denial.</span></li>
+    <li><span class="num">15.</span><span class="text"><strong>Know your enemy before first contact through passive ELINT.</strong> Radar signatures and ELINT data reveal hull classes and loadout hints before active engagement. The commodore who deploys their countermeasures and tactical approach based on ELINT-derived intelligence rather than guesswork wins the first exchange.</span></li>
+    <li><span class="num">16.</span><span class="text"><strong>Multiple ships in close formation have combined radar signatures.</strong> Disperse your formation when approaching. A tight column announces your fleet strength to any radar-equipped opponent. Spread formations complicate ranging and targeting solutions.</span></li>
+    <li><span class="num">17.</span><span class="text"><strong>Missile salvos should be coordinated time-on-target, not sequential.</strong> Missiles arriving at the enemy's PD network over thirty seconds are killed one by one. Missiles arriving simultaneously from multiple vectors in five seconds overwhelm PD capacity. Design your firing solution timing for simultaneous arrival.</span></li>
+    <li><span class="num">18.</span><span class="text"><strong>A catastrophically damaged ship is a weapon.</strong> A ship approaching reactor breach can be positioned against an enemy hull for maximum detonation effect. Accept the loss and weaponize it.</span></li>
+    <li><span class="num">19.</span><span class="text"><strong>OSP swarms beat ANS missile fleets on point-for-point attrition.</strong> ANS wins by making each missile count. If the OSP fleet is twelve ships and you have twelve missiles, you have used your entire strike magazine and killed twelve cheap hulls. Design your loadout for the specific engagement, not the generic one.</span></li>
+    <li><span class="num">20.</span><span class="text"><strong>The Lineship costs half of what it deserves to cost.</strong> The OSP Bulk Freighter Lineship with a 450mm casemate delivers capital-class firepower at roughly half the ANS equivalent's point cost. Respect it on the field. Build around it in your OSP fleets.</span></li>
+    <li><span class="num">21.</span><span class="text"><strong>ANS information dominance is conditional on having ECCM.</strong> Without burnthrough capability or floodlights, ANS radar is as blind as OSP radar under jamming. Never assume your electronic advantage is permanent. Plan for its disruption.</span></li>
+    <li><span class="num">22.</span><span class="text"><strong>Cheap hulls are not expendable — they are affordable.</strong> There is a difference between sending a Shuttle to die while capturing a point and wasting it in a gunfight it cannot survive. Every hull serves a role. Use them correctly.</span></li>
+    <li><span class="num">23.</span><span class="text"><strong>The engagement range is not a given — fight for it.</strong> ANS wants long range; OSP wants close range. The actual engagement range is decided by movement, cover use, and initiative. The faction that gets their preferred range usually wins. Deny the enemy theirs.</span></li>
+    <li><span class="num">24.</span><span class="text"><strong>HOJ missiles punish aggressive jammers.</strong> If you are running blanket jamming continuously, the enemy can lock HOJ missiles directly onto your strongest emitters. Time your jamming windows — jam during the critical approach phase, go dark before the missiles arrive.</span></li>
+    <li><span class="num">25.</span><span class="text"><strong>Build coherent capability packages, not random assortments.</strong> A Bullseye FCR without missiles that require fire control lock is wasted. An illuminator without semi-active missiles is wasted. Every component earns its points through synergy with adjacent systems.</span></li>
+    <li><span class="num">26.</span><span class="text"><strong>Hybrid missiles with validators are not luxury items.</strong> The delta between a missile that a skilled defender can softkill and one that they cannot is measured in combat power delivered to target. For major strike missiles, invest in validators. The ammunition is limited; make every shot count.</span></li>
+    <li><span class="num">27.</span><span class="text"><strong>The battle is won in the fleet editor.</strong> By the time you deploy, 70% of the outcome is already determined. Plan. Iterate. Test your builds against the specific threat profiles you expect. Commodores who win consistently spend as much time in the fleet editor as in the battle.</span></li>
+    <li><span class="num">28.</span><span class="text"><strong>In 3D space, altitude is a weapons approach vector.</strong> Missiles approaching from directly above or below bypass the standard broadside PD coverage on most hulls. A volley timed to arrive from a high angle while other missiles approach from the beam divides PD resources across three dimensions simultaneously.</span></li>
+    <li><span class="num">29.</span><span class="text"><strong>Know when you have already lost and maximize the damage of that loss.</strong> A fleet that is clearly going to lose in the next three minutes has two choices: accept destruction passively or spend those three minutes doing as much damage as possible to the enemy before the end. The second choice costs the enemy more, wins more respect, and occasionally turns lost battles into draws.</span></li>
+    <li><span class="num">30.</span><span class="text"><strong>There is no meta that beats good fundamentals.</strong> EMCON discipline. Terrain use. PD coverage. Missile seeker selection. Flak and 20mm layering. Damage control awareness. The player who executes these fundamentals consistently will beat the player with a technically superior build who executes it poorly.</span></li>
+  </ul>
+
+  <hr>
+
+  <div class="callout callout-success">
+    <div class="callout-label">// CLOSING TRANSMISSION — FLEET COMMAND //</div>
+    <p>Nebulous: Fleet Command is a game that rewards investment. The fleet editor is not a menu — it is a design studio, a laboratory, and a war room. The battle is not a combat sequence — it is the proof of a thesis you wrote before the first shot was fired. Every loss teaches something specific: a PD gap you missed, a seeker type you didn't plan for, an engagement range you let the enemy dictate. Every win confirms a design decision that worked.</p>
+    <p style="margin-top:0.75rem;">Play the fleet editor as seriously as you play the battle. That is how you get better at this game. That is how you develop doctrine rather than tactics. It's in your hands, Commodore.</p>
+  </div>
+</section>
+
+<!-- CHAPTER NAV -->
+<nav class="chapter-nav" aria-label="Chapter navigation">
+  <a href="#setting">01 · Lore</a>
+  <a href="#factions">02 · Factions</a>
+  <a href="#fleet">03 · Fleet Build</a>
+  <a href="#hulls-ans">04 · ANS Hulls</a>
+  <a href="#hulls-osp">05 · OSP Hulls</a>
+  <a href="#radar">06 · Radar</a>
+  <a href="#ew">07 · E-War</a>
+  <a href="#missiles">08 · Missiles</a>
+  <a href="#pd">09 · Point Defense</a>
+  <a href="#weapons">10 · Kinetics</a>
+  <a href="#movement">11 · Movement</a>
+  <a href="#damage">12 · Damage</a>
+  <a href="#doctrines">13 · Doctrines</a>
+  <a href="#codex">14 · Codex</a>
+</nav>
+
+</div><!-- /page-wrap -->
+
+<footer class="page-footer">
+  <span class="footer-title">NEBULOUS</span>
+  <div class="footer-sub">// NADIR STRATEGY ARCHIVE · FLEET COMMAND · COMMODORE'S TACTICAL CODEX · END TRANSMISSION //</div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,1742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dominions 6: Rise of the Pantokrator — The Aspirant's Codex</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-dark: #8a6b28;
+    --crimson: #8b1a1a;
+    --crimson-light: #c0392b;
+    --deep: #0d0b08;
+    --parchment: #f5edd6;
+    --parchment-dark: #e8d9b8;
+    --parchment-mid: #d4c49a;
+    --ink: #1a1408;
+    --ink-mid: #2d2316;
+    --shadow: #111008;
+    --accent-blue: #2c4a6e;
+    --accent-teal: #1a4a42;
+    --body-font: 'EB Garamond', Georgia, serif;
+    --title-font: 'Cinzel', 'Times New Roman', serif;
+    --deco-font: 'Cinzel Decorative', 'Times New Roman', serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--deep);
+    background-image:
+      radial-gradient(ellipse at 20% 20%, rgba(90,60,20,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(80,20,20,0.12) 0%, transparent 60%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    color: var(--parchment);
+    font-family: var(--body-font);
+    font-size: 17px;
+    line-height: 1.8;
+    min-height: 100vh;
+  }
+
+  /* LAYOUT */
+  .page-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem 6rem;
+  }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 5rem 2rem 4rem;
+    position: relative;
+    border-bottom: 1px solid rgba(201,168,76,0.3);
+    margin-bottom: 3rem;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 3rem;
+    background: linear-gradient(to bottom, transparent, var(--gold));
+  }
+
+  .hero-eyebrow {
+    font-family: var(--title-font);
+    font-size: 0.75rem;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-title {
+    font-family: var(--deco-font);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    color: var(--gold-light);
+    line-height: 1.15;
+    text-shadow: 0 2px 20px rgba(201,168,76,0.3);
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-subtitle {
+    font-family: var(--title-font);
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
+    color: var(--parchment-mid);
+    letter-spacing: 0.15em;
+    margin-bottom: 2rem;
+  }
+
+  .hero-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+    margin: 2rem 0;
+  }
+
+  .hero-divider::before, .hero-divider::after {
+    content: '';
+    flex: 1;
+    max-width: 120px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold-dark));
+  }
+  .hero-divider::after {
+    background: linear-gradient(to left, transparent, var(--gold-dark));
+  }
+
+  .hero-ornament {
+    font-family: var(--title-font);
+    color: var(--gold);
+    font-size: 1.2rem;
+  }
+
+  .hero-intro {
+    max-width: 680px;
+    margin: 0 auto;
+    font-style: italic;
+    color: var(--parchment-dark);
+    font-size: 1.05rem;
+    line-height: 1.9;
+  }
+
+  /* TABLE OF CONTENTS */
+  .toc {
+    background: rgba(201,168,76,0.05);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 4px;
+    padding: 2rem 2.5rem;
+    margin: 3rem 0;
+  }
+
+  .toc-title {
+    font-family: var(--title-font);
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+  }
+
+  .toc-list {
+    list-style: none;
+    columns: 2;
+    column-gap: 2rem;
+  }
+
+  @media (max-width: 600px) {
+    .toc-list { columns: 1; }
+  }
+
+  .toc-list li {
+    margin-bottom: 0.5rem;
+    break-inside: avoid;
+  }
+
+  .toc-list a {
+    color: var(--parchment-dark);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+
+  .toc-list a:hover { color: var(--gold-light); }
+
+  .toc-num {
+    font-family: var(--title-font);
+    font-size: 0.7rem;
+    color: var(--gold-dark);
+    min-width: 1.5rem;
+  }
+
+  /* SECTIONS */
+  .section {
+    margin-bottom: 5rem;
+  }
+
+  .section-header {
+    position: relative;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+  }
+
+  .section-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, var(--gold-dark), transparent);
+  }
+
+  .section-num {
+    font-family: var(--title-font);
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--gold-dark);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+
+  .section-title {
+    font-family: var(--title-font);
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 600;
+    color: var(--gold-light);
+    line-height: 1.2;
+  }
+
+  .section-lead {
+    font-style: italic;
+    color: var(--parchment-mid);
+    font-size: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* SUBSECTIONS */
+  .subsection {
+    margin-bottom: 3rem;
+  }
+
+  .subsection-title {
+    font-family: var(--title-font);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    padding-left: 1rem;
+    border-left: 2px solid var(--gold-dark);
+  }
+
+  /* BODY TEXT */
+  p { margin-bottom: 1.1rem; color: var(--parchment-dark); }
+
+  p:last-child { margin-bottom: 0; }
+
+  /* CALLOUTS */
+  .callout {
+    border-left: 3px solid var(--gold-dark);
+    background: rgba(201,168,76,0.06);
+    padding: 1.25rem 1.5rem;
+    margin: 2rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .callout-warning {
+    border-left-color: var(--crimson-light);
+    background: rgba(139,26,26,0.08);
+  }
+
+  .callout-teal {
+    border-left-color: #2a7a6e;
+    background: rgba(26,74,66,0.12);
+  }
+
+  .callout-title {
+    font-family: var(--title-font);
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+
+  .callout-warning .callout-title { color: #e07070; }
+  .callout-teal .callout-title { color: #5bbfb0; }
+
+  .callout p { color: var(--parchment-dark); margin-bottom: 0.6rem; font-size: 0.97rem; }
+  .callout p:last-child { margin-bottom: 0; }
+
+  /* LORE BLOCKS */
+  .lore-block {
+    position: relative;
+    border: 1px solid rgba(201,168,76,0.15);
+    background: rgba(10,8,5,0.6);
+    padding: 1.75rem 2rem;
+    margin: 2.5rem 0;
+    border-radius: 2px;
+  }
+
+  .lore-block::before {
+    content: '"';
+    position: absolute;
+    top: -0.6rem;
+    left: 1.5rem;
+    font-family: var(--deco-font);
+    font-size: 2.5rem;
+    color: var(--gold-dark);
+    line-height: 1;
+    background: var(--deep);
+    padding: 0 0.3rem;
+  }
+
+  .lore-block p {
+    font-style: italic;
+    color: var(--parchment-mid);
+    font-size: 0.97rem;
+    line-height: 1.85;
+    margin-bottom: 0.8rem;
+  }
+  .lore-block p:last-child { margin-bottom: 0; }
+
+  .lore-attribution {
+    font-family: var(--title-font);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--gold-dark);
+    text-transform: uppercase;
+    text-align: right;
+    margin-top: 0.75rem;
+    display: block;
+  }
+
+  /* GRID CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .card {
+    border: 1px solid rgba(201,168,76,0.2);
+    background: rgba(201,168,76,0.04);
+    border-radius: 3px;
+    padding: 1.25rem;
+  }
+
+  .card-title {
+    font-family: var(--title-font);
+    font-size: 0.85rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.6rem;
+  }
+
+  .card p { font-size: 0.9rem; margin-bottom: 0; }
+
+  .card-crimson {
+    border-color: rgba(192,57,43,0.3);
+    background: rgba(139,26,26,0.06);
+  }
+  .card-crimson .card-title { color: #e07070; }
+
+  .card-teal {
+    border-color: rgba(42,122,110,0.3);
+    background: rgba(26,74,66,0.08);
+  }
+  .card-teal .card-title { color: #5bbfb0; }
+
+  .card-blue {
+    border-color: rgba(44,74,110,0.4);
+    background: rgba(30,50,80,0.1);
+  }
+  .card-blue .card-title { color: #7aaedd; }
+
+  /* STAT TABLES */
+  .stat-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.92rem;
+  }
+
+  .stat-table thead tr {
+    border-bottom: 1px solid rgba(201,168,76,0.3);
+  }
+
+  .stat-table th {
+    font-family: var(--title-font);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    padding: 0.6rem 0.75rem;
+    text-align: left;
+    font-weight: 600;
+  }
+
+  .stat-table td {
+    padding: 0.65rem 0.75rem;
+    color: var(--parchment-dark);
+    border-bottom: 1px solid rgba(201,168,76,0.07);
+    vertical-align: top;
+  }
+
+  .stat-table tr:last-child td { border-bottom: none; }
+
+  .stat-table tr:hover td { background: rgba(201,168,76,0.04); }
+
+  .pill {
+    display: inline-block;
+    padding: 0.1rem 0.5rem;
+    border-radius: 2px;
+    font-size: 0.75rem;
+    font-family: var(--title-font);
+    letter-spacing: 0.05em;
+  }
+  .pill-gold { background: rgba(201,168,76,0.15); color: var(--gold-light); }
+  .pill-red  { background: rgba(192,57,43,0.2); color: #e07070; }
+  .pill-teal { background: rgba(42,122,110,0.2); color: #5bbfb0; }
+  .pill-blue { background: rgba(44,74,110,0.25); color: #7aaedd; }
+
+  /* NUMBERED LIST */
+  .guide-list {
+    list-style: none;
+    margin: 1rem 0 1.5rem;
+    padding: 0;
+  }
+
+  .guide-list li {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    align-items: flex-start;
+  }
+
+  .guide-list .num {
+    font-family: var(--title-font);
+    font-size: 0.7rem;
+    color: var(--gold-dark);
+    min-width: 1.5rem;
+    padding-top: 0.3rem;
+    letter-spacing: 0.05em;
+  }
+
+  .guide-list .text {
+    color: var(--parchment-dark);
+    font-size: 0.97rem;
+    line-height: 1.75;
+    flex: 1;
+  }
+
+  .guide-list .text strong {
+    color: var(--gold-light);
+    font-weight: 600;
+  }
+
+  /* BULLET LIST */
+  .guide-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 1.5rem;
+  }
+
+  .guide-bullets li {
+    padding: 0.25rem 0 0.25rem 1.4rem;
+    position: relative;
+    color: var(--parchment-dark);
+    font-size: 0.97rem;
+    line-height: 1.75;
+  }
+
+  .guide-bullets li::before {
+    content: '⬦';
+    position: absolute;
+    left: 0;
+    color: var(--gold-dark);
+    font-size: 0.6rem;
+    top: 0.6rem;
+  }
+
+  .guide-bullets li strong { color: var(--gold-light); font-weight: 600; }
+
+  /* PHASE BAR */
+  .phase-bar {
+    display: flex;
+    gap: 0;
+    margin: 2rem 0;
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .phase {
+    flex: 1;
+    padding: 1rem;
+    text-align: center;
+    position: relative;
+  }
+
+  .phase:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 10%; height: 80%;
+    width: 1px;
+    background: rgba(201,168,76,0.15);
+  }
+
+  .phase-early { background: rgba(44,74,110,0.12); }
+  .phase-mid   { background: rgba(201,168,76,0.06); }
+  .phase-late  { background: rgba(139,26,26,0.1); }
+
+  .phase-label {
+    font-family: var(--title-font);
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+
+  .phase-early .phase-label { color: #7aaedd; }
+  .phase-mid   .phase-label { color: var(--gold); }
+  .phase-late  .phase-label { color: #e07070; }
+
+  .phase-desc {
+    font-size: 0.82rem;
+    color: var(--parchment-mid);
+    line-height: 1.5;
+  }
+
+  /* MAGIC PATHS */
+  .magic-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+  }
+
+  @media (max-width: 500px) {
+    .magic-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .magic-card {
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 3px;
+    padding: 0.9rem 1rem;
+    text-align: center;
+  }
+
+  .magic-icon {
+    font-size: 1.5rem;
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+
+  .magic-name {
+    font-family: var(--title-font);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+
+  .magic-desc {
+    font-size: 0.78rem;
+    color: var(--parchment-mid);
+    line-height: 1.5;
+  }
+
+  /* HIGHLIGHT BOX */
+  .highlight-box {
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 3px;
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+  }
+
+  .highlight-box .box-title {
+    font-family: var(--title-font);
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .highlight-box .box-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(201,168,76,0.2);
+  }
+
+  /* SCALES */
+  .scales-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .scale-card {
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 3px;
+    padding: 1.1rem 1.25rem;
+  }
+
+  .scale-card-title {
+    font-family: var(--title-font);
+    font-size: 0.82rem;
+    color: var(--gold-light);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+
+  .scale-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid rgba(201,168,76,0.07);
+  }
+
+  .scale-row:last-child { border-bottom: none; }
+
+  .scale-pos { color: #5bbfb0; font-size: 0.8rem; }
+  .scale-neg { color: #e07070; font-size: 0.8rem; }
+
+  /* FOOTER */
+  .page-footer {
+    text-align: center;
+    padding: 3rem 0 1rem;
+    border-top: 1px solid rgba(201,168,76,0.15);
+    margin-top: 4rem;
+  }
+
+  .footer-ornament {
+    font-family: var(--deco-font);
+    color: var(--gold-dark);
+    font-size: 1.5rem;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .footer-text {
+    font-family: var(--title-font);
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    color: rgba(201,168,76,0.4);
+    text-transform: uppercase;
+  }
+
+  /* NAV */
+  .chapter-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 2rem 0;
+    padding: 1.25rem;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(201,168,76,0.1);
+    border-radius: 3px;
+  }
+
+  .chapter-nav a {
+    font-family: var(--title-font);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--parchment-mid);
+    text-decoration: none;
+    padding: 0.3rem 0.75rem;
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 2px;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  .chapter-nav a:hover {
+    color: var(--gold-light);
+    border-color: rgba(201,168,76,0.4);
+    background: rgba(201,168,76,0.06);
+  }
+
+  /* INLINE EM */
+  em { color: var(--gold-light); font-style: italic; }
+
+  strong { color: var(--gold-light); font-weight: 600; }
+
+  /* HORIZONTAL RULE */
+  hr {
+    border: none;
+    border-top: 1px solid rgba(201,168,76,0.12);
+    margin: 3rem 0;
+  }
+
+  /* ANCHORS */
+  h2 { scroll-margin-top: 2rem; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════ HERO ═══ -->
+<div class="hero">
+  <div class="hero-eyebrow">Nadir Strategy Archive · Vol. I</div>
+  <h1 class="hero-title">Dominions 6</h1>
+  <div class="hero-subtitle">Rise of the Pantokrator — The Aspirant's Codex</div>
+  <div class="hero-divider"><span class="hero-ornament">✦</span></div>
+  <p class="hero-intro">
+    Every age ends. Every god rises and falls. In the void between heavens, where the old Pantokrator has abandoned the world, a thousand Pretenders stir in their sacred halls and forgotten tombs. This is your moment. This codex exists to ensure you do not squander it.
+    <br><br>
+    What follows is a comprehensive guide to the art of divine ascension — from the first trembling temple check to the final siege of the last Throne.
+  </p>
+</div>
+
+<!-- ═══════════════════════════════════════════════ PAGE WRAP ═══ -->
+<div class="page-wrap">
+
+  <!-- TABLE OF CONTENTS -->
+  <nav class="toc">
+    <div class="toc-title">Contents of this Codex</div>
+    <ul class="toc-list">
+      <li><a href="#prologue"><span class="toc-num">I.</span> The Nature of the Age</a></li>
+      <li><a href="#pretender"><span class="toc-num">II.</span> Fashioning Your Pretender</a></li>
+      <li><a href="#scales"><span class="toc-num">III.</span> The Scales of the World</a></li>
+      <li><a href="#dominion"><span class="toc-num">IV.</span> Spreading Dominion</a></li>
+      <li><a href="#early"><span class="toc-num">V.</span> The Early Game</a></li>
+      <li><a href="#magic"><span class="toc-num">VI.</span> Magic & Gem Economy</a></li>
+      <li><a href="#research"><span class="toc-num">VII.</span> The Schools of Magic</a></li>
+      <li><a href="#combat"><span class="toc-num">VIII.</span> Battle & Army Command</a></li>
+      <li><a href="#thugs"><span class="toc-num">IX.</span> Thugs & Supercombatants</a></li>
+      <li><a href="#diplomacy"><span class="toc-num">X.</span> Diplomacy & the Long Game</a></li>
+      <li><a href="#thrones"><span class="toc-num">XI.</span> Thrones of Ascension</a></li>
+      <li><a href="#lategame"><span class="toc-num">XII.</span> Late-Game Arcana</a></li>
+      <li><a href="#nations"><span class="toc-num">XIII.</span> A Survey of Nations</a></li>
+      <li><a href="#closing"><span class="toc-num">XIV.</span> Closing Doctrines</a></li>
+    </ul>
+  </nav>
+
+  <!-- ─── I. PROLOGUE ─── -->
+  <section class="section" id="prologue">
+    <div class="section-header">
+      <span class="section-num">Chapter I</span>
+      <h2 class="section-title">The Nature of the Age</h2>
+      <div class="section-lead">Understanding the world before you claim it.</div>
+    </div>
+
+    <div class="lore-block">
+      <p>The Pantokrator is gone. Some say He retreated beyond the celestial vault, weary of mortal prayer. Others whisper that He was slain by the combined weight of forgotten heresies. The truth does not matter. What matters is the vacancy — and the thousand burning eyes that have turned toward it.</p>
+      <span class="lore-attribution">— Fragment recovered from the Scriptorium of Ermor, author unknown</span>
+    </div>
+
+    <p>Dominions 6: Rise of the Pantokrator is a turn-based 4X grand strategy game of divine war. You control a <strong>Pretender God</strong> — a being of immense metaphysical power who rules a nation and seeks to extinguish all rivals and ascend to supreme godhood. This is not simply a game of armies; it is a game of <em>faith, magic, and divine will</em>.</p>
+
+    <p>Victory comes in three forms: conquer your enemies' lands entirely, extinguish their dominion so thoroughly that their god loses the will to persist, or claim enough <strong>Thrones of Ascension</strong> to accumulate the required Ascension Points. Most multiplayer games use the Thrones victory condition, which creates a natural focal point of conflict.</p>
+
+    <div class="phase-bar">
+      <div class="phase phase-early">
+        <span class="phase-label">Early Game</span>
+        <div class="phase-desc">Expansion, province conquest, pretender waking, first wars</div>
+      </div>
+      <div class="phase phase-mid">
+        <span class="phase-label">Mid Game</span>
+        <div class="phase-desc">Gem economy, research, diplomacy, major wars</div>
+      </div>
+      <div class="phase phase-late">
+        <span class="phase-label">Late Game</span>
+        <div class="phase-desc">Global enchantments, supercombatants, Throne race, endgame rituals</div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">How a Turn Works</h3>
+      <p>Dominions is a <strong>simultaneous-execution</strong> strategy game. In multiplayer, all players issue orders during their turn, then all orders resolve simultaneously. This means you cannot react to what your opponent is doing in the same turn — you can only predict and plan. This single fact shapes everything in Dominions at a fundamental level, and veteran players internalize it deeply.</p>
+      <p>In each turn you will: recruit units and commanders, move armies, issue battle scripts to mages and commanders, cast ritual spells, conduct research, construct forts, labs, and temples, and issue administrative orders like forging items or setting patrol orders. Each category of action deserves careful attention.</p>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">The Three Ages</h3>
+      <p>Every nation in Dominions exists in one of three historical periods. The <strong>Early Age (EA)</strong> is a world of myth and heroes, where gods walk openly and monsters stalk the land. The <strong>Middle Age (MA)</strong> represents a world grown more ordered, where ancient bloodlines have thinned but organized kingdoms wield greater institutional power. The <strong>Late Age (LA)</strong> is a world in decline — the old magic fades, ancient empires have crumbled, and darker powers fill the vacuum.</p>
+      <p>Each age features a different roster of nations with different strengths, aesthetics, and playstyles. A game is always played within a single age — you cannot mix Early Age Mictlan with Late Age Ermor.</p>
+
+      <div class="card-grid">
+        <div class="card card-teal">
+          <div class="card-title">Early Age</div>
+          <p>Heroic myth, titans, living gods. Nations tend toward powerful sacred units and high magic. The bless system rewards heavy investment. Brutal early expansion is common.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Middle Age</div>
+          <p>Balanced and diverse. Most nations have fully developed rosters. A good starting point for new players seeking variety without extreme mechanics.</p>
+        </div>
+        <div class="card card-crimson">
+          <div class="card-title">Late Age</div>
+          <p>Darker, stranger. Blood magic, undead empires, and dying civilizations. Fewer powerful sacreds, more esoteric strategies. High skill ceiling.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── II. PRETENDER ─── -->
+  <section class="section" id="pretender">
+    <div class="section-header">
+      <span class="section-num">Chapter II</span>
+      <h2 class="section-title">Fashioning Your Pretender</h2>
+      <div class="section-lead">Every ascendancy begins with a choice of divine form.</div>
+    </div>
+
+    <div class="lore-block">
+      <p>What manner of god are you? A colossal serpent whose scales turn arrows to splinters? A blind prophetess whose sight pierces the veil of time? A monument of black stone, patient as the deep earth, whose worshippers multiply without cease? Choose your form with the same care you would choose a weapon — for it will be your weapon, your limitation, and your legend all at once.</p>
+      <span class="lore-attribution">— The Canticle of Self-Creation, attributed to the Arch-Mages of Pythium</span>
+    </div>
+
+    <p>Pretender design is the most consequential decision in any game of Dominions. Your Pretender determines your <strong>bless effects</strong>, your access to <strong>magic paths</strong>, your nation's <strong>dominion strength</strong>, your <strong>scales</strong>, and whether you have a powerful combatant present from the first turn or must wait for your god to wake. All of this is purchased from a finite pool of <strong>design points</strong>.</p>
+
+    <div class="highlight-box">
+      <div class="box-title">The Four Pretender Archetypes</div>
+      <p>Every chassis falls into one of four archetypes based on its base Dominion score. Understanding these archetypes is the foundation of all Pretender design.</p>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Dominion 1 — Rainbow Mages</h3>
+      <p>These are mortal-scale bodies — arch-mages, seers, and scholars — whose great power lies not in physical might but in raw magical versatility. They are <em>extremely cheap</em>, leaving enormous numbers of design points for scales and magic paths. A Rainbow Mage pretender is almost always taken <strong>imprisoned</strong> to recover even more points, accepting that your god will not wake for many turns.</p>
+      <p>The strategic power here is breadth: a Rainbow Mage can dip into four, five, or even six different magic paths, unlocking bless effects and research capabilities that no individual nation mage could provide. They are also excellent for nations that do not rely heavily on sacred units, allowing the player to invest entirely in beneficial scales for economy.</p>
+      <div class="callout">
+        <div class="callout-title">Strategic Tip</div>
+        <p>When taking a Rainbow Mage imprisoned, you are betting that your nation's regular forces and the benefits of your scales can hold the field for the 12–20+ turns before your god wakes. Make sure your nation can do this before committing.</p>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Dominion 2 — The Monsters</h3>
+      <p>Dragons, sphinxes, great serpents, demonic bulls — these are the ancient things that walked the world before human memory. Monster pretenders have enormous hit points, high protection, multiple attacks per round, and often special abilities like <strong>trample</strong>, <strong>fear</strong>, or <strong>elemental breath</strong>. They are taken <strong>awake</strong> almost universally, because their entire value lies in being present from turn one.</p>
+      <p>A Monster pretender can conquer multiple provinces in the very first turns of the game, establishing a massive early snowball. This early dominance comes at the cost of scales and bless investment — you are spending most of your points on the chassis itself.</p>
+      <p>Monster pretenders <em>scale poorly</em> into the late game. As armies grow larger and enemies forge items, a naked monster becomes increasingly vulnerable. Budget for items early to extend their usefulness.</p>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Dominion 3 — The Titans</h3>
+      <p>The Titans represent the ideal synthesis of power and utility. These are humanoid demigods — enormous, usually equipped with weapons and armor, capable of using forged items — who sit at the sweet spot of combat effectiveness and magical capability. They are taken awake or dormant depending on strategy.</p>
+      <p>A Titan's humanoid form means it can equip <strong>any item</strong> you forge, transforming it from a competent early combatant into a near-unstoppable late-game supercombatant. Many of the most famous long-term pretender strategies revolve around Titan chassis loaded with endgame artifacts: Frost Brands, Vine Shields, regeneration items, and shrouds of protection.</p>
+      <div class="card-grid">
+        <div class="card card-blue">
+          <div class="card-title">Dormant Titans</div>
+          <p>Wakes around turn 8–12. Balances decent scales with a powerful awakening combatant for mid-game wars.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Awake Titans</div>
+          <p>Present from turn one, but costly. Sacrifices scales and bless investment for immediate battlefield presence.</p>
+        </div>
+        <div class="card card-teal">
+          <div class="card-title">Imprisoned Titans</div>
+          <p>Wakes very late. Rarely used but allows excellent scales + strong magic paths simultaneously.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Dominion 4 — The Immobiles</h3>
+      <p>Pillars of heaven. Eternal flames. Great stones. These Pretenders cannot leave the capital province without magical intervention — they are literally rooted in place. In exchange, they are astonishingly cheap, leaving vast numbers of design points for scales and magic. They also tend to have strong magic in two or three paths as their base.</p>
+      <p>An Immobile pretender is a pure scales-and-bless vehicle. You are not getting a combatant. You are getting the finest possible national economy and the most powerful passive bless effects. Nations with excellent regular armies and strong sacred units that benefit greatly from bless effects — such as Bogarus, Ulm, or Mictlan — thrive with Immobile pretenders.</p>
+
+      <div class="callout callout-warning">
+        <div class="callout-title">Critical Warning</div>
+        <p>Immobile pretenders are vulnerable to targeted killing via teleportation or assassination spells. A hostile mage casting <em>Teleport</em> or <em>Wish</em> can bring a strike team directly to your capital. Protect your Pretender with a stack of elite guards at all times.</p>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Awakening State</h3>
+      <p>The three awakening states — <strong>Awake</strong>, <strong>Dormant</strong>, and <strong>Imprisoned</strong> — represent a sliding scale between immediate power and long-term investment. Each state refunds design points: Dormant returns roughly 100 points, Imprisoned returns 200 or more. These points flow directly into scales, magic paths, or both.</p>
+      <p>As a rule: if your Pretender's combat value is the point, take it Awake. If your Pretender is primarily a bless and scales vehicle, Dormant or Imprisoned is almost always correct. The points recovered from Imprisonment compound enormously when invested into beneficial scales over the course of a full game.</p>
+    </div>
+  </section>
+
+  <!-- ─── III. SCALES ─── -->
+  <section class="section" id="scales">
+    <div class="section-header">
+      <span class="section-num">Chapter III</span>
+      <h2 class="section-title">The Scales of the World</h2>
+      <div class="section-lead">Your dominion shapes the very nature of the land it covers.</div>
+    </div>
+
+    <div class="lore-block">
+      <p>When a god's dominion falls upon a province, the land itself changes. Crops grow or fail. Soldiers find themselves stronger, or afflicted with a strange lethargy. Merchants thrive or flee. A god does not merely rule the people — a god reshapes reality in their image. Choose what reality you wish to create.</p>
+      <span class="lore-attribution">— The Theogony of Scales, attributed to the Academy of Pythium</span>
+    </div>
+
+    <p>Scales represent the character of your dominion and have enormous long-term effects on your nation. Each of six scale axes runs from negative 3 to positive 3. <strong>Positive scales cost design points; negative scales refund them.</strong> Scales only apply within your dominion — they have no effect on provinces you control but have not converted.</p>
+
+    <div class="scales-grid">
+      <div class="scale-card">
+        <div class="scale-card-title">Order ↔ Turmoil</div>
+        <div class="scale-row"><span>Order 3</span><span class="scale-pos">+37% gold income</span></div>
+        <div class="scale-row"><span>Order 1</span><span class="scale-pos">+13% gold income</span></div>
+        <div class="scale-row"><span>Turmoil 1</span><span class="scale-neg">−13% gold, random events worsen</span></div>
+        <div class="scale-row"><span>Turmoil 3</span><span class="scale-neg">−37% gold, frequent disasters</span></div>
+      </div>
+      <div class="scale-card">
+        <div class="scale-card-title">Productivity ↔ Sloth</div>
+        <div class="scale-row"><span>Prod 3</span><span class="scale-pos">+37% resources</span></div>
+        <div class="scale-row"><span>Prod 1</span><span class="scale-pos">+13% resources, some gold</span></div>
+        <div class="scale-row"><span>Sloth 1</span><span class="scale-neg">−13% resources</span></div>
+        <div class="scale-row"><span>Sloth 3</span><span class="scale-neg">−37% resources</span></div>
+      </div>
+      <div class="scale-card">
+        <div class="scale-card-title">Heat ↔ Cold</div>
+        <div class="scale-row"><span>Neutral (0)</span><span class="scale-pos">Ideal for most nations</span></div>
+        <div class="scale-row"><span>Heat/Cold 3</span><span class="scale-neg">Severe supply penalty</span></div>
+        <div class="scale-row"><span>Nation match</span><span class="scale-pos">Some nations prefer extremes</span></div>
+        <div class="scale-row"><span>Mismatch</span><span class="scale-neg">Supply loss → starvation</span></div>
+      </div>
+      <div class="scale-card">
+        <div class="scale-card-title">Growth ↔ Death</div>
+        <div class="scale-row"><span>Growth 3</span><span class="scale-pos">+30% pop growth, +30% income</span></div>
+        <div class="scale-row"><span>Growth 1</span><span class="scale-pos">+10% pop growth, +10% income</span></div>
+        <div class="scale-row"><span>Death 1</span><span class="scale-neg">−10% pop, some death gems</span></div>
+        <div class="scale-row"><span>Death 3</span><span class="scale-neg">Severe pop loss, death gem income</span></div>
+      </div>
+      <div class="scale-card">
+        <div class="scale-card-title">Fortune ↔ Misfortune</div>
+        <div class="scale-row"><span>Fortune 3</span><span class="scale-pos">Many positive random events</span></div>
+        <div class="scale-row"><span>Fortune 1</span><span class="scale-pos">More good events</span></div>
+        <div class="scale-row"><span>Misfortune 1</span><span class="scale-neg">More bad events</span></div>
+        <div class="scale-row"><span>Misfortune 3</span><span class="scale-neg">Frequent disasters, plague</span></div>
+      </div>
+      <div class="scale-card">
+        <div class="scale-card-title">Magic ↔ Drain</div>
+        <div class="scale-row"><span>Magic 3</span><span class="scale-pos">+50% magic site find chance</span></div>
+        <div class="scale-row"><span>Magic 1</span><span class="scale-pos">+20% site find chance</span></div>
+        <div class="scale-row"><span>Drain 1</span><span class="scale-neg">−20% site find, −1 research pts</span></div>
+        <div class="scale-row"><span>Drain 3</span><span class="scale-neg">Severe research and gem penalty</span></div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Scale Strategy Frameworks</h3>
+      <p>There is no single "correct" set of scales, but experienced players have identified several coherent frameworks that work well across many situations.</p>
+
+      <ul class="guide-list">
+        <li>
+          <span class="num">I.</span>
+          <span class="text"><strong>The Economy Build:</strong> Order 3, Productivity 3, Growth 3, Magic 1, neutral temperature. This is the classic "ignore sacred units" build for nations like Ulm or early Caelum. Excellent long-term economy, powerful armies funded by enormous gold income, and solid magic site discovery. Requires an Imprisoned Immobile pretender to afford.</span>
+        </li>
+        <li>
+          <span class="num">II.</span>
+          <span class="text"><strong>The Bless Build:</strong> Accept some negative scales (typically Turmoil 1, Sloth 1 or even 2, sometimes Death 1) to free up points for strong magic paths and significant bless effects. Works best for nations where sacreds are the core military strategy — EA Mictlan, EA Sauromatia, EA Lanka.</span>
+        </li>
+        <li>
+          <span class="num">III.</span>
+          <span class="text"><strong>The Death Scale Exploit:</strong> Nations that are primarily undead (EA Ermor, LA Ermor, LA Lemuria) benefit little from population-based income, allowing Death 3 without the usual catastrophic downside. The death gem income from Death scales can fund a blood and necromantic war economy.</span>
+        </li>
+        <li>
+          <span class="num">IV.</span>
+          <span class="text"><strong>The Turmoil-Fortune Gamble:</strong> Some experienced players pair Turmoil 2 or 3 with Fortune 3. Turmoil increases the frequency of random events, and Fortune makes most of those events positive. This is a high-variance strategy that can generate enormous random windfalls but requires experienced play to manage.</span>
+        </li>
+      </ul>
+
+      <div class="callout callout-teal">
+        <div class="callout-title">The Minimum Dominion Rule</div>
+        <p>As a general guideline, never go below <strong>Dominion 6</strong>. Below this threshold, your dominion can be extinguished by aggressive temple-spreading from enemies, which will cause your Pretender to die — even if imprisoned — when dominion reaches zero in all provinces. Some nations and strategies justify exceptions, but treat this as the default floor.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── IV. DOMINION ─── -->
+  <section class="section" id="dominion">
+    <div class="section-header">
+      <span class="section-num">Chapter IV</span>
+      <h2 class="section-title">The Faith that Reshapes the World</h2>
+      <div class="section-lead">On the spreading of holy dominion.</div>
+    </div>
+
+    <div class="lore-block">
+      <p>It is not armies that truly conquer a land. Armies take ground; faith takes souls. When the last soldier falls and the last general flees, the people remain — and the people will worship whoever fills the void in their hearts. Build your temples. Send your prophets. Let the land know whose name it prays to at night.</p>
+      <span class="lore-attribution">— Military Doctrine of the Archons of Marverni</span>
+    </div>
+
+    <p>Dominion is the divine influence your god exerts over the world's provinces. Every province is either in your dominion, in an enemy's dominion, or in neutral dominion. A province in your dominion applies your Scale bonuses there, enables your priests to perform holy functions, and slowly strengthens your hold on the region. It is, in a very real sense, the measure of your faith's reach.</p>
+
+    <div class="subsection">
+      <h3 class="subsection-title">How Dominion Spreads</h3>
+      <p>Each turn, a "temple check" is performed for each source of spreading dominion. Each check has a chance of spreading your dominion to an adjacent province. The sources of dominion spread are:</p>
+      <ul class="guide-bullets">
+        <li><strong>Your Pretender God:</strong> Counts as one automatic increase plus two temple checks each turn.</li>
+        <li><strong>Your Capital Province:</strong> One automatic temple check per turn.</li>
+        <li><strong>Each Temple you build:</strong> One temple check per turn, per temple.</li>
+        <li><strong>Your Prophet:</strong> One temple check per turn. Prophets are created by using the "Become Prophet" order on a commander.</li>
+        <li><strong>Disciples (team games):</strong> Function like sub-prophets for each additional player on your team.</li>
+        <li><strong>Thrones of Ascension you control:</strong> Function as powerful super-temples.</li>
+      </ul>
+      <p>The probability of each check successfully spreading dominion is approximately 80% in most circumstances, modified by your Dominion score and other factors. The higher your base Dominion stat, the faster and more reliably you spread.</p>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">The Prophet</h3>
+      <p>Creating a Prophet is one of the first things you should do in almost every game. Use the "Become Prophet" order on a commander inside your dominion during the very first turn. Your Prophet gains enhanced priestly powers (effectively Holy 3), spreads dominion, and can bless your forces.</p>
+      <p>The critical function of the Prophet in the early game is enabling the <strong>Bless</strong> ability on your forces before your Pretender is present. Bless grants your sacred units your pretender's bless effects — regeneration, magical weapons, elemental resistances, and more — as long as they are inside your dominion. If your sacred units are fighting outside dominion, they cannot be blessed by a priest.</p>
+      <div class="callout callout-warning">
+        <div class="callout-title">Danger — Dominion Extinguishment</div>
+        <p>If your dominion drops to zero in every province simultaneously, your Pretender <em>dies</em>. This is a game-ending condition for most nations. Aggressive opponents will target your temples with raids and your dominion spread with their own counter-temple construction. Always maintain multiple temple sources spread across your territory.</p>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Preaching</h3>
+      <p>Priests can be issued the <strong>Preach</strong> order, which causes them to act as an additional temple check in that province. High-level priests preach more effectively. Spreading priests through contested border regions is a key tool in dominion warfare — it is entirely possible to destroy an enemy's dominion in their own territory by flooding it with preaching priests before a single sword is drawn.</p>
+    </div>
+  </section>
+
+  <!-- ─── V. EARLY GAME ─── -->
+  <section class="section" id="early">
+    <div class="section-header">
+      <span class="section-num">Chapter V</span>
+      <h2 class="section-title">The First Turns — Conquest and Growth</h2>
+      <div class="section-lead">On the art of early expansion and the dangers of hesitation.</div>
+    </div>
+
+    <div class="lore-block">
+      <p>A god who waits too long to act will find that the world has filled with enemies before they have finished filling their coffers. The first season of war is the season of foundations. Move quickly. Expand hungrily. Every province is a temple waiting to be built, every independent army is a source of future soldiers, and every delay is a gift to your rivals.</p>
+      <span class="lore-attribution">— Annals of the Expansion Wars, Library of Pythium</span>
+    </div>
+
+    <p>The early game in Dominions 6 is primarily about <strong>expansion</strong>: claiming as many provinces as possible from the independent defenders that occupy the world between player nations. Independent provinces have armies of varying strength — from a handful of militia to formidable bands of heavy cavalry and mages. Reading province defense strength correctly and prioritizing safe targets is one of the most important early skills.</p>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Turn 1 Priorities</h3>
+      <ul class="guide-list">
+        <li><span class="num">1.</span><span class="text"><strong>Create Your Prophet.</strong> Select a commander and issue the "Become Prophet" order. Your Prophet should be a priest who can bless your troops. Do this on Turn 1 without fail.</span></li>
+        <li><span class="num">2.</span><span class="text"><strong>Scout Surrounding Provinces.</strong> Send a light scout or expendable commander in each direction to reveal the province defense values of your neighbors. You cannot safely invade what you cannot see.</span></li>
+        <li><span class="num">3.</span><span class="text"><strong>Recruit at Capacity.</strong> Fill every recruitment slot in your capital. You are compounding your military force every turn — an empty recruitment slot is a turn of growth permanently lost.</span></li>
+        <li><span class="num">4.</span><span class="text"><strong>Plan Your First Invasion.</strong> Identify the weakest province within or adjacent to your dominion. Look for militia, light infantry, or other low-quality defenders. Avoid cavalry and barbarians in the early turns — they are deceptively dangerous.</span></li>
+        <li><span class="num">5.</span><span class="text"><strong>Begin Fort Construction (if applicable).</strong> If your starting position allows, plan the location of your first expansion fort. Forts unlock recruitment in non-capital provinces — a massive multiplier on your early production capacity.</span></li>
+      </ul>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Province Defense Values — Reading the Map</h3>
+      <p>When you reveal a province, you can see its defense value. This number roughly represents the total military strength of the defenders. A province with defense 10 is trivial; defense 50 is dangerous without adequate forces; defense 100+ requires a real army.</p>
+      <p>The <strong>terrain type</strong> also matters enormously. Forest provinces tend to spawn bowmen and woodsmen; mountains produce heavily armored infantry; swamps produce amphibious or poison-resistant units. Plains are the most generic. Each terrain type has specific unit compositions that require different approaches.</p>
+      <div class="callout">
+        <div class="callout-title">The Scouting Ping</div>
+        <p>Before committing a real army to a difficult province or a Throne of Ascension, send a single cheap commander (or even your Scout) as a "ping" — they will enter the province, battle will begin, they will likely flee or die, but you will now have seen the exact composition of the defending force and can plan accordingly.</p>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">The Expansion Formula</h3>
+      <p>Successful early expansion follows a compound growth logic: each province you claim adds gold income, which funds more soldiers, which enables faster conquest of the next province. This flywheel accelerates rapidly and creates enormous gaps in power between players who expand efficiently and those who do not.</p>
+      <p>The optimal early expansion target is roughly <strong>1 new province per turn</strong>, though this varies by nation and map. Nations with strong awake pretenders or powerful bless effects on sacred units can expand significantly faster. Nations without strong early armies must be more patient and methodical, building up sufficient forces before engaging strong defenders.</p>
+
+      <div class="card-grid">
+        <div class="card card-teal">
+          <div class="card-title">Blitz Expansion</div>
+          <p>Awake Monster/Titan pretender conquers 2–3 provinces solo in the first few turns. Prioritize for nations with sacred expansionist units.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Methodical Expansion</div>
+          <p>Build up a stack of reliable infantry, send with Prophet for bless. One province per turn. Safer but slower. Best for no-sacred nations.</p>
+        </div>
+        <div class="card card-crimson">
+          <div class="card-title">Turtle Expansion</div>
+          <p>Build forts quickly to unlock additional recruitment. Slower initial expansion but dramatically faster force generation after turn 5–8.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Fort Placement — The Engine of Your Empire</h3>
+      <p>Forts are the most important infrastructure decision in Dominions. A fort enables troop recruitment from that province and adjacent provinces, draws supply lines, provides a defensive refuge, and (with an attached Lab) allows mage recruitment. Placing your second and third fort correctly during the early game shapes the geography of your entire campaign.</p>
+      <p>Key considerations for fort placement: prioritize provinces adjacent to high-gold regions, plan for defensive choke points on borders facing likely enemies, and always try to place forts in provinces that will eventually be within your dominion. A fort outside your dominion contributes nothing to your sacred unit bless strategy.</p>
+    </div>
+  </section>
+
+  <!-- ─── VI. MAGIC & GEMS ─── -->
+  <section class="section" id="magic">
+    <div class="section-header">
+      <span class="section-num">Chapter VI</span>
+      <h2 class="section-title">The Gem Economy</h2>
+      <div class="section-lead">On magical resources, sites of power, and the currency of gods.</div>
+    </div>
+
+    <div class="lore-block">
+      <p>Gold buys swords. Swords buy provinces. But provinces, in the end, are merely vessels — containers for the true wealth of the world: the places where magic pools and thickens like old blood on stone. Find these sites. Develop them. The empire that runs out of gems in the last hour of war is the empire that loses, regardless of how many legions it can field.</p>
+      <span class="lore-attribution">— Treasury Report, Archivist of Arcoscephale</span>
+    </div>
+
+    <p>Gems are the magical currency of Dominions 6. Each of the eight magic schools has an associated gem type: <strong>Fire, Air, Water, Earth, Astral (Pearls), Nature, Death, Blood (Slaves)</strong>. Gems are spent to forge magic items, cast powerful ritual spells, empower mages, and fuel global enchantments. Whoever controls the best gem economy usually wins the late game.</p>
+
+    <div class="magic-grid">
+      <div class="magic-card">
+        <span class="magic-icon">🔥</span>
+        <span class="magic-name">Fire Gems</span>
+        <span class="magic-desc">Destruction, combat spells, fire elementals, forging damage items.</span>
+      </div>
+      <div class="magic-card">
+        <span class="magic-icon">💨</span>
+        <span class="magic-name">Air Gems</span>
+        <span class="magic-desc">Lightning, weather, wind riding, thunderstrike rituals.</span>
+      </div>
+      <div class="magic-card">
+        <span class="magic-icon">💧</span>
+        <span class="magic-name">Water Gems</span>
+        <span class="magic-desc">Quickness, water breathing, cold attacks, healing potions.</span>
+      </div>
+      <div class="magic-card">
+        <span class="magic-icon">⛰️</span>
+        <span class="magic-name">Earth Gems</span>
+        <span class="magic-desc">Armor, barkskin, construction, earth elementals, reinvigoration.</span>
+      </div>
+      <div class="magic-card">
+        <span class="magic-icon">✦</span>
+        <span class="magic-name">Pearls</span>
+        <span class="magic-desc">Astral magic: communions, mind spells, teleportation, wishes.</span>
+      </div>
+      <div class="magic-card">
+        <span class="magic-icon">🌿</span>
+        <span class="magic-name">Nature Gems</span>
+        <span class="magic-desc">Regeneration, disease cure, poison, vine shields, nature summons.</span>
+      </div>
+      <div class="magic-card">
+        <span class="magic-icon">💀</span>
+        <span class="magic-name">Death Gems</span>
+        <span class="magic-desc">Necromancy, horror summoning, undead armies, banishment.</span>
+      </div>
+      <div class="magic-card">
+        <span class="magic-icon">🩸</span>
+        <span class="magic-name">Blood Slaves</span>
+        <span class="magic-desc">Blood magic, demon summoning, soul-binding, nation-specific rituals.</span>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Magic Sites</h3>
+      <p>Magic sites are hidden locations scattered throughout the world's provinces. Each site produces gems of specific types each turn — this ongoing income is the backbone of your magical economy. Sites must be <strong>discovered</strong> by mages with the appropriate magic paths, by having those mages conduct a "Search" action in the province.</p>
+      <p>A mage can find sites relevant to their magic paths. An Earth mage will discover earth-related sites; a Death mage will uncover necrotic confluences. Finding sites in paths you do not possess requires either empowering a mage (spending gems to temporarily raise their path level) or relying on your Pretender to search. The <strong>Magic scale</strong> in your dominion increases site discovery probability significantly — Magic 3 is a near-certainty for finding all available sites quickly.</p>
+
+      <div class="callout callout-teal">
+        <div class="callout-title">Site Searching Best Practice</div>
+        <p>Dedicate 2–4 mages of each major path to systematic site searching across your territory in the early-to-mid game. Do not wait until the mid-game to begin — every turn of undiscovered sites is permanent gem income lost. Prioritize searching in provinces with unusual terrain (deep seas, ancient ruins, sacred groves) as these have the highest concentrations of powerful sites.</p>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Empowerment</h3>
+      <p>You can spend gems to <strong>empower</strong> a mage, permanently raising their level in a specific magic path by one. This costs gems equal to ten times the level you are raising them to (i.e., raising a path from level 2 to level 3 costs 30 gems). Empowerment is expensive but unlocks access to spells, rituals, and site-searching capabilities that would otherwise be inaccessible.</p>
+      <p>Empowering Blood mages is unique — it requires blood slaves specifically, and a Blood 3 mage can empower into Blood 4, unlocking some of the most powerful late-game summons and rituals in the game.</p>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Gem Priorities by Phase</h3>
+      <table class="stat-table">
+        <thead>
+          <tr>
+            <th>Phase</th>
+            <th>Primary Gem Use</th>
+            <th>Strategic Goal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="pill pill-blue">Early</span></td>
+            <td>Site searching, minor item forging</td>
+            <td>Discover all income sources, equip thugs</td>
+          </tr>
+          <tr>
+            <td><span class="pill pill-gold">Mid</span></td>
+            <td>Combat item forging, communion support</td>
+            <td>Equip armies for major wars, contest Thrones</td>
+          </tr>
+          <tr>
+            <td><span class="pill pill-red">Late</span></td>
+            <td>Global enchantments, summons, empowerment</td>
+            <td>Dominate with game-altering rituals</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ─── VII. RESEARCH ─── -->
+  <section class="section" id="research">
+    <div class="section-header">
+      <span class="section-num">Chapter VII</span>
+      <h2 class="section-title">The Schools of Magic</h2>
+      <div class="section-lead">On the great traditions of arcane knowledge and their military applications.</div>
+    </div>
+
+    <div class="lore-block">
+      <p>A mage who knows only one school is a craftsman. A mage who knows three is a weapon. A mage who knows six is a catastrophe waiting to be deployed. The great academies of our age do not teach knowledge for its own sake — they teach it as a discipline of war, a grammar of destruction and dominion, a language in which gods write their will upon the flesh of the world.</p>
+      <span class="lore-attribution">— Inaugural Address, Grand Academy of Arcoscephale</span>
+    </div>
+
+    <p>Research in Dominions 6 is conducted by assigning mages to "Research" mode. Each mage generates research points per turn based on their relevant magic paths. Research unlocks spells and abilities in eight schools of magic. Unlike many strategy games, you cannot research everything quickly — prioritization is critical.</p>
+
+    <div class="subsection">
+      <h3 class="subsection-title">The Eight Schools</h3>
+
+      <table class="stat-table">
+        <thead>
+          <tr>
+            <th>School</th>
+            <th>Primary Uses</th>
+            <th>Priority</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Conjuration</strong></td>
+            <td>Summoning powerful creatures, elemental lords, demons, spiritual beings</td>
+            <td><span class="pill pill-gold">High</span></td>
+          </tr>
+          <tr>
+            <td><strong>Alteration</strong></td>
+            <td>Body buffs, stat enhancement, transformation spells, flying</td>
+            <td><span class="pill pill-gold">High</span></td>
+          </tr>
+          <tr>
+            <td><strong>Evocation</strong></td>
+            <td>Direct damage spells, battlefield destruction, AoE magic</td>
+            <td><span class="pill pill-teal">Medium</span></td>
+          </tr>
+          <tr>
+            <td><strong>Construction</strong></td>
+            <td>Item forging, laboratory construction, magical artifacts</td>
+            <td><span class="pill pill-gold">High</span></td>
+          </tr>
+          <tr>
+            <td><strong>Enchantment</strong></td>
+            <td>Persistent enchantments, healing, global spells, battlefield buffs</td>
+            <td><span class="pill pill-gold">High</span></td>
+          </tr>
+          <tr>
+            <td><strong>Thaumaturgy</strong></td>
+            <td>Teleportation, astral travel, mind control, binding spells</td>
+            <td><span class="pill pill-teal">Medium</span></td>
+          </tr>
+          <tr>
+            <td><strong>Blood Magic</strong></td>
+            <td>Demon summoning, soul harvesting, corruption, end-game power</td>
+            <td><span class="pill pill-red">Situational</span></td>
+          </tr>
+          <tr>
+            <td><strong>Sorcery (Ritual)</strong></td>
+            <td>National rituals, unique summons, late-game world-altering effects</td>
+            <td><span class="pill pill-teal">Medium</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Research Priorities</h3>
+      <p>The optimal research path depends heavily on your nation, but several principles apply broadly:</p>
+
+      <ul class="guide-list">
+        <li>
+          <span class="num">I.</span>
+          <span class="text"><strong>Construction 4 is nearly universal.</strong> Construction 4 unlocks the ability to forge <em>Boots of the Messenger</em>, <em>Frost Brand swords</em>, <em>Vine Shields</em>, and the <em>Skull of Fire</em> — among the most cost-effective combat items in the game. Almost every nation benefits from reaching Construction 4 in the early-to-mid game.</span>
+        </li>
+        <li>
+          <span class="num">II.</span>
+          <span class="text"><strong>Alteration 5–6 for buff-heavy strategies.</strong> Alteration unlocks <em>Luck</em>, <em>Fortify</em>, <em>Body Ethereal</em>, <em>Mistform</em>, and eventually <em>Relief</em> — the fatigue-clearing spell that is a cornerstone of communion strategies. Nations with strong mage corps prioritize Alteration heavily.</span>
+        </li>
+        <li>
+          <span class="num">III.</span>
+          <span class="text"><strong>Conjuration for summons and late game.</strong> The most powerful combatant summons — Tartarians, elemental kings, demon lords — require Conjuration 7–9. Start researching Conjuration early if your strategy relies on summoned heavy hitters rather than recruitable sacreds.</span>
+        </li>
+        <li>
+          <span class="num">IV.</span>
+          <span class="text"><strong>Enchantment for global domination.</strong> The game-altering global enchantments — <em>Flames of the Sky</em>, <em>Burden of Time</em>, <em>Darkness</em>, <em>Rain of Toads</em> — require high Enchantment research. A nation that controls multiple global enchantments can reshape the rules of the entire game. There are only a fixed number of global slots, and contesting them is a major late-game activity.</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Communions</h3>
+      <p>A <strong>communion</strong> is one of the most powerful advanced mechanics in Dominions. A group of mages forms a mystical link — several "slave" mages feed their magical power into a "master" mage, allowing the master to cast spells far beyond their individual capability. A communion of eight Earth mages can enable a single master to cast Earth 6 spells that no individual mage in the nation could otherwise access.</p>
+      <p>Communions require careful scripting and setup. Slaves must be scripted to cast <em>Communion Slave</em> before the master casts <em>Communion Master</em>, and they share fatigue with the master, meaning a powerful spell burdens all members of the communion simultaneously. Getting the scripting right is critical — a communion that fires its buffs in the wrong order is largely wasted.</p>
+    </div>
+  </section>
+
+  <!-- ─── VIII. COMBAT ─── -->
+  <section class="section" id="combat">
+    <div class="section-header">
+      <span class="section-num">Chapter VIII</span>
+      <h2 class="section-title">The Art of Battle</h2>
+      <div class="section-lead">On scripting, formation, and the chaos of divine war.</div>
+    </div>
+
+    <div class="lore-block">
+      <p>You will not be on the battlefield. You will never see your soldiers die. You give your orders in the quiet of your divine hall, and then reality takes over and does with them what it will. A battle is a message you sent to the future — and the future does not always reply as you wished. Plan for this. Script for every contingency. The general who wins is the one whose orders survive contact with the enemy.</p>
+      <span class="lore-attribution">— Military Philosophy of Agartha, The Deep Schools</span>
+    </div>
+
+    <p>Combat in Dominions 6 is fully automated. You do not control your units in battle — you script them in advance. Every commander and mage can be given a sequence of up to <strong>5 scripted orders</strong>, after which they act on default behavior. Getting this scripting right is one of the highest-skill activities in the game.</p>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Formation Basics</h3>
+      <p>Your army deploys in a formation across the battle grid. Infantry hold the front line, archers and mages stand in the rear. Commanders position themselves in their assigned zones and execute their scripts. The battle board is divided into a front, center, and rear zone — positioning your mages in the rear is critical, as they are nearly useless in melee and extremely vulnerable.</p>
+      <p>The <strong>Hold and Attack</strong> command causes a squad to wait two turns before advancing. This is invaluable for letting your spellcasters buff the army and fire opening volleys before your infantry crashes into the enemy line. Most experienced players have their front line on Hold and Attack while their mages cast their first 2–3 scripted spells.</p>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Scripting Mages — The Core Skill</h3>
+      <p>Scripting your mages correctly separates good players from great ones. The general principles are:</p>
+      <ul class="guide-bullets">
+        <li><strong>Buff first, then attack.</strong> Cast protective spells on your army (elemental resistances, luck, personal buffs) in the first 2–3 turns, then transition to damage spells or summoning.</li>
+        <li><strong>Match resistances to the enemy.</strong> If facing a fire-heavy nation, script your mages with fire resistance spells before deploying. Forgetting elemental resistances against the right opponent is a common — and catastrophic — mistake.</li>
+        <li><strong>Fatigue management.</strong> High-level spells generate enormous fatigue. A mage who reaches 100 fatigue falls unconscious. Script your spells in order from cheapest fatigue cost to most expensive, or use fatigue-reducing support (Boots of the Messenger, Reinvigoration items, or the Relief spell from communion masters).</li>
+        <li><strong>The default (unscripted) behavior.</strong> After 5 scripted spells, mages fall back on AI behavior. Understand what your mages will cast by default — sometimes this is beneficial, sometimes catastrophic. Never assume the AI will do what you want.</li>
+        <li><strong>Avoid friendly fire.</strong> Many powerful area-effect spells can hit your own units. Position mages accordingly and consider the trajectory of all spells you script.</li>
+      </ul>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Morale — The Hidden Victory Condition</h3>
+      <p>Armies do not fight to the last man in Dominions. They <strong>rout</strong> when morale breaks. A unit that sees its commander die, watches too many allies fall, or encounters something terrifying enough will flee the battlefield. This means many battles are decided not by who kills the most enemies but by who collapses the other side's will to fight.</p>
+      <p>Several mechanics exploit this. <strong>Fear</strong> is a special ability that forces morale checks on nearby enemies every turn. Units with high fear ratings — undead champions, ancient demons, enormous monsters — can route entire armies without dealing a single hit. <strong>Assassination</strong> of the enemy's commander removes their morale-sustaining presence and can collapse formations. The <strong>Death</strong> magic school excels at creating fear and despair effects.</p>
+
+      <div class="callout callout-teal">
+        <div class="callout-title">The Rout Chain</div>
+        <p>When one squad routes, nearby allies may rout in sympathy — this is called a rout cascade. A single collapsing flank can trigger a chain reaction that destroys the entire army. Always include a "standard bearer" or high-leadership commander who helps maintain morale, and keep at least one elite squad in reserve to plug breaks in your line.</p>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Body Count vs. Routing</h3>
+      <p>A key insight for new players: the goal in most battles is not to kill every enemy, but to break their morale. A battle fought to a routing conclusion is often decided in just 5–10 rounds of combat. Focus your scripted spells on high-impact, morale-shattering approaches: fear effects, killing blows on commanders, or devastating AoE damage that rapidly reduces the visible troop count and triggers panic.</p>
+    </div>
+  </section>
+
+  <!-- ─── IX. THUGS & SC ─── -->
+  <section class="section" id="thugs">
+    <div class="section-header">
+      <span class="section-num">Chapter IX</span>
+      <h2 class="section-title">Thugs & Supercombatants</h2>
+      <div class="section-lead">On the art of making one warrior worth an army.</div>
+    </div>
+
+    <div class="lore-block">
+      <p>There are men who are merely soldiers, and there are men who are weapons. Equip the right warrior with the right instruments, teach him the right words of power, and watch him walk through a thousand enemies as if they were made of fog. The cost of such a weapon is enormous. The return, when it works, is incalculable.</p>
+      <span class="lore-attribution">— The Armorer's Doctrine, Guild of Vanheim</span>
+    </div>
+
+    <p>A <strong>Thug</strong> is a single commander — equipped with forged items and possibly blessed — who can defeat a small force of enemies or clear a province defended by light units alone. A <strong>Supercombatant (SC)</strong> goes further: equipped and buffed to peak capability, an SC can engage and defeat entire armies with mage support.</p>
+    <p>This distinction is not absolute. The difference between a thug and an SC is a spectrum of investment, capability, and ambition. Both concepts share the same design philosophy: choose a <em>chassis</em> (the base unit), then select <em>gear</em> (forged items and spells) to make that chassis as unkillable as possible while maintaining killing power.</p>
+
+    <div class="subsection">
+      <h3 class="subsection-title">What Makes a Good Chassis?</h3>
+      <ul class="guide-bullets">
+        <li><strong>High HP:</strong> Enemy mages will throw lethal spells. You need to survive at least several direct hits. Generally 60+ HP for a serious thug, 100+ for an SC ambition.</li>
+        <li><strong>Regeneration:</strong> The single most valuable defensive property. Regenerating units heal HP every combat round, making them nearly impossible to kill through attrition. Aim for 10–15% regeneration minimum on any SC build.</li>
+        <li><strong>High Protection:</strong> Ranged attacks bypass defense skill and go straight to protection. 30+ protection is a reasonable threshold for withstanding massed archery.</li>
+        <li><strong>Self-Buffing Magic:</strong> The best chassis can cast their own protective buffs — Body Ethereal, Mistform, Personal Luck. This reduces dependence on external mage support.</li>
+        <li><strong>Humanoid Form (for item slots):</strong> Humanoid chassis can equip armor, weapon, shield, helmet, ring, and misc slots — up to 6–8 items total. Non-humanoid chassis have fewer slots and cannot use some item types.</li>
+      </ul>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Key Items for Thug Construction</h3>
+      <table class="stat-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Cost</th>
+            <th>Effect</th>
+            <th>Why It Matters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Frost Brand</strong></td>
+            <td>5 Water gems</td>
+            <td>+8 attack, cold aura</td>
+            <td>Exceptional damage weapon; cold aura weakens nearby enemies</td>
+          </tr>
+          <tr>
+            <td><strong>Vine Shield</strong></td>
+            <td>5 Nature gems</td>
+            <td>Entangles attackers</td>
+            <td>Prevents enemies from attacking, buying time for regeneration</td>
+          </tr>
+          <tr>
+            <td><strong>Shroud of the Battle Saint</strong></td>
+            <td>10 Earth gems</td>
+            <td>Reinvigoration 3</td>
+            <td>Reduces fatigue accumulation dramatically</td>
+          </tr>
+          <tr>
+            <td><strong>Amulet of Resilience</strong></td>
+            <td>5 Earth gems</td>
+            <td>+10 Protection</td>
+            <td>Stacks with natural armor, essential for ranged defense</td>
+          </tr>
+          <tr>
+            <td><strong>Boots of the Messenger</strong></td>
+            <td>5 Air gems</td>
+            <td>+25% movement, map movement</td>
+            <td>The single best mobility item; essential for any roaming thug</td>
+          </tr>
+          <tr>
+            <td><strong>Helm of Valor / Crown of Command</strong></td>
+            <td>Varies</td>
+            <td>Leadership bonus, morale</td>
+            <td>Allows thugs to command larger retinues of protective troops</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Supercombatant Doctrine</h3>
+      <p>A true Supercombatant must be prepared for a <em>specific threat profile</em>, not just equipped generically. An SC built to fight Abysia needs maximum fire resistance and cold-based offense; an SC facing C'tis needs disease immunity and poison resistance. Deploying an SC against a counter-composition is how expensive investments become expensive failures.</p>
+      <p>Key SC survival stats and the spells that provide them:</p>
+      <ul class="guide-bullets">
+        <li><strong>Magic Resistance 20+:</strong> Prevents insta-kill spells like Soul Slay, Hellbind Heart, or Charm. One of the most critical SC stats in multiplayer.</li>
+        <li><strong>Etherealness:</strong> 75% chance to avoid non-magical attacks. Rendered by the spell <em>Body Ethereal</em> or certain items. Combined with high MR, makes most conventional armies completely ineffective.</li>
+        <li><strong>Personal Luck:</strong> Negates the first instance of significant damage per turn. Dramatically reduces one-shot death probability.</li>
+        <li><strong>Regeneration:</strong> As above. 15–20% regeneration on an SC allows it to heal through all but the most catastrophic incoming damage.</li>
+        <li><strong>Dominion &amp; Undying mechanics:</strong> Some pretenders and summons have abilities that bring them back to life or prevent permanent death if they fall in battle inside friendly dominion. Building on these chassis removes the risk of permanent loss from occasional defeat.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ─── X. DIPLOMACY ─── -->
+  <section class="section" id="diplomacy">
+    <div class="section-header">
+      <span class="section-num">Chapter X</span>
+      <h2 class="section-title">Diplomacy and the Balance of Faiths</h2>
+      <div class="section-lead">On the necessary arts of alliance and betrayal.</div>
+    </div>
+
+    <div class="lore-block">
+      <p>Every god believes they will win alone. History records how that belief ends. There are always more enemies than you can fight simultaneously, and always more enemies awaiting your moment of weakness. An alliance is not a promise of friendship — it is a weapon pointed at a third party. Remember this and you will not be surprised when your ally eventually turns it on you.</p>
+      <span class="lore-attribution">— The Collected Maxims of Tir na n'Og</span>
+    </div>
+
+    <p>Dominions is a multiplayer game of shifting alliances and calculated betrayal. No player can fight multiple fronts simultaneously with full effectiveness, and the meta of any Dominions game revolves as much around diplomatic positioning as military strategy. Understanding the political landscape of your game is as important as understanding your own nation.</p>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Core Diplomatic Principles</h3>
+      <ul class="guide-list">
+        <li>
+          <span class="num">I.</span>
+          <span class="text"><strong>The Dominant Player Must Be Checked.</strong> In any multiplayer game, one player will eventually emerge as the most powerful. The entire table should gang up on that player before they become unstoppable. If you are that player, your diplomatic goal is to prevent this pile-on by keeping your neighbors placated through deals, concessions, and convincing them that <em>someone else</em> is the greater threat.</span>
+        </li>
+        <li>
+          <span class="num">II.</span>
+          <span class="text"><strong>Borders Are War Waiting to Happen.</strong> Every border with another player is a potential front. Peace is the temporary absence of war, not its permanent replacement. When making territorial agreements, be specific: agree on a neutral province, a river, a mountain range. Vague agreements always breed misunderstanding.</span>
+        </li>
+        <li>
+          <span class="num">III.</span>
+          <span class="text"><strong>Never Fight a War on Two Fronts.</strong> The golden rule. Secure your most threatening neighbor diplomatically before attacking anyone. The moment you commit your armies in one direction, your other borders become vulnerable. Enemies will time their attacks to exploit exactly this.</span>
+        </li>
+        <li>
+          <span class="num">IV.</span>
+          <span class="text"><strong>The Late Game Betrayal is Inevitable.</strong> You will be betrayed. Plan for it. Keep a reserve force, maintain multiple fortified positions, and never commit every army to an offensive. The player who plans for betrayal survives it; the player who trusts too completely does not.</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Dominion War as Diplomacy</h3>
+      <p>One underappreciated form of pressure is quiet <strong>dominion warfare</strong>: spreading your temples into border territories, preaching down enemy dominion near your borders, and positioning your Prophet to do holy damage to your neighbor's faith — all without a single soldier crossing a border. This can weaken an enemy significantly before a war begins, and is often not considered a hostile act by less attentive players until it is too late.</p>
+    </div>
+  </section>
+
+  <!-- ─── XI. THRONES ─── -->
+  <section class="section" id="thrones">
+    <div class="section-header">
+      <span class="section-num">Chapter XI</span>
+      <h2 class="section-title">The Thrones of Ascension</h2>
+      <div class="section-lead">On claiming the sacred seats of divine power.</div>
+    </div>
+
+    <div class="lore-block">
+      <p>The Thrones were not built. They were not placed. They erupted from the earth in the dying moment of the old god's reign, as if the world itself recognized the vacancy and tried to fill it with power. Each throne is a wound in reality, a scar where divine energy pours through uncontrolled. Claim them, and that energy is yours. Let them fall to an enemy, and feel what it means to watch your gods slip away.</p>
+      <span class="lore-attribution">— The Theology of Ascension, recovered from Ermor</span>
+    </div>
+
+    <p>Thrones of Ascension are the primary victory objective in standard multiplayer Dominions 6. Each Throne grants Ascension Points when claimed; claim enough total Ascension Points to win the game. Thrones come in three tiers: Level 1 Thrones grant 1 point, Level 2 grant 2 points, and Level 3 grant 3 points.</p>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Throne Guardians</h3>
+      <p>Every Throne starts the game defended by powerful independent forces, typically including both regular units and mage defenders. The mage defenders are particularly dangerous: they replenish their gems between individual battles, cast spells from hardcoded lists, and some use Titan-level magic. Always <strong>ping a Throne</strong> (send in a commander to scout and retreat) before committing your army. The difference between a Level 1 Throne with light infantry defenders and one with elemental lords is the difference between a skirmish and a massacre.</p>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Claiming Thrones</h3>
+      <p>To claim a Throne of Ascension, a Pretender God, Prophet, or Level 3 Priest must be present in the province and issued the <strong>"Claim Throne of Ascension"</strong> order. You must also control the province militarily. The Throne must then be maintained — if the province falls to an enemy and they claim the Throne themselves, you lose those points.</p>
+      <p>This claiming mechanic creates a strategic tension: a Level 3 Priest is an enormous investment, and having them in a contested border province is risky. Many players use their Prophet (who counts as Holy 3) for Throne claiming during wars, accepting the vulnerability this creates if the Prophet is killed or besieged.</p>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Throne Strategic Value</h3>
+      <p>Beyond Ascension Points, Thrones provide additional effects when claimed. Some grant permanent gem income. Others provide powerful ongoing enchantments. A few offer dangerous negative effects to the claimant's enemies. Consulting the specific Throne effects before your Throne-claiming campaign can significantly influence which Thrones to prioritize.</p>
+
+      <div class="callout">
+        <div class="callout-title">The Endgame Race</div>
+        <p>The final stage of most Dominions games is a race to claim enough Thrones before your opponent does. This is not a leisurely process — Thrones are fought over ferociously. Plan your Throne-claiming campaign well in advance: build forts in adjacent provinces, pre-position your best armies, and coordinate your claim timing to avoid showing your hand prematurely.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── XII. LATE GAME ─── -->
+  <section class="section" id="lategame">
+    <div class="section-header">
+      <span class="section-num">Chapter XII</span>
+      <h2 class="section-title">Late-Game Arcana</h2>
+      <div class="section-lead">On global enchantments, endgame summons, and the shape of victory.</div>
+    </div>
+
+    <div class="lore-block">
+      <p>The late game is not about armies. It never was. By the time the last Thrones are being contested, the outcome has already been decided a dozen turns earlier, in the quiet moments when a god spent gems instead of saving them, when a researcher chose the wrong school, when a diplomat made the wrong alliance. What you do now is the consequence of everything that came before. Act accordingly.</p>
+      <span class="lore-attribution">— Final Dispatch, War of the Broken Circles</span>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Global Enchantments</h3>
+      <p>Global enchantments are permanent magical effects cast through ritual spells that apply their effects to the <em>entire world</em> until dispelled. There are a limited number of global enchantment slots — when all slots are filled, a new global being cast will overwrite the weakest existing one. This creates fierce competition for global slots in the late game.</p>
+      <p>Powerful examples include:</p>
+      <ul class="guide-bullets">
+        <li><strong>Flames of the Sky:</strong> Fire damage falls on all provinces not in the caster's dominion. Devastates enemies with fire-vulnerable troops.</li>
+        <li><strong>Burden of Time:</strong> All non-immortal old age-vulnerable commanders rapidly age and die. Can decimate nations with fragile human commanders.</li>
+        <li><strong>Astral Corruption:</strong> Astral magic becomes increasingly dangerous for everyone. Can backfire on the caster if poorly managed.</li>
+        <li><strong>Gift of Nature's Bounty:</strong> Dramatically increases income in growth-scale provinces. Supercharges the caster's economy.</li>
+        <li><strong>Utterdark:</strong> Plunges the world into darkness, giving massive advantages to darkness-immune nations and crippling light-dependent enemies.</li>
+      </ul>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Endgame Summons — Tartarians and Beyond</h3>
+      <p>The highest tiers of Conjuration unlock entities of world-breaking power. <strong>Tartarians</strong> are ancient Titan-class beings imprisoned since the creation of the world — summoning one releases an enormously powerful creature with unique abilities and random afflictions. They cannot be controlled reliably and require Conjuration 8–9, but a properly prepared Tartarian is among the most powerful battlefield units in the game.</p>
+      <p>Other endgame summons include Demon Lords (Blood 6–8), Elemental Royalty (Elemental paths 6+), and national-specific unique summons that define the character of particular nations' late games.</p>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">The Horror Problem</h3>
+      <p>One of the most distinctive late-game threats in Dominions is <strong>Horror Marking</strong>. Certain powerful spells — particularly from Blood magic — generate Horror Marks on the caster. When a marked unit is on the battlefield, extradimensional horrors may appear and attack them. The more marks, the more frequent the horror attacks. A heavily marked Pretender or powerful summon can attract horrors so frequently they become unreliable or die mid-campaign.</p>
+      <p>Managing horror marks is a serious late-game consideration for Blood magic nations. Items like the <em>Horror Helmet</em> can mitigate this, and the spell <em>Bind Soul</em> offers some protection. Nations that avoid Blood magic entirely sidestep this problem entirely.</p>
+    </div>
+  </section>
+
+  <!-- ─── XIII. NATIONS ─── -->
+  <section class="section" id="nations">
+    <div class="section-header">
+      <span class="section-num">Chapter XIII</span>
+      <h2 class="section-title">A Survey of Nations — For New Aspirants</h2>
+      <div class="section-lead">Recommended starting points and archetypes across the ages.</div>
+    </div>
+
+    <div class="lore-block">
+      <p>The world is wide, and the pretenders are many. Before you choose your nation, ask yourself what manner of god you wish to be. The slow and inevitable tide of undeath, the golden legions of ancient empire, the forest peoples whose roots run deeper than any fortress wall, the blood-drunk warriors of the obsidian knife? Your choice of people is your choice of legend.</p>
+      <span class="lore-attribution">— From the Chronicle of Pretenders, Author Unknown</span>
+    </div>
+
+    <p>Dominions 6 features dozens of nations across all three ages. What follows is a curated guide to nations that are particularly well-suited to learning the game, alongside brief notes on their archetypes and unique characteristics.</p>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Recommended Nations for New Players</h3>
+
+      <div class="card-grid">
+        <div class="card card-blue">
+          <div class="card-title">MA Pythium</div>
+          <p>The Eastern Roman Empire of Dominions. Excellent balanced nation, strong priests and mages, good infrastructure. Teaches fundamentals without extreme mechanics. Highly recommended as a first nation.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">MA Ulm</div>
+          <p>Master smiths and heavy infantry. No sacred reliance — pure scales and troop quality. Extremely forgiving for beginners learning economy management and army composition without bless complexity.</p>
+        </div>
+        <div class="card card-teal">
+          <div class="card-title">EA Arcoscephale</div>
+          <p>Greek-inspired nation of philosophers and mages. Rich magic, excellent researcher mages, interesting sacred units. Good entry point to magic-heavy gameplay without extreme gimmicks.</p>
+        </div>
+        <div class="card card-crimson">
+          <div class="card-title">MA C'tis</div>
+          <p>Lizardmen empire with swamp affinity, poison, and disease magic. Unique playstyle with interesting sacreds. Introduces non-standard environmental mechanics in an approachable way.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Nation Archetypes</h3>
+
+      <table class="stat-table">
+        <thead>
+          <tr>
+            <th>Archetype</th>
+            <th>Example Nations</th>
+            <th>Playstyle</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="pill pill-red">Sacred Bless</span></td>
+            <td>EA Mictlan, EA Sauromatia, EA Lanka</td>
+            <td>Invest heavily in blessed sacreds. Early aggression, high risk/reward. Requires deep pretender design knowledge.</td>
+          </tr>
+          <tr>
+            <td><span class="pill pill-gold">Economy Empire</span></td>
+            <td>MA Ulm, EA Mekkone, MA Tien Chi</td>
+            <td>Maximize scales and gold income. Large armies of high-quality troops. Pretender as scales vehicle.</td>
+          </tr>
+          <tr>
+            <td><span class="pill pill-teal">Magic Dominance</span></td>
+            <td>MA Pythium, EA Arcoscephale, LA Bogarus</td>
+            <td>Research aggressively. Win through ritual magic, global enchantments, and communion armies.</td>
+          </tr>
+          <tr>
+            <td><span class="pill pill-blue">Undead Legion</span></td>
+            <td>EA Ermor, LA Ermor, LA Lemuria</td>
+            <td>Spam undead. Death scale exploitation. Ignore conventional economy. Niche but powerful in right hands.</td>
+          </tr>
+          <tr>
+            <td><span class="pill pill-red">Blood Corruption</span></td>
+            <td>EA Mictlan, MA Hinnom, EA Lanka</td>
+            <td>Blood hunting economy powers extreme late-game summons and rituals. Complex, high ceiling, requires patience.</td>
+          </tr>
+          <tr>
+            <td><span class="pill pill-teal">Sea Power</span></td>
+            <td>EA Pelagia, MA Rlyeh, EA T'ien Ch'i Underwater</td>
+            <td>Underwater expansion, unique unit access, difficult for land nations to threaten. Strong geographic control.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Nation-Specific Wisdom — Selected Notes</h3>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-title">Niefelheim (EA)</div>
+          <p>Norse frost giants with naturally high HP and cold aura. Niefel Jarls straddle the thug/SC line. The best nation in the game for learning the thug concept firsthand.</p>
+        </div>
+        <div class="card card-crimson">
+          <div class="card-title">Ermor (EA/LA)</div>
+          <p>The Undying Empire. Kills population in your own dominion to generate undead armies. Conventional economy is destroyed — embrace death scale and undead spam. A unique and terrifying late-game presence.</p>
+        </div>
+        <div class="card card-blue">
+          <div class="card-title">Caelum (MA)</div>
+          <p>Winged frost warriors with flight. Map movement advantages are enormous; Caelum can strike anywhere. Air magic and cold affinity define this nation's arc.</p>
+        </div>
+        <div class="card card-teal">
+          <div class="card-title">Bandar Log (MA)</div>
+          <p>Monkey nation with exceptional mind magic. Mind Hunt ritual can assassinate enemy commanders through astral space. High skill ceiling, devastating against unprepared opponents.</td>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── XIV. CLOSING ─── -->
+  <section class="section" id="closing">
+    <div class="section-header">
+      <span class="section-num">Chapter XIV</span>
+      <h2 class="section-title">The Doctrines of Ascension</h2>
+      <div class="section-lead">Closing principles for the aspirant god.</div>
+    </div>
+
+    <div class="lore-block">
+      <p>Many have come before you. Many will come after. Most will fail — not through lack of power, but through lack of understanding. The Pantokrator's throne does not go to the strongest pretender. It goes to the pretender who is strongest at exactly the right moment. Time your ascension. Read the room. Know when to strike and when to wait. This is the final teaching. The rest is application.</p>
+      <span class="lore-attribution">— The Last Inscription, Throne of the First Age</span>
+    </div>
+
+    <div class="highlight-box">
+      <div class="box-title">The Thirty Commandments of the Aspirant</div>
+    </div>
+
+    <ul class="guide-list">
+      <li><span class="num">1.</span><span class="text"><strong>Always create a Prophet on Turn 1.</strong> There is no situation where this is wrong.</span></li>
+      <li><span class="num">2.</span><span class="text"><strong>Never leave a recruitment slot empty</strong> if you can afford to fill it. Troops compound.</span></li>
+      <li><span class="num">3.</span><span class="text"><strong>Maintain Dominion 6 minimum</strong> unless you are certain your build justifies exceptions.</span></li>
+      <li><span class="num">4.</span><span class="text"><strong>Assign mages to Research from turn 1.</strong> Research that isn't happening is research permanently lost.</span></li>
+      <li><span class="num">5.</span><span class="text"><strong>Never fight two wars simultaneously</strong> without significant advantage in both theaters.</span></li>
+      <li><span class="num">6.</span><span class="text"><strong>Reach Construction 4 early.</strong> Frost Brands and Vine Shields change the nature of war.</span></li>
+      <li><span class="num">7.</span><span class="text"><strong>Site search immediately upon taking new provinces.</strong> Every unsearched province is lost gem income.</span></li>
+      <li><span class="num">8.</span><span class="text"><strong>Ping Thrones before assaulting them.</strong> You need to know what you're walking into.</span></li>
+      <li><span class="num">9.</span><span class="text"><strong>Script Hold and Attack for your infantry</strong> when deploying mages in the same army.</span></li>
+      <li><span class="num">10.</span><span class="text"><strong>Always consider what your opponent is scripting</strong> when you are scripting. This is the meta-game.</span></li>
+      <li><span class="num">11.</span><span class="text"><strong>Fear is a weapon.</strong> Nations with fear aura units fight differently — exploit morale, don't just chase raw damage.</span></li>
+      <li><span class="num">12.</span><span class="text"><strong>Protect your Pretender.</strong> Your god must never be killable by a single well-placed assassination squad. Always leave guards.</span></li>
+      <li><span class="num">13.</span><span class="text"><strong>Never trust a peace too long.</strong> Plan for betrayal. Keep a reserve. Maintain fortified interior positions.</span></li>
+      <li><span class="num">14.</span><span class="text"><strong>The strongest player at the table is everyone's enemy.</strong> If you are winning, be diplomatic. If someone else is winning, build the coalition.</span></li>
+      <li><span class="num">15.</span><span class="text"><strong>Build temples in newly claimed territory as quickly as possible.</strong> Dominion converts enemy populations and generates spreading advantage.</span></li>
+      <li><span class="num">16.</span><span class="text"><strong>Fatigue kills mages.</strong> Script expensive spells last. Use reinvigoration items generously.</span></li>
+      <li><span class="num">17.</span><span class="text"><strong>Magic Resistance of 20 on SCs</strong> is not optional. Soul Slay, Charm, and Hellbind Heart will end your investment in one spell.</span></li>
+      <li><span class="num">18.</span><span class="text"><strong>Temperature matters.</strong> Know your nation's optimal temperature and purchase appropriate scales. Cold 3 starves tropical armies; Heat 3 freezes cold-blooded attackers.</span></li>
+      <li><span class="num">19.</span><span class="text"><strong>Blood hunting requires manpower.</strong> Assess your Blood province population before building a blood economy — thin populations collapse quickly under sustained hunting.</span></li>
+      <li><span class="num">20.</span><span class="text"><strong>Communions require perfect scripting.</strong> Test your communion chains in single-player before deploying them in multiplayer war.</span></li>
+      <li><span class="num">21.</span><span class="text"><strong>Fort interiors are safe recruitment grounds.</strong> Your enemy cannot recruit inside your besieged fort, but you can — use sieges to buy time for relief forces.</span></li>
+      <li><span class="num">22.</span><span class="text"><strong>The map is never static.</strong> Recalculate your strategic position every 5–10 turns as the world changes around you.</span></li>
+      <li><span class="num">23.</span><span class="text"><strong>Never commit every army to one front.</strong> An unguarded border is an invitation that someone will eventually accept.</span></li>
+      <li><span class="num">24.</span><span class="text"><strong>Global enchantments can be dispelled.</strong> When you cast a global, expect it to be contested. Store gems to recast it if necessary.</span></li>
+      <li><span class="num">25.</span><span class="text"><strong>Thugs are not silver bullets.</strong> Every thug can be countered by a prepared opponent. Use them to clean up provinces and harass — not as the backbone of a war strategy.</span></li>
+      <li><span class="num">26.</span><span class="text"><strong>Watch enemy dominion strength.</strong> An enemy at Dominion 1 in a province is on the verge of losing their faith there. Preach aggressively and finish the conversion.</span></li>
+      <li><span class="num">27.</span><span class="text"><strong>Item forging is a strategic resource.</strong> Each item requires gems. Forging the wrong item at the wrong time can starve critical spell-casting.</span></li>
+      <li><span class="num">28.</span><span class="text"><strong>Late Age Ermor is not a beginner nation.</strong> Playing undead popkill nations without understanding the mechanics is a reliable path to elimination.</span></li>
+      <li><span class="num">29.</span><span class="text"><strong>Your pretender design sets the tone of your game.</strong> Revisit your design choices at Turn 1 and ask: does this pretender fit the strategy I am executing? If not, adjust the strategy, not the game.</span></li>
+      <li><span class="num">30.</span><span class="text"><strong>The Throne race is always earlier than you think.</strong> By the time it feels urgent to claim Thrones, you are already behind. Plan your Throne campaign from mid-game.</span></li>
+    </ul>
+
+    <hr>
+
+    <div class="callout callout-teal">
+      <div class="callout-title">A Final Word on Defeat</div>
+      <p>You will lose. Every player loses. Dominions is a game of extraordinary complexity, and the path to mastery is paved with eliminated pretenders and collapsed dominions. The lesson of each loss is worth more than any guide — play the replay, identify the decision that doomed you, and carry that knowledge into your next attempt at godhood. The Pantokrator's throne waits for the patient student.</p>
+    </div>
+
+  </section>
+
+  <!-- CHAPTER NAV -->
+  <nav class="chapter-nav" aria-label="Chapter navigation">
+    <a href="#prologue">I. The Age</a>
+    <a href="#pretender">II. Pretender</a>
+    <a href="#scales">III. Scales</a>
+    <a href="#dominion">IV. Dominion</a>
+    <a href="#early">V. Early Game</a>
+    <a href="#magic">VI. Gems</a>
+    <a href="#research">VII. Research</a>
+    <a href="#combat">VIII. Combat</a>
+    <a href="#thugs">IX. Thugs</a>
+    <a href="#diplomacy">X. Diplomacy</a>
+    <a href="#thrones">XI. Thrones</a>
+    <a href="#lategame">XII. Late Game</a>
+    <a href="#nations">XIII. Nations</a>
+    <a href="#closing">XIV. Doctrines</a>
+  </nav>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="page-footer">
+  <span class="footer-ornament">✦</span>
+  <div class="footer-text">The Aspirant's Codex · Dominions 6: Rise of the Pantokrator · Nadir Strategy Archive</div>
+  <div style="margin-top:0.75rem; font-family: 'EB Garamond', serif; font-style: italic; font-size: 0.85rem; color: rgba(201,168,76,0.3);">May your dominion endure and your enemies' faith crumble to dust.</div>
+</footer>
+
+</body>
+</html>

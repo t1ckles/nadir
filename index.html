@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Strategy Guide Library</title>
-<meta name="description" content="Comprehensive community strategy guides for Strategy Game Studio (SGS) historical wargames. Covering both sides, all scenarios, and all systems.">
+<meta name="description" content="Comprehensive community strategy guides for historical wargames and grand strategy titles. Covering both sides, all scenarios, and all systems.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <style>
@@ -29,6 +29,7 @@ html { scroll-behavior: smooth; font-size: 17px; }
 body { background: var(--parchment); color: var(--ink); font-family: var(--font-body); line-height: 1.75; min-height: 100vh; }
 body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 999; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); opacity: 0.5; }
 
+/* ─── HERO ─── */
 .site-hero { background: linear-gradient(160deg, #0f1e30 0%, #1b2f4a 50%, #2a1a0a 100%); padding: 80px 64px 70px; position: relative; overflow: hidden; border-bottom: 3px solid var(--gold-dark); }
 .site-hero::before { content: ''; position: absolute; inset: 0; background-image: repeating-linear-gradient(-55deg, transparent, transparent 40px, rgba(201,148,58,0.04) 40px, rgba(201,148,58,0.04) 41px); }
 .site-hero::after { content: ''; position: absolute; bottom: 0; left: 64px; right: 64px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
@@ -37,13 +38,51 @@ body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-i
 .hero-title { font-family: var(--font-head); font-size: clamp(1.8rem, 4.5vw, 3rem); font-weight: 900; color: var(--parchment); letter-spacing: 0.04em; text-transform: uppercase; line-height: 1.1; margin-bottom: 16px; }
 .hero-rule { width: 80px; height: 2px; background: var(--gold); margin: 0 auto 20px; opacity: 0.6; }
 .hero-desc { font-family: var(--font-body); font-size: 1rem; font-style: italic; color: rgba(240,217,168,0.7); font-weight: 300; max-width: 560px; margin: 0 auto; line-height: 1.7; }
+.hero-stats { display: flex; justify-content: center; gap: 32px; margin-top: 28px; flex-wrap: wrap; }
+.hero-stat { text-align: center; }
+.hero-stat-num { font-family: var(--font-head); font-size: 1.6rem; font-weight: 900; color: var(--gold); display: block; line-height: 1; }
+.hero-stat-label { font-family: var(--font-head); font-size: 0.58rem; letter-spacing: 0.18em; color: rgba(240,217,168,0.5); text-transform: uppercase; display: block; margin-top: 4px; }
 
-.main-wrap { max-width: 1100px; margin: 0 auto; padding: 64px 40px 100px; }
+/* ─── LAYOUT ─── */
+.main-wrap { max-width: 1100px; margin: 0 auto; padding: 48px 40px 100px; }
+
+/* ─── INFO STRIP ─── */
+.info-strip { border: 1px solid var(--border); background: var(--light); padding: 20px 28px; margin-bottom: 40px; display: flex; align-items: flex-start; gap: 20px; }
+.info-strip-icon { font-size: 1.4rem; color: var(--gold); flex-shrink: 0; margin-top: 2px; font-family: serif; }
+.info-strip-body { font-family: var(--font-body); font-size: 0.92rem; line-height: 1.65; color: var(--mid); }
+.info-strip-body strong { font-family: var(--font-head); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); display: block; margin-bottom: 4px; }
+
+/* ─── TOOLBAR ─── */
+.toolbar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 28px; padding: 16px 20px; background: var(--light); border: 1px solid var(--border); }
+.toolbar-search-wrap { position: relative; flex: 1; min-width: 200px; max-width: 340px; }
+.toolbar-search-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--mid); opacity: 0.55; pointer-events: none; }
+#search-input { width: 100%; padding: 8px 12px 8px 34px; border: 1px solid var(--border); background: var(--parchment); font-family: var(--font-body); font-size: 0.88rem; color: var(--ink); outline: none; transition: border-color 0.15s; }
+#search-input::placeholder { color: var(--mid); opacity: 0.6; font-style: italic; }
+#search-input:focus { border-color: var(--gold); }
+.filter-group { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; }
+.filter-btn { font-family: var(--font-head); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 6px 13px; border: 1px solid var(--border); background: var(--parchment); color: var(--mid); cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+.filter-btn:hover { border-color: var(--gold); color: var(--gold-dark); background: var(--light); }
+.filter-btn.active { background: var(--navy); color: var(--gold-pale); border-color: var(--navy); }
+.toolbar-right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+.results-count { font-family: var(--font-head); font-size: 0.6rem; letter-spacing: 0.12em; color: var(--mid); text-transform: uppercase; white-space: nowrap; }
+#sort-select { font-family: var(--font-head); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 10px; border: 1px solid var(--border); background: var(--parchment); color: var(--mid); cursor: pointer; outline: none; }
+#sort-select:focus { border-color: var(--gold); }
+
+/* ─── SECTION HEADERS ─── */
 .section-label { font-family: var(--font-head); font-size: 0.65rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 10px; display: flex; align-items: center; gap: 14px; }
 .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 .section-title { font-family: var(--font-head); font-size: clamp(1.1rem, 2vw, 1.4rem); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink); margin-bottom: 8px; }
-.section-intro { font-family: var(--font-body); font-size: 0.95rem; color: var(--mid); font-style: italic; margin-bottom: 36px; max-width: 640px; }
+.section-intro { font-family: var(--font-body); font-size: 0.95rem; color: var(--mid); font-style: italic; margin-bottom: 28px; max-width: 640px; }
 
+/* ─── EMPTY STATE ─── */
+.empty-state { text-align: center; padding: 60px 20px; color: var(--mid); }
+.empty-state-icon { font-size: 2rem; color: var(--border); display: block; margin-bottom: 12px; font-family: serif; }
+.empty-state-title { font-family: var(--font-head); font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mid); margin-bottom: 6px; }
+.empty-state-body { font-family: var(--font-body); font-size: 0.9rem; font-style: italic; }
+.empty-state-reset { margin-top: 16px; font-family: var(--font-head); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-dark); cursor: pointer; border: none; background: none; padding: 6px 14px; border: 1px solid var(--border); }
+.empty-state-reset:hover { border-color: var(--gold); color: var(--gold-dark); background: var(--light); }
+
+/* ─── GAME CARDS ─── */
 .games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; margin-bottom: 72px; }
 .game-card { background: var(--light); border: 1px solid var(--border); cursor: pointer; transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease; position: relative; overflow: hidden; }
 .game-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px var(--shadow); border-color: var(--gold); }
@@ -70,7 +109,10 @@ body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-i
 .game-card.coming-soon { opacity: 0.55; cursor: default; pointer-events: none; }
 .game-card.coming-soon .game-card-bar { background: repeating-linear-gradient(90deg, rgba(201,148,58,0.3) 0px, rgba(201,148,58,0.3) 8px, transparent 8px, transparent 16px); }
 .coming-soon-badge { font-family: var(--font-head); font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mid); border: 1px solid var(--border); padding: 2px 7px; }
+/* highlight search match */
+.game-card.search-match { box-shadow: 0 0 0 2px var(--gold); }
 
+/* ─── MODAL ─── */
 .modal-overlay { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(15,22,32,0.82); backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
 .modal-overlay.open { opacity: 1; pointer-events: all; }
 .modal { background: var(--parchment); border: 1px solid var(--gold); max-width: 620px; width: 100%; max-height: 88vh; overflow-y: auto; position: relative; transform: translateY(16px) scale(0.98); transition: transform 0.28s cubic-bezier(0.16,1,0.3,1); scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
@@ -110,20 +152,21 @@ body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-i
 .modal-ext-link:hover { border-color: var(--gold); color: var(--gold-dark); background: var(--parchment); }
 .modal-ext-link svg { flex-shrink: 0; opacity: 0.65; }
 
-.info-strip { border: 1px solid var(--border); background: var(--light); padding: 20px 28px; margin-bottom: 60px; display: flex; align-items: flex-start; gap: 20px; }
-.info-strip-icon { font-size: 1.4rem; color: var(--gold); flex-shrink: 0; margin-top: 2px; font-family: serif; }
-.info-strip-body { font-family: var(--font-body); font-size: 0.92rem; line-height: 1.65; color: var(--mid); }
-.info-strip-body strong { font-family: var(--font-head); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); display: block; margin-bottom: 4px; }
-
+/* ─── FOOTER ─── */
 .site-footer { border-top: 1px solid var(--border); padding: 20px 40px; font-family: var(--font-head); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mid); text-align: center; }
 
+/* ─── RESPONSIVE ─── */
 @media (max-width: 700px) {
   .site-hero { padding: 50px 24px 48px; }
-  .main-wrap { padding: 40px 20px 80px; }
+  .main-wrap { padding: 32px 20px 80px; }
   .games-grid { grid-template-columns: 1fr; }
   .modal-meta-row, .modal-sides { grid-template-columns: 1fr; }
   .modal-header { flex-direction: column; }
   .modal-close { align-self: flex-end; margin-top: -38px; }
+  .toolbar { flex-direction: column; align-items: stretch; }
+  .toolbar-search-wrap { max-width: 100%; }
+  .toolbar-right { margin-left: 0; justify-content: space-between; }
+  .hero-stats { gap: 20px; }
 }
 </style>
 </head>
@@ -135,6 +178,11 @@ body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-i
     <h1 class="hero-title">Strategy Guide Library</h1>
     <div class="hero-rule"></div>
     <p class="hero-desc">Comprehensive guides covering both sides, all systems, and every scenario &mdash; for historical wargames and grand strategy titles.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="hero-stat-num" id="stat-guides">10</span><span class="hero-stat-label">Complete Guides</span></div>
+      <div class="hero-stat"><span class="hero-stat-num" id="stat-eras">4</span><span class="hero-stat-label">Eras Covered</span></div>
+      <div class="hero-stat"><span class="hero-stat-num">150+</span><span class="hero-stat-label">Chapters Written</span></div>
+    </div>
   </div>
 </header>
 
@@ -143,19 +191,54 @@ body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-i
     <div class="info-strip-icon">&#10022;</div>
     <div class="info-strip-body">
       <strong>How to use this library</strong>
-      Click any game card to read a brief overview &mdash; including sides, scenarios, engine version, and what makes it unique. Then follow the link to the full guide. New guides are added regularly; check back as the library grows.
+      Click any guide card to read a full overview &mdash; sides, scenarios, engine version, and what makes it unique &mdash; then follow the link to the complete guide. Filter by era or search by title, game, or keyword. New guides are added regularly.
     </div>
   </div>
 
+  <!-- TOOLBAR -->
+  <div class="toolbar" role="search" aria-label="Filter guides">
+    <div class="toolbar-search-wrap">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="search-input" placeholder="Search guides, eras, tags&hellip;" autocomplete="off" aria-label="Search guides">
+    </div>
+    <div class="filter-group" role="group" aria-label="Filter by era">
+      <button class="filter-btn active" data-filter="all">All Eras</button>
+      <button class="filter-btn" data-filter="pre-ww2">Pre-WW2</button>
+      <button class="filter-btn" data-filter="ww2">World War II</button>
+      <button class="filter-btn" data-filter="scifi">Sci-Fi &amp; Fantasy</button>
+    </div>
+    <div class="toolbar-right">
+      <span class="results-count" id="results-count">10 guides</span>
+      <select id="sort-select" aria-label="Sort guides">
+        <option value="default">Default Order</option>
+        <option value="alpha">A &rarr; Z</option>
+        <option value="sections-desc">Most Sections</option>
+        <option value="scenarios-desc">Most Scenarios</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- COMPLETE GUIDES -->
   <div class="section-label">Available Guides</div>
   <h2 class="section-title">Complete Strategy Guides</h2>
-  <p class="section-intro">Full multi-section guides covering historical context, rules, both sides' strategies, all scenarios, and a complete glossary.</p>
+  <p class="section-intro">Full multi-section guides covering historical context, rules, both sides&rsquo; strategies, all scenarios, and a complete glossary.</p>
   <div class="games-grid" id="games-grid"></div>
+  <div id="empty-state" style="display:none">
+    <div class="empty-state">
+      <span class="empty-state-icon">&#10022;</span>
+      <div class="empty-state-title">No guides match your search</div>
+      <div class="empty-state-body">Try a different keyword or era filter.</div>
+      <button class="empty-state-reset" id="reset-btn">Clear Filters</button>
+    </div>
+  </div>
 
-  <div class="section-label">In Progress</div>
-  <h2 class="section-title">Upcoming Guides</h2>
-  <p class="section-intro">Guides under research and development. Check back soon.</p>
-  <div class="games-grid" id="coming-grid"></div>
+  <!-- COMING SOON -->
+  <div id="coming-section">
+    <div class="section-label">In Progress</div>
+    <h2 class="section-title">Upcoming Guides</h2>
+    <p class="section-intro">Guides under research and development. Check back soon.</p>
+    <div class="games-grid" id="coming-grid"></div>
+  </div>
 </main>
 
 <footer class="site-footer">
@@ -231,13 +314,33 @@ const GUIDES = [
     sides:     ['United States Navy', 'Imperial Japanese Navy'],
     hardest:   'United States Navy (Full Simulation Settings)',
     desc:      'The most granular carrier warfare simulation ever attempted. Command American carrier task forces across the pivotal battles of 1942 \u2014 Coral Sea and Midway \u2014 in a full 3D environment where aircraft physically spot the deck, fog of war is absolute, and every search sector, CAP rotation, and strike timing decision carries real consequences.',
-    detail:    'The Admiral\'s War Manual covers the complete tactical and operational doctrine of American Pacific carrier warfare in 24 chapters. The guide walks through the full operational cycle \u2014 pre-dawn planning, dawn search sector allocation, CAP pattern configuration and staggered rotation, coordinated strike package assembly, torpedo and dive bomber timing doctrine, and post-strike damage management \u2014 alongside detailed analysis of the Coral Sea and Midway historical scenarios, all current hypothetical variants, and the Battle Generator system. Includes a 30-entry glossary of aircraft, commanders, ships, and tactical terminology. Woven throughout are researched historical facts about each engagement, from Nagumo\'s fatal re-arming decision at Midway to the Mark 14 torpedo scandal and McClusky\'s last-minute discovery of the Kido Butai.',
-    sideA: { label: 'United States Navy (1942)', body: 'Technologically inferior in aircraft and aircrew experience but armed with a decisive intelligence advantage from codebreaking. Victory requires translating that advantage into tactical surprise before it expires. No dice rolls \u2014 every outcome flows from planning and execution.' },
+    detail:    'The Admiral\'s War Manual covers the complete tactical and operational doctrine of American Pacific carrier warfare in 24 chapters. The guide walks through the full operational cycle \u2014 pre-dawn planning, dawn search sector allocation, CAP pattern configuration and staggered rotation, coordinated strike package assembly, torpedo and dive bomber timing doctrine, and post-strike damage management \u2014 alongside detailed analysis of the Coral Sea and Midway historical scenarios, all current hypothetical variants, and the Battle Generator system. Includes a 30-entry glossary and historical facts woven throughout every chapter.',
+    sideA: { label: 'United States Navy (1942)', body: 'Technologically inferior in aircraft and aircrew experience but armed with a decisive intelligence advantage from codebreaking. Victory requires translating that advantage into tactical surprise before it expires.' },
     sideB: { label: 'Imperial Japanese Navy', body: 'Superior carrier air groups and the fearsome A6M Zero, but doctrinally rigid and vulnerable to coordinated surprise. Governs the hypothetical variants, including the hard-mode scenario where Japanese carriers find the Americans first.' },
     tags:  ['Pacific War','Carrier Operations','Fog of War','Strike Timing','CAP Management','Coral Sea','Battle of Midway','Damage Control'],
     file:  'https://t1ckles.github.io/nadir/task_force_admiral.html',
     steam: 'https://store.steampowered.com/app/1281220/Task_Force_Admiral__Vol1_American_Carrier_Battles/',
     site:  'https://drydockdreams.wordpress.com/about-the-game/',
+  },
+  {
+    id:        'sgs-battle-of-the-bulge',
+    title:     'SGS Battle of the Bulge',
+    subtitle:  'Ardennes Offensive &amp; Counter-Offensive, December 1944 \u2013 January 1945',
+    era:       'ww2',
+    period:    'Second World War',
+    engine:    'SGS Engine v1.5',
+    sections:  25,
+    scenarios: 6,
+    sides:     ['Wehrmacht (Germany)', 'Allied Forces (USA & Allies)'],
+    hardest:   'Allied Forces (Turns 1\u20135)',
+    desc:      'Germany\'s last gamble on the Western Front. On December 16, 1944, over 200,000 German troops and nearly 1,000 tanks struck the Ardennes in a desperate bid to reach Antwerp and split the Allied armies. The Initiative Gauge gives the German player a ticking clock of momentum; the Allied player must hold the shoulders, keep Bastogne, and survive until Patton arrives.',
+    detail:    'The Winter War Manual covers both the Wehrmacht and Allied sides across all six scenarios in 25 chapters. The guide walks through the unique Initiative Gauge mechanic and how it shapes every German operational decision, the supply crisis that destroyed the historical offensive, the three critical Allied terrain anchors (Elsenborn Ridge, Bastogne, St. Vith), stacking and road network management, air power and the pivotal December 23 weather break, and all six scenarios: the full 45-turn campaign, the Wacht am Rhein alternative campaign, the Herbstnebel shortened offensive, the Nuts! Bastogne siege, Objective Li\u00e8ge, and The Siegfried Line counter-offensive. Features researched WW2 historical facts throughout, from the Malmedy massacre to Patton\'s 48-hour pivot and McAuliffe\'s famous one-word reply.',
+    sideA: { label: 'Wehrmacht (Germany)', body: 'Three Panzer armies, twenty divisions, and a ticking Initiative Gauge. Must break through the Ardennes, bypass Bastogne, and reach the Meuse before supply runs out and Allied air returns. Every turn squandered is a turn closer to defeat.' },
+    sideB: { label: 'Allied Forces (USA)', body: 'Surprised, outnumbered, and initially outgunned. Must hold Elsenborn Ridge, get the 101st Airborne to Bastogne before encirclement, and keep St. Vith long enough for reinforcements to arrive. The hardest side in the opening turns; the dominant side by turn fifteen.' },
+    tags:  ['Initiative Gauge','Ardennes','Bastogne','Elsenborn Ridge','Patton','Supply Lines','PBEM','Both Sides Covered'],
+    file:  'https://t1ckles.github.io/nadir/battle_of_the_bulge.html',
+    steam: 'https://store.steampowered.com/app/3265620/SGS_Battle_of_the_Bulge/',
+    site:  'https://strategygamestudio.com/strategy-game-studio-battle-bulge-boxshot-3/',
   },
   {
     id:        'overlord',
@@ -251,7 +354,7 @@ const GUIDES = [
     sides:     ['Allied Forces', 'Wehrmacht / Waffen-SS'],
     hardest:   'Allied Forces',
     desc:      'The largest amphibious operation in history. From D-Day to the Falaise Pocket, command Allied forces pushing through the Norman bocage or hold the line as the Wehrmacht fights for time against overwhelming material superiority.',
-    detail:    'SGS Overlord covers the complete Normandy campaign from June 6th to September 3rd, 1944. The Allied player faces a uniquely difficult challenge: superior material power is constantly stymied by the bocage terrain, supply fragility, inter-Allied zone restrictions, and strict operational timelines. The German player has no air support but excellent terrain, high-quality Panzer and SS formations, and the ability to inflict punishing attrition on attacking forces. The v1.5 update added the Mortain/Falaise scenario with instant-win conditions, revised supply rules (HQs no longer relay supply), and inter-Allied zone restrictions for Canadian/I Corps forces.',
+    detail:    'SGS Overlord covers the complete Normandy campaign from June 6th to September 3rd, 1944. The Allied player faces a uniquely difficult challenge: superior material power is constantly stymied by the bocage terrain, supply fragility, inter-Allied zone restrictions, and strict operational timelines. The German player has no air support but excellent terrain, high-quality Panzer and SS formations, and the ability to inflict punishing attrition on attacking forces.',
     sideA: { label: 'Allied Forces',          body: 'US, British, Canadian, Polish, and French formations. Overwhelming air and naval support \u2014 when weather allows. Supply-dependent, terrain-frustrated, and racing against a historical clock. The hardest side to play well.' },
     sideB: { label: 'Wehrmacht / Waffen-SS',  body: 'No air support whatsoever; random reinforcement timing. Compensated by terrain mastery, elite Panzer and SS formations, and the defensive advantage of bocage. Easier to learn; deeply satisfying to play well.' },
     tags:  ['D-Day','Bocage','Operation Cobra','Falaise Pocket','Weather','PBEM'],
@@ -271,7 +374,7 @@ const GUIDES = [
     sides:     ['Wehrmacht', 'Polish Armed Forces'],
     hardest:   'Polish Armed Forces',
     desc:      'Germany\'s opening blitzkrieg and Poland\'s desperate defence. Fall Weiss covers the five-week September Campaign of 1939 \u2014 an asymmetric clash of modern armoured doctrine against a brave but outgunned opponent fighting on multiple fronts.',
-    detail:    'SGS Fall Weiss simulates the September 1939 invasion of Poland, the opening campaign of the Second World War. The German player commands a mechanised force with overwhelming air superiority and superior operational tempo, tasked with encircling and destroying the Polish army before it can withdraw to defensible lines. The Polish player must trade space for time, concentrate forces at critical chokepoints, and exploit terrain and weather to inflict enough attrition to deny Germany a clean, rapid victory.',
+    detail:    'SGS Fall Weiss simulates the September 1939 invasion of Poland. The German player commands a mechanised force with overwhelming air superiority and superior operational tempo, tasked with encircling and destroying the Polish army before it can withdraw to defensible lines. The Polish player must trade space for time, concentrate forces at critical chokepoints, and exploit terrain and weather to inflict enough attrition to deny Germany a clean, rapid victory.',
     sideA: { label: 'Wehrmacht',           body: 'Mechanised infantry, Panzer divisions, and total air superiority. Fast and powerful; the challenge is achieving decisive encirclements rather than pushing Poland back in a disorganised retreat.' },
     sideB: { label: 'Polish Armed Forces', body: 'Outnumbered and outgunned but fighting on home terrain. Must delay, attrit, and hold key cities long enough to deny Germany a rapid campaign victory. The harder and more demanding side.' },
     tags:  ['Blitzkrieg','September Campaign','Encirclement','Air Superiority','PBEM'],
@@ -291,7 +394,7 @@ const GUIDES = [
     sides:     ['Axis Forces (Germany & Italy)', 'Allied Forces (Commonwealth)'],
     hardest:   'Allied Forces',
     desc:      'Rommel\u2019s Afrika Korps versus the Desert Rats in the defining campaign of the North African theatre. From Italy\u2019s 1940 offensive to the decisive battles of El Alamein \u2014 the desert pendulum swings both ways, and supply decides everything.',
-    detail:    'SGS Afrika Korps recreates the campaigns of Erwin Rommel\u2019s legendary Afrika Korps across Libya and Egypt from 1940 to late 1942. The campaign is defined by a self-balancing elastic tether: the nearer an army advances to its objective, the longer and more vulnerable its supply line becomes. The Axis player commands elite German Panzer and motorised formations alongside Italian troops of variable quality, racing to capture the Suez Canal before Allied material superiority becomes insurmountable. The Allied player must survive Rommel\u2019s early offensives, hold Egypt, and leverage growing Commonwealth strength and air superiority to push the Axis back. Eight scenarios cover every phase from the Italian offensive to El Alamein. Weekly turns at divisional and brigade scale.',
+    detail:    'SGS Afrika Korps recreates the campaigns of Rommel\u2019s legendary Afrika Korps across Libya and Egypt from 1940 to late 1942. The campaign is defined by a self-balancing elastic tether: the nearer an army advances to its objective, the longer and more vulnerable its supply line becomes. Eight scenarios cover every phase from the Italian offensive to El Alamein. Weekly turns at divisional and brigade scale.',
     sideA: { label: 'Axis Forces (Germany & Italy)', body: 'Elite German Panzer divisions with Rommel at their head, supported by Italian formations of variable quality. Powerful early but supply-constrained and time-pressured. Must reach Suez before Allied strength becomes overwhelming.' },
     sideB: { label: 'Allied Forces (Commonwealth)',  body: 'British, Australian, New Zealand, Indian, South African, Free French, and Polish formations. Materially stronger in the long run; weaker in the early mobile battles. Play to the terrain, fix the flanks at El Alamein, and let time do the work.' },
     tags:  ['Desert War','Rommel','Operation Crusader','El Alamein','Supply Lines','PBEM'],
@@ -335,9 +438,9 @@ const GUIDES = [
     sidesLabel:    'The Two Factions',
     scenariosLabel: 'Faction Campaigns',
     desc:      'The most simulation-faithful tactical space combat game available. Design custom fleets from the hull up, wage electronic warfare across the sensor spectrum, build bespoke missiles seeker-by-seeker, and outmanoeuvre opponents across fully three-dimensional asteroid-strewn battlefields.',
-    detail:    'The Commodore\'s Tactical Codex covers both the Alliance Navy and the Outlying Systems Protectorate in full doctrinal depth. The guide walks through all six ANS hull classes (Sprinter corvette through Solomon battleship) and all six OSP hulls (converted civilian vessels including the Bulk Freighter Lineship), the complete missile design system \u2014 body sizing, seeker types, terminal manoeuvre profiles, validator pairing, and hybrid multi-seeker construction \u2014 radar and EMCON discipline, electronic warfare jamming and counter-jamming ratios, hardkill and softkill point defense layering, component-level damage and damage control, 3D terrain and asteroid shadow positioning, and five named fleet doctrines. Includes 30 standing orders in the Commodore\'s Codex.',
-    sideA: { label: 'Alliance Navy (ANS)', body: 'Purpose-built warships with superior radar suites, burnthrough fire control, and highly configurable hybrid missiles. Rewards meticulous pre-battle fleet editor planning and precise EW timing. Fewer but individually more capable hulls per point budget.' },
-    sideB: { label: 'Outlying Systems Protectorate (OSP)', body: 'Repurposed civilian vessels \u2014 freighters, bulk transporters, tugboats, and shuttles \u2014 fitted for war. Wins through volume, close-range casemate saturation, and attrition economics. Do not play OSP like ANS; it requires a completely distinct doctrine.' },
+    detail:    'The Commodore\'s Tactical Codex covers both the Alliance Navy and the Outlying Systems Protectorate in full doctrinal depth. All six ANS hull classes and all six OSP hulls are covered, alongside the complete missile design system, radar and EMCON discipline, electronic warfare jamming ratios, hardkill and softkill point defense layering, 3D terrain positioning, and five named fleet doctrines. Includes 30 standing orders in the Commodore\'s Codex.',
+    sideA: { label: 'Alliance Navy (ANS)', body: 'Purpose-built warships with superior radar suites, burnthrough fire control, and highly configurable hybrid missiles. Rewards meticulous pre-battle fleet editor planning and precise EW timing.' },
+    sideB: { label: 'Outlying Systems Protectorate (OSP)', body: 'Repurposed civilian vessels fitted for war. Wins through volume, close-range casemate saturation, and attrition economics. Do not play OSP like ANS; it requires a completely distinct doctrine.' },
     tags:  ['Electronic Warfare','Missile Design','Fleet Editor','EMCON','Point Defense','3D Positioning','Radar Signature','Hardkill / Softkill'],
     file:  'https://t1ckles.github.io/nadir/nebulous_fleet_command.html',
     steam: 'https://store.steampowered.com/app/887570/NEBULOUS_Fleet_Command/',
@@ -358,7 +461,7 @@ const GUIDES = [
     scenariosLabel: 'Victory Types',
     ctalabel:  'Open Full Strategy Guide',
     desc:      'A living galaxy of up to 2,000 star systems, a dual public/private economy, 22 playable races, and as much or as little automation as you want. One of the deepest 4X strategy games ever made \u2014 and one of the most misunderstood.',
-    detail:    'Distant Worlds: Universe is a vast, pausable real-time 4X grand strategy game covering exploration, expansion, and galactic domination on an epic scale. Its defining feature is the dual economy: a State economy you control directly and a Private economy operated autonomously by civilian AI ships. The galaxy is alive whether you are watching it or not. All four expansions are included in Universe \u2014 base game, Return of the Shakturi, Legends, and Shadows \u2014 each of which fundamentally transforms the experience. The guide covers all 22 playable races, all major systems, the Shakturi threat, government types, ship design, and full early/mid/late-game strategic frameworks.',
+    detail:    'Distant Worlds: Universe is a vast, pausable real-time 4X grand strategy game covering exploration, expansion, and galactic domination. Its defining feature is the dual economy: a State economy you control directly and a Private economy operated autonomously by civilian AI ships. All four expansions included. The guide covers all 22 playable races, all major systems, the Shakturi threat, government types, ship design, and full early/mid/late-game strategic frameworks.',
     sideA: { label: 'Your Empire',          body: 'Choose from 22 races across 7 biological families. Set policy, manage research, design ships, and govern \u2014 the private economy runs itself. The challenge is knowing what to automate and what to control personally.' },
     sideB: { label: 'The Galaxy & Shakturi', body: 'Rival empires, pirate factions, space monsters, and the looming Shakturi Return. The galaxy is a living, competitive environment that never waits for you to be ready.' },
     tags:  ['Real-Time Pausable','4X Grand Strategy','22 Races','Dual Economy','Shakturi','Automation'],
@@ -370,13 +473,6 @@ const GUIDES = [
 
 const COMING_SOON = [
   {
-    title:    'SGS Battle of the Bulge',
-    subtitle: 'Ardennes Offensive, December 1944',
-    era:      'ww2',
-    period:   'Second World War',
-    desc:     'Germany\'s last major offensive in the West. Fog, snow, and a desperate armoured thrust against an Allied line briefly caught off guard.',
-  },
-  {
     title:    'Battletech',
     subtitle: 'Tactical Mercenary Warfare in the BattleTech Universe',
     era:      'scifi',
@@ -385,10 +481,47 @@ const COMING_SOON = [
   },
 ];
 
+/* ─── STATE ─── */
+let activeFilter = 'all';
+let activeSearch = '';
+let activeSort   = 'default';
+
+/* ─── FILTER / SEARCH / SORT ─── */
+function getVisible() {
+  let list = [...GUIDES];
+  if (activeFilter !== 'all') list = list.filter(g => g.era === activeFilter);
+  if (activeSearch.trim()) {
+    const q = activeSearch.toLowerCase();
+    list = list.filter(g =>
+      g.title.toLowerCase().includes(q) ||
+      g.subtitle.toLowerCase().includes(q) ||
+      g.period.toLowerCase().includes(q) ||
+      g.tags.some(t => t.toLowerCase().includes(q)) ||
+      g.desc.toLowerCase().includes(q)
+    );
+  }
+  if (activeSort === 'alpha')          list.sort((a,b) => a.title.localeCompare(b.title));
+  if (activeSort === 'sections-desc')  list.sort((a,b) => b.sections  - a.sections);
+  if (activeSort === 'scenarios-desc') list.sort((a,b) => b.scenarios - a.scenarios);
+  return list;
+}
+
+function updateStats() {
+  document.getElementById('stat-guides').textContent = GUIDES.length;
+  const eras = [...new Set(GUIDES.map(g => g.era))].length;
+  document.getElementById('stat-eras').textContent = eras;
+}
+
 function renderGuides() {
-  const grid = document.getElementById('games-grid');
+  const grid  = document.getElementById('games-grid');
+  const empty = document.getElementById('empty-state');
+  const list  = getVisible();
+  const count = document.getElementById('results-count');
+  count.textContent = list.length + (list.length === 1 ? ' guide' : ' guides');
   grid.innerHTML = '';
-  GUIDES.forEach(g => {
+  if (list.length === 0) { empty.style.display = ''; return; }
+  empty.style.display = 'none';
+  list.forEach(g => {
     const card = document.createElement('div');
     card.className = 'game-card';
     card.setAttribute('data-era', g.era);
@@ -410,6 +543,10 @@ function renderGuides() {
     card.addEventListener('click', () => openModal(g.id));
     grid.appendChild(card);
   });
+
+  // hide coming-soon section when search/filter is active to avoid confusion
+  const comingSection = document.getElementById('coming-section');
+  comingSection.style.display = (activeFilter !== 'all' || activeSearch.trim()) ? 'none' : '';
 }
 
 function renderComingSoon() {
@@ -418,7 +555,7 @@ function renderComingSoon() {
   COMING_SOON.forEach(g => {
     const card = document.createElement('div');
     card.className = 'game-card coming-soon';
-    card.setAttribute('data-era', g.era || 'ww2');
+    card.setAttribute('data-era', g.era || 'scifi');
     card.innerHTML =
       '<div class="game-card-bar"></div>' +
       '<div class="game-card-inner">' +
@@ -433,17 +570,15 @@ function renderComingSoon() {
   });
 }
 
+/* ─── MODAL ─── */
 function openModal(id) {
   const g = GUIDES.find(x => x.id === id);
   if (!g) return;
   const modal = document.getElementById('modal');
   modal.setAttribute('data-era', g.era);
   document.getElementById('m-era').textContent      = g.period + ' \u00b7 ' + g.engine;
-  document.getElementById('m-title').textContent    = g.title;
-  document.getElementById('m-subtitle').textContent = g.subtitle;
-  const wipNote = g.wip
-    ? '<div style="font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold-dark);border:1px solid var(--border);padding:5px 10px;display:inline-block;margin-bottom:14px;">Guide In Production</div>'
-    : '';
+  document.getElementById('m-title').innerHTML      = g.title;
+  document.getElementById('m-subtitle').innerHTML   = g.subtitle;
   const extLinks =
     '<div class="modal-ext-links">' +
       '<a class="modal-ext-link" href="' + g.steam + '" target="_blank" rel="noopener">' +
@@ -457,7 +592,6 @@ function openModal(id) {
     ? '<div class="modal-cta" style="opacity:0.45;cursor:default;pointer-events:none;">Guide Coming Soon</div>'
     : '<a class="modal-cta" href="' + g.file + '" target="_blank" rel="noopener">' + (g.ctalabel || 'Open Full Strategy Guide') + ' &rsaquo;</a>';
   document.getElementById('modal-body').innerHTML =
-    wipNote +
     '<div class="modal-section-label">Overview</div>' +
     '<p class="modal-desc">' + g.detail + '</p>' +
     '<div class="modal-section-label">' + (g.sidesLabel || 'The Two Sides') + '</div>' +
@@ -475,8 +609,7 @@ function openModal(id) {
     '<div class="modal-section-label">Tags</div>' +
     '<div class="modal-tags">' + g.tags.map(t => '<span class="modal-tag">' + t + '</span>').join('') + '</div>' +
     '<div class="modal-section-label">External Links</div>' +
-    extLinks +
-    guideCta;
+    extLinks + guideCta;
   document.getElementById('modal-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
   document.getElementById('modal-close').focus();
@@ -487,12 +620,49 @@ function closeModal() {
   document.body.style.overflow = '';
 }
 
+function resetFilters() {
+  activeFilter = 'all';
+  activeSearch = '';
+  activeSort   = 'default';
+  document.getElementById('search-input').value = '';
+  document.getElementById('sort-select').value  = 'default';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === 'all'));
+  renderGuides();
+}
+
+/* ─── EVENT LISTENERS ─── */
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    activeFilter = btn.dataset.filter;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderGuides();
+  });
+});
+
+let searchTimeout;
+document.getElementById('search-input').addEventListener('input', e => {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    activeSearch = e.target.value;
+    renderGuides();
+  }, 220);
+});
+
+document.getElementById('sort-select').addEventListener('change', e => {
+  activeSort = e.target.value;
+  renderGuides();
+});
+
 document.getElementById('modal-close').addEventListener('click', closeModal);
 document.getElementById('modal-overlay').addEventListener('click', e => {
   if (e.target === document.getElementById('modal-overlay')) closeModal();
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+document.getElementById('reset-btn').addEventListener('click', resetFilters);
 
+/* ─── INIT ─── */
+updateStats();
 renderGuides();
 renderComingSoon();
 </script>

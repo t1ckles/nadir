@@ -109,8 +109,6 @@ body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-i
 .game-card.coming-soon { opacity: 0.55; cursor: default; pointer-events: none; }
 .game-card.coming-soon .game-card-bar { background: repeating-linear-gradient(90deg, rgba(201,148,58,0.3) 0px, rgba(201,148,58,0.3) 8px, transparent 8px, transparent 16px); }
 .coming-soon-badge { font-family: var(--font-head); font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mid); border: 1px solid var(--border); padding: 2px 7px; }
-/* highlight search match */
-.game-card.search-match { box-shadow: 0 0 0 2px var(--gold); }
 
 /* ─── MODAL ─── */
 .modal-overlay { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(15,22,32,0.82); backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
@@ -179,9 +177,9 @@ body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-i
     <div class="hero-rule"></div>
     <p class="hero-desc">Comprehensive guides covering both sides, all systems, and every scenario &mdash; for historical wargames and grand strategy titles.</p>
     <div class="hero-stats">
-      <div class="hero-stat"><span class="hero-stat-num" id="stat-guides">10</span><span class="hero-stat-label">Complete Guides</span></div>
+      <div class="hero-stat"><span class="hero-stat-num" id="stat-guides">11</span><span class="hero-stat-label">Complete Guides</span></div>
       <div class="hero-stat"><span class="hero-stat-num" id="stat-eras">4</span><span class="hero-stat-label">Eras Covered</span></div>
-      <div class="hero-stat"><span class="hero-stat-num">150+</span><span class="hero-stat-label">Chapters Written</span></div>
+      <div class="hero-stat"><span class="hero-stat-num">170+</span><span class="hero-stat-label">Chapters Written</span></div>
     </div>
   </div>
 </header>
@@ -208,7 +206,7 @@ body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-i
       <button class="filter-btn" data-filter="scifi">Sci-Fi &amp; Fantasy</button>
     </div>
     <div class="toolbar-right">
-      <span class="results-count" id="results-count">10 guides</span>
+      <span class="results-count" id="results-count">11 guides</span>
       <select id="sort-select" aria-label="Sort guides">
         <option value="default">Default Order</option>
         <option value="alpha">A &rarr; Z</option>
@@ -232,8 +230,8 @@ body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-i
     </div>
   </div>
 
-  <!-- COMING SOON -->
-  <div id="coming-section">
+  <!-- COMING SOON — empty for now; add future entries here -->
+  <div id="coming-section" style="display:none">
     <div class="section-label">In Progress</div>
     <h2 class="section-title">Upcoming Guides</h2>
     <p class="section-intro">Guides under research and development. Check back soon.</p>
@@ -242,7 +240,7 @@ body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-i
 </main>
 
 <footer class="site-footer">
-  Strategy Guide Library &nbsp;&middot;&nbsp; Community Resource &nbsp;&middot;&nbsp; Avalon Digital / Strategy Game Studio / Matrix Games
+  Strategy Guide Library &nbsp;&middot;&nbsp; Community Resource &nbsp;&middot;&nbsp; Avalon Digital / Strategy Game Studio / Matrix Games / Harebrained Schemes
 </footer>
 
 <div class="modal-overlay" id="modal-overlay">
@@ -334,7 +332,7 @@ const GUIDES = [
     sides:     ['Wehrmacht (Germany)', 'Allied Forces (USA & Allies)'],
     hardest:   'Allied Forces (Turns 1\u20135)',
     desc:      'Germany\'s last gamble on the Western Front. On December 16, 1944, over 200,000 German troops and nearly 1,000 tanks struck the Ardennes in a desperate bid to reach Antwerp and split the Allied armies. The Initiative Gauge gives the German player a ticking clock of momentum; the Allied player must hold the shoulders, keep Bastogne, and survive until Patton arrives.',
-    detail:    'The Winter War Manual covers both the Wehrmacht and Allied sides across all six scenarios in 25 chapters. The guide walks through the unique Initiative Gauge mechanic and how it shapes every German operational decision, the supply crisis that destroyed the historical offensive, the three critical Allied terrain anchors (Elsenborn Ridge, Bastogne, St. Vith), stacking and road network management, air power and the pivotal December 23 weather break, and all six scenarios: the full 45-turn campaign, the Wacht am Rhein alternative campaign, the Herbstnebel shortened offensive, the Nuts! Bastogne siege, Objective Li\u00e8ge, and The Siegfried Line counter-offensive. Features researched WW2 historical facts throughout, from the Malmedy massacre to Patton\'s 48-hour pivot and McAuliffe\'s famous one-word reply.',
+    detail:    'The Winter War Manual covers both the Wehrmacht and Allied sides across all six scenarios in 25 chapters. The guide walks through the unique Initiative Gauge mechanic and how it shapes every German operational decision, the supply crisis that destroyed the historical offensive, the three critical Allied terrain anchors (Elsenborn Ridge, Bastogne, St. Vith), stacking and road network management, air power and the pivotal December 23 weather break, and all six scenarios: the full 45-turn campaign, the Wacht am Rhein alternative campaign, the Herbstnebel shortened offensive, the Nuts! Bastogne siege, Objective Li\u00e8ge, and The Siegfried Line counter-offensive. Features researched WW2 historical facts throughout.',
     sideA: { label: 'Wehrmacht (Germany)', body: 'Three Panzer armies, twenty divisions, and a ticking Initiative Gauge. Must break through the Ardennes, bypass Bastogne, and reach the Meuse before supply runs out and Allied air returns. Every turn squandered is a turn closer to defeat.' },
     sideB: { label: 'Allied Forces (USA)', body: 'Surprised, outnumbered, and initially outgunned. Must hold Elsenborn Ridge, get the 101st Airborne to Bastogne before encirclement, and keep St. Vith long enough for reinforcements to arrive. The hardest side in the opening turns; the dominant side by turn fifteen.' },
     tags:  ['Initiative Gauge','Ardennes','Bastogne','Elsenborn Ridge','Patton','Supply Lines','PBEM','Both Sides Covered'],
@@ -401,6 +399,28 @@ const GUIDES = [
     file:  'https://t1ckles.github.io/nadir/afrika_korps.html',
     steam: 'https://store.steampowered.com/app/1266640/SGS_Afrika_Korps/',
     site:  'https://strategygamestudio.com/games/sgs-afrika-korps/',
+  },
+  {
+    id:        'battletech',
+    title:     'BattleTech',
+    subtitle:  'Mercenary Lance Command, Aurigan Reach 3025',
+    era:       'scifi',
+    period:    'Science Fiction & Far Future',
+    engine:    'Harebrained Schemes / Unity Engine',
+    sections:  24,
+    scenarios: 2,
+    sides:     ['Your Mercenary Company', 'The Inner Sphere & Aurigan Directorate'],
+    hardest:   'Campaign (Story Missions + Financial Management)',
+    sidesLabel:    'Your Company & Its Enemies',
+    scenariosLabel: 'Game Modes',
+    desc:      'Turn-based 'Mech warfare and hard-nosed mercenary management in the far future. Command a lance of towering BattleMechs through the Aurigan Reach\u2019s civil war \u2014 balancing initiative, heat, stability, and C-bill solvency while building a company that can survive the brutal attrition of the Inner Sphere.',
+    detail:    'The Mercenary Commander\u2019s Field Manual covers every system of Harebrained Schemes\u2019 2018 BattleTech in 24 in-depth chapters. The guide walks through the full tactical layer \u2014 initiative phases and the power of Reservation, the heat threshold system, the stability-knockdown-called shot pipeline, evasion mechanics and their late-game limitations, and the morale-driven Vigilance and Precision Strike abilities \u2014 alongside complete pilot skill tree analysis across all four branches (Gunnery, Piloting, Guts, Tactics), six named pilot class builds, all four \u2018Mech weight classes, a 13-entry key \u2018Mech roster with strategic notes, the full Argo upgrade priority guide, salvage strategy and C-bill management doctrine, contract selection and star map routing, phased early/mid/late-game progression frameworks, four named lance archetypes, and a 40-entry glossary. Every section opens with in-universe lore dispatches from the commanders, crew, and MechWarriors of the Aurigan Reach.',
+    sideA: { label: 'Your Mercenary Company', body: 'Four \u2018Mechs, a battered Argo, and a roster of pilots whose skills must be developed through careful XP investment. Every tactical decision \u2014 heat, initiative, focus fire, called shots \u2014 has a financial consequence on the campaign layer. Master both layers or lose both.' },
+    sideB: { label: 'The Aurigan Directorate & Enemies', body: 'Escalating opposition from light lances to full assault \u2018Mech formations, scaled by contract skull rating. Story missions bring Directorate commanders and named units. Understanding what you face \u2014 and building the lance to counter it \u2014 is the strategic game.' },
+    tags:  ['Turn-Based Tactics','Mercenary Management','Heat Management','Lance Composition','Pilot Skills','Salvage','Argo Upgrades','Inner Sphere 3025'],
+    file:  'https://t1ckles.github.io/nadir/battletech.html',
+    steam: 'https://store.steampowered.com/app/637090/BATTLETECH/',
+    site:  'https://www.paradoxinteractive.com/games/battletech/about',
   },
   {
     id:        'dominions-6',
@@ -471,22 +491,13 @@ const GUIDES = [
   },
 ];
 
-const COMING_SOON = [
-  {
-    title:    'Battletech',
-    subtitle: 'Tactical Mercenary Warfare in the BattleTech Universe',
-    era:      'scifi',
-    period:   '3025, Aurigan Reach Civil War',
-    desc:     'Turn-based mech warfare and mercenary company management on the Periphery. Command a hard-luck lance through salvage-driven contracts and brutal attrition in the Aurigan Reach, 3025.',
-  },
-];
+const COMING_SOON = [];
 
 /* ─── STATE ─── */
 let activeFilter = 'all';
 let activeSearch = '';
 let activeSort   = 'default';
 
-/* ─── FILTER / SEARCH / SORT ─── */
 function getVisible() {
   let list = [...GUIDES];
   if (activeFilter !== 'all') list = list.filter(g => g.era === activeFilter);
@@ -543,14 +554,13 @@ function renderGuides() {
     card.addEventListener('click', () => openModal(g.id));
     grid.appendChild(card);
   });
-
-  // hide coming-soon section when search/filter is active to avoid confusion
   const comingSection = document.getElementById('coming-section');
-  comingSection.style.display = (activeFilter !== 'all' || activeSearch.trim()) ? 'none' : '';
+  if (comingSection) comingSection.style.display = (COMING_SOON.length > 0 && activeFilter === 'all' && !activeSearch.trim()) ? '' : 'none';
 }
 
 function renderComingSoon() {
   const grid = document.getElementById('coming-grid');
+  if (!grid) return;
   grid.innerHTML = '';
   COMING_SOON.forEach(g => {
     const card = document.createElement('div');
@@ -570,7 +580,6 @@ function renderComingSoon() {
   });
 }
 
-/* ─── MODAL ─── */
 function openModal(id) {
   const g = GUIDES.find(x => x.id === id);
   if (!g) return;
@@ -630,7 +639,6 @@ function resetFilters() {
   renderGuides();
 }
 
-/* ─── EVENT LISTENERS ─── */
 document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     activeFilter = btn.dataset.filter;
@@ -643,25 +651,15 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
 let searchTimeout;
 document.getElementById('search-input').addEventListener('input', e => {
   clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(() => {
-    activeSearch = e.target.value;
-    renderGuides();
-  }, 220);
+  searchTimeout = setTimeout(() => { activeSearch = e.target.value; renderGuides(); }, 220);
 });
 
-document.getElementById('sort-select').addEventListener('change', e => {
-  activeSort = e.target.value;
-  renderGuides();
-});
-
+document.getElementById('sort-select').addEventListener('change', e => { activeSort = e.target.value; renderGuides(); });
 document.getElementById('modal-close').addEventListener('click', closeModal);
-document.getElementById('modal-overlay').addEventListener('click', e => {
-  if (e.target === document.getElementById('modal-overlay')) closeModal();
-});
+document.getElementById('modal-overlay').addEventListener('click', e => { if (e.target === document.getElementById('modal-overlay')) closeModal(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 document.getElementById('reset-btn').addEventListener('click', resetFilters);
 
-/* ─── INIT ─── */
 updateStats();
 renderGuides();
 renderComingSoon();

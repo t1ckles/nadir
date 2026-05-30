@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BattleTech — The Mercenary Commander's Field Manual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1410;--parchment:#f5efe4;--gold:#c9943a;--gold-dark:#8b6420;--gold-pale:#f0d9a8;
+  --mid:#4a3f32;--light:#f9f4ec;--border:rgba(201,148,58,0.3);--shadow:rgba(26,20,16,0.18);
+  --steel:#1e2838;--steel-mid:#2a3850;--steel-pale:#d5dce8;
+  --rust:#6b2a1a;--rust-pale:#f5e4da;
+  --font-head:'Cinzel','Times New Roman',serif;
+  --font-body:'Crimson Pro','Georgia',serif;
+  --sidebar-w:288px;
+}
+html{scroll-behavior:smooth;font-size:17px}
+body{background:var(--parchment);color:var(--ink);font-family:var(--font-body);line-height:1.75;display:flex;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.5}
+a{color:inherit;text-decoration:none}button{cursor:pointer;font-family:inherit}
+#progress-bar{position:fixed;top:0;left:var(--sidebar-w);right:0;height:3px;background:var(--gold);transform-origin:left;transform:scaleX(0);z-index:500;transition:transform 0.1s linear}
+#sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--steel);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;border-right:2px solid var(--gold-dark);display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--gold-dark) var(--steel)}
+#sidebar-header{padding:28px 20px 20px;border-bottom:1px solid rgba(201,148,58,0.22);background:linear-gradient(180deg,#0e1520 0%,var(--steel) 100%)}
+#sidebar-title{font-family:var(--font-head);font-size:0.96rem;font-weight:900;color:var(--gold);letter-spacing:0.12em;text-transform:uppercase;line-height:1.3}
+#sidebar-sub{font-family:var(--font-body);font-size:0.7rem;color:rgba(255,255,255,0.4);margin-top:6px;letter-spacing:0.05em;font-style:italic}
+#sidebar-nav{padding:10px 0 40px;flex:1}
+.nav-section{padding:10px 20px 3px;font-family:var(--font-head);font-size:0.56rem;letter-spacing:0.2em;color:var(--gold-dark);text-transform:uppercase;margin-top:8px;opacity:0.85}
+.nav-item{display:block;padding:6px 20px 6px 28px;font-family:var(--font-body);font-size:0.8rem;color:rgba(245,239,228,0.65);text-decoration:none;border-left:2px solid transparent;transition:all 0.16s ease;line-height:1.35;position:relative}
+.nav-item::before{content:'›';position:absolute;left:14px;top:6px;color:var(--gold-dark);opacity:0;transition:opacity 0.12s}
+.nav-item:hover,.nav-item.active{color:var(--gold-pale);border-left-color:var(--gold);background:rgba(201,148,58,0.08);padding-left:30px}
+.nav-item:hover::before,.nav-item.active::before{opacity:1}
+#sidebar-toggle{display:none;position:fixed;top:10px;left:10px;z-index:200;background:var(--steel);border:1px solid var(--gold-dark);color:var(--gold);font-size:1.1rem;padding:5px 9px;border-radius:2px}
+#main{margin-left:var(--sidebar-w);flex:1;min-width:0}
+#hero{background:linear-gradient(160deg,#0c1218 0%,#141e2c 35%,#1e1410 70%,#0c1218 100%);min-height:460px;display:flex;flex-direction:column;justify-content:flex-end;padding:0 64px 64px;position:relative;overflow:hidden;border-bottom:3px solid var(--gold-dark)}
+#hero::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(-55deg,transparent,transparent 40px,rgba(201,148,58,0.025) 40px,rgba(201,148,58,0.025) 41px)}
+#hero::after{content:'';position:absolute;bottom:0;left:64px;right:64px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.hero-eyebrow{font-family:var(--font-head);font-size:0.7rem;letter-spacing:0.28em;color:var(--gold-dark);text-transform:uppercase;margin-bottom:14px;position:relative}
+.hero-title{font-family:var(--font-head);font-size:clamp(2.2rem,5vw,3.8rem);font-weight:900;color:var(--parchment);letter-spacing:0.04em;text-transform:uppercase;line-height:1.05;margin-bottom:8px;position:relative}
+.hero-subtitle{font-family:var(--font-body);font-size:1.05rem;font-style:italic;color:rgba(240,217,168,0.72);font-weight:300;margin-bottom:26px;position:relative}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;position:relative}
+.hero-tag{font-family:var(--font-head);font-size:0.63rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-pale);border:1px solid rgba(201,148,58,0.38);padding:3px 10px;background:rgba(201,148,58,0.07)}
+#content{padding:0 64px 80px;max-width:960px}
+.section{padding:54px 0 6px;animation:fadeUp 0.45s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.sec-num{display:inline-block;font-family:var(--font-head);font-size:0.8rem;font-weight:400;letter-spacing:0.1em;color:var(--gold-dark);margin-right:0.5em;vertical-align:middle}
+.section-title{font-family:var(--font-head);font-size:clamp(1.3rem,2.4vw,1.75rem);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink);padding-bottom:12px;margin-bottom:20px;border-bottom:2px solid var(--border);position:relative}
+.section-title::after{content:'';position:absolute;bottom:-2px;left:0;width:58px;height:2px;background:var(--gold)}
+.sub-title{font-family:var(--font-head);font-size:1.02rem;font-weight:600;letter-spacing:0.05em;color:var(--mid);margin:26px 0 9px;text-transform:uppercase}
+p{margin-bottom:1rem;font-size:1rem}
+.guide-list{margin:0.5rem 0 1rem 1.2rem}
+.guide-list li{margin-bottom:0.5rem;font-size:1rem}
+.guide-list li::marker{color:var(--gold-dark)}
+/* CALLOUTS */
+.callout{padding:15px 20px;margin:20px 0;border-left:4px solid var(--gold);background:var(--light);border-radius:0 3px 3px 0}
+.callout.steel{border-left-color:#2a5080;background:var(--steel-pale)}
+.callout.rust{border-left-color:#8b2a1a;background:var(--rust-pale)}
+.callout.tip{border-left-color:#3a5c1a;background:#edf5e4}
+.callout.warning{border-left-color:#7a4a1a;background:#f5edda}
+.callout-title{font-family:var(--font-head);font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;margin-bottom:5px;color:var(--gold-dark)}
+.callout.steel .callout-title{color:#2a5080}
+.callout.rust .callout-title{color:#8b2a1a}
+.callout.tip .callout-title{color:#3a5c1a}
+.callout.warning .callout-title{color:#7a4a1a}
+.callout p{font-size:0.94rem;margin-bottom:0.5rem}
+.callout p:last-child{margin-bottom:0}
+/* LORE BLOCKS */
+.lore-block{padding:16px 20px;margin:22px 0;border:1px solid rgba(26,40,56,0.4);background:rgba(26,40,56,0.05);position:relative}
+.lore-block::before{content:'FIELD DISPATCH';position:absolute;top:-0.6rem;left:1rem;font-family:var(--font-head);font-size:0.54rem;letter-spacing:0.22em;color:#2a5080;background:var(--parchment);padding:0 0.5rem}
+.lore-block p{font-style:italic;color:#2a3a55;font-size:0.94rem;line-height:1.82}
+.lore-block .source{font-family:var(--font-head);font-size:0.58rem;color:rgba(42,74,122,0.6);text-align:right;display:block;margin-top:0.6rem;letter-spacing:0.1em}
+/* DATA TABLES */
+.data-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.9rem}
+.data-table th{background:var(--steel);color:var(--gold-pale);font-family:var(--font-head);font-size:0.64rem;letter-spacing:0.12em;text-transform:uppercase;padding:8px 11px;text-align:left;border:1px solid rgba(201,148,58,0.2)}
+.data-table td{padding:7px 11px;border:1px solid var(--border);vertical-align:top;line-height:1.5;color:var(--ink)}
+.data-table tr:nth-child(even) td{background:var(--light)}
+.data-table tr:hover td{background:rgba(201,148,58,0.04)}
+/* PHASE BLOCKS */
+.phase{padding:16px 20px;margin:14px 0;border-left:4px solid var(--gold);background:rgba(201,148,58,0.05)}
+.phase.early{border-left-color:#2a5080;background:rgba(42,80,128,0.07)}
+.phase.mid{border-left-color:var(--gold-dark);background:rgba(201,148,58,0.07)}
+.phase.late{border-left-color:#7a2a1a;background:rgba(122,42,26,0.07)}
+.phase-title{font-family:var(--font-head);font-size:0.85rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:7px;color:var(--gold-dark)}
+.phase.early .phase-title{color:#2a5080}
+.phase.late .phase-title{color:#7a2a1a}
+.phase p{font-size:0.94rem;margin-bottom:0.6rem;color:var(--ink)}
+.phase p:last-child{margin-bottom:0}
+/* UNIT CARDS */
+.unit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin:16px 0}
+.unit-card{border:1px solid var(--border);background:var(--light);padding:14px 16px;border-top:3px solid var(--gold)}
+.unit-card.light{border-top-color:#3a6b2a}
+.unit-card.medium{border-top-color:#6b6020}
+.unit-card.heavy{border-top-color:#2a506b}
+.unit-card.assault{border-top-color:#6b2a2a}
+.unit-name{font-family:var(--font-head);font-size:0.88rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink);margin-bottom:2px}
+.unit-type{font-family:var(--font-head);font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);margin-bottom:7px;display:block}
+.unit-card.light .unit-type{color:#3a6b2a}
+.unit-card.medium .unit-type{color:#6b6020}
+.unit-card.heavy .unit-type{color:#2a506b}
+.unit-card.assault .unit-type{color:#6b2a2a}
+.unit-card p{font-size:0.88rem;line-height:1.6;color:var(--ink);margin-bottom:0}
+/* ORN */
+.orn{text-align:center;color:var(--gold);font-size:0.8rem;letter-spacing:0.35em;padding:28px 0 8px;opacity:0.65}
+/* GLOSSARY */
+.gloss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--border);margin-top:16px;border:1px solid var(--border)}
+.gloss-item{background:var(--light);padding:9px 13px;display:flex;gap:10px;align-items:flex-start}
+.gloss-item:nth-child(even){background:var(--parchment)}
+.gloss-term{font-family:var(--font-head);font-size:0.76rem;font-weight:700;color:var(--ink);white-space:normal;min-width:130px;max-width:155px;word-break:break-word;letter-spacing:0.04em;text-transform:uppercase}
+.gloss-def{font-size:0.86rem;color:var(--mid);line-height:1.55}
+#back-top{position:fixed;bottom:26px;right:26px;width:40px;height:40px;background:var(--steel);border:1px solid var(--gold-dark);color:var(--gold);font-size:1rem;display:flex;align-items:center;justify-content:center;text-decoration:none;opacity:0;transform:translateY(8px);transition:opacity 0.3s,transform 0.3s;z-index:90}
+#back-top.visible{opacity:1;transform:none}
+#back-top:hover{background:var(--gold-dark);color:var(--parchment)}
+#footer{margin-top:40px;border-top:1px solid var(--border);padding:20px 64px;font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);text-align:center}
+@media(max-width:880px){
+  :root{--sidebar-w:0px}
+  #sidebar-toggle{display:flex;align-items:center;justify-content:center}
+  #sidebar{transform:translateX(-100%);transition:transform 0.26s ease;width:260px}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  #hero,#content,#footer{padding-left:22px;padding-right:22px}
+  #progress-bar{left:0}
+  .unit-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+<button id="sidebar-toggle" aria-label="Menu">&#9776;</button>
+
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <div id="sidebar-title">BattleTech</div>
+    <div id="sidebar-sub">The Mercenary Commander's Field Manual &mdash; Harebrained Schemes / Paradox</div>
+  </div>
+  <div id="sidebar-nav">
+    <div class="nav-section">The Inner Sphere</div>
+    <a class="nav-item" href="#s01">01 &middot; The Succession Wars &amp; Lore</a>
+    <a class="nav-item" href="#s02">02 &middot; Game Overview</a>
+    <a class="nav-item" href="#s03">03 &middot; The Aurigan Campaign</a>
+    <div class="nav-section">Core Systems</div>
+    <a class="nav-item" href="#s04">04 &middot; Initiative &amp; Combat Flow</a>
+    <a class="nav-item" href="#s05">05 &middot; Heat Management</a>
+    <a class="nav-item" href="#s06">06 &middot; Stability &amp; Knockdowns</a>
+    <a class="nav-item" href="#s07">07 &middot; Called Shots &amp; Precision Fire</a>
+    <a class="nav-item" href="#s08">08 &middot; Evasion &amp; Positioning</a>
+    <a class="nav-item" href="#s09">09 &middot; Morale System</a>
+    <div class="nav-section">'Mechs &amp; Pilots</div>
+    <a class="nav-item" href="#s10">10 &middot; Weight Classes Explained</a>
+    <a class="nav-item" href="#s11">11 &middot; Key 'Mech Roster</a>
+    <a class="nav-item" href="#s12">12 &middot; Mech Customisation</a>
+    <a class="nav-item" href="#s13">13 &middot; Pilot Skills</a>
+    <a class="nav-item" href="#s14">14 &middot; Pilot Classes &amp; Builds</a>
+    <div class="nav-section">Campaign Management</div>
+    <a class="nav-item" href="#s15">15 &middot; The Argo &amp; Upgrades</a>
+    <a class="nav-item" href="#s16">16 &middot; Finances &amp; C-Bills</a>
+    <a class="nav-item" href="#s17">17 &middot; Salvage Strategy</a>
+    <a class="nav-item" href="#s18">18 &middot; Contract Selection</a>
+    <div class="nav-section">Strategy</div>
+    <a class="nav-item" href="#s19">19 &middot; Early Game Doctrine</a>
+    <a class="nav-item" href="#s20">20 &middot; Lance Composition</a>
+    <a class="nav-item" href="#s21">21 &middot; Mid &amp; Late Game</a>
+    <a class="nav-item" href="#s22">22 &middot; Advanced Tactics</a>
+    <a class="nav-item" href="#s23">23 &middot; Common Mistakes</a>
+    <div class="nav-section">Reference</div>
+    <a class="nav-item" href="#s24">24 &middot; Glossary</a>
+  </div>
+</nav>
+
+<div id="main">
+<div id="hero">
+  <div class="hero-eyebrow">Nadir Strategy Archive &nbsp;&middot;&nbsp; Harebrained Schemes &nbsp;&middot;&nbsp; Paradox Interactive &nbsp;&middot;&nbsp; 3025 Inner Sphere</div>
+  <h1 class="hero-title">BattleTech</h1>
+  <p class="hero-subtitle">The Mercenary Commander's Field Manual &mdash; A Complete Operational Strategy Guide</p>
+  <div class="hero-tags">
+    <span class="hero-tag">Aurigan Reach 3025</span>
+    <span class="hero-tag">24 Chapters</span>
+    <span class="hero-tag">Full Campaign</span>
+    <span class="hero-tag">All 'Mech Classes</span>
+    <span class="hero-tag">Pilot Builds</span>
+    <span class="hero-tag">Argo Upgrades</span>
+    <span class="hero-tag">Lance Doctrine</span>
+  </div>
+</div>
+
+<div id="content">
+
+<!-- ═══ S01 ═══ -->
+<section class="section" id="s01">
+<h2 class="section-title"><span class="sec-num">&sect;01</span> The Succession Wars &amp; the Inner Sphere</h2>
+
+<div class="lore-block">
+  <p>In the thirty-first century, the galaxy does not belong to nations. It belongs to families. The five Great Houses of the Inner Sphere — Steiner, Davion, Marik, Kurita, and Liao — have been at war with one another for nearly three centuries since the fall of the Star League, and the machinery of that civilisation has been ground to dust under the weight of their ambition. Technologies that once seemed miraculous are now irreplaceable relics. A BattleMech is not merely a weapon. It is an inheritance. It is a gravestone. It is worth more than most planets.</p>
+  <span class="source">// COMSTAR HISTORICAL BRIEFING &middot; 3025 SUCCESSION WARS ERA //</span>
+</div>
+
+<p>BattleTech, developed by Harebrained Schemes and published by Paradox Interactive in 2018, is set in 3025 — the twilight of the Third Succession War, a period the lore calls the "Dark Age" before that phrase became overused. The Inner Sphere is a civilisation in managed decline. The great powers understand that total war means the end of the technologies they need to fight wars, so they fight constantly but carefully, in endless attritional skirmishes across hundreds of inhabited systems. You are not a great power. You are a mercenary commander, a freelance instrument of someone else's politics, trying to keep your people alive and your 'Mechs operational while the galaxy burns at a civilised simmer around you.</p>
+
+<p>The 3025 era is deliberately chosen by the designers for its particular flavour. This is not the game of Clan invasions and technological marvels that later eras provide. In 3025, every AutoCannon is a relic. Every Large Laser is maintained by mechanics who learned their trade from mechanics who learned it from mechanics. Your Argo is held together by the same ingenuity and desperation that holds the entire Inner Sphere together.</p>
+
+<h2 class="sub-title">The Five Great Houses</h2>
+<table class="data-table">
+  <thead><tr><th>House</th><th>Character</th><th>Territory</th><th>In the Game</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Steiner</strong></td><td>Industrial, aristocratic, militarily conservative</td><td>Lyran Commonwealth (rimward)</td><td>Contracts available; part of border politics near Aurigan Reach</td></tr>
+    <tr><td><strong>Davion</strong></td><td>Chivalric, aggressive, technologically progressive</td><td>Federated Suns (antispinward)</td><td>Regular contract employer; culturally Allied to Aurigan loyalists</td></tr>
+    <tr><td><strong>Marik</strong></td><td>Fragmented, pragmatic, mercenary-friendly</td><td>Free Worlds League (spinward)</td><td>Contract employers; reliable but politically complex</td></tr>
+    <tr><td><strong>Kurita</strong></td><td>Feudal, honour-bound, xenophobic</td><td>Draconis Combine (anti-rimward)</td><td>Rare but lucrative contracts; complex moral implications</td></tr>
+    <tr><td><strong>Liao</strong></td><td>Paranoid, authoritarian, intelligence-focused</td><td>Capellan Confederation (spinward)</td><td>Contracts available; often morally ambiguous objectives</td></tr>
+  </tbody>
+</table>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S02 ═══ -->
+<section class="section" id="s02">
+<h2 class="section-title"><span class="sec-num">&sect;02</span> Game Overview</h2>
+
+<p>BattleTech is a <strong>turn-based tactical RPG and mercenary management game</strong>. It operates on two distinct layers that must both be mastered: the tactical battlefield, where you command a Lance of up to four BattleMechs in hex-and-cover combat; and the strategic management layer aboard the Argo, where you balance C-bills, upgrade your dropship, recruit and develop pilots, repair and refit your 'Mechs, and choose which contracts will build your company without destroying it.</p>
+
+<p>The game rewards players who understand both layers deeply. A superb tactician who ignores finances will run out of 'Mechs mid-campaign. A brilliant manager who does not understand heat management will lose pilots in the field. Mastery of BattleTech requires mastery of both — the boardroom and the battlefield are equally consequential.</p>
+
+<h2 class="sub-title">Career Mode vs. Campaign</h2>
+<div class="unit-grid" style="grid-template-columns:1fr 1fr;">
+  <div class="unit-card">
+    <div class="unit-name">Campaign Mode</div>
+    <span class="unit-type">STORY &middot; STRUCTURED &middot; RECOMMENDED FIRST</span>
+    <p>The main story of House Arano's restoration. Structured missions drive a narrative involving Lady Kamea Arano, the usurper Victoria Espinosa, and your commander's personal journey. Introduces systems progressively. Story events affect the game world. Best entry point.</p>
+  </div>
+  <div class="unit-card">
+    <div class="unit-name">Career Mode</div>
+    <span class="unit-type">SANDBOX &middot; PROCEDURAL &middot; ENDGAME CONTENT</span>
+    <p>No story constraints, full procedural contract generation, and a scoring system tracking your performance across multiple categories. Maximum freedom; no narrative direction. Recommended for players who have completed the campaign at least once.</p>
+  </div>
+</div>
+
+<h2 class="sub-title">Difficulty and Skulls</h2>
+<p>Contract difficulty is measured in skulls (0.5 to 5.0). Low-skull contracts are financially modest but safe; high-skull contracts pay well but pit your lance against 'Mechs that outweigh and outgun anything you are likely to be fielding in the early game. The skull system is honest about relative difficulty — take it seriously. A 3.5-skull contract with your starting lance is not a challenge: it is a potential catastrophe.</p>
+
+<div class="callout warning">
+  <div class="callout-title">Critical Warning — The Skull Gap</div>
+  <p>The most dangerous period in any BattleTech campaign is when you are transitioning from 1.5–2-skull contracts to 2.5–3-skull contracts. Your Lance is not yet resilient enough to absorb the heavier 'Mechs that appear at higher difficulties. Many campaigns fail catastrophically here — a single mission gone wrong strips the company of irreplaceable 'Mechs and injured pilots, and the financial cost of recovery becomes unserviceable. Build up methodically. There is no shame in staying at 2 skulls for twenty contracts while your pilots develop.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S03 ═══ -->
+<section class="section" id="s03">
+<h2 class="section-title"><span class="sec-num">&sect;03</span> The Aurigan Campaign — Setting and Stakes</h2>
+
+<div class="lore-block">
+  <p>Lady Kamea Arano was supposed to die on Coromodir. Her father, High Lord Tamati Arano III, had spent twenty years building the Aurigan Coalition — a rare experiment in voluntary multiplanetary cooperation on the Periphery — and Victoria Espinosa and her Directorate had burned it down in a single night. What remained of House Arano was scattered, its loyalists underground, its legitimate heir believed dead. Then you arrived. And things got complicated.</p>
+  <span class="source">// ARGO MISSION LOG, OPENING ENTRY &middot; ANONYMOUS COMMANDER //</span>
+</div>
+
+<p>The campaign takes place in the Aurigan Reach, a Periphery region bordering several Great Houses that is sufficiently distant from their core territories to be strategically interesting without being the front line of a major interstellar war. The Reach is poor by Inner Sphere standards, which is precisely why a mercenary company with a battered dropship can operate there without attracting the kind of Great House attention that would end the company very quickly.</p>
+
+<p>The narrative follows Lady Kamea's restoration campaign in a structure that alternates story missions with open contracts. Story missions drive the plot and are generally fixed; procedural contracts build your company. The balance between them determines how prepared you are when the campaign's escalating difficulty demands better 'Mechs and more developed pilots.</p>
+
+<h2 class="sub-title">Story Mission Pacing</h2>
+<p>A key piece of advice for new campaign players: <strong>do not rush story missions</strong>. Every story mission advances the campaign's timeline but does not advance your company's readiness. Between story missions is where your pilots gain experience, your 'Mechs accumulate, and your Argo improvements stack up. Story missions are also frequently harder than equivalent-skull procedural contracts because the enemy force composition is scripted. Arriving at a story mission under-prepared is the most common campaign failure mode.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S04 ═══ -->
+<section class="section" id="s04">
+<h2 class="section-title"><span class="sec-num">&sect;04</span> Initiative &amp; Combat Flow</h2>
+
+<div class="lore-block">
+  <p>A MechWarrior thinks in two dimensions simultaneously: the physical dimension of the battlefield and the temporal dimension of the engagement. Knowing whose turn comes next is not a passive observation — it is a weapon. The MechWarrior who uses initiative correctly fights every battle with the numerical advantage of acting at the right moment. The one who ignores it fights every battle at a disadvantage, regardless of how superior their 'Mech's armament.</p>
+  <span class="source">// COMBINED ARMS TACTICAL DOCTRINE, DAVION REGULARS MANUAL //</span>
+</div>
+
+<p>BattleTech's combat is turn-based with an initiative system that introduces crucial asymmetry to every engagement. Initiative is determined primarily by <strong>'Mech weight class</strong>, with lighter 'Mechs acting earlier and heavier 'Mechs acting later. The initiative order is:</p>
+
+<ol class="guide-list">
+  <li><strong>Lights (20–35 tons)</strong> — Phase 5: act first, every time</li>
+  <li><strong>Mediums (40–55 tons)</strong> — Phase 4</li>
+  <li><strong>Heavies (60–75 tons)</strong> — Phase 3</li>
+  <li><strong>Assaults (80–100 tons)</strong> — Phase 2: act last, always</li>
+</ol>
+
+<p>Within each phase, you choose which of your same-class 'Mechs activates and in what order. You can also <strong>Reserve</strong> a 'Mech's turn, delaying it to a later phase — potentially after the enemy's heaviest units have already acted. Reserving is one of the most tactically valuable actions in the game.</p>
+
+<h2 class="sub-title">The Power of Reservation</h2>
+<p>Reservation allows you to observe what the enemy does with their early-phase 'Mechs, then respond accordingly. A Heavy 'Mech that moves into flanking position against your line can be Reserved until it commits — then you fire your own Heavies into its exposed rear armour before it can turn. Reservation is also the mechanism by which light 'Mechs can be used offensively: activate them early to identify enemy positions, then Reserve your heavies to fire after seeing what opened up.</p>
+
+<div class="callout tip">
+  <div class="callout-title">Tactical Principle — Initiative Exploitation</div>
+  <p>The <strong>Master Tactician</strong> ability (Tactics 10) grants its pilot's 'Mech a +1 initiative bonus, pushing it one phase earlier than its class would normally place it. An Assault 'Mech with Master Tactician acts in Phase 3 alongside enemy Heavies rather than in Phase 2. For a commander who frequently runs Assault 'Mechs, this skill is worth the significant investment required to unlock it.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S05 ═══ -->
+<section class="section" id="s05">
+<h2 class="section-title"><span class="sec-num">&sect;05</span> Heat Management — The Engine of BattleTech</h2>
+
+<div class="lore-block">
+  <p>The fusion reactor at a BattleMech's heart is the most dangerous thing in the cockpit. Not the enemy's guns. Not the terrain. Not the weather. The reactor. Every weapon you fire generates waste heat that must be dissipated through the 'Mech's heat sinks before the next volley, or the consequences escalate from reduced accuracy to system shutdowns to ammunition cookoffs to the catastrophic failure of the reactor itself. Every MechWarrior learns this in their first training session. Only veterans truly internalise it.</p>
+  <span class="source">// MECHWARRIOR ACADEMY TRAINING MANUAL, CHAPTER 3: THERMAL MANAGEMENT //</span>
+</div>
+
+<p>Heat is the defining mechanical constraint of BattleTech. Every weapon you fire generates heat. Every round you take damage generates heat. Movement can generate heat at sprint speeds. Standing in water reduces heat. Standing in fire increases it. Your 'Mech has a maximum heat capacity — exceed it and consequences escalate rapidly.</p>
+
+<h2 class="sub-title">The Heat Threshold System</h2>
+<table class="data-table">
+  <thead><tr><th>Heat Level</th><th>Effect</th><th>Strategic Response</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Below threshold</strong></td><td>No penalty; normal operation</td><td>Ideal state; fire freely</td></tr>
+    <tr><td><strong>Overheated (25%+)</strong></td><td>Accuracy penalty on all weapons</td><td>Reduce weapons fired; use movement or terrain to cool</td></tr>
+    <tr><td><strong>Severely overheated (50%+)</strong></td><td>Additional accuracy penalties; pilot injury risk</td><td>Urgent cooling required; fire only critical shots</td></tr>
+    <tr><td><strong>Critical overheat (75%+)</strong></td><td>Weapon shutdowns; ammo explosion risk</td><td>Stop firing; seek shade/water; emergency</td></tr>
+    <tr><td><strong>Maximum overheat</strong></td><td>'Mech shutdown; pilot ejection possible</td><td>Catastrophic failure; likely loss of 'Mech</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Managing Your Heat Budget</h2>
+<p>Every 'Mech has a <strong>heat budget per activation</strong> — the total heat it can generate and still remain below threshold. Before each activation, calculate roughly what you intend to fire and whether that takes you into penalty territory. Key principles:</p>
+<ul class="guide-list">
+  <li><strong>Heat sinks are worth their weight.</strong> Every additional heat sink installed increases your heat dissipation and your effective weapons budget. Medium lasers build around heat-sink efficiency are consistently the most heat-efficient damage delivery in the game.</li>
+  <li><strong>Alpha strikes are a choice, not a default.</strong> Firing every weapon in one activation (an "alpha strike") delivers maximum damage but maximum heat. Alpha strikes are correct when you need to destroy a target this turn or accept worse consequences next turn. They are wrong as routine tactics.</li>
+  <li><strong>Water hexes are gift tiles.</strong> A 'Mech standing in a water hex dissipates significantly more heat than on dry land. Routing your assault 'Mechs through water whenever available is not just terrain navigation — it is thermal management.</li>
+  <li><strong>The Coolant Vent ability</strong> (Guts 8) allows an emergency heat reduction once per mission. Reserve it for the moment a critical alpha strike would otherwise push you into shutdown territory.</li>
+</ul>
+
+<div class="callout steel">
+  <div class="callout-title">Heat and 'Mech Design</div>
+  <p>When customising 'Mechs, always run a heat calculation against your intended weapon loadout before finalising. A 'Mech with five Medium Lasers and eight heat sinks fires comfortably. The same 'Mech with two PPC and the same heat sinks will overheat after a single activation if it fires both weapons. Match heat sinks to your weapons package, not to your slot count.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S06 ═══ -->
+<section class="section" id="s06">
+<h2 class="section-title"><span class="sec-num">&sect;06</span> Stability &amp; Knockdowns</h2>
+
+<p>The stability system is BattleTech's second major tactical layer, and one that new players consistently undervalue. Every 'Mech has a stability threshold. Certain weapons — particularly LRMs, Autocannons, and melee attacks — generate stability damage in addition to armour damage. When a 'Mech's stability is exhausted, it is <strong>Unsteady</strong>; when struck again while Unsteady, it is <strong>Knocked Down</strong>.</p>
+
+<h2 class="sub-title">Why Knockdowns Matter</h2>
+<p>A knocked-down 'Mech is one of the most vulnerable states in the game. It must spend its next activation standing up rather than firing or moving. While prone, it receives a significant bonus to-hit for attackers — free bonus accuracy for everyone who fires at it. And the pilot takes a guaranteed injury when knocked down, potentially triggering pilot incapacitation if they have accumulated enough injuries. A knocked-down assault 'Mech is a gift: maximum armour, temporarily helpless, likely to lose the pilot if already injured.</p>
+
+<h2 class="sub-title">Stability Weapons and Tactics</h2>
+<p>Building a lance with dedicated stability pressure is one of the most powerful strategies in the mid-game. A 'Mech that specialises in LRM fire keeps constant pressure on enemy stability, setting up knockdowns for the rest of the lance to exploit. The combination works especially well against heavy and assault 'Mechs, which have the armour to survive direct damage but often have stability thresholds that cannot resist sustained LRM bombardment.</p>
+
+<div class="callout">
+  <div class="callout-title">Tactical Combination — Stability and Called Shots</div>
+  <p>The most powerful tactical combination in BattleTech: use LRMs or an Autocannon to knock down an enemy 'Mech, then use your Called Shot specialist (high Tactics pilot) to aim for the cockpit or CT on the prone target. A prone 'Mech is dramatically more likely to be killed by a called shot than a standing one, because the bonus to-hit for prone targets stacks with the called shot's focused accuracy. This combination reliably kills assault 'Mechs without requiring you to strip all their armour first.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S07 ═══ -->
+<section class="section" id="s07">
+<h2 class="section-title"><span class="sec-num">&sect;07</span> Called Shots &amp; Precision Fire</h2>
+
+<div class="lore-block">
+  <p>A MechWarrior who can call her shots is worth three who cannot. Put a Gauss slug through an AC/20 ammunition bay and you have done in one round what a full lance might not accomplish in five. Precision fire is not a luxury for elite units. It is the difference between a war of attrition that nobody can afford and a surgical engagement that ends before it begins. Learn to call your shots. The 'Mechs that come apart under your fire are worth more as salvage, too.</p>
+  <span class="source">// TRAINING NOTES, WOLF'S DRAGOONS CADET PROGRAM //</span>
+</div>
+
+<p>Called shots allow you to aim fire at a specific location on an enemy 'Mech rather than the standard random hit location roll. This is available by default as a basic called shot but becomes dramatically more powerful once a pilot develops <strong>Tactics 8</strong> (Better Called Shots) and <strong>Tactics 10</strong> (Master Tactician), which increases the accuracy of aimed fire to very high levels.</p>
+
+<h2 class="sub-title">Priority Called Shot Locations</h2>
+<table class="data-table">
+  <thead><tr><th>Location</th><th>Effect on Destruction</th><th>Priority</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Cockpit (Head)</strong></td><td>Pilot death or ejection; 'Mech captured intact if pilot ejects</td><td>Against healthy pilots in dangerous positions; or to capture 'Mech for salvage</td></tr>
+    <tr><td><strong>Centre Torso (CT)</strong></td><td>'Mech destroyed; core of reactor and structure</td><td>Standard kill shot; reliably ends engagements</td></tr>
+    <tr><td><strong>Ammo Bays</strong></td><td>Ammo explosion; catastrophic internal damage</td><td>Against 'Mechs known to carry ballistic weapons; creates chain reaction</td></tr>
+    <tr><td><strong>Legs</strong></td><td>Mobility kill; 'Mech immobilised but fighting</td><td>Against flankers; to prevent retreat; sets up easy salvage</td></tr>
+    <tr><td><strong>Weapon Arms</strong></td><td>Destroys weapons; reduces firepower</td><td>Against heavy weapons carriers; removes dangerous systems</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">The Salvage Consideration</h2>
+<p>Called shots interact directly with your salvage strategy. A called shot that destroys the Centre Torso destroys the most salvageable part of the 'Mech. A head shot that kills the pilot (cockpit destroyed) leaves the 'Mech's structure largely intact. If your salvage negotiation has secured strong terms, prioritising cockpit or leg shots over CT kills produces better-condition salvage. This requires deliberate planning rather than reflexive kill-shot targeting.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S08 ═══ -->
+<section class="section" id="s08">
+<h2 class="section-title"><span class="sec-num">&sect;08</span> Evasion &amp; Positioning</h2>
+
+<p>Evasion is the primary defensive mechanic for light and fast medium 'Mechs. When a 'Mech sprints (moves at maximum movement speed), it generates <strong>evasion pips</strong> — up to four, modified by terrain and pilot skills. Each evasion pip imposes a penalty on all attacks against that 'Mech until the start of its next turn, when they are consumed by enemy fire or lost naturally.</p>
+
+<h2 class="sub-title">How Evasion Works</h2>
+<p>Each evasion pip reduces the to-hit chance of attacks against the 'Mech by a fixed amount. Four pips of evasion can reduce even a gunnery-maxed opponent's hit chance to very low levels. This is the fundamental survival mechanism of light 'Mechs — their armour cannot absorb what assaults can dish out, so they rely on not being hit in the first place.</p>
+
+<p>Evasion is <strong>lost</strong> in three ways:</p>
+<ul class="guide-list">
+  <li>Each successful attack on the 'Mech strips one or more evasion pips</li>
+  <li>Sensor Lock removes evasion pips directly</li>
+  <li>The 'Mech walking (not sprinting) the following turn generates fewer pips</li>
+</ul>
+
+<h2 class="sub-title">Evasion in the Late Game</h2>
+<p>Evasion becomes less reliable in the late game for a specific structural reason: enemy assaults and heavies carry Multiple Target abilities, sensor locks, and large weapon loads that strip evasion quickly. A light 'Mech relying entirely on evasion in a 5-skull engagement against four assault 'Mechs will be stripped and killed in one concentrated activation. The late game rewards heavier 'Mechs with proper armour over lighter 'Mechs relying on evasion. Plan your progression accordingly.</p>
+
+<div class="callout steel">
+  <div class="callout-title">Positioning Principle — Cover and Terrain</div>
+  <p>Cover in BattleTech is not merely evasion — it is a separate defensive modifier. A 'Mech standing in a forest hex or behind a building receives a to-hit penalty for attackers regardless of evasion state. Combining cover with evasion stacks both penalties. Always look for opportunities to position your 'Mechs in cover, particularly forest terrain, where even assault 'Mechs benefit significantly from the protection.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S09 ═══ -->
+<section class="section" id="s09">
+<h2 class="section-title"><span class="sec-num">&sect;09</span> Morale &amp; the Vigilance System</h2>
+
+<p>Morale is the campaign's most powerful tactical resource, and one that new players frequently mismanage. The company's morale level — displayed on the Argo's status panel — directly determines which special combat actions are available to your pilots during missions. Morale ranges from 0 to 50, and different abilities unlock at different thresholds.</p>
+
+<h2 class="sub-title">Morale-Fuelled Combat Actions</h2>
+<table class="data-table">
+  <thead><tr><th>Action</th><th>Morale Cost</th><th>Effect</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Vigilance</strong></td><td>~10 morale</td><td>A 'Mech skips its action this turn but gains a massive defensive bonus — reducing incoming damage significantly until its next turn. Excellent for holding a line while waiting for support.</td></tr>
+    <tr><td><strong>Inspired</strong></td><td>Passive (high morale)</td><td>At high morale, all pilots gain accuracy and performance bonuses during missions. Maintaining high morale as a baseline keeps your lance functioning better at all times.</td></tr>
+    <tr><td><strong>Precision Strike</strong></td><td>~15 morale</td><td>Enhanced called shot: significantly increases the probability of hitting a specific location. Most powerful against knocked-down targets or when targeting ammo bays. Save this for decision-making moments.</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Managing Morale</h2>
+<p>Morale is gained through mission success, Argo improvements, and certain in-mission actions like destroying enemy 'Mechs. It is lost through mission failure, pilot injury, and some narrative decisions aboard the Argo. The most important morale management principle: <strong>do not let morale drop to zero before major story missions</strong>. Story missions tend to be harder than their skull rating suggests, and fighting them at low morale means no Vigilance and no Precision Strikes — the two abilities most likely to save you when a mission goes unexpectedly wrong.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S10 ═══ -->
+<section class="section" id="s10">
+<h2 class="section-title"><span class="sec-num">&sect;10</span> Weight Classes Explained</h2>
+
+<div class="lore-block">
+  <p>The Houses don't fight with BattleMechs because BattleMechs are the best weapon for every situation. They fight with them because there is nothing else. A BattleMech is a deterrent, a symbol, a force multiplier, and the most expensive ground combat asset in human history, all in one package. Understand this and you understand why every MechWarrior treats their machine as though it were their own body — because in every way that matters, it is.</p>
+  <span class="source">// FIELD MANUAL: MERCENARIES, COMSTAR PRESS //</span>
+</div>
+
+<p>'Mech weight classes are not merely a designation — they determine initiative order, mobility, armour capacity, weapon payload, and the type of role each 'Mech is built to fill. Understanding the classes and their respective trade-offs is the foundation of every lance composition decision.</p>
+
+<div class="unit-grid">
+  <div class="unit-card light">
+    <div class="unit-name">Light 'Mechs</div>
+    <span class="unit-type">20–35 TONS &middot; PHASE 5 INITIATIVE</span>
+    <p><strong>Role:</strong> Scout, flanker, objective capper, evasion skirmisher. Move first every turn, generate maximum evasion, but carry minimal armour and weapons. Early game workhorse for exploration and harassment. Struggle significantly against assault-heavy late-game enemies. Phase out as your roster develops.</p>
+  </div>
+  <div class="unit-card medium">
+    <div class="unit-name">Medium 'Mechs</div>
+    <span class="unit-type">40–55 TONS &middot; PHASE 4 INITIATIVE</span>
+    <p><strong>Role:</strong> Versatile mid-line combatant. The most flexible class. Can fill fire support, brawler, or evasion roles depending on configuration. The Vindicator, Shadow Hawk, and Griffin are campaign mainstays. The Centurion is arguably the best starting 'Mech for new players. Mid-game backbone.</p>
+  </div>
+  <div class="unit-card heavy">
+    <div class="unit-name">Heavy 'Mechs</div>
+    <span class="unit-type">60–75 TONS &middot; PHASE 3 INITIATIVE</span>
+    <p><strong>Role:</strong> Line combatant and fire support platform. Carries serious weapons payloads and substantial armour. The Catapult (LRM carrier), Marauder, Thunderbolt, and Grasshopper are transformative additions to any lance. The class where the game begins to favour the player who has invested in it.</p>
+  </div>
+  <div class="unit-card assault">
+    <div class="unit-name">Assault 'Mechs</div>
+    <span class="unit-type">80–100 TONS &middot; PHASE 2 INITIATIVE</span>
+    <p><strong>Role:</strong> Anchor, devastator, damage sink. Carries the most weapons and armour of any class. Acts last each turn (without Master Tactician), making positioning crucial. The Atlas, Highlander, Battlemaster, and King Crab define the late game. Expensive to acquire, maintain, and repair — but worth every C-bill.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S11 ═══ -->
+<section class="section" id="s11">
+<h2 class="section-title"><span class="sec-num">&sect;11</span> Key 'Mech Roster</h2>
+
+<p>BattleTech contains an extensive roster of 'Mechs across all weight classes. These are the most consequential platforms you will encounter — either as your own units or as threats to plan around.</p>
+
+<table class="data-table">
+  <thead><tr><th>'Mech</th><th>Class</th><th>Tonnage</th><th>Role</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Locust</strong></td><td>Light</td><td>20t</td><td>Scout</td><td>Minimal armour; maximum speed; useful for early objectives. Replace as soon as possible.</td></tr>
+    <tr><td><strong>Spider</strong></td><td>Light</td><td>30t</td><td>Scout/Flanker</td><td>Exceptional mobility; Jump Jets allow terrain-hopping. Low weapons. Niche but fun.</td></tr>
+    <tr><td><strong>Centurion</strong></td><td>Medium</td><td>50t</td><td>Brawler</td><td>Excellent early 'Mech. AC/10 arm provides solid direct damage; LRM5 backup. Well-armoured for its class.</td></tr>
+    <tr><td><strong>Vindicator</strong></td><td>Medium</td><td>45t</td><td>Skirmisher</td><td>Decent all-rounder. Starting 'Mech for many. Versatile loadout options.</td></tr>
+    <tr><td><strong>Shadow Hawk</strong></td><td>Medium</td><td>55t</td><td>Versatile</td><td>Jump Jets plus respectable payload. One of the most refit-friendly mediums.</td></tr>
+    <tr><td><strong>Catapult</strong></td><td>Heavy</td><td>65t</td><td>Fire Support</td><td>The game's premier LRM platform. Dual LRM15 provides crushing stability and damage pressure. Essential for stability tactics.</td></tr>
+    <tr><td><strong>Thunderbolt</strong></td><td>Heavy</td><td>65t</td><td>Brawler</td><td>Exceptional armour for its tonnage; diverse weapon loadout. Reliable workhorse heavy.</td></tr>
+    <tr><td><strong>Marauder</strong></td><td>Heavy</td><td>75t</td><td>Fire Support</td><td>Dual PPC provides surgical long-range precision. Heat-intensive but devastating at range.</td></tr>
+    <tr><td><strong>Grasshopper</strong></td><td>Heavy</td><td>70t</td><td>Brawler</td><td>Jump Jets plus exceptional melee capability. Excellent combined arms 'Mech for close engagements.</td></tr>
+    <tr><td><strong>Atlas</strong></td><td>Assault</td><td>100t</td><td>Anchor</td><td>The iconic assault 'Mech. Maximum armour, massive loadout. Acts last but tanks everything. Centrepiece of any endgame lance.</td></tr>
+    <tr><td><strong>King Crab</strong></td><td>Assault</td><td>100t</td><td>Devastator</td><td>Dual AC/20 configuration produces the highest burst DPS in the game. Devastating at point-blank range.</td></tr>
+    <tr><td><strong>Highlander</strong></td><td>Assault</td><td>90t</td><td>Versatile Assault</td><td>Jump Jets on an assault frame. LRM20 plus direct fire weapons. Exceptional mobility for its class.</td></tr>
+    <tr><td><strong>Battlemaster</strong></td><td>Assault</td><td>85t</td><td>Command Assault</td><td>Strong all-around assault platform. PPC plus laser configuration is effective and heat-efficient.</td></tr>
+  </tbody>
+</table>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S12 ═══ -->
+<section class="section" id="s12">
+<h2 class="section-title"><span class="sec-num">&sect;12</span> 'Mech Customisation — The MechBay</h2>
+
+<div class="lore-block">
+  <p>Yang Virtanen has strong opinions about what a BattleMech should carry, and she's earned the right to hold them. She's kept our equipment operational through three Periphery campaigns on parts that any respectable factory would have scrapped a decade ago. When she tells you a 'Mech isn't ready, it isn't ready. When she hands you the keys and says it'll hold together, you believe her. The Argo's MechBay is one part workshop, one part miracle, and three parts Yang.</p>
+  <span class="source">// ARGO CREW RECORD, COMMANDER'S PERSONAL LOG //</span>
+</div>
+
+<p>The MechBay allows you to customise your 'Mechs' loadouts within their tonnage limits. Every 'Mech has a total tonnage budget; weapons, heat sinks, armour, and equipment all have weight costs that must fit within this budget. Understanding the trade-offs between weapon types, armour coverage, and heat management is the core skill of 'Mech customisation.</p>
+
+<h2 class="sub-title">Customisation Principles</h2>
+<ul class="guide-list">
+  <li><strong>Armour up to the maximum on your front-line 'Mechs.</strong> Armour is not optional for 'Mechs that will be trading shots with heavy opponents. Particularly ensure that Centre Torso and Head locations are fully armoured — losing these sections ends the 'Mech.</li>
+  <li><strong>Match weapons to your heat budget.</strong> Calculate total heat generation from your intended weapon loadout. Your heat sinks must dissipate enough heat that you can fire your primary weapons package without overheating in two activations. If they cannot, add heat sinks or reduce the loadout.</li>
+  <li><strong>Weapon range consistency matters.</strong> A 'Mech with a combination of short-range lasers and long-range LRMs has conflicting optimal engagement ranges. Either you are ineffective at LRM range (where the lasers cannot hit) or you are overheating from alpha-striking both at close range. Build consistent engagement-range profiles.</li>
+  <li><strong>Jump Jets have a power budget.</strong> Every Jump Jet installed uses tonnage that cannot be used for weapons or armour. On heavier 'Mechs, this trade-off is significant. Only install Jump Jets when the tactical mobility they provide outweighs the payload penalty — generally true for 'Mechs that need to reach elevated positions or navigate rough terrain.</li>
+</ul>
+
+<div class="callout">
+  <div class="callout-title">The Frankenmech Philosophy</div>
+  <p>In BattleTech's 3025 setting, there is no such thing as a "wrong" 'Mech configuration — there is only what you can keep operational with what you have. A 'Mech that carries three different weapon types salvaged from three different destroyed enemies is historically authentic. Many experienced players deliberately build asymmetric "Frankenmechs" that confuse enemy targeting priorities while remaining effective in specific roles. Do not be constrained by canonical loadouts if a custom configuration serves your tactical doctrine better.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S13 ═══ -->
+<section class="section" id="s13">
+<h2 class="section-title"><span class="sec-num">&sect;13</span> Pilot Skills — The Four Trees</h2>
+
+<p>Each pilot has four skill trees — Gunnery, Piloting, Guts, and Tactics — each running from 1 to 10. Skill points are earned through combat experience and invested into these trees. At thresholds 5 and 8 in each tree, pilots unlock <strong>special abilities</strong> that define their combat role. Understanding the trees and what they provide determines how you develop each pilot for their intended purpose.</p>
+
+<h2 class="sub-title">Gunnery</h2>
+<p>Gunnery increases base hit chance with all ranged weapons. Every point is valuable for every 'Mech that carries ranged weapons — which is every 'Mech. Gunnery is never wasted. Its abilities are:</p>
+<ul class="guide-list">
+  <li><strong>Multi-Target (Gunnery 5):</strong> Allows attacking two different enemy 'Mechs in one activation at reduced accuracy. Fundamental for stripping evasion from multiple targets and spreading stability damage efficiently. One of the best abilities in the game.</li>
+  <li><strong>Breaching Shot (Gunnery 8):</strong> A single weapon fires with guaranteed accuracy — unaffected by cover or evasion. Excellent for finishing off heavily-evasive targets or hitting through maximum cover.</li>
+</ul>
+
+<h2 class="sub-title">Piloting</h2>
+<p>Piloting affects sprint distance, evasion generation, stability thresholds, and melee combat accuracy. The relevance of Piloting varies significantly by 'Mech weight: light 'Mechs depend on it heavily; assaults find it largely irrelevant. Abilities:</p>
+<ul class="guide-list">
+  <li><strong>Sure Footed (Piloting 5):</strong> Significantly reduces stability damage taken. Useful for any 'Mech that expects to absorb LRM or AC fire — which in the mid-game is everyone.</li>
+  <li><strong>Ace Pilot (Piloting 8):</strong> Allows the 'Mech to fire then move (normally you move then fire) under specific conditions. Exceptional tactical flexibility — activate, shoot, then reposition out of return-fire range. Extremely valuable on fast medium 'Mechs.</li>
+</ul>
+
+<h2 class="sub-title">Guts</h2>
+<p>Guts improves pilot survivability and heat capacity. Every pilot should invest at least 4 points for the +1 Health; 6 points for the +15 heat capacity significantly improves assault and heavy 'Mech performance. Abilities:</p>
+<ul class="guide-list">
+  <li><strong>Bulwark (Guts 5):</strong> The 'Mech gains the Guarded status (significant damage reduction) whenever it does not move in its activation. Extraordinarily powerful for assault 'Mechs used as defensive anchors — stand still, take reduced damage, fire everything.</li>
+  <li><strong>Coolant Vent (Guts 8):</strong> Emergency heat reduction once per mission. Allows a single massive alpha strike without overheating. Reserve for critical moments.</li>
+</ul>
+
+<h2 class="sub-title">Tactics</h2>
+<p>Tactics is the most complex tree. Its primary uses are reducing indirect fire penalties (for LRM specialists), reducing minimum range penalties (making versatile brawlers more effective), and — most importantly — powering the called shot system. Abilities:</p>
+<ul class="guide-list">
+  <li><strong>Sensor Lock (Tactics 5):</strong> Removes evasion pips from a target without dealing damage. Allows 'Mechs without line-of-sight to still contribute by enabling follow-up fire from your other 'Mechs. One per lance is almost always worth it.</li>
+  <li><strong>Master Tactician (Tactics 8):</strong> +1 initiative, plus reserving a turn removes a stability damage pip. The initiative bonus transforms assault 'Mech timing; the stability reduction makes aggressive reserve tactics even more rewarding.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S14 ═══ -->
+<section class="section" id="s14">
+<h2 class="section-title"><span class="sec-num">&sect;14</span> Pilot Classes &amp; Builds</h2>
+
+<p>Pilots unlock a <strong>primary ability</strong> (from their highest skill tree) and a <strong>secondary ability</strong> (from their second-highest) at sufficient experience level. The combination of primary and secondary defines their effective class. Plan your pilots' development to match their 'Mech assignment.</p>
+
+<div class="unit-grid">
+  <div class="unit-card">
+    <div class="unit-name">Gunslinger</div>
+    <span class="unit-type">PRIMARY: GUNNERY &middot; SECONDARY: GUNNERY OR TACTICS</span>
+    <p>Maximum ranged damage output. Multi-Target primary, Breaching Shot or Called Shot secondary. Best piloting direct-fire heavy 'Mechs (Marauder, Thunderbolt). The foundational damage dealer build — put them in the most heavily armed 'Mech you have.</p>
+  </div>
+  <div class="unit-card">
+    <div class="unit-name">Sentinel</div>
+    <span class="unit-type">PRIMARY: GUTS &middot; SECONDARY: GUNNERY</span>
+    <p>Bulwark + Gunnery primary. The ultimate defensive anchor. Plant in a forested hex, activate Bulwark, and absorb enormous punishment while still dealing consistent damage. Perfect for assault 'Mechs that hold position while the rest of the lance manoeuvres.</p>
+  </div>
+  <div class="unit-card">
+    <div class="unit-name">Outrider</div>
+    <span class="unit-type">PRIMARY: PILOTING &middot; SECONDARY: GUNNERY</span>
+    <p>Ace Pilot + Sure Footed. The skirmisher build: fire, then reposition. Best on fast mediums and heavies with Jump Jets. Exceptional tactical flexibility; can deny enemies clean shots by perpetually repositioning. Requires active management but rewards it.</p>
+  </div>
+  <div class="unit-card">
+    <div class="unit-name">Lancer</div>
+    <span class="unit-type">PRIMARY: TACTICS &middot; SECONDARY: GUNNERY</span>
+    <p>Master Tactician + high Tactics. The called shot specialist. Put this pilot in your most powerful 'Mech and use Precision Strikes to systematically destroy enemy 'Mechs by targeting their critical systems. +1 initiative from Master Tactician means assault 'Mechs act early.</p>
+  </div>
+  <div class="unit-card">
+    <div class="unit-name">Support Pilot</div>
+    <span class="unit-type">PRIMARY: TACTICS &middot; SECONDARY: ANYTHING</span>
+    <p>Sensor Lock specialist. Uses activation to strip evasion from priority targets, enabling the rest of the lance to hit them reliably. Invaluable against evasive light 'Mechs and fast mediums in the mid-game. Usually piloting the LRM carrier or a secondary-armed 'Mech.</p>
+  </div>
+  <div class="unit-card">
+    <div class="unit-name">Juggernaut</div>
+    <span class="unit-type">PRIMARY: GUTS &middot; SECONDARY: PILOTING</span>
+    <p>Coolant Vent + melee capability. The alpha-strike brawler. Charges into close range, alpha strikes for maximum heat damage, vents coolant, then does it again. Effective on Assault 'Mechs with significant close-range firepower. Niche but deeply satisfying to play.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S15 ═══ -->
+<section class="section" id="s15">
+<h2 class="section-title"><span class="sec-num">&sect;15</span> The Argo &amp; Its Upgrades</h2>
+
+<div class="lore-block">
+  <p>The Argo is not a warship. She is not a DropShip in any traditional sense — she was a Star League-era vessel designed for exploration, crewed by scientists and diplomats rather than soldiers. She should not be here, in the Periphery, held together by talent and desperation and Yang's extraordinary mechanical instincts. But she is here. And every upgrade you install in her is another week of operational capability, another mission's margin of survival. Treat her well.</p>
+  <span class="source">// ARGO SHIP LOG, DR. MURAD'S NOTATION //</span>
+</div>
+
+<p>Acquiring the Argo is the campaign's most significant early milestone. The Argo replaces your starting Leopard dropship and provides a deep upgrade system that fundamentally transforms your company's operational capabilities. All upgrades require C-bills and time (days in transit), and they provide compound benefits as you tier them up.</p>
+
+<h2 class="sub-title">Upgrade Priority Guide</h2>
+
+<div class="phase early">
+  <div class="phase-title">Tier 1 Priority — Power &amp; Structure</div>
+  <p><strong>Power Grid upgrades</strong> unlock further upgrades throughout the ship. Invest here first — nothing else can progress without adequate power. <strong>Structure repairs</strong> similarly gate multiple other upgrade branches. These are prerequisites, not optional.</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">Tier 2 Priority — MechBay</div>
+  <p>The MechBay upgrades provide additional <strong>TechPoints per day</strong> — the currency of 'Mech repair and refit. More TechPoints means faster turnaround after every mission, which means more missions per unit of time, which means more income. The MechBay is the highest-return early Argo investment for active players. Unlock additional MechBay slots to hold more 'Mechs simultaneously (useful for building a deep roster).</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">Tier 2 Priority — Morale Improvements</div>
+  <p>The Recreation and Social Space upgrades provide <strong>+5 maximum morale</strong> each. Since morale fuels your combat special abilities, these upgrades directly translate into more Vigilance uses and more Precision Strikes per campaign. Prioritising morale early means you have access to these abilities when the game is still teaching you why they matter.</p>
+</div>
+
+<div class="phase late">
+  <div class="phase-title">Tier 3 Priority — Medical Bay</div>
+  <p>The Medical Bay upgrades reduce pilot injury recovery time and increase the number of pilots who can be treated simultaneously. Critical once you have a full active roster — injured pilots who cannot recover quickly become a bottleneck for lance readiness. Upgrade when you begin consistently running pilots through injuries rather than as an emergency measure.</p>
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">The Compound Effect of MechBay Upgrades</div>
+  <p>Every MechBay upgrade tier roughly halves the time required to repair heavy damage. In the early game, a badly damaged assault 'Mech might require 60+ days of repair — effectively removing it from your income-generating rotation for two months of game time. With fully upgraded MechBay systems, the same repair takes 15–20 days. Over a full campaign, this difference compounds into hundreds of additional contract opportunities and millions of additional C-bills.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S16 ═══ -->
+<section class="section" id="s16">
+<h2 class="section-title"><span class="sec-num">&sect;16</span> Finances &amp; C-Bills — Keeping the Company Alive</h2>
+
+<p>The financial system is BattleTech's most unforgiving mechanic for new players. The game has ongoing costs that accumulate every day regardless of whether you are on mission or not: pilot salaries, Argo maintenance, and overhead. Income only comes from completed contracts. The balance between these creates a constant pressure that shapes every strategic decision.</p>
+
+<h2 class="sub-title">Understanding Your Monthly Costs</h2>
+<p>Your company has a daily cost that includes pilot salaries (scaling with pilot experience level) and Argo maintenance. As your company grows — more pilots, more upgrades — your costs scale proportionally. The game displays your projected monthly income and expenses; check this regularly and ensure your projected income from contracts substantially exceeds your monthly overhead.</p>
+
+<div class="callout rust">
+  <div class="callout-title">Critical Warning — The Debt Spiral</div>
+  <p>BattleTech can enter a catastrophic debt spiral if not managed carefully. A bad mission sequence — several expensive repairs, a few pilot injuries, a failed contract — can leave you unable to service overhead costs. If your C-bill reserve drops below two months of overhead costs, treat it as a financial emergency: take safe, certain contracts rather than high-risk high-reward ones; sell excess equipment; delay Argo upgrades; and recover before attempting ambitious operations.</p>
+</div>
+
+<h2 class="sub-title">Contract Payment Structures</h2>
+<p>Every contract offers a base payment plus the option to negotiate for higher C-bills or more salvage (covered in Chapter 17). Two important financial principles:</p>
+<ul class="guide-list">
+  <li><strong>Failed contracts pay nothing</strong> — and may actually cost you through penalties. Do not accept contracts you are not confident of completing. The risk-reward is asymmetric in the wrong direction.</li>
+  <li><strong>Travel costs are real.</strong> Moving the Argo across the star map costs travel days, during which your overhead accumulates. A contract that pays 500,000 C-bills but requires 30 days of travel may net less than a local 300,000 contract after overhead. Always factor transit time.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S17 ═══ -->
+<section class="section" id="s17">
+<h2 class="section-title"><span class="sec-num">&sect;17</span> Salvage Strategy</h2>
+
+<p>Salvage is the other major income pathway in BattleTech, and the one through which your roster of 'Mechs primarily grows. At contract negotiation, you trade C-bill payment for salvage shares — the right to select specific components from the battlefield wreckage after the mission. The ratio you negotiate determines how much of your combat income comes in hard currency versus equipment.</p>
+
+<h2 class="sub-title">How Salvage Works</h2>
+<p>Each destroyed or heavily damaged enemy 'Mech breaks into several <strong>'Mech parts</strong>. You need three parts of the same variant to reassemble a complete 'Mech (Yang can work miracles, but even she cannot build a 'Mech from two thirds of one). Weapon systems, components, and armour also appear in the salvage pool. You select from this pool using your negotiated salvage slots.</p>
+
+<h2 class="sub-title">Salvage Priority Rules</h2>
+<ol class="guide-list">
+  <li><strong>Complete a 'Mech variant before diversifying.</strong> If you have two parts of a Thunderbolt, prioritise getting the third Thunderbolt part over picking up a first part of a new 'Mech. A half-assembled 'Mech is worth nothing; a complete one is worth millions — either as an operational asset or as a sold unit.</li>
+  <li><strong>Prioritise by weight class needs.</strong> If your lance desperately needs a heavy 'Mech and the salvage pool contains heavy parts, those come first. Salvage that fills a gap in your lance composition is worth more than salvage that gives you a third copy of a class you already run.</li>
+  <li><strong>Rare weapons and ++ gear are high-value picks.</strong> The pool often includes weapons with special modifiers (+, ++). These are strictly superior to standard variants and can be sold for significant C-bills or installed on priority 'Mechs. When they appear, especially ++ rated versions, they are usually worth a salvage slot.</li>
+  <li><strong>Balance salvage negotiation against cash needs.</strong> Early campaign, when your C-bill reserves are slim and overhead is growing, take more C-bills. Once your roster is established and your Argo is funded, shift toward maximum salvage to accelerate 'Mech accumulation.</li>
+</ol>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S18 ═══ -->
+<section class="section" id="s18">
+<h2 class="section-title"><span class="sec-num">&sect;18</span> Contract Selection &amp; the Star Map</h2>
+
+<p>The star map is where the campaign's strategic layer comes alive. Multiple planets offer contracts simultaneously; each planet has its own political affiliation (which determines employer), available difficulty levels, travel distance, and the specific contract types on offer. Choosing which contracts to take and in what order is a form of strategic planning that compounds over the entire campaign.</p>
+
+<h2 class="sub-title">Contract Types</h2>
+<table class="data-table">
+  <thead><tr><th>Type</th><th>Objective</th><th>Difficulty Notes</th><th>Salvage Potential</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Assassination</strong></td><td>Destroy a specific enemy 'Mech</td><td>Target 'Mech is reinforced; requires focused fire</td><td>High — specific target's parts are salvageable</td></tr>
+    <tr><td><strong>Demolition</strong></td><td>Destroy target structures</td><td>Often involves protecting your 'Mechs while completing objectives under fire</td><td>Moderate</td></tr>
+    <tr><td><strong>Battle</strong></td><td>Destroy all enemy units</td><td>Most straightforward; scales directly with skull rating</td><td>High — multiple destroyed enemies</td></tr>
+    <tr><td><strong>Capture Base</strong></td><td>Hold target location</td><td>Requires splitting force; light 'Mech essential</td><td>Moderate</td></tr>
+    <tr><td><strong>Defend Base</strong></td><td>Protect installation from waves</td><td>Attrition-heavy; wave timing matters</td><td>Very High — many destroyed attackers</td></tr>
+    <tr><td><strong>Escort</strong></td><td>Protect convoy to extraction</td><td>Requires fast response; positioning discipline</td><td>Moderate</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Flash Points</h2>
+<p>Flash Points are multi-mission sequences introduced by the DLC that involve narrative decisions, optional sub-missions, and escalating stakes. They are among the game's best content — longer, more interesting, and with more significant rewards than standard contracts. They can also be significantly harder than their skull rating suggests because they may involve unusual complications (time limits, no extraction available, allied units with their own objectives).</p>
+
+<div class="callout">
+  <div class="callout-title">Travel Efficiency on the Star Map</div>
+  <p>Design your star map routes to chain contracts rather than travelling back to a single hub. Identify clusters of planets with appropriate-difficulty contracts and plan a circuit rather than single-destination trips. The Argo accumulates overhead every day; efficient route planning that keeps transit time minimal while maximising contracts completed is a major component of campaign profitability.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S19 ═══ -->
+<section class="section" id="s19">
+<h2 class="section-title"><span class="sec-num">&sect;19</span> Early Game Doctrine</h2>
+
+<div class="lore-block">
+  <p>The first year in the Reach nearly killed us. We were taking contracts we couldn't complete, spending every C-bill we made on repairs, watching the roster thin out while the overhead kept climbing. The turn-around came when we stopped trying to punch above our weight and started building the company we could actually afford to run. Lights and mediums. Low skulls. Every contract completed without a mission failure. The C-bills started to stack. The Argo started to feel less like a coffin and more like a home.</p>
+  <span class="source">// ARGO COMMANDER'S LOG, YEAR ONE RETROSPECTIVE //</span>
+</div>
+
+<p>The early game of BattleTech — from the campaign's opening through your first heavy 'Mechs — is defined by resource scarcity and the constant pressure to grow faster than your costs. The principles that govern this phase are patience, discipline, and deliberate risk management.</p>
+
+<div class="phase early">
+  <div class="phase-title">Months 1–6: Stabilise and Develop</div>
+  <p>Accept only 1–1.5-skull contracts. Your starting lance of mixed mediums and lights is correctly matched to these. Focus every skill point on Gunnery for all pilots — more accurate pilots mean fewer missions go wrong. Upgrade the Argo's Power Grid and begin the MechBay chain. Your goal is to survive, not to grow rapidly.</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">Months 6–18: First Heavies, First Confidence</div>
+  <p>As soon as you acquire your first Heavy 'Mech (likely a Catapult or Thunderbolt through salvage), your ceiling rises meaningfully. Begin accepting 2-skull contracts. Continue MechBay upgrades. Build your pilots' Guts to level 4 for the health increase and Gunnery to level 5 for Multi-Target. The Catapult's LRM capability begins the stability strategy that carries you through the mid-game.</p>
+</div>
+
+<div class="phase late">
+  <div class="phase-title">Month 18+: The Pivot</div>
+  <p>By this point you should have at least two Heavies, your Argo's core systems substantially upgraded, and a roster of five or six pilots with meaningful skill investment. Now you can begin serious salvage-focused strategy: Assassination contracts against high-value targets to acquire rare 'Mech parts, targeted salvage negotiation for specific variants you need, and 2.5–3-skull contracts that push your capabilities while remaining manageable.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S20 ═══ -->
+<section class="section" id="s20">
+<h2 class="section-title"><span class="sec-num">&sect;20</span> Lance Composition — Building the Ideal Four</h2>
+
+<p>Your lance is four 'Mechs operating as a coordinated unit. The specific four you choose determines what tactical options you have, what threats you can handle, and what situations will require exceptional play to survive. Building a coherent, synergistic lance is the strategic goal of your entire campaign progression.</p>
+
+<h2 class="sub-title">The Classic Balanced Lance</h2>
+<p>The most reliable all-purpose composition: <strong>one heavy fire support, one heavy direct fire, one medium brawler or flanker, and one light or fast medium for objective and positioning</strong>. This covers every mission type competently without excelling at any specific meta-game. It is the composition new players should build toward and maintain until they understand the game's systems well enough to deviate.</p>
+
+<h2 class="sub-title">Specialist Lance Archetypes</h2>
+<div class="unit-grid">
+  <div class="unit-card heavy">
+    <div class="unit-name">The Stability Lance</div>
+    <span class="unit-type">LRM HEAVY &middot; MID-GAME DOMINANT</span>
+    <p>Two Catapults with dual LRM15/20 plus two direct-fire Heavies. Catapults destroy enemy stability while the direct-fire 'Mechs capitalise on knockdowns with called shots. Devastating against single high-value targets. Struggles against fast swarms of light 'Mechs.</p>
+  </div>
+  <div class="unit-card assault">
+    <div class="unit-name">The Wall</div>
+    <span class="unit-type">HEAVY / ASSAULT &middot; LATE GAME</span>
+    <p>Three assault 'Mechs with Bulwark pilots plus one fast medium for objectives. Moves slowly, acts late, but absorbs catastrophic punishment while dealing maximum damage. Requires Master Tactician on at least one assault for initiative management. Finances-intensive.</p>
+  </div>
+  <div class="unit-card medium">
+    <div class="unit-name">The Jump Lance</div>
+    <span class="unit-type">JUMP JETS &middot; TERRAIN SPECIALISTS</span>
+    <p>Four 'Mechs with Jump Jets across all weight classes. Maximum positional flexibility; can engage from elevated positions and disengage instantly. Requires careful heat management. Excellent on maps with significant terrain variety. Unusual and rewarding to master.</p>
+  </div>
+  <div class="unit-card light">
+    <div class="unit-name">The Swarm</div>
+    <span class="unit-type">SPEED &middot; EARLY EVASION GAME</span>
+    <p>Fast, evasion-focused composition for low-to-mid-skull contracts. Three fast mediums plus one light, all piloted by Outrider-class pilots. Extremely effective in early campaigns when enemy 'Mechs are lighter. Falls off sharply in late game against assault-heavy opposition.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S21 ═══ -->
+<section class="section" id="s21">
+<h2 class="section-title"><span class="sec-num">&sect;21</span> Mid &amp; Late Game Mastery</h2>
+
+<div class="lore-block">
+  <p>You know you've made it when the first casualty assessment you read after a mission doesn't make your stomach drop. Not because you don't care anymore — you care more than ever — but because you've built something resilient enough that a single bad engagement doesn't threaten the company's existence. That's the goal. Not glory. Not conquest. Resilience. A mercenary company that can absorb a bad day and fight tomorrow is worth more than one that wins brilliantly until the one mission it doesn't.</p>
+  <span class="source">// ARGO COMMANDER'S LOG, END OF YEAR THREE //</span>
+</div>
+
+<p>The mid-game begins when you have at least two Heavy 'Mechs and pilots with meaningful ability investments. The late game begins when you acquire your first Assault 'Mech. Each transition changes the fundamental dynamics of combat.</p>
+
+<h2 class="sub-title">Mid-Game Priorities</h2>
+<ul class="guide-list">
+  <li><strong>Develop a Called Shot specialist.</strong> Invest your most experienced pilot's Tactics to 8 for Better Called Shots. This pilot in your most powerful 'Mech with a Precision Strike ability begins producing decisive engagements — killing specific 'Mechs by targeting critical locations rather than grinding through armour.</li>
+  <li><strong>Build the stability-knockdown pipeline.</strong> Acquire a dedicated LRM carrier (Catapult preferred). Pair it with your Called Shot specialist. This two-'Mech combination handles high-value targets efficiently regardless of their armour thickness.</li>
+  <li><strong>Expand your pilot roster to six or seven.</strong> Injuries in BattleTech accumulate. Having three or four reserve pilots means you never field a lance with injured personnel who should be on medical leave.</li>
+</ul>
+
+<h2 class="sub-title">Late-Game Transformation</h2>
+<p>Assault 'Mechs change BattleTech. Their weapon payloads and armour capacity make them extraordinarily difficult for medium-class enemies to damage meaningfully. However, they act last — and in late-game encounters against enemy assaults with full loadouts, acting last while the enemy fires first can be catastrophic without Bulwark. <strong>Build Guts on your assault pilots early</strong>, before you have the assault 'Mechs to put them in. Every pilot should have Guts 4 (for health) and Guts 6 (for heat capacity) as baseline investments across the entire roster.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S22 ═══ -->
+<section class="section" id="s22">
+<h2 class="section-title"><span class="sec-num">&sect;22</span> Advanced Tactics</h2>
+
+<h2 class="sub-title">The Focus Fire Principle</h2>
+<p>BattleTech's health system rewards destroying individual enemies completely over spreading damage evenly. A 'Mech at 10% health fires at full effectiveness — the game models functionality in terms of critical hit risks, not linear degradation. A lance that distributes fire across four enemies damages all four but removes none of them from the fight. A lance that concentrates fire on one enemy until it dies removes a full enemy from the engagement permanently, reducing the incoming fire for every subsequent turn. Always focus fire.</p>
+
+<h2 class="sub-title">The Weapons Arc and Facing Exploit</h2>
+<p>Every 'Mech has front and rear armour. Rear armour is significantly weaker. If you can manoeuvre a 'Mech behind an enemy, even a passing shot into their rear arc deals dramatically more internal damage per hit. The flanking manoeuvre — using a fast medium to circle a stationary heavy and fire into its rear — is one of the most efficient damage applications in the game. Light 'Mechs assigned to flanking roles are never wasted, even in late-game engagements, if their pilot has Ace Pilot to reposition after firing.</p>
+
+<h2 class="sub-title">Turret and Vehicle Awareness</h2>
+<p>Turrets and vehicles are not 'Mechs, but they are threats. In high-skull contracts, turret emplacements provide significant fire support for enemy units and can whittle down your 'Mechs' armour over several turns of engagement. Prioritise destroying turrets that cover your intended advance routes, even at the cost of not engaging enemy 'Mechs on the same turn. A single turn of uncontested turret fire can matter by the end of a long mission.</p>
+
+<div class="callout tip">
+  <div class="callout-title">The Extraction Timing Decision</div>
+  <p>Most missions have a primary objective and an optional extraction zone. Reaching the extraction zone ends the mission even if additional enemies are alive. This decision point — do I extract now and preserve my 'Mechs, or do I stay and kill more enemies for additional salvage — is one of the game's most consequential micro-decisions. In general: extract as soon as the primary objective is complete unless you have very significant salvage opportunities remaining and your lance is healthy. A 'Mech in the repair bay for sixty days is worth more than the average salvage piece.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S23 ═══ -->
+<section class="section" id="s23">
+<h2 class="section-title"><span class="sec-num">&sect;23</span> Common Mistakes</h2>
+
+<div class="phase early">
+  <div class="phase-title">Mistake 1 — Rushing Story Missions</div>
+  <p>Story missions are harder than equivalent procedural contracts and cannot be re-attempted if failed. Take at least five procedural contracts between every story mission. Arrive with your strongest available lance, maximum morale, and no injured pilots. This alone prevents the majority of campaign-ending failures.</p>
+</div>
+
+<div class="phase early">
+  <div class="phase-title">Mistake 2 — Neglecting Guts</div>
+  <p>Every pilot should reach Guts 4 (for +1 Health) within their first ten missions. The +1 Health means the pilot can absorb one additional injury before incapacitation. In BattleTech, this single additional injury point saves pilots who would otherwise be lost in engagements that go slightly wrong. It is the highest-value early skill investment for every pilot regardless of role.</p>
+</div>
+
+<div class="phase early">
+  <div class="phase-title">Mistake 3 — Distributing Salvage Too Broadly</div>
+  <p>Picking one part each of six different 'Mechs means you have assembled nothing after six contracts. Pick three parts of one 'Mech. The compound benefit of a complete 'Mech — operational asset or sold for C-bills — dramatically exceeds the theoretical diversity value of half-assembled fragments.</p>
+</div>
+
+<div class="phase early">
+  <div class="phase-title">Mistake 4 — Ignoring Heat on Assault 'Mechs</div>
+  <p>New players acquiring their first assault 'Mech often install more weapons than it can heat-efficiently support, then alpha strike repeatedly until the 'Mech overheats into critical failure. Before taking an assault 'Mech into battle, run the heat calculation against your planned weapon loadout and verify that normal combat cycles remain below threshold even without water or shade.</p>
+</div>
+
+<div class="phase early">
+  <div class="phase-title">Mistake 5 — Not Extracting When Appropriate</div>
+  <p>Staying in a completed mission to farm additional kills and salvage is a gamble. The enemies you are fighting can still kill your pilots and damage your 'Mechs. Every additional minute in the engagement zone is risk without guaranteed corresponding reward. Once the primary objective is complete, have a specific reason to stay rather than extracting by default.</p>
+</div>
+
+<div class="phase early">
+  <div class="phase-title">Mistake 6 — Carrying Ammo Without Ammo Bays</div>
+  <p>Ballistic weapons and missile systems require ammunition, and ammunition can explode when the 'Mech component containing it is critically hit. An Atlas carrying unsecured AC/20 ammo can be destroyed by a single penetrating hit that detonates its magazine rather than the hundreds of rounds required to strip its armour. Always install <strong>Ammo Boxes</strong> (CASE equivalent) in the same torso section as your ammunition. It is a small weight cost with potentially game-saving consequences.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- ═══ S24 ═══ -->
+<section class="section" id="s24">
+<h2 class="section-title"><span class="sec-num">&sect;24</span> Glossary</h2>
+
+<div class="gloss-grid">
+  <div class="gloss-item"><div class="gloss-term">Ace Pilot</div><div class="gloss-def">Piloting 8 ability; allows the 'Mech to fire then reposition under specific conditions. Exceptional tactical flexibility for skirmisher builds.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Alpha Strike</div><div class="gloss-def">Firing all available weapons in a single activation. Delivers maximum damage at maximum heat cost. Correct situationally; dangerous as default behaviour.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Argo</div><div class="gloss-def">The company's Star League-era dropship/jumpship, acquired in an early campaign mission. The hub of all management and upgrade activity.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Assault 'Mech</div><div class="gloss-def">Heaviest weight class (80–100 tons); Phase 2 initiative; maximum armour and weapons; acts last each turn without Master Tactician.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Autocannon (AC)</div><div class="gloss-def">Ballistic weapon family; varieties from AC/2 (long range, light damage) to AC/20 (short range, massive damage). Requires ammunition; generates stability damage.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Breaching Shot</div><div class="gloss-def">Gunnery 8 ability; a single weapon fires with guaranteed accuracy, ignoring cover and evasion. Excellent for finishing evasive targets.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Bulwark</div><div class="gloss-def">Guts 5 ability; 'Mech gains Guarded status (significant damage reduction) when it does not move. The premier defensive ability for assault 'Mechs holding position.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Called Shot</div><div class="gloss-def">Aiming fire at a specific 'Mech location rather than a random hit location roll. Accuracy improves dramatically with Tactics skill investment.</div></div>
+  <div class="gloss-item"><div class="gloss-term">C-Bills</div><div class="gloss-def">The Inner Sphere's standard currency; used for contracts, repairs, equipment purchases, and Argo upgrades. The primary resource constraint of the campaign.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Coolant Vent</div><div class="gloss-def">Guts 8 ability; emergency heat reduction once per mission. Enables a single massive alpha strike without overheating consequences.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Dropship</div><div class="gloss-def">Atmospheric and space-capable carrier vessel; the Leopard (starting) and Argo (acquired) are the campaign's player-controlled dropships.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Evasion Pips</div><div class="gloss-def">Defensive modifier generated by sprinting; reduces to-hit chance of all attacks until consumed or lost. Primary survival mechanism for light 'Mechs.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Flash Point</div><div class="gloss-def">Multi-mission narrative sequence from the DLC; more complex and rewarding than standard contracts; often harder than skull rating indicates.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Frankenmech</div><div class="gloss-def">Community term for a 'Mech with a non-standard loadout, typically assembled from salvaged components; historically authentic to 3025 and frequently effective.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Gauss Rifle</div><div class="gloss-def">Electromagnetic ballistic weapon; extremely long range, high damage, low heat. Does not explode on critical hit (unlike autocannon ammo); highly valued endgame weapon.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Guarded</div><div class="gloss-def">Status effect providing significant damage reduction; applied by Bulwark (stationary) or Vigilance morale action.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Gunnery</div><div class="gloss-def">Pilot skill tree; improves ranged weapon accuracy. Universally valuable for every 'Mech. Abilities: Multi-Target (5), Breaching Shot (8).</div></div>
+  <div class="gloss-item"><div class="gloss-term">Guts</div><div class="gloss-def">Pilot skill tree; improves pilot health and heat capacity. Recommended minimum investment level 4 for all pilots. Abilities: Bulwark (5), Coolant Vent (8).</div></div>
+  <div class="gloss-item"><div class="gloss-term">Heat Sink</div><div class="gloss-def">Component that dissipates heat each turn; increasing heat sink count expands the weapons-per-activation budget. Essential for heavy weapons platforms.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Heavy 'Mech</div><div class="gloss-def">60–75 ton weight class; Phase 3 initiative; serious weapons loadout; backbone of competitive mid-game lances.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Initiative</div><div class="gloss-def">Activation order system; lighter 'Mechs act first. Fundamental to tactical planning; Master Tactician ability manipulates it.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Inner Sphere</div><div class="gloss-def">The region of human-inhabited space dominated by the five Great Houses; setting of 3025-era BattleTech; technologically declining since the fall of the Star League.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Jump Jets</div><div class="gloss-def">Propulsion system allowing 'Mechs to leap over terrain obstacles; weight cost paid in tonnage; transformative for positional flexibility on terrain-heavy maps.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Lance</div><div class="gloss-def">Standard BattleTech combat unit of four 'Mechs; the player's operational combat formation in all missions.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Light 'Mech</div><div class="gloss-def">20–35 ton weight class; Phase 5 initiative; acts first; relies on evasion for survival; early game mainstay, late game liability.</div></div>
+  <div class="gloss-item"><div class="gloss-term">LRM (Long Range Missile)</div><div class="gloss-def">Indirect-fire missile system; variants from LRM5 to LRM20; generates significant stability damage; the foundation of the stability-knockdown tactical combination.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Master Tactician</div><div class="gloss-def">Tactics 8 ability; +1 initiative (pushes 'Mech one phase earlier); reserving removes stability damage pip. Transformative for assault 'Mech timing.</div></div>
+  <div class="gloss-item"><div class="gloss-term">MechBay</div><div class="gloss-def">Argo facility for 'Mech repair and refit; TechPoints per day determine repair speed; fully upgraded MechBays dramatically reduce downtime between missions.</div></div>
+  <div class="gloss-item"><div class="gloss-term">MechWarrior</div><div class="gloss-def">A BattleMech pilot; rare and irreplaceable in the 3025 era; carries four skill trees (Gunnery, Piloting, Guts, Tactics) that define their combat capabilities.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Medium 'Mech</div><div class="gloss-def">40–55 ton class; Phase 4 initiative; the most versatile weight class; campaign backbone from early through late game in various configurations.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Morale</div><div class="gloss-def">Company resource (0–50) enabling combat special actions (Vigilance, Precision Strike, Inspired state). Managed through successful missions and Argo upgrades.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Multi-Target</div><div class="gloss-def">Gunnery 5 ability; attack two different enemy 'Mechs in one activation at reduced accuracy. Excellent for stripping evasion from multiple targets simultaneously.</div></div>
+  <div class="gloss-item"><div class="gloss-term">PPC (Particle Projector Cannon)</div><div class="gloss-def">Energy weapon; high damage, long range, high heat. No ammunition. The weapon of choice for precision fire platforms like the Marauder.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Piloting</div><div class="gloss-def">Pilot skill tree; affects evasion, sprint distance, stability thresholds, melee accuracy. Most valuable for light and fast medium 'Mechs. Abilities: Sure Footed (5), Ace Pilot (8).</div></div>
+  <div class="gloss-item"><div class="gloss-term">Precision Strike</div><div class="gloss-def">Morale ability (~15 cost); enhanced called shot with significantly improved hit probability on specific location. Most powerful combined with prone-target bonus.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Reserve</div><div class="gloss-def">Delaying a 'Mech's activation to a later initiative phase; powerful tactical tool for responding to enemy movement or concentrating fire after enemies commit.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Salvage</div><div class="gloss-def">Post-mission equipment selection from destroyed enemy units; primary method of 'Mech roster expansion; negotiated at contract acceptance stage.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Sensor Lock</div><div class="gloss-def">Tactics 5 ability; removes evasion pips from a target without dealing damage; enables follow-up fire from 'Mechs without line-of-sight.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Skulls</div><div class="gloss-def">Contract difficulty rating from 0.5 to 5.0; reflects relative enemy force strength vs. typical player capability at that stage. Take it seriously.</div></div>
+  <div class="gloss-item"><div class="gloss-term">SRM (Short Range Missile)</div><div class="gloss-def">Direct-fire missile system; variants SRM2 through SRM6; high damage at close range; significant heat and stability generation. Excellent for brawler builds.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Star League</div><div class="gloss-def">The lost golden age of human civilisation; its collapse triggered the Succession Wars; its advanced technologies are irreplaceable relics in 3025.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Stability Damage</div><div class="gloss-def">Secondary damage type generated by LRMs, autocannons, and melee; when threshold exceeded, 'Mech becomes Unsteady, then Knocked Down on next hit.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Succession Wars</div><div class="gloss-def">The centuries-long conflict between the five Great Houses that defines the 3025 Inner Sphere; constant but carefully limited to prevent total civilisational collapse.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Sure Footed</div><div class="gloss-def">Piloting 5 ability; significantly reduces stability damage taken. Useful for any 'Mech that regularly absorbs LRM or autocannon fire.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Tactics</div><div class="gloss-def">Pilot skill tree; improves called shot accuracy, reduces minimum range and indirect fire penalties, and supports sensor operations. Abilities: Sensor Lock (5), Master Tactician (8).</div></div>
+  <div class="gloss-item"><div class="gloss-term">TechPoints</div><div class="gloss-def">Daily resource generated by MechBay facilities; determines rate of 'Mech repair and refit. The single most important Argo upgrade target for operational tempo.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Vigilance</div><div class="gloss-def">Morale combat action; 'Mech skips its activation this turn and gains Guarded status until next turn. Excellent defensive measure when under fire from multiple opponents.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Yang Virtanen</div><div class="gloss-def">The Argo's lead MechTech; the player's primary advisor on 'Mech repair, customisation, and the mechanical realities of keeping a mercenary company's equipment operational in the Periphery.</div></div>
+</div>
+
+</section>
+
+</div><!-- /content -->
+<footer id="footer">
+  BattleTech Strategy Guide &nbsp;&middot;&nbsp; Harebrained Schemes / Paradox Interactive &nbsp;&middot;&nbsp; Nadir Strategy Archive &nbsp;&middot;&nbsp; 3025, Aurigan Reach
+</footer>
+</div><!-- /main -->
+
+<a id="back-top" href="#hero" title="Back to top">&#8593;</a>
+
+<script>
+const bar=document.getElementById('progress-bar');
+const bt=document.getElementById('back-top');
+const tog=document.getElementById('sidebar-toggle');
+const sb=document.getElementById('sidebar');
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;
+  bar.style.transform=`scaleX(${s/t})`;
+  bt.classList.toggle('visible',s>400);
+},{passive:true});
+const secs=document.querySelectorAll('.section[id]');
+const navs=document.querySelectorAll('.nav-item');
+const obs=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){navs.forEach(n=>n.classList.remove('active'));const a=document.querySelector(`.nav-item[href="#${e.target.id}"]`);if(a){a.classList.add('active');a.scrollIntoView({block:'nearest'});}}});
+},{rootMargin:'-20% 0px -70% 0px'});
+secs.forEach(s=>obs.observe(s));
+tog.addEventListener('click',()=>sb.classList.toggle('open'));
+document.querySelectorAll('.nav-item').forEach(i=>i.addEventListener('click',()=>sb.classList.remove('open')));
+document.querySelectorAll('.section').forEach((s,i)=>{s.style.animationDelay=`${i*0.03}s`;});
+</script>
+</body>
+</html>

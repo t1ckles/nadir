@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Front Mission 1st: Remake — The Huffman Field Manual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1410;--parchment:#f5efe4;--gold:#c9943a;--gold-dark:#8b6420;--gold-pale:#f0d9a8;
+  --mid:#4a3f32;--light:#f9f4ec;--border:rgba(201,148,58,0.3);--shadow:rgba(26,20,16,0.18);
+  --steel:#1a2030;--steel-mid:#232d40;--steel-pale:#d5dce8;--steel-border:rgba(26,40,60,0.4);
+  --ocu:#1a3a4a;--ocu-pale:#d5e8f0;--ucs:#3a1a1a;--ucs-pale:#f0d8d5;
+  --font-head:'Cinzel','Times New Roman',serif;
+  --font-body:'Crimson Pro','Georgia',serif;
+  --sidebar-w:290px;
+}
+html{scroll-behavior:smooth;font-size:17px}
+body{background:var(--parchment);color:var(--ink);font-family:var(--font-body);line-height:1.75;display:flex;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.5}
+a{color:inherit;text-decoration:none}button{cursor:pointer;font-family:inherit}
+#progress-bar{position:fixed;top:0;left:var(--sidebar-w);right:0;height:3px;background:var(--gold);transform-origin:left;transform:scaleX(0);z-index:500;transition:transform 0.1s linear}
+#sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--steel);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;border-right:2px solid var(--gold-dark);display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--gold-dark) var(--steel)}
+#sidebar-header{padding:28px 20px 20px;border-bottom:1px solid rgba(201,148,58,0.2);background:linear-gradient(180deg,#0e1420 0%,var(--steel) 100%)}
+#sidebar-title{font-family:var(--font-head);font-size:0.92rem;font-weight:900;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;line-height:1.3}
+#sidebar-sub{font-family:var(--font-body);font-size:0.68rem;color:rgba(255,255,255,0.38);margin-top:6px;letter-spacing:0.04em;font-style:italic}
+#sidebar-nav{padding:8px 0 40px;flex:1}
+.nav-section{padding:10px 20px 3px;font-family:var(--font-head);font-size:0.55rem;letter-spacing:0.2em;color:var(--gold-dark);text-transform:uppercase;margin-top:8px;opacity:0.85}
+.nav-item{display:block;padding:6px 20px 6px 28px;font-family:var(--font-body);font-size:0.79rem;color:rgba(245,239,228,0.62);text-decoration:none;border-left:2px solid transparent;transition:all 0.15s ease;line-height:1.35;position:relative}
+.nav-item::before{content:'›';position:absolute;left:14px;top:6px;color:var(--gold-dark);opacity:0;transition:opacity 0.12s}
+.nav-item:hover,.nav-item.active{color:var(--gold-pale);border-left-color:var(--gold);background:rgba(201,148,58,0.07);padding-left:30px}
+.nav-item:hover::before,.nav-item.active::before{opacity:1}
+#sidebar-toggle{display:none;position:fixed;top:10px;left:10px;z-index:200;background:var(--steel);border:1px solid var(--gold-dark);color:var(--gold);font-size:1.1rem;padding:5px 9px;border-radius:2px}
+#main{margin-left:var(--sidebar-w);flex:1;min-width:0}
+#hero{background:linear-gradient(160deg,#0a0e14 0%,#141e2c 35%,#1c1008 70%,#0a0e14 100%);min-height:460px;display:flex;flex-direction:column;justify-content:flex-end;padding:0 64px 64px;position:relative;overflow:hidden;border-bottom:3px solid var(--gold-dark)}
+#hero::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(-55deg,transparent,transparent 40px,rgba(201,148,58,0.025) 40px,rgba(201,148,58,0.025) 41px)}
+#hero::after{content:'';position:absolute;bottom:0;left:64px;right:64px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.hero-eyebrow{font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.28em;color:var(--gold-dark);text-transform:uppercase;margin-bottom:14px;position:relative}
+.hero-title{font-family:var(--font-head);font-size:clamp(2rem,5vw,3.6rem);font-weight:900;color:var(--parchment);letter-spacing:0.04em;text-transform:uppercase;line-height:1.05;margin-bottom:8px;position:relative}
+.hero-subtitle{font-family:var(--font-body);font-size:1.05rem;font-style:italic;color:rgba(240,217,168,0.72);font-weight:300;margin-bottom:26px;position:relative}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;position:relative}
+.hero-tag{font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-pale);border:1px solid rgba(201,148,58,0.38);padding:3px 10px;background:rgba(201,148,58,0.07)}
+#content{padding:0 64px 80px;max-width:960px}
+.section{padding:54px 0 6px;animation:fadeUp 0.45s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.sec-num{display:inline-block;font-family:var(--font-head);font-size:0.78rem;font-weight:400;letter-spacing:0.1em;color:var(--gold-dark);margin-right:0.5em;vertical-align:middle}
+.section-title{font-family:var(--font-head);font-size:clamp(1.25rem,2.4vw,1.75rem);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink);padding-bottom:12px;margin-bottom:20px;border-bottom:2px solid var(--border);position:relative}
+.section-title::after{content:'';position:absolute;bottom:-2px;left:0;width:58px;height:2px;background:var(--gold)}
+.sub-title{font-family:var(--font-head);font-size:1rem;font-weight:600;letter-spacing:0.05em;color:var(--mid);margin:26px 0 9px;text-transform:uppercase}
+p{margin-bottom:1rem;font-size:1rem}
+.guide-list{margin:0.5rem 0 1rem 1.2rem}
+.guide-list li{margin-bottom:0.5rem;font-size:1rem}
+.guide-list li::marker{color:var(--gold-dark)}
+.callout{padding:15px 20px;margin:20px 0;border-left:4px solid var(--gold);background:var(--light);border-radius:0 3px 3px 0}
+.callout.ocu{border-left-color:#2a6080;background:var(--ocu-pale)}
+.callout.ucs{border-left-color:#802a2a;background:var(--ucs-pale)}
+.callout.tip{border-left-color:#3a5c1a;background:#edf5e4}
+.callout.warning{border-left-color:#7a4a1a;background:#f5edda}
+.callout-title{font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;margin-bottom:5px;color:var(--gold-dark)}
+.callout.ocu .callout-title{color:#2a6080}
+.callout.ucs .callout-title{color:#802a2a}
+.callout.tip .callout-title{color:#3a5c1a}
+.callout.warning .callout-title{color:#7a4a1a}
+.callout p{font-size:0.94rem;margin-bottom:0.5rem}
+.callout p:last-child{margin-bottom:0}
+.lore-block{padding:16px 20px;margin:22px 0;border:1px solid var(--steel-border);background:rgba(26,32,48,0.05);position:relative}
+.lore-block::before{content:'FIELD DISPATCH';position:absolute;top:-0.6rem;left:1rem;font-family:var(--font-head);font-size:0.54rem;letter-spacing:0.22em;color:#2a4a6a;background:var(--parchment);padding:0 0.5rem}
+.lore-block p{font-style:italic;color:#2a3a52;font-size:0.94rem;line-height:1.82}
+.lore-block .source{font-family:var(--font-head);font-size:0.58rem;color:rgba(42,74,106,0.6);text-align:right;display:block;margin-top:0.6rem;letter-spacing:0.1em}
+.data-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.9rem}
+.data-table th{background:var(--steel);color:var(--gold-pale);font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;padding:8px 11px;text-align:left;border:1px solid rgba(201,148,58,0.2)}
+.data-table td{padding:7px 11px;border:1px solid var(--border);vertical-align:top;line-height:1.5;color:var(--ink)}
+.data-table tr:nth-child(even) td{background:var(--light)}
+.data-table tr:hover td{background:rgba(201,148,58,0.04)}
+.phase{padding:16px 20px;margin:14px 0;border-left:4px solid var(--gold);background:rgba(201,148,58,0.05)}
+.phase.early{border-left-color:#2a5080;background:rgba(42,80,128,0.07)}
+.phase.mid{border-left-color:var(--gold-dark);background:rgba(201,148,58,0.07)}
+.phase.late{border-left-color:#7a2a1a;background:rgba(122,42,26,0.07)}
+.phase-title{font-family:var(--font-head);font-size:0.84rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:7px;color:var(--gold-dark)}
+.phase.early .phase-title{color:#2a5080}
+.phase.late .phase-title{color:#7a2a1a}
+.phase p{font-size:0.94rem;margin-bottom:0.6rem;color:var(--ink)}
+.phase p:last-child{margin-bottom:0}
+.unit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin:16px 0}
+.unit-card{border:1px solid var(--border);background:var(--light);padding:14px 16px;border-top:3px solid var(--gold)}
+.unit-card.ocu-card{border-top-color:#2a6080}
+.unit-card.ucs-card{border-top-color:#802a2a}
+.unit-card.short-card{border-top-color:#3a6b2a}
+.unit-card.long-card{border-top-color:#6b6020}
+.unit-card.melee-card{border-top-color:#6b2a2a}
+.unit-name{font-family:var(--font-head);font-size:0.88rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink);margin-bottom:2px}
+.unit-type{font-family:var(--font-head);font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);margin-bottom:7px;display:block}
+.unit-card.ocu-card .unit-type{color:#2a6080}
+.unit-card.ucs-card .unit-type{color:#802a2a}
+.unit-card.short-card .unit-type{color:#3a6b2a}
+.unit-card.long-card .unit-type{color:#6b6020}
+.unit-card.melee-card .unit-type{color:#6b2a2a}
+.unit-card p{font-size:0.88rem;line-height:1.6;color:var(--ink);margin-bottom:0}
+.orn{text-align:center;color:var(--gold);font-size:0.8rem;letter-spacing:0.35em;padding:28px 0 8px;opacity:0.65}
+.gloss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:1px;background:var(--border);margin-top:16px;border:1px solid var(--border)}
+.gloss-item{background:var(--light);padding:9px 13px;display:flex;gap:10px;align-items:flex-start}
+.gloss-item:nth-child(even){background:var(--parchment)}
+.gloss-term{font-family:var(--font-head);font-size:0.75rem;font-weight:700;color:var(--ink);white-space:normal;min-width:120px;max-width:150px;word-break:break-word;letter-spacing:0.04em;text-transform:uppercase}
+.gloss-def{font-size:0.86rem;color:var(--mid);line-height:1.55}
+#back-top{position:fixed;bottom:26px;right:26px;width:40px;height:40px;background:var(--steel);border:1px solid var(--gold-dark);color:var(--gold);font-size:1rem;display:flex;align-items:center;justify-content:center;text-decoration:none;opacity:0;transform:translateY(8px);transition:opacity 0.3s,transform 0.3s;z-index:90}
+#back-top.visible{opacity:1;transform:none}
+#back-top:hover{background:var(--gold-dark);color:var(--parchment)}
+#footer{margin-top:40px;border-top:1px solid var(--border);padding:20px 64px;font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);text-align:center}
+@media(max-width:880px){
+  :root{--sidebar-w:0px}
+  #sidebar-toggle{display:flex;align-items:center;justify-content:center}
+  #sidebar{transform:translateX(-100%);transition:transform 0.26s ease;width:262px}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  #hero,#content,#footer{padding-left:22px;padding-right:22px}
+  #progress-bar{left:0}
+  .unit-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+<button id="sidebar-toggle" aria-label="Menu">&#9776;</button>
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <div id="sidebar-title">Front Mission 1st: Remake</div>
+    <div id="sidebar-sub">The Huffman Field Manual &mdash; Forever Entertainment / Square Enix</div>
+  </div>
+  <div id="sidebar-nav">
+    <div class="nav-section">The World</div>
+    <a class="nav-item" href="#s01">01 &middot; Huffman Island &amp; the Second War</a>
+    <a class="nav-item" href="#s02">02 &middot; Game Overview</a>
+    <a class="nav-item" href="#s03">03 &middot; The Two Campaigns</a>
+    <div class="nav-section">Core Systems</div>
+    <a class="nav-item" href="#s04">04 &middot; Combat Fundamentals</a>
+    <a class="nav-item" href="#s05">05 &middot; Targeting &amp; Part Destruction</a>
+    <a class="nav-item" href="#s06">06 &middot; Terrain &amp; Cover</a>
+    <a class="nav-item" href="#s07">07 &middot; The Skill System</a>
+    <a class="nav-item" href="#s08">08 &middot; Experience &amp; Levelling</a>
+    <div class="nav-section">Wanzer Engineering</div>
+    <a class="nav-item" href="#s09">09 &middot; Wanzer Anatomy</a>
+    <a class="nav-item" href="#s10">10 &middot; Body, Arms &amp; Legs</a>
+    <a class="nav-item" href="#s11">11 &middot; Backpacks &amp; Computers</a>
+    <a class="nav-item" href="#s12">12 &middot; Weapon Classes</a>
+    <a class="nav-item" href="#s13">13 &middot; Shields &amp; Support Items</a>
+    <div class="nav-section">Pilots &amp; Doctrine</div>
+    <a class="nav-item" href="#s14">14 &middot; Pilot Roles</a>
+    <a class="nav-item" href="#s15">15 &middot; OCU Roster &amp; Key Pilots</a>
+    <a class="nav-item" href="#s16">16 &middot; Squad Composition</a>
+    <a class="nav-item" href="#s17">17 &middot; The Arena</a>
+    <div class="nav-section">Strategy</div>
+    <a class="nav-item" href="#s18">18 &middot; Early Campaign Doctrine</a>
+    <a class="nav-item" href="#s19">19 &middot; Mid &amp; Late Game</a>
+    <a class="nav-item" href="#s20">20 &middot; The UCS Campaign</a>
+    <a class="nav-item" href="#s21">21 &middot; Advanced Tactics</a>
+    <a class="nav-item" href="#s22">22 &middot; Common Mistakes</a>
+    <div class="nav-section">Reference</div>
+    <a class="nav-item" href="#s23">23 &middot; Mercenary Mode</a>
+    <a class="nav-item" href="#s24">24 &middot; Glossary</a>
+  </div>
+</nav>
+<div id="main">
+<div id="hero">
+  <div class="hero-eyebrow">Nadir Strategy Archive &nbsp;&middot;&nbsp; Forever Entertainment &nbsp;&middot;&nbsp; Square Enix &nbsp;&middot;&nbsp; Huffman Island, 2090</div>
+  <h1 class="hero-title">Front Mission 1st: Remake</h1>
+  <p class="hero-subtitle">The Huffman Field Manual &mdash; A Complete Tactical Strategy Guide</p>
+  <div class="hero-tags">
+    <span class="hero-tag">Huffman Island 2090</span>
+    <span class="hero-tag">24 Chapters</span>
+    <span class="hero-tag">Both Campaigns</span>
+    <span class="hero-tag">Wanzer Engineering</span>
+    <span class="hero-tag">Pilot Roles</span>
+    <span class="hero-tag">Arena Guide</span>
+    <span class="hero-tag">Full Glossary</span>
+  </div>
+</div>
+<div id="content">
+
+<!-- S01 -->
+<section class="section" id="s01">
+<h2 class="section-title"><span class="sec-num">&sect;01</span> Huffman Island &amp; the Second Conflict</h2>
+<div class="lore-block">
+  <p>The war does not announce itself. It never does. One morning it is a cold peace, two powers glaring at each other across a demilitarised zone neither truly respects, and then it is something else entirely. The Larcus Incident lasted eleven minutes. The Second Huffman Conflict has lasted, by this point, considerably longer. We do not speak about Larcus as the cause. We speak about it as the excuse.</p>
+  <span class="source">// CANYON CROWS OPERATIONAL LOG &middot; ENTRY 001 &middot; ROYD CLIVE //</span>
+</div>
+<p>Front Mission 1st: Remake places you in the year 2090, in a world that has exchanged the nation-state rivalries of the twentieth century for the superbloc rivalries of a near-future Pacific theatre. Two powers dominate the conflict: the <strong>Oceania Cooperative Union (O.C.U.)</strong>, a coalition of Southeast Asian, South Asian, and Australasian nations, and the <strong>Unified Continental States (U.C.S.)</strong>, the successor entity to the Americas. They have been fighting a cold war for decades, and Huffman Island is where that cold war periodically boils over.</p>
+<p>Huffman Island is the only place where the two blocs share a land border. Its strategic position in the Pacific, combined with a history of two prior conflicts and a heavily militarised demilitarised zone, makes it a powder keg permanently affixed to a lit fuse. The First Huffman Conflict in 2070 ended with the island divided roughly in half. The uneasy peace that followed lasted just long enough for both sides to reinforce, re-arm, and wait.</p>
+<h2 class="sub-title">The Larcus Incident</h2>
+<p>On June 3, 2090, an O.C.U. reconnaissance platoon led by Captain Royd Clive was assigned to investigate suspicious activity near a U.C.S. munitions facility in the Larcus District. What happened next is disputed by every official source and agreed upon only in its consequences: the platoon was ambushed, the facility was destroyed, Royd's fiancée Lieutenant Karen Meure went missing, and the Second Huffman Conflict had its pretext. Royd was dishonourably discharged. He spent the next year fighting cage matches in the Colosseum. The war, meanwhile, did not wait.</p>
+<h2 class="sub-title">The World of Wanderpanzers</h2>
+<p>In 2090, the primary instrument of land warfare is the Wanzer — derived from the German <em>Wanderpanzer</em>, "walking tank." These bipedal combat machines replaced conventional armour in the decades following the First Huffman Conflict, and by 2090 they are the definitive military platform for both blocs. They are not giant robots in the anime tradition — they are closer to armoured infantry support platforms, built for the confined terrain of island warfare and urban combat. A Wanzer pilot is not a superhero. They are a very specialised kind of soldier who is expected to die on schedule.</p>
+<div class="callout ocu">
+  <div class="callout-title">Historical Context &mdash; Why Wanzers?</div>
+  <p>The Front Mission universe's adoption of bipedal combat machines reflects realistic design rationale within its fiction: Huffman Island's terrain &mdash; dense forest, steep terrain, and urban environments &mdash; heavily favoured infantry-scale platforms over tanks. Wanzers could traverse terrain that wheeled and tracked vehicles could not, carry heavy weapon loads, and be produced modularly so that damaged parts could be replaced in the field rather than requiring the entire machine to be scrapped. The lore is internally consistent in a way that rewards close attention.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S02 -->
+<section class="section" id="s02">
+<h2 class="section-title"><span class="sec-num">&sect;02</span> Game Overview</h2>
+<p>Front Mission 1st: Remake is a <strong>tactical turn-based RPG</strong> developed by MegaPixel Studio and published by Forever Entertainment, originally released for Nintendo Switch in November 2022 and on PC via Steam in June 2023. It is a faithful and substantially expanded remake of the original Front Mission (Super Famicom, 1995), incorporating content from the DS remake as a baseline and adding entirely new features including a dedicated Mercenary Mode, extensive difficulty options, and updated 3D visuals while retaining the original's isometric grid-based combat structure.</p>
+<p>The game sits in a specific and underserved genre tradition: the serious military tactical RPG. It is not a fantasy game with mechs grafted on. Its story deals with nationalism, institutional betrayal, the disposability of soldiers, and the psychological cost of warfare, all filtered through a geopolitical fiction that feels grounded precisely because it does not strain for spectacle. The Wanzers are machines, not metaphors. The pilots are soldiers, not chosen ones.</p>
+<h2 class="sub-title">What Makes Front Mission Distinctive</h2>
+<div class="unit-grid" style="grid-template-columns:1fr 1fr;">
+  <div class="unit-card ocu-card">
+    <div class="unit-name">Modular Wanzer System</div>
+    <span class="unit-type">ENGINEERING DEPTH &middot; NEAR-INFINITE CUSTOMISATION</span>
+    <p>Every Wanzer is assembled from interchangeable parts: body, two arms, two legs, computer, and backpack. Each part has individual HP. Weapons, shields, and items are loadout decisions. The system rewards engineering discipline and punishes thoughtless assembly.</p>
+  </div>
+  <div class="unit-card ucs-card">
+    <div class="unit-name">Skill-Based Pilot Growth</div>
+    <span class="unit-type">RPG LAYER &middot; USE-BASED PROGRESSION</span>
+    <p>Pilots level up skill categories (Melee, Short, Long, Dodge) based on what they actually do in combat. Skills unlock combat abilities at threshold levels. No formal classes &mdash; every pilot's role is a product of deliberate development choices made over dozens of missions.</p>
+  </div>
+</div>
+<h2 class="sub-title">Modern Mode vs. Classic Mode</h2>
+<p>The Remake offers two interface modes. <strong>Modern Mode</strong> provides streamlined controls, quality-of-life features, and the ability to toggle Instant Movement and Instant Battle animations on or off. <strong>Classic Mode</strong> recreates the original game's interface and pacing, including slower battle animations. New players should use Modern Mode with Instant Battle and Instant Movement both enabled &mdash; the core strategic depth is identical and the pacing is dramatically better. Classic Mode is for veterans returning for the authentic experience.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S03 -->
+<section class="section" id="s03">
+<h2 class="section-title"><span class="sec-num">&sect;03</span> The Two Campaigns</h2>
+<div class="lore-block">
+  <p>Colonel Olson used to say that the war looked different depending on which side of the DMZ you were standing on. He was right, of course &mdash; every war looks different from every angle. What he did not say, but what we eventually understood, was that looking from only one side of the line was how you ended up believing the things your side needed you to believe. The Canyon Crows got paid to stand between the lines. That is a harder position to maintain than it sounds.</p>
+  <span class="source">// CANYON CROWS OPERATIONAL LOG &middot; ROYD CLIVE //</span>
+</div>
+<p>Front Mission 1st: Remake contains two complete campaigns, each playing out the same fundamental conflict from an opposed perspective. Understanding both is essential for full comprehension of the game's story and the nuances of its geopolitical commentary.</p>
+<div class="unit-grid" style="grid-template-columns:1fr 1fr;">
+  <div class="unit-card ocu-card">
+    <div class="unit-name">OCU Campaign</div>
+    <span class="unit-type">PRIMARY CAMPAIGN &middot; CAPTAIN ROYD CLIVE &middot; RECOMMENDED FIRST</span>
+    <p>The original campaign from the 1995 game. Royd's personal quest for Karen intersects with a growing conspiracy that implicates both sides of the conflict. More character development, more squad members, and more story content than the UCS side. The intended entry point into the game's world. Play this first.</p>
+  </div>
+  <div class="unit-card ucs-card">
+    <div class="unit-name">UCS Campaign</div>
+    <span class="unit-type">SECOND CAMPAIGN &middot; LT. KEVIN GREENFIELD &middot; HARDER DIFFICULTY</span>
+    <p>Added for the DS remake. Kevin operates as a special forces pilot conducting missions that are shorter, harder, and more morally ambiguous than Royd's. Less character development but more strategic pressure. Plays as a near-suicide deployment where the odds are structurally against you. Significantly more challenging than the OCU side. Complete the OCU campaign first.</p>
+  </div>
+</div>
+<h2 class="sub-title">Campaign Structure</h2>
+<p>Both campaigns are structured around a series of numbered missions connected by interlude sequences in the game's hub area. Between missions, you visit the Military Ward (where you recruit pilots, access the Arena, and manage equipment), the shop (where new Wanzer parts and weapons become available as the campaign progresses), and the bar (for story dialogue and some recruitment triggers). Managing this inter-mission time efficiently &mdash; shopping, upgrading, Arena grinding where appropriate, and ensuring every pilot on the next mission roster is correctly equipped &mdash; is as important as tactical skill on the battlefield itself.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S04 -->
+<section class="section" id="s04">
+<h2 class="section-title"><span class="sec-num">&sect;04</span> Combat Fundamentals</h2>
+<div class="lore-block">
+  <p>Wanzer combat at Huffman distances is not like anything they prepare you for in the simulators. The simulators give you clean sight lines and cooperative enemies and a pause button. Huffman gives you forest terrain and three simultaneous threats and a computer that sometimes disagrees with your targeting priorities. The first lesson: do not try to win every exchange. Win the ones that matter.</p>
+  <span class="source">// OCU ARMY FIELD OPERATIONS MANUAL, SECTION 4 &middot; WANZER COMBAT DOCTRINE //</span>
+</div>
+<p>Front Mission 1st uses a <strong>grid-based turn-based tactical</strong> structure. Each unit takes an action per turn: move, attack, use an item, or guard. Combat resolves in an animated battle sequence where both the attacking and defending Wanzers exchange fire, with hit chances determined by weapon accuracy, pilot skill levels, computer bonuses, terrain, and distance.</p>
+<h2 class="sub-title">The Action Point System</h2>
+<p>Each Wanzer has a fixed number of <strong>Action Points (AP)</strong> per turn. Moving consumes AP based on distance and terrain. Attacking consumes AP. If a Wanzer exhausts its AP, it cannot act further that turn. This creates a fundamental trade-off between aggressive offensive positioning and the ability to actually fire once you arrive. A Wanzer that sprints across the map to close range may arrive with insufficient AP for a full weapon attack. Plan movement budgets before committing.</p>
+<h2 class="sub-title">Counter-Fire</h2>
+<p>When you attack an enemy Wanzer, they will typically counter-attack unless their arms have been destroyed, they are using a missile/launcher (long-range weapons), or they are suppressed in some way. This counter-fire is resolved simultaneously and can cause significant damage to your attacking unit. Key implications:</p>
+<ul class="guide-list">
+  <li><strong>Melee attackers always go second</strong> unless they have the <em>First</em> skill, which overrides this and lets them strike before the enemy. Until a pilot learns First, melee builds are vulnerable on approach.</li>
+  <li><strong>Long-range weapons (launchers, missiles) do not provoke counter-fire</strong> when fired from outside a threshold distance. This is their primary tactical advantage over short-range guns.</li>
+  <li><strong>Destroying an enemy's arms eliminates their ability to counter-attack</strong> since they can no longer hold weapons. This is one of the most powerful tactical manoeuvres in the game.</li>
+</ul>
+<div class="callout tip">
+  <div class="callout-title">Tactical Principle &mdash; Disarm Before Close</div>
+  <p>A consistent strategy for melee-oriented builds: use long-range or short-range fire to destroy or severely damage the enemy Wanzer's arms before closing to melee range. An armless Wanzer cannot counter-attack your melee pilot, making the close-range engagement dramatically safer. This two-stage approach &mdash; soften from range, finish in melee &mdash; is one of the game's most reliable tactical templates.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S05 -->
+<section class="section" id="s05">
+<h2 class="section-title"><span class="sec-num">&sect;05</span> Targeting &amp; Part Destruction</h2>
+<p>Front Mission 1st has an <strong>individual hit location system</strong>. Rather than a single health bar, every Wanzer has separate HP for each component: body, left arm, right arm, left leg, right leg. Different weapon types interact with this system differently, and understanding it is central to effective combat.</p>
+<h2 class="sub-title">What Destroying Each Part Does</h2>
+<table class="data-table">
+  <thead><tr><th>Part</th><th>Effect When Destroyed</th><th>Tactical Priority</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Body</strong></td><td>Wanzer destroyed entirely; pilot killed or ejected</td><td>Ultimate kill target; hardest part to destroy, highest HP</td></tr>
+    <tr><td><strong>Arm (either)</strong></td><td>Weapon in that arm lost; if both arms destroyed, cannot counter-attack</td><td>High &mdash; eliminates counter-fire and firepower; enables safe melee</td></tr>
+    <tr><td><strong>Leg (either)</strong></td><td>Movement reduced to 1 hex per turn (still functional otherwise)</td><td>High &mdash; immobilises enemy; prevents repositioning or retreat</td></tr>
+    <tr><td><strong>Leg (both)</strong></td><td>Wanzer immobilised completely; cannot move at all</td><td>Very High &mdash; enemy is a stationary target; finish at leisure</td></tr>
+  </tbody>
+</table>
+<h2 class="sub-title">Targeted vs. Random Hits</h2>
+<p>In the early game, hit locations are randomly distributed across the enemy Wanzer's parts. As pilots develop their skill levels, they eventually unlock the ability to <strong>select specific target parts</strong>. This is one of the most significant capability upgrades in the entire game &mdash; the ability to aim for legs (to immobilise), arms (to disarm), or body (to kill outright) transforms every engagement from a probabilistic exchange into a surgical operation.</p>
+<div class="callout warning">
+  <div class="callout-title">The Random Hit Problem</div>
+  <p>In the early campaign, before pilots can target specific parts, missile launchers are a double-edged sword: they hit randomly across the target's body parts rather than concentrating fire. A missile barrage that hits legs three times is wasted offensive power when you needed to damage the body. Budget for this randomness in early game engagements and do not over-rely on launchers for killing blows until your pilots can direct their fire.</p>
+</div>
+<h2 class="sub-title">Experience from Part Destruction</h2>
+<p>Pilots earn significantly more experience for <strong>destroying individual parts</strong> than for simply dealing damage. And they earn the most for destroying the entire Wanzer. This creates an important tactical economy: sometimes it is more efficient to systematically strip a Wanzer's parts one by one &mdash; earning full EXP increments for each &mdash; than to rush for the body kill and receive experience only once. The Arena (Chapter 17) exploits this principle systematically.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S06 -->
+<section class="section" id="s06">
+<h2 class="section-title"><span class="sec-num">&sect;06</span> Terrain &amp; Cover</h2>
+<div class="lore-block">
+  <p>Huffman Island was not designed as a battlefield. It just became one. The forests did not grow to provide cover for Wanzer pilots &mdash; the Wanzer pilots learned to use them because the alternative was dying in open ground. Cover is not strategy. Cover is the absence of stupidity.</p>
+  <span class="source">// OCU FIELD MANUAL ADDENDUM &middot; TERRAIN UTILISATION IN WANZER OPERATIONS //</span>
+</div>
+<p>Terrain in Front Mission 1st is not cosmetic. Each hex has a terrain type that affects movement costs and provides defensive bonuses through cover and concealment modifiers. Understanding and exploiting terrain is the difference between casual play and competent tactical play.</p>
+<h2 class="sub-title">Terrain Types and Effects</h2>
+<table class="data-table">
+  <thead><tr><th>Terrain</th><th>Movement Cost</th><th>Defensive Modifier</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Road / Clear</strong></td><td>Low</td><td>None</td><td>Fast movement; no protection; avoid as a stationary position</td></tr>
+    <tr><td><strong>Forest</strong></td><td>High for heavy wanzers</td><td>Significant accuracy penalty vs. units inside</td><td>Excellent defensive position; consider weight limits</td></tr>
+    <tr><td><strong>Urban (Buildings)</strong></td><td>Variable</td><td>High cover bonus inside/adjacent</td><td>Missions in towns provide strong defensive anchors</td></tr>
+    <tr><td><strong>Elevated Ground</strong></td><td>Higher cost to ascend</td><td>Bonus to accuracy when attacking downhill</td><td>Height advantage applies to all weapon types</td></tr>
+    <tr><td><strong>Water</strong></td><td>Impassable for most wanzers</td><td>N/A</td><td>Channel movement; bridges become chokepoints</td></tr>
+    <tr><td><strong>Hills / Slopes</strong></td><td>High</td><td>Some cover benefit</td><td>Affects line of sight for long-range attackers</td></tr>
+  </tbody>
+</table>
+<h2 class="sub-title">Cover Usage in Practice</h2>
+<p>The single most impactful terrain habit to develop is <strong>never ending a unit's turn in the open if a covered position is available within range</strong>. A Wanzer standing on a road hex facing three enemy Wanzers is taking full-accuracy fire from all three on the enemy's turn. The same Wanzer in a forest hex forces all three to fire at a significant accuracy penalty. The defensive value of a forest hex costs only additional movement points to access &mdash; budget for them.</p>
+<p>Long-range missile units benefit from elevation: positioning a launcher Wanzer on high ground extends their effective range and provides an accuracy bonus on firing while making them harder to reach before they can fire. Identify elevated positions on each map before the engagement begins and contest them aggressively.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S07 -->
+<section class="section" id="s07">
+<h2 class="section-title"><span class="sec-num">&sect;07</span> The Skill System</h2>
+<p>Front Mission 1st has no formal character classes. Instead, pilots develop four skill categories through use &mdash; <strong>Melee, Short, Long, and Dodge</strong> &mdash; each measured on a 0&ndash;9999 point scale, with skills unlocking at point thresholds. This use-based progression system means that how you build and deploy each pilot determines what they become, not a pre-set archetype.</p>
+<h2 class="sub-title">The Four Skill Categories</h2>
+<table class="data-table">
+  <thead><tr><th>Skill</th><th>How It Grows</th><th>What It Improves</th><th>Key Abilities Unlocked</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Melee</strong></td><td>Using melee weapons in combat</td><td>Close-combat hit rate; damage output</td><td>Stun, First, Double Strike</td></tr>
+    <tr><td><strong>Short</strong></td><td>Using short-range guns (MG, rifles)</td><td>Short-range weapon accuracy; burst hit rate</td><td>Switch (weapon swap), Double, part targeting</td></tr>
+    <tr><td><strong>Long</strong></td><td>Using launchers and missiles</td><td>Long-range accuracy; missile impact</td><td>Part targeting, Double launch</td></tr>
+    <tr><td><strong>Dodge</strong></td><td>Being attacked (especially missing or light hits)</td><td>Evasion chance against incoming fire</td><td>Improved evasion at higher levels</td></tr>
+  </tbody>
+</table>
+<h2 class="sub-title">Key Combat Skills</h2>
+<div class="unit-grid">
+  <div class="unit-card melee-card">
+    <div class="unit-name">First</div>
+    <span class="unit-type">MELEE SKILL &middot; THRESHOLD: LV.3 APPROX.</span>
+    <p>Melee attacker strikes before the enemy fires their counter-attack. Without this, melee pilots absorb a full weapon attack before landing their own blow. Transformative for melee builds &mdash; unlock as a priority on any pilot assigned to close combat.</p>
+  </div>
+  <div class="unit-card melee-card">
+    <div class="unit-name">Stun</div>
+    <span class="unit-type">MELEE SKILL &middot; THRESHOLD: LV.2 APPROX.</span>
+    <p>Successful melee strike may stun the target, preventing their counter-attack entirely. Synergises perfectly with close-combat builds. A stunned enemy cannot retaliate, making the next melee exchange entirely one-sided.</p>
+  </div>
+  <div class="unit-card short-card">
+    <div class="unit-name">Switch</div>
+    <span class="unit-type">SHORT SKILL &middot; UNLOCKED VIA TRAINING</span>
+    <p>Swap to a second weapon mid-combat and fire again in the same turn. One of the highest-damage skills in the game when paired with two high-damage short-range weapons. Enables two-weapon attack patterns per activation.</p>
+  </div>
+  <div class="unit-card short-card">
+    <div class="unit-name">Double</div>
+    <span class="unit-type">MULTI-TYPE SKILL &middot; HIGH LEVEL</span>
+    <p>Fire the equipped weapon twice in a single attack. Combined with machine guns (which already fire in multi-hit bursts) or high-damage rifles, Double produces devastating damage output. A key late-game combat skill for any offensive pilot.</p>
+  </div>
+  <div class="unit-card long-card">
+    <div class="unit-name">Part Target</div>
+    <span class="unit-type">ALL WEAPON TYPES &middot; THRESHOLD-BASED</span>
+    <p>Allows the pilot to select which part of the enemy Wanzer to target rather than accepting random hit distribution. Unlocks the full strategic depth of the part-destruction system. Every pilot benefits from this; it is the most important general skill in the game.</p>
+  </div>
+  <div class="unit-card long-card">
+    <div class="unit-name">Evade</div>
+    <span class="unit-type">DODGE SKILL &middot; PASSIVE</span>
+    <p>High Dodge skill passively increases the chance of evading incoming attacks. Trained by being attacked rather than by attacking. In Arena settings, deliberately prolonging engagements to absorb non-lethal hits develops Dodge efficiently.</p>
+  </div>
+</div>
+<h2 class="sub-title">Skill Specialisation Strategy</h2>
+<p>Because skills grow through use, every mission is a training opportunity. Assign each pilot a consistent weapon type from their first mission and maintain that specialisation. A pilot who uses a machine gun in mission 1 and a launcher in mission 3 and a melee rod in mission 5 has grown three mediocre skill categories instead of one excellent one. The game rewards specialisation severely. Pick a role for each pilot by their second mission and commit to it.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S08 -->
+<section class="section" id="s08">
+<h2 class="section-title"><span class="sec-num">&sect;08</span> Experience &amp; Levelling</h2>
+<p>Experience in Front Mission 1st is not a simple reward for combat participation. The EXP system has specific thresholds and granular sources that reward players who understand it:</p>
+<ul class="guide-list">
+  <li><strong>Hitting an enemy</strong> (even without destroying a part) grants base EXP to the corresponding skill category.</li>
+  <li><strong>Missing an attack</strong> still grants skill EXP &mdash; the pilot is practising under fire regardless of result. This makes even poor-accuracy early-game fire valuable for skill development.</li>
+  <li><strong>Destroying a part</strong> grants a significant EXP bonus over simply dealing damage.</li>
+  <li><strong>Destroying the entire Wanzer</strong> provides the maximum single-action EXP reward.</li>
+  <li><strong>Being attacked and surviving</strong> advances the Dodge skill. Deliberately letting enemies attack you in controlled situations builds Dodge efficiently.</li>
+</ul>
+<div class="callout tip">
+  <div class="callout-title">The Part-Farm Technique</div>
+  <p>In missions where a single enemy remains with low HP, consider destroying individual parts sequentially rather than going for the immediate body kill. Each destroyed part grants a separate EXP award. A pilot who destroys both arms, both legs, and then the body of a single Wanzer earns five separate EXP events. The Arena (Chapter 17) is purpose-built for this technique, but it applies in story missions too whenever the tactical situation permits deliberate stripping.</p>
+</div>
+<h2 class="sub-title">Arena vs. Story Mission Levelling</h2>
+<p>Story missions provide EXP but also consume in-game currency (repairs, ammunition resupply) and carry the risk of losing pilots. The Arena provides lower per-match EXP but with full safety and zero supply cost. The optimal levelling approach combines both: use story missions as primary skill development for all active roster pilots, then supplement with targeted Arena sessions for pilots who are behind in a specific skill category or for Dodge training. The Arena is covered fully in Chapter 17.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S09 -->
+<section class="section" id="s09">
+<h2 class="section-title"><span class="sec-num">&sect;09</span> Wanzer Anatomy &mdash; Understanding the Machine</h2>
+<div class="lore-block">
+  <p>The Wanzer is not complex. People like to pretend it is, because complexity excuses the cost. Strip away the advertising and the mystique and what you have is a bipedal armoured weapons platform that carries two arms, a body, two legs, a computer, and a backpack. Each part has a function. Each part can be replaced. Each part can fail. This is everything you need to know. The rest is details.</p>
+  <span class="source">// YANG YEEHIN &middot; CANYON CROWS TECHNICAL ADVISER //</span>
+</div>
+<p>A Wanzer is assembled from six independent components: <strong>Body, Left Arm, Right Arm, Left Leg, Right Leg, Computer, and Backpack</strong>. Each has its own HP, stats, and functional role. The <strong>Engine</strong> value of the body determines the total weight the Wanzer can carry &mdash; exceed this and the unit cannot function properly. Every configuration decision must be made within this weight budget.</p>
+<h2 class="sub-title">The Weight Budget</h2>
+<p>Weight management is the fundamental engineering constraint of Wanzer customisation. Every component &mdash; body, arms, legs, computer, backpack, and every weapon or item loaded &mdash; has a weight value. The body's Engine stat sets the maximum weight the Wanzer can carry. Exceed this limit and movement is drastically penalised. Designing a Wanzer means solving a weight budget problem where every choice to add firepower costs mobility capacity and vice versa.</p>
+<p>The key insight: <strong>not all weight is equal in value</strong>. A high-HP body that enables heavy weapons is a better weight investment than a marginal backpack upgrade. Prioritise weight allocation in this order: body (engine and HP), weapons, computer (accuracy bonuses), legs (mobility), backpack (secondary items).</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S10 -->
+<section class="section" id="s10">
+<h2 class="section-title"><span class="sec-num">&sect;10</span> Body, Arms &amp; Legs</h2>
+<h2 class="sub-title">The Body</h2>
+<p>The body is the most important single component. It provides the Wanzer's total HP pool (both its own HP and indirectly the viability of the entire platform), the <strong>Engine</strong> value that sets the weight budget, and base Power which affects damage output. Prioritise body upgrades above all other components. A body with high HP, strong Engine, and good Power enables everything else. A weak body constrains every other decision.</p>
+<p>The general principle: <strong>always buy the highest-HP body you can afford that still leaves room for your intended weapon loadout within the Engine limit.</strong> Resist the temptation to cheap out on the body to fund weapons &mdash; a Wanzer with enormous firepower that dies in two hits has not improved your tactical position.</p>
+<h2 class="sub-title">Arms</h2>
+<p>Arms hold weapons and determine the <strong>Hit</strong> stat that affects weapon accuracy. When an arm's HP is depleted, the weapon in that arm is lost &mdash; either destroyed or dropped, depending on the specific result. Arm HP is therefore a protective buffer for your weapons loadout. Key considerations:</p>
+<ul class="guide-list">
+  <li>Higher-HP arms protect expensive weapons from early loss in extended engagements.</li>
+  <li>The <strong>Hit</strong> stat on arms directly affects your accuracy &mdash; prioritise arms with higher Hit ratings for pilots whose skill categories are not yet well-developed.</li>
+  <li>For melee builds, arm weight matters because melee weapons are significantly lighter than guns, leaving more weight budget for a heavier body and better legs.</li>
+</ul>
+<h2 class="sub-title">Legs</h2>
+<p>Legs provide mobility &mdash; the number of hexes a Wanzer can move per turn. Faster legs also contribute to the <strong>Mobility</strong> stat which affects evasion probability. Each leg also uses Engine capacity, so heavier legs reduce the weight available for other parts. The trade-off:</p>
+<ul class="guide-list">
+  <li><strong>High-mobility legs</strong> are essential for melee builds and flanking units that need to close range quickly and reposition after engaging.</li>
+  <li><strong>Lower-mobility, higher-HP legs</strong> are acceptable on long-range fire support Wanzers that intend to hold position and never close to melee range.</li>
+  <li>Destroyed legs reduce movement to 1 hex per turn &mdash; this is a catastrophic tactical situation. Do not neglect leg HP on front-line units.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S11 -->
+<section class="section" id="s11">
+<h2 class="section-title"><span class="sec-num">&sect;11</span> Backpacks &amp; Computers</h2>
+<h2 class="sub-title">The Computer</h2>
+<p>The computer is an invisible but critical component. It provides bonuses to specific weapon categories &mdash; some computers increase short-range weapon accuracy, others boost long-range, others improve melee. Matching the computer to the pilot's primary weapon type is a significant accuracy improvement, especially in the early game when pilot skill levels are still low.</p>
+<p>Do not neglect computers. A pilot with a short-range build using a computer that bonuses long-range weapons is fighting at a significant self-imposed disadvantage. Computers are inexpensive relative to weapons &mdash; buy category-matched computers for every pilot as soon as they are available in the shop.</p>
+<h2 class="sub-title">The Backpack</h2>
+<p>Backpacks expand the Wanzer's inventory capacity, allowing more items to be carried into battle. Without a backpack, a Wanzer can carry only a minimal number of items. With one, the inventory expands to allow multiple repair kits, grenades, and resupply items. Backpack priority:</p>
+<ul class="guide-list">
+  <li><strong>Every Wanzer should carry at least one repair kit</strong> &mdash; the ability to self-repair between engagements within a mission is frequently the difference between surviving a long map and being forced into a costly attrition.</li>
+  <li><strong>Launcher-equipped Wanzers specifically need backpacks</strong> for ammunition resupply. Launchers and missiles have finite ammo &mdash; without resupply items or proximity to the supply truck, they run dry.</li>
+  <li><strong>Smoke and chaff grenades</strong> are support items that reduce enemy accuracy. Equipping these on pilots who will be advancing through dangerous open terrain can significantly reduce incoming damage.</li>
+  <li><strong>Acid bombs</strong> reduce the defence stat of all parts on the target Wanzer &mdash; invaluable against heavily armoured late-game enemies.</li>
+</ul>
+<div class="callout">
+  <div class="callout-title">The Supply Truck</div>
+  <p>The Canyon Crows have access to a supply truck on most maps, driven by a non-combat crew member. The truck carries your full item stockpile and can resupply any Wanzer parked adjacent to it. Managing the truck's position &mdash; keeping it in range of your pilots without exposing it to enemy attack &mdash; is a secondary tactical task on many missions. The truck cannot fight, but its resupply function can extend the combat endurance of your entire squad through a long mission.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S12 -->
+<section class="section" id="s12">
+<h2 class="section-title"><span class="sec-num">&sect;12</span> Weapon Classes &mdash; Arming the Wanzer</h2>
+<div class="lore-block">
+  <p>The debate between gun and rocket never ends in the Crows. Keith will tell you the machine gun wins every engagement inside fifty metres and he is not entirely wrong. Paul will tell you he has never lost a target that his launcher could reach and he is also not entirely wrong. Royd will tell you both of them should stop arguing and make sure their Wanzers are ready for dawn. That is usually where the debate ends.</p>
+  <span class="source">// CANYON CROWS INTERNAL COMMUNICATIONS LOG //</span>
+</div>
+<p>Weapons in Front Mission 1st are divided into three functional categories that correspond directly to pilot skill tracks: <strong>Melee</strong>, <strong>Short</strong>, and <strong>Long</strong>. Each has distinct tactical advantages, limitations, and ideal deployment contexts.</p>
+<h2 class="sub-title">Short-Range Weapons (Guns)</h2>
+<div class="unit-grid">
+  <div class="unit-card short-card">
+    <div class="unit-name">Machine Gun</div>
+    <span class="unit-type">SHORT RANGE &middot; MULTI-HIT BURST &middot; RECOMMENDED FIRST</span>
+    <p>Fires a burst of multiple rounds per attack, each with an independent chance to hit different parts. High overall accuracy; hits are random but the burst volume compensates. The most reliable short-range weapon in the early game. Machine guns are considered the best short-range weapon type overall. Unlimited ammo (uses pilot stamina, not items).</p>
+  </div>
+  <div class="unit-card short-card">
+    <div class="unit-name">Rifle</div>
+    <span class="unit-type">SHORT RANGE &middot; SINGLE HIGH-DAMAGE HIT</span>
+    <p>Single high-damage shot with lower accuracy than machine guns. When it hits, it frequently destroys or severely damages a single part. Best used by pilots with high Short skill and accuracy-boosting computers. Paired with the Switch skill, a rifle pilot can devastate a single part in a combined attack turn.</p>
+  </div>
+</div>
+<h2 class="sub-title">Long-Range Weapons (Launchers)</h2>
+<div class="unit-grid">
+  <div class="unit-card long-card">
+    <div class="unit-name">Rocket Launcher</div>
+    <span class="unit-type">LONG RANGE &middot; NO COUNTER-FIRE &middot; LIMITED AMMO</span>
+    <p>Fires from a distance that prevents enemy counter-attack. Hits random parts. Excellent for opening engagements and softening targets before short-range or melee pilots close. The no-counter-fire property is its primary tactical advantage. Requires ammunition management via backpack resupply items.</p>
+  </div>
+  <div class="unit-card long-card">
+    <div class="unit-name">Missile Launcher</div>
+    <span class="unit-type">LONG RANGE &middot; GUIDANCE SYSTEM &middot; AREA VARIANTS</span>
+    <p>Higher damage and accuracy than standard rockets; some variants offer guidance or area effect. The missile platform Wanzer is one of the game's most effective tactical archetypes early on: small, light Wanzer body; large-capacity backpack for ammo resupply; best available missile launcher. Fires without provoking counter-attack.</p>
+  </div>
+</div>
+<h2 class="sub-title">Melee Weapons</h2>
+<div class="unit-grid">
+  <div class="unit-card melee-card">
+    <div class="unit-name">Rod / Pile Driver</div>
+    <span class="unit-type">MELEE &middot; HIGH DAMAGE &middot; FIRST REQUIRED</span>
+    <p>Close-range weapons that deal competitive damage to rifles but are significantly lighter, freeing weight budget for heavier body and better legs. The trade-off: melee always attacks after guns unless the pilot has learned First. Strong late-game option once First, Stun, and Double Strike are unlocked. Early game is risky without these skills.</p>
+  </div>
+</div>
+<h2 class="sub-title">Weapon Combinations</h2>
+<p>Each arm can carry one weapon. Most pilots carry two weapons &mdash; one in each arm. Common combinations:</p>
+<ul class="guide-list">
+  <li><strong>Dual Machine Gun:</strong> Maximum burst volume; high hit rate; good for part-stripping early game.</li>
+  <li><strong>Machine Gun + Launcher:</strong> Versatile; can engage at both ranges; good general-purpose build.</li>
+  <li><strong>Dual Launcher:</strong> Maximum missile platform; fire twice per turn without counter-fire; fragile if enemy closes range.</li>
+  <li><strong>Melee + Machine Gun:</strong> Hybrid brawler; use gun to open, melee to finish; requires First skill to use safely.</li>
+  <li><strong>Dual Melee (Rod + Rod):</strong> Maximum close-combat damage; requires full melee skill investment before it is safe.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S13 -->
+<section class="section" id="s13">
+<h2 class="section-title"><span class="sec-num">&sect;13</span> Shields &amp; Support Items</h2>
+<p>Shields occupy the same arm slot as a weapon, meaning equipping a shield means sacrificing one weapon. They provide a chance to <strong>absorb incoming damage</strong>, potentially negating or significantly reducing a hit. Shields do not activate every attack &mdash; they have a probability-based block chance that improves as the pilot develops their Dodge skill.</p>
+<h2 class="sub-title">Shield Decision Framework</h2>
+<p>The shield versus second weapon decision depends on the pilot's role:</p>
+<ul class="guide-list">
+  <li><strong>Front-line brawlers</strong> who advance into melee range benefit significantly from shields because they absorb incoming fire during the approach before they can engage. A shield on a melee pilot can be the difference between arriving in combat condition and arriving half-destroyed.</li>
+  <li><strong>Long-range fire support pilots</strong> who never advance into short range rarely face the close-range fire that shields defend against most effectively. They are better served by a second launcher.</li>
+  <li><strong>Short-range gun pilots</strong> with high evasion (high Dodge skill, mobile legs) may prefer a shield early in the game before their Dodge skill is developed, then swap to a second weapon once evasion is reliable.</li>
+</ul>
+<div class="callout tip">
+  <div class="callout-title">Dodge Training with Shields</div>
+  <p>A deliberate Dodge training technique: equip a shield and the Guard command, then position a Wanzer adjacent to a weakened or disarmed enemy. Use Guard repeatedly while the enemy attacks. The combination of Guard bonus and shield activation accumulates Dodge EXP efficiently without risking serious damage. This technique is particularly effective in the Arena.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S14 -->
+<section class="section" id="s14">
+<h2 class="section-title"><span class="sec-num">&sect;14</span> Pilot Roles</h2>
+<p>Without formal classes, pilot roles are entirely self-defined through Wanzer configuration and training choices. The game supports four primary archetypes that correspond to the three weapon categories plus a support function.</p>
+<div class="unit-grid">
+  <div class="unit-card short-card">
+    <div class="unit-name">Gunner (Short)</div>
+    <span class="unit-type">PRIMARY ROLE: SHORT WEAPONS &middot; MID-RANGE ENGAGEMENTS</span>
+    <p>The most reliable general-purpose combat role. Machine guns provide consistent hit rates, multi-part pressure, and the Switch skill enables two weapons per attack at high levels. Medium-weight Wanzer: good body, standard legs, accuracy-focused computer. The backbone of any squad composition.</p>
+  </div>
+  <div class="unit-card long-card">
+    <div class="unit-name">Lancer (Long)</div>
+    <span class="unit-type">PRIMARY ROLE: LAUNCHERS/MISSILES &middot; FIRE SUPPORT</span>
+    <p>Fires from range without provoking counter-fire; softens or eliminates targets before they reach short/melee range. Requires ammo management. Best Wanzer: lightweight body (preserves mobility despite missile weight), large backpack for resupply, speed-focused legs to reposition. Keep behind the front line.</p>
+  </div>
+  <div class="unit-card melee-card">
+    <div class="unit-name">Striker (Melee)</div>
+    <span class="unit-type">PRIMARY ROLE: MELEE &middot; HIGH DAMAGE CLOSE COMBAT</span>
+    <p>Highest potential damage output once fully skilled; lightest weapon weights allow heavy body investment. Requires First + Stun to function safely. Effective strategy: Lancer softens from range, Striker closes and finishes. High-speed legs essential for approach. Shield on off-arm until First is unlocked.</p>
+  </div>
+  <div class="unit-card ocu-card">
+    <div class="unit-name">Support</div>
+    <span class="unit-type">SECONDARY ROLE: ITEMS &amp; SUPPRESSION</span>
+    <p>Dedicated to smoke/chaff grenade deployment and Acid Bomb use. Not a primary combat role but a force-multiplier in difficult missions. A single pilot with an Acid Bomb who strips enemy Wanzer defence values enables the rest of the squad to deal dramatically more damage. Sometimes the best action is not an attack.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S15 -->
+<section class="section" id="s15">
+<h2 class="section-title"><span class="sec-num">&sect;15</span> OCU Roster &amp; Key Pilots</h2>
+<p>The Canyon Crows eventually number up to 17 Wanzer pilots (plus the truck driver). Not all are available from the start, and not all are equally valuable. Understanding who joins when and what they are good at enables you to make informed development decisions rather than reacting to whoever is available.</p>
+<table class="data-table">
+  <thead><tr><th>Pilot</th><th>Joins</th><th>Best Role</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Royd Clive</strong></td><td>Start</td><td>Versatile / Short</td><td>The protagonist; solid all-rounder. Gradually diminishes relative to specialists but always usable. Your development laboratory for learning the system.</td></tr>
+    <tr><td><strong>J.J.</strong></td><td>Mission 2</td><td>Melee</td><td>One of the best melee pilots in the game. Available early; consistent skill growth. Essential for a melee-focused squad composition.</td></tr>
+    <tr><td><strong>Keith Carabell</strong></td><td>Mission 2</td><td>Melee / Short</td><td>J.J.'s closest companion; versatile enough for either weapon category. Leaves temporarily around Mission 22 but returns. Brash personality masks reliable combat performance.</td></tr>
+    <tr><td><strong>Yang Meihua</strong></td><td>Mission 4</td><td>Melee / Short</td><td>Joins with her brother Yeehin. Strong melee pilot with Short capability as backup. Leaves briefly around Mission 14. Lowest long-range damage in the game &mdash; keep her out of launcher roles.</td></tr>
+    <tr><td><strong>Paul C. Grieber</strong></td><td>After Mission 5</td><td>Long (Best)</td><td>The game's premier long-range pilot. Former military chaplain; consistently leads Long skill development across the roster. Recruit at the bar after Mission 5. Make him your primary Lancer immediately.</td></tr>
+    <tr><td><strong>Gregorio Maias</strong></td><td>After Mission 8</td><td>Melee (Best)</td><td>Arguably the best melee pilot; learns Stun at low level (Level 2), giving his close-combat build safety much earlier than other melee pilots. Available after Mission 8 + Arena victory.</td></tr>
+    <tr><td><strong>Frederick Lancaster</strong></td><td>Mid-campaign</td><td>Short</td><td>Reliable short-range combatant with good overall stats. Consistent performer in the mid-game.</td></tr>
+    <tr><td><strong>Bobby Hopkins</strong></td><td>Mid-campaign</td><td>Long / Short</td><td>Decent mixed-use pilot. Not exceptional in any category but reliable enough for secondary roles.</td></tr>
+  </tbody>
+</table>
+<div class="callout ocu">
+  <div class="callout-title">Recruitment Note &mdash; Bar Visits Matter</div>
+  <p>Several pilots &mdash; including Paul &mdash; join only after Royd visits them at specific locations (usually the bar or Military Ward) at specific points in the campaign. The game does not always prompt you to do this. If you complete a mission and find yourself short of expected new recruits, check the bar and the Military Ward before proceeding. Missing these recruitment windows can lock you out of some of the game's best pilots for extended campaign stretches.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S16 -->
+<section class="section" id="s16">
+<h2 class="section-title"><span class="sec-num">&sect;16</span> Squad Composition</h2>
+<p>Mission deployment typically allows four to six Wanzers plus the support truck. Building a coherent squad means ensuring you have coverage across range bands, damage types, and tactical functions &mdash; not simply fielding your six highest-stat pilots.</p>
+<h2 class="sub-title">The Balanced Five</h2>
+<p>A reliable five-pilot composition that covers most mission types:</p>
+<div class="phase mid">
+  <div class="phase-title">Core Composition Template</div>
+  <p><strong>1 Lancer (Long):</strong> Paul or equivalent. Fire support from range; softens primary targets before they reach short/melee. Stays behind front line.<br><br>
+  <strong>2 Gunners (Short):</strong> Mid-range engagement backbone. Machine guns for consistent part pressure; Switch skill for burst attacks. Core of the sustained damage output.<br><br>
+  <strong>1 Striker (Melee):</strong> J.J., Gregorio, or Keith. Closes after Lancer softening. Needs high-speed legs and First/Stun skills before they are safe.<br><br>
+  <strong>1 Flexible:</strong> A second Lancer for missile-heavy maps, a second Striker for close-terrain missions, or a dedicated support pilot for hard missions requiring smoke/acid bomb suppression.</p>
+</div>
+<h2 class="sub-title">Terrain-Driven Adjustments</h2>
+<p>Map preview and mission briefings reveal the terrain type. Adjust your composition accordingly:</p>
+<ul class="guide-list">
+  <li><strong>Forest / closed terrain:</strong> Fewer long-range pilots (line-of-sight is limited); more melee and short-range. Speed-builds for flanking through trees.</li>
+  <li><strong>Open / urban terrain:</strong> More long-range platforms; position them on elevated ground or rooftops. Fewer melee builds until range closes.</li>
+  <li><strong>Fortified positions:</strong> Acid Bomb + high-damage follow-up is the most efficient approach against armoured static defenders.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S17 -->
+<section class="section" id="s17">
+<h2 class="section-title"><span class="sec-num">&sect;17</span> The Arena</h2>
+<div class="lore-block">
+  <p>Nobody in the Canyon Crows talks about the Arena as a moral question. We left that conversation behind a long time ago. The Arena is training, money, and intelligence about the hardware the other side is running. Royd spent a year in it. It did not make him a worse person. It made him a better pilot. Those are different things.</p>
+  <span class="source">// CANYON CROWS OPERATIONAL LOG &middot; KEITH CARABELL //</span>
+</div>
+<p>The Arena is a persistent combat facility accessible between missions where individual Wanzers fight 1-versus-1 against AI-controlled opponents. It serves three simultaneous functions: <strong>cash income</strong>, <strong>skill development</strong>, and <strong>Dodge training</strong>. It is the game's primary out-of-mission development tool and one that new players frequently underuse.</p>
+<h2 class="sub-title">How the Arena Works</h2>
+<p>Select a single pilot and their Wanzer for an Arena match. Win to earn C-bills (in-game currency). Lose &mdash; the pilot takes damage to their Wanzer but is not killed. Arena matches carry no permanent consequence beyond Wanzer repair costs, making them a safe training environment for any pilot.</p>
+<h2 class="sub-title">Arena Strategies</h2>
+<div class="phase early">
+  <div class="phase-title">Cash Farming</div>
+  <p>Early-game cash flow is a constraint on Wanzer upgrades. Use Arena matches with your highest-skill pilot to reliably clear early-tier opponents for consistent income. Win quickly to maximise matches per session. The C-bill income from Arena play funds the Wanzer upgrades that make story missions manageable.</p>
+</div>
+<div class="phase mid">
+  <div class="phase-title">Skill Development</div>
+  <p>The Arena's 1v1 structure means every action &mdash; every shot, every dodge, every arm destruction &mdash; accrues directly to the pilot in the match. No split experience across a squad. Use the Arena to develop under-levelled pilots in specific categories: a Lancer who needs more Long experience, a melee pilot who needs more Melee before they are safe in story missions.</p>
+</div>
+<div class="phase late">
+  <div class="phase-title">Dodge Training (The Extended Match Technique)</div>
+  <p>Position a pilot in the Arena against a weakened or disarmed opponent. Use the Guard command repeatedly while the enemy attacks. Destroy the enemy's arms first to eliminate their most dangerous weapons, then Guard while they flail. Each incoming attack (hit or miss) that the pilot survives advances Dodge EXP. This technique efficiently raises Dodge skill on any pilot. Bring repair kits and keep the match going as long as safely possible before finishing.</p>
+</div>
+<div class="callout tip">
+  <div class="callout-title">Arena Build for Speed Clearing</div>
+  <p>For fast Arena cash farming: equip your lightest small Wanzer body with the largest-capacity backpack available and your highest-damage missile launcher. This build fires from range, avoids counter-fire entirely, and one or two-shots early Arena opponents. The missile platform is the fastest-clearing Arena build in the early game and reliably generates income without needing high pilot skill levels.</p>
+</div>
+<h2 class="sub-title">Named Arena Opponents</h2>
+<p>Several named Arena fighters appear at specific points in the campaign. Defeating them unlocks recruitment opportunities for some pilots &mdash; notably Gregorio Maias, who joins after Mission 8 provided you also win his specific Arena battle. Check the arena roster after every major story mission for new named challengers.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S18 -->
+<section class="section" id="s18">
+<h2 class="section-title"><span class="sec-num">&sect;18</span> Early Campaign Doctrine</h2>
+<div class="lore-block">
+  <p>The first mission the Canyon Crows took after Olson recruited us was a disaster. Not in the lethal sense &mdash; we survived &mdash; but in the sense that we made every possible mistake a newly organised mercenary unit could make: we spread out when we should have concentrated, we pushed into open ground instead of using cover, we used launchers at ranges that invited counter-fire. We learned. That is the mercy of the early campaign: the enemy is weak enough that you survive the education.</p>
+  <span class="source">// CANYON CROWS OPERATIONAL LOG &middot; ROYD CLIVE //</span>
+</div>
+<p>The early campaign (roughly Missions 1&ndash;8) is Front Mission 1st's tutorial period, even though it is never explicitly framed as such. Enemy Wanzers are relatively weak, the missions are structured to be survivable, and the game introduces its systems progressively. Use this period for exactly what it provides: safe development of habits and pilot skills that the mid and late game will demand.</p>
+<div class="phase early">
+  <div class="phase-title">Missions 1&ndash;3: System Orientation</div>
+  <p>Focus on understanding the combat system fundamentals before optimising. Deploy Royd and whoever is available; do not worry yet about optimal builds. Identify which pilots show natural strength in which weapon categories based on their first few combat results. Spend every mission clearing all enemies for maximum EXP rather than quick-clearing. Visit the Arena after Mission 2 once J.J. and Keith are available.</p>
+</div>
+<div class="phase mid">
+  <div class="phase-title">Missions 4&ndash;8: Role Assignment and Build Commitment</div>
+  <p>By Mission 4, you have enough pilots to begin deliberate role assignment. Choose a primary weapon type for each pilot and equip their Wanzer, computer, and arm selection to match it. Assign the Arena to your weakest pilot each session to catch them up. Recruit Paul after Mission 5 &mdash; this is the highest-priority recruitment event of the early game. Begin saving C-bills for mid-campaign Wanzer upgrades; the shop inventory expands significantly around Mission 8&ndash;10.</p>
+</div>
+<div class="callout warning">
+  <div class="callout-title">Early Game Pitfall &mdash; Saving Money Instead of Spending It</div>
+  <p>New players often accumulate C-bills without spending them, treating the currency as a score rather than a resource. The shop introduces new and significantly better Wanzer parts at set campaign points. When the shop upgrades, spend immediately on body upgrades for your front-line Wanzers &mdash; the HP increase from better bodies is the single most impactful upgrade available in the early campaign and it makes every subsequent mission safer.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S19 -->
+<section class="section" id="s19">
+<h2 class="section-title"><span class="sec-num">&sect;19</span> Mid &amp; Late Game</h2>
+<p>The mid-game begins roughly around Mission 10, when enemy Wanzers start carrying better weapons and the mission objectives become more complex. The late game begins around Mission 18&ndash;20, when the conspiracy at the heart of the OCU campaign becomes apparent and the enemy force composition reaches its most demanding configuration.</p>
+<h2 class="sub-title">Mid-Game Priorities</h2>
+<ul class="guide-list">
+  <li><strong>Part targeting is the tipping point.</strong> Once your front-line pilots unlock the ability to select target parts, your tactical options expand enormously. Immediately begin targeting legs as the opening priority on most enemies: an immobilised enemy cannot reposition or retreat, and a stationary target is dramatically easier to finish efficiently.</li>
+  <li><strong>Melee builds come online.</strong> Once J.J. or Gregorio have First and Stun, melee becomes the highest-damage option in your toolkit. Begin upgrading their Wanzer bodies and legs specifically and move them into the primary striker role in your combat formation.</li>
+  <li><strong>Acid Bomb becomes essential.</strong> Late mid-game enemies have heavily armoured parts. An Acid Bomb from a support Wanzer reduces all target defence values by a percentage &mdash; follow immediately with your highest-damage attacks for dramatically magnified results. Build a dedicated Acid Bomb Wanzer in your support slot.</li>
+</ul>
+<h2 class="sub-title">Late-Game Doctrine</h2>
+<p>The late campaign features enemy Wanzers with high HP, strong weapons, and competent targeting behaviour. Several missions introduce large enemy forces or waves that test sustained combat endurance. The key principle: <strong>economy of attrition</strong>. Do not let your Wanzers accumulate damage across a long mission without using the supply truck or repair items. A Wanzer at 30% body HP is significantly more vulnerable to sudden destruction than one at 70%. Use repair items aggressively rather than conserving them &mdash; they exist to be used.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S20 -->
+<section class="section" id="s20">
+<h2 class="section-title"><span class="sec-num">&sect;20</span> The UCS Campaign &mdash; Kevin Greenfield</h2>
+<div class="lore-block">
+  <p>Lieutenant Kevin Greenfield does not appear in the official records. His missions are not acknowledged. His squad is not officially constituted. If you are reading this as a field brief, it is because someone decided you needed to know that the people conducting operations on Huffman Island are not always on the books. What Kevin does, someone has to do. That does not make it easier to ask him to do it.</p>
+  <span class="source">// UCS SPECIAL FORCES ASSESSMENT &middot; CLASSIFIED ABOVE YOUR CLEARANCE LEVEL //</span>
+</div>
+<p>The UCS Campaign is the second playthrough of Front Mission 1st, added in the DS remake and included in the Remake version. It follows Lieutenant Kevin Greenfield, a UCS special forces pilot, through a series of operations that overlap with and contextualise the events of Royd's campaign from the opposing perspective.</p>
+<h2 class="sub-title">What Makes the UCS Campaign Different</h2>
+<ul class="guide-list">
+  <li><strong>Significantly harder difficulty.</strong> Kevin's campaign is designed for players who have already completed the OCU side. Enemy forces are stronger, missions are tighter, and Kevin's squad is smaller with fewer recruitment opportunities.</li>
+  <li><strong>Less character development.</strong> The UCS campaign has fewer story-driven pilot interactions than the OCU side. Kevin's squad is more an operational unit than a family of characters. The missions are cleaner and less personal.</li>
+  <li><strong>Different gear availability.</strong> The UCS shop stocks different Wanzer parts and weapons than the OCU. Some combinations available to Kevin are not available to Royd and vice versa.</li>
+  <li><strong>Moral ambiguity.</strong> Kevin is doing things that are not defensible under international law. The campaign is explicit about this. Playing through the events of Royd's campaign from Kevin's perspective recontextualises several missions in uncomfortable ways.</li>
+</ul>
+<h2 class="sub-title">UCS Campaign Strategy</h2>
+<p>Apply every lesson learned in the OCU campaign from the start. You will not have the luxury of a gentle early-game education. Prioritise immediate role assignment, consistent weapon specialisation, Arena use between every story mission, and aggressive Wanzer body upgrades from the first available shop refresh. The UCS campaign rewards players who arrive knowing the system.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S21 -->
+<section class="section" id="s21">
+<h2 class="section-title"><span class="sec-num">&sect;21</span> Advanced Tactics</h2>
+<h2 class="sub-title">The Lancer-Striker Pipeline</h2>
+<p>The most reliable damage pipeline in the game: position a Lancer (long-range) in elevated terrain at the edge of their engagement range. Fire missiles at the target's legs &mdash; once the part targeting skill is unlocked &mdash; to immobilise. Then advance the Striker (melee) into close range against the now-stationary target. The immobilised Wanzer cannot manoeuvre to avoid the melee approach and cannot retreat once legs are destroyed. This two-pilot combination efficiently eliminates high-priority targets regardless of body HP.</p>
+<h2 class="sub-title">Acid Bomb Magnification</h2>
+<p>The Acid Bomb is a support item that reduces the defence value of every part on the target Wanzer by a significant percentage. The magnification from this effect on subsequent attacks is enormous against late-game heavily armoured enemies. Dedicate one pilot's activation per turn to Acid Bomb delivery against the primary target before the rest of the squad fires. The damage output of a full squad firing at an Acid-Bombed Wanzer versus a normal one is frequently the difference between a one-turn kill and a three-turn kill on heavily armoured bodies.</p>
+<h2 class="sub-title">Formation Discipline</h2>
+<p>Never advance single units into contact with multiple enemies simultaneously. The Wanzer that charges into three enemy Wanzers alone will absorb three sets of counter-fire and likely be destroyed. Move the squad as a unit, maintaining mutual support range so that any Wanzer that engages can be backed up by at least one adjacent ally on the same or next turn. The front-line pair engages; the rear line fires over their heads from covered positions; the Lancer fires from further back. This three-tier formation is the tactical baseline for most Front Mission engagements.</p>
+<h2 class="sub-title">Targeting Priority in Open Engagements</h2>
+<p>Against a mixed enemy formation, prioritise targets in this order: <strong>Lancer-type enemies first</strong> (they fire without counter-fire risk and soften your squad every turn they operate); <strong>then mobile Strikers</strong> (they close range quickly and threaten your support pilots); <strong>then stationary gun platforms</strong> (they hurt but they cannot reposition). Focusing the squad's fire on the highest-threat target until it is destroyed, then shifting to the next, is more efficient than distributing fire evenly.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S22 -->
+<section class="section" id="s22">
+<h2 class="section-title"><span class="sec-num">&sect;22</span> Common Mistakes</h2>
+<div class="phase early">
+  <div class="phase-title">Mistake 1 &mdash; Role Inconsistency</div>
+  <p>Equipping a machine gun for three missions and then switching a pilot to launchers because "the mission needs it" produces a pilot with mediocre Short skill and mediocre Long skill and no effective combat specialty. Assign roles by Mission 3 and never deviate. Let the mission adapt to the squad, not the squad to the mission.</p>
+</div>
+<div class="phase early">
+  <div class="phase-title">Mistake 2 &mdash; Using Melee Without First</div>
+  <p>Melee builds are unfinished builds until the pilot learns First. A melee pilot who closes to range against a gun-equipped enemy absorbs a full gun attack before their rod connects. This often results in arm destruction, weapon loss, or critical body damage before the pilot contributes anything offensively. Do not put a melee pilot in the front line until First is learned.</p>
+</div>
+<div class="phase early">
+  <div class="phase-title">Mistake 3 &mdash; Neglecting Computer Matching</div>
+  <p>A short-range pilot using a computer that bonuses long-range weapons is fighting at measurably lower accuracy than they should be. Computers are inexpensive. Match them to the pilot's weapon type. Check every pilot's computer when the shop refreshes with new stock.</p>
+</div>
+<div class="phase early">
+  <div class="phase-title">Mistake 4 &mdash; Not Managing the Supply Truck</div>
+  <p>The truck is not decorative. It carries your full item stockpile and resupplies any Wanzer parked adjacent to it. New players frequently forget it exists mid-mission when a Wanzer runs out of repair items, then lose that Wanzer to attrition damage that two minutes of truck management would have prevented. Keep the truck within two hexes of your front line at all times &mdash; just outside the primary engagement zone.</p>
+</div>
+<div class="phase early">
+  <div class="phase-title">Mistake 5 &mdash; Ignoring the Arena</div>
+  <p>The Arena is not optional content. It is the primary skill development tool between missions. A squad that never uses the Arena arrives at mid-campaign missions with pilots whose skill levels are too low for the enemies they face, requiring either grinding in story missions or accepting heavier casualties than necessary. Use the Arena after every story mission without exception.</p>
+</div>
+<div class="phase early">
+  <div class="phase-title">Mistake 6 &mdash; Overspending on Weapons, Underspending on Bodies</div>
+  <p>A Wanzer with a mediocre body and excellent weapons will die before those weapons matter. The body's HP is the platform's survival foundation. When the shop refreshes, prioritise body upgrades for your front-line pilots over weapons upgrades. The weapons you have are sufficient to win &mdash; surviving to fire them is the constraint that better bodies solve.</p>
+</div>
+<div class="phase early">
+  <div class="phase-title">Mistake 7 &mdash; Missing Recruits at the Bar</div>
+  <p>Paul C. Grieber, the game's best long-range pilot, is available only after visiting the bar following Mission 5. Several other recruits have similar trigger conditions. After every mission, before opening the shop or the Arena, check the bar and the Military Ward for new character interactions. One missed visit can cost a recruit for five to ten missions.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S23 -->
+<section class="section" id="s23">
+<h2 class="section-title"><span class="sec-num">&sect;23</span> Mercenary Mode</h2>
+<p>Mercenary Mode is a feature added exclusively to the Remake &mdash; not present in any prior version of Front Mission 1st. It provides a standalone set of missions and scenarios outside of both the OCU and UCS campaigns, designed as replayable tactical content with unique challenges and rewards.</p>
+<h2 class="sub-title">What Mercenary Mode Offers</h2>
+<ul class="guide-list">
+  <li><strong>Six dedicated scenarios</strong> added via update, each independently structured with unique objectives and enemy compositions.</li>
+  <li><strong>Standalone progression:</strong> Mercenary Mode does not use the campaign's pilot roster or Wanzer inventory. Each scenario is approached fresh, testing your knowledge of the game's systems rather than your accumulated equipment advantage.</li>
+  <li><strong>Difficulty variation:</strong> Scenarios are calibrated at different challenge levels, with some designed for veterans who have completed both campaigns and want a genuine tactical test.</li>
+  <li><strong>Narrative context:</strong> Each scenario has its own brief narrative framing that expands the lore of the Second Huffman Conflict beyond what either main campaign covers.</li>
+</ul>
+<p>Mercenary Mode is the game's endgame content and the answer to the question "what do I play after finishing both campaigns?" It is not recommended for new players &mdash; the scenarios assume understanding of all game systems &mdash; but provides a compelling reason to return to the game after the campaigns are complete.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S24 -->
+<section class="section" id="s24">
+<h2 class="section-title"><span class="sec-num">&sect;24</span> Glossary</h2>
+<div class="gloss-grid">
+  <div class="gloss-item"><div class="gloss-term">Acid Bomb</div><div class="gloss-def">Support item that reduces the defence value of all parts on the target Wanzer; dramatically increases damage from subsequent attacks; essential against heavily armoured late-game enemies.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Action Points (AP)</div><div class="gloss-def">Resource that governs how far a Wanzer can move and how many actions it can take per turn; exhausted by movement and attacking; plan movement budgets before committing to approach routes.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Arena</div><div class="gloss-def">1v1 combat facility accessible between story missions; provides C-bill income, skill development, and Dodge training without permanent risk to pilots; the primary out-of-mission development tool.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Backpack</div><div class="gloss-def">Wanzer component that expands inventory capacity; allows carrying additional repair kits, grenades, and resupply items; particularly critical for launcher-equipped Wanzers that need ammo replenishment.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Body</div><div class="gloss-def">The core Wanzer component; provides the engine (weight budget), base HP, and power stat; the most important single part; always prioritise body upgrades over weapon upgrades.</div></div>
+  <div class="gloss-item"><div class="gloss-term">C-Bills</div><div class="gloss-def">In-game currency earned from missions, Arena victories, and selling salvaged equipment; used to purchase Wanzer parts, weapons, computers, and consumable items.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Canyon Crows</div><div class="gloss-def">The OCU mercenary unit Royd Clive leads throughout the OCU campaign; a mixed squad of mercenaries, discharged soldiers, and volunteers who become the player's combat formation.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Chaff Grenade</div><div class="gloss-def">Support item that reduces enemy Wanzer accuracy; useful when advancing through open terrain without cover; suppresses incoming fire on approach.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Computer</div><div class="gloss-def">Wanzer component providing bonuses to specific weapon categories (short, long, or melee); match to pilot's primary weapon type for significant accuracy improvement.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Counter-fire</div><div class="gloss-def">The defending Wanzer's automatic attack response to being attacked; occurs simultaneously with the attacker's action; eliminated if both enemy arms are destroyed.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Dodge (skill)</div><div class="gloss-def">Pilot skill category governing evasion probability; developed by being attacked (not by attacking); trained most efficiently in the Arena using the Guard technique against disarmed opponents.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Double (skill)</div><div class="gloss-def">Combat skill that fires the equipped weapon twice in a single attack; one of the highest-damage skills in the game; available for both short and long weapon categories at high level.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Engine</div><div class="gloss-def">The body component's weight capacity value; determines the maximum weight the Wanzer can carry across all parts and weapons; the fundamental constraint of all customisation decisions.</div></div>
+  <div class="gloss-item"><div class="gloss-term">First (skill)</div><div class="gloss-def">Melee combat skill that allows the pilot to strike before the enemy fires their counter-attack; essential for melee builds; without it, melee pilots absorb incoming fire before contributing damage.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Greenfield, Kevin</div><div class="gloss-def">UCS Lieutenant; protagonist of the UCS campaign; a special forces operative whose morally ambiguous missions provide the opposing-perspective view of the Second Huffman Conflict.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Grieber, Paul C.</div><div class="gloss-def">Former military chaplain; the game's premier long-range pilot; recruitable at the bar after Mission 5; should be made the primary Lancer immediately upon joining.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Guard (command)</div><div class="gloss-def">Defensive action that provides a damage-reduction bonus for the current turn; used in combination with shields for Dodge training; consumes the unit's action for the turn.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Hit (stat)</div><div class="gloss-def">Accuracy modifier provided primarily by arm components; affects weapon hit rate in addition to pilot skill level and computer bonuses; important on arms for pilots with underdeveloped skills.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Huffman Island</div><div class="gloss-def">The fictional Pacific island that is the sole land border between O.C.U. and U.C.S. territory; setting of the entire game; site of the First and Second Huffman Conflicts and the Larcus Incident.</div></div>
+  <div class="gloss-item"><div class="gloss-term">J.J.</div><div class="gloss-def">Canyon Crow pilot; joins in Mission 2; one of the best melee pilots in the OCU roster; his early availability and consistent skill growth make him the primary Striker candidate for most playthroughs.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Larcus Incident</div><div class="gloss-def">The June 3, 2090 ambush that triggered the Second Huffman Conflict; destroyed a U.C.S. munitions facility; resulted in Karen Meure's disappearance and Royd Clive's discharge from the O.C.U. military.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Lancer</div><div class="gloss-def">Pilot role specialising in long-range launcher and missile weapons; fires without provoking counter-fire; requires ammunition management; best deployed from elevated or covered positions behind the front line.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Long (skill)</div><div class="gloss-def">Pilot skill category governing launcher and missile weapon accuracy; grows through use of long-range weapons; unlocks part targeting and Double launch at high levels.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Maias, Gregorio</div><div class="gloss-def">The game's best melee pilot; joins after Mission 8 and a specific Arena victory; learns Stun at an unusually low level, providing safety for close-combat builds earlier than other melee pilots.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Melee (skill)</div><div class="gloss-def">Pilot skill category governing close-combat weapon accuracy and damage; grows through melee weapon use; key unlocks are Stun (safety) and First (initiative); requires significant development before being combat-safe.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Mercenary Mode</div><div class="gloss-def">Standalone mode exclusive to the Remake; six independently structured scenarios outside both campaigns; endgame content for veterans of both OCU and UCS playthroughs.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Meure, Karen</div><div class="gloss-def">Royd Clive's fiancee; goes missing during the Larcus Incident; the primary personal motivation for Royd's involvement in the Second Huffman Conflict and the OCU campaign's emotional core.</div></div>
+  <div class="gloss-item"><div class="gloss-term">O.C.U. (Oceania Cooperative Union)</div><div class="gloss-def">One of the two superpowers in conflict over Huffman Island; represents Southeast Asia, South Asia, and Australasia; Royd Clive's faction in the primary campaign.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Part Targeting</div><div class="gloss-def">Combat skill that allows pilots to select a specific body part to target rather than accepting random hit distribution; one of the most important general skills in the game; unlocks at intermediate skill levels in each category.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Repair Kit</div><div class="gloss-def">Consumable item that restores HP to a damaged Wanzer part; every Wanzer should carry at least one; use aggressively rather than conserving; restocked via the supply truck or shop between missions.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Royd Clive</div><div class="gloss-def">OCU Captain; protagonist of the primary campaign; discharged after the Larcus Incident; recruited to lead the Canyon Crows mercenary unit; his search for Karen Meure drives the OCU story.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Shield</div><div class="gloss-def">Defensive component equipped in an arm slot in place of a weapon; provides a chance to absorb or reduce incoming attacks; most valuable on melee builds during approach; replaced by a second weapon once pilot skill and Dodge are developed.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Short (skill)</div><div class="gloss-def">Pilot skill category governing short-range gun weapon accuracy; grows through use of machine guns, rifles, and similar weapons; machine guns are the recommended first weapon type for Short builds.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Smoke Grenade</div><div class="gloss-def">Support item that reduces enemy accuracy from range; useful on approach through open terrain; covers advancing units during the approach phase before they reach cover.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Stun (skill)</div><div class="gloss-def">Melee combat skill; successful strike may stun the target, cancelling their counter-attack; provides safety for close-combat builds; Gregorio Maias unlocks this unusually early, making him the most immediately combat-safe melee pilot.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Supply Truck</div><div class="gloss-def">Non-combat support vehicle carrying the squad's full item stockpile; any Wanzer adjacent to the truck can resupply; must be kept near the front line without being exposed to enemy fire.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Switch (skill)</div><div class="gloss-def">Combat skill allowing the pilot to swap weapons mid-attack and fire a second time in the same turn; one of the highest-damage techniques in the game when paired with two effective weapons.</div></div>
+  <div class="gloss-item"><div class="gloss-term">U.C.S. (Unified Continental States)</div><div class="gloss-def">The American superbloc; the opposing power to the O.C.U. in the Second Huffman Conflict; Kevin Greenfield's faction in the second campaign.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Wanzer</div><div class="gloss-def">Derived from the German "Wanderpanzer" (walking tank); the bipedal armoured combat machine that is the primary weapon of war in 2090; composed of six modular parts each with independent HP.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Yang Meihua</div><div class="gloss-def">Canyon Crow pilot; joins Mission 4 with her brother Yeehin; strong melee option with Short capability; the lowest long-range damage in the roster &mdash; do not assign her to launcher roles.</div></div>
+</div>
+</section>
+
+</div><!-- /content -->
+<footer id="footer">
+  Front Mission 1st: Remake &nbsp;&middot;&nbsp; Forever Entertainment / MegaPixel Studio / Square Enix &nbsp;&middot;&nbsp; Nadir Strategy Archive &nbsp;&middot;&nbsp; Huffman Island, 2090
+</footer>
+</div><!-- /main -->
+<a id="back-top" href="#hero" title="Back to top">&#8593;</a>
+<script>
+const bar=document.getElementById('progress-bar');
+const bt=document.getElementById('back-top');
+const tog=document.getElementById('sidebar-toggle');
+const sb=document.getElementById('sidebar');
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;
+  bar.style.transform=`scaleX(${s/t})`;
+  bt.classList.toggle('visible',s>400);
+},{passive:true});
+const secs=document.querySelectorAll('.section[id]');
+const navs=document.querySelectorAll('.nav-item');
+const obs=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){navs.forEach(n=>n.classList.remove('active'));const a=document.querySelector('.nav-item[href="#'+e.target.id+'"]');if(a){a.classList.add('active');a.scrollIntoView({block:'nearest'});}}});
+},{rootMargin:'-20% 0px -70% 0px'});
+secs.forEach(s=>obs.observe(s));
+tog.addEventListener('click',()=>sb.classList.toggle('open'));
+document.querySelectorAll('.nav-item').forEach(i=>i.addEventListener('click',()=>sb.classList.remove('open')));
+document.querySelectorAll('.section').forEach((s,i)=>{s.style.animationDelay=i*0.03+'s';});
+</script>
+</body>
+</html>

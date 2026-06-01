@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Front Mission 3: Remake &mdash; The MIDAS Dossier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1410;--parchment:#f5efe4;--gold:#c9943a;--gold-dark:#8b6420;--gold-pale:#f0d9a8;
+  --mid:#4a3f32;--light:#f9f4ec;--border:rgba(201,148,58,0.3);--shadow:rgba(26,20,16,0.18);
+  --steel:#161e2c;
+  --kaz:#2a1a3a;--kaz-pale:#e8d8f5;
+  --emma:#1a2f3a;--emma-pale:#d5eaf5;
+  --alisa:#1a3020;--alisa-pale:#d5f0dc;
+  --danger:#7a1a1a;--danger-pale:#f5dada;
+  --skill:#2a2a10;--skill-pale:#f5f0d0;
+  --font-head:'Cinzel','Times New Roman',serif;
+  --font-body:'Crimson Pro','Georgia',serif;
+  --sidebar-w:292px;
+}
+html{scroll-behavior:smooth;font-size:17px}
+body{background:var(--parchment);color:var(--ink);font-family:var(--font-body);line-height:1.75;display:flex;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.5}
+a{color:inherit;text-decoration:none}button{cursor:pointer;font-family:inherit}
+#progress-bar{position:fixed;top:0;left:var(--sidebar-w);right:0;height:3px;background:var(--gold);transform-origin:left;transform:scaleX(0);z-index:500;transition:transform 0.1s linear}
+#sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--steel);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;border-right:2px solid var(--gold-dark);display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--gold-dark) var(--steel)}
+#sidebar-header{padding:28px 20px 20px;border-bottom:1px solid rgba(201,148,58,0.2);background:linear-gradient(180deg,#0a0c14 0%,var(--steel) 100%)}
+#sidebar-title{font-family:var(--font-head);font-size:0.9rem;font-weight:900;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;line-height:1.3}
+#sidebar-sub{font-family:var(--font-body);font-size:0.67rem;color:rgba(255,255,255,0.38);margin-top:6px;letter-spacing:0.04em;font-style:italic}
+#sidebar-nav{padding:8px 0 40px;flex:1}
+.nav-section{padding:10px 20px 3px;font-family:var(--font-head);font-size:0.55rem;letter-spacing:0.2em;color:var(--gold-dark);text-transform:uppercase;margin-top:8px;opacity:0.85}
+.nav-item{display:block;padding:6px 20px 6px 28px;font-family:var(--font-body);font-size:0.78rem;color:rgba(245,239,228,0.62);text-decoration:none;border-left:2px solid transparent;transition:all 0.15s ease;line-height:1.35;position:relative}
+.nav-item::before{content:'&#8250;';position:absolute;left:14px;top:6px;color:var(--gold-dark);opacity:0;transition:opacity 0.12s}
+.nav-item:hover,.nav-item.active{color:var(--gold-pale);border-left-color:var(--gold);background:rgba(201,148,58,0.07);padding-left:30px}
+.nav-item:hover::before,.nav-item.active::before{opacity:1}
+#sidebar-toggle{display:none;position:fixed;top:10px;left:10px;z-index:200;background:var(--steel);border:1px solid var(--gold-dark);color:var(--gold);font-size:1.1rem;padding:5px 9px;border-radius:2px}
+#main{margin-left:var(--sidebar-w);flex:1;min-width:0}
+#hero{background:linear-gradient(160deg,#08080e 0%,#101420 40%,#180c06 75%,#080810 100%);min-height:460px;display:flex;flex-direction:column;justify-content:flex-end;padding:0 64px 64px;position:relative;overflow:hidden;border-bottom:3px solid var(--gold-dark)}
+#hero::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(-55deg,transparent,transparent 40px,rgba(201,148,58,0.025) 40px,rgba(201,148,58,0.025) 41px)}
+#hero::after{content:'';position:absolute;bottom:0;left:64px;right:64px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.hero-eyebrow{font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.28em;color:var(--gold-dark);text-transform:uppercase;margin-bottom:14px;position:relative}
+.hero-title{font-family:var(--font-head);font-size:clamp(2rem,5vw,3.6rem);font-weight:900;color:var(--parchment);letter-spacing:0.04em;text-transform:uppercase;line-height:1.05;margin-bottom:8px;position:relative}
+.hero-subtitle{font-family:var(--font-body);font-size:1.05rem;font-style:italic;color:rgba(240,217,168,0.72);font-weight:300;margin-bottom:26px;position:relative}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;position:relative}
+.hero-tag{font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-pale);border:1px solid rgba(201,148,58,0.38);padding:3px 10px;background:rgba(201,148,58,0.07)}
+#content{padding:0 64px 80px;max-width:960px}
+.section{padding:54px 0 6px;animation:fadeUp 0.45s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.sec-num{display:inline-block;font-family:var(--font-head);font-size:0.78rem;font-weight:400;letter-spacing:0.1em;color:var(--gold-dark);margin-right:0.5em;vertical-align:middle}
+.section-title{font-family:var(--font-head);font-size:clamp(1.25rem,2.4vw,1.75rem);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink);padding-bottom:12px;margin-bottom:20px;border-bottom:2px solid var(--border);position:relative}
+.section-title::after{content:'';position:absolute;bottom:-2px;left:0;width:58px;height:2px;background:var(--gold)}
+.sub-title{font-family:var(--font-head);font-size:1rem;font-weight:600;letter-spacing:0.05em;color:var(--mid);margin:26px 0 9px;text-transform:uppercase}
+p{margin-bottom:1rem;font-size:1rem}
+.guide-list{margin:0.5rem 0 1rem 1.2rem}
+.guide-list li{margin-bottom:0.5rem;font-size:1rem}
+.guide-list li::marker{color:var(--gold-dark)}
+.callout{padding:15px 20px;margin:20px 0;border-left:4px solid var(--gold);background:var(--light);border-radius:0 3px 3px 0}
+.callout.emma{border-left-color:#2a6080;background:var(--emma-pale)}
+.callout.alisa{border-left-color:#2a6030;background:var(--alisa-pale)}
+.callout.skill{border-left-color:#6a6010;background:var(--skill-pale)}
+.callout.danger{border-left-color:var(--danger);background:var(--danger-pale)}
+.callout.tip{border-left-color:#3a5c1a;background:#edf5e4}
+.callout-title{font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;margin-bottom:5px;color:var(--gold-dark)}
+.callout.emma .callout-title{color:#2a6080}
+.callout.alisa .callout-title{color:#2a6030}
+.callout.skill .callout-title{color:#6a6010}
+.callout.danger .callout-title{color:var(--danger)}
+.callout.tip .callout-title{color:#3a5c1a}
+.callout p{font-size:0.94rem;margin-bottom:0.5rem}
+.callout p:last-child{margin-bottom:0}
+.lore-block{padding:16px 20px;margin:22px 0;border:1px solid rgba(26,32,46,0.4);background:rgba(26,24,50,0.05);position:relative}
+.lore-block::before{content:'FIELD DISPATCH';position:absolute;top:-0.6rem;left:1rem;font-family:var(--font-head);font-size:0.54rem;letter-spacing:0.22em;color:#3a3070;background:var(--parchment);padding:0 0.5rem}
+.lore-block p{font-style:italic;color:#2a2852;font-size:0.94rem;line-height:1.82}
+.lore-block .source{font-family:var(--font-head);font-size:0.58rem;color:rgba(58,48,112,0.6);text-align:right;display:block;margin-top:0.6rem;letter-spacing:0.1em}
+.data-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.9rem}
+.data-table th{background:var(--steel);color:var(--gold-pale);font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;padding:8px 11px;text-align:left;border:1px solid rgba(201,148,58,0.2)}
+.data-table td{padding:7px 11px;border:1px solid var(--border);vertical-align:top;line-height:1.5;color:var(--ink)}
+.data-table tr:nth-child(even) td{background:var(--light)}
+.data-table tr:hover td{background:rgba(201,148,58,0.04)}
+.phase{padding:16px 20px;margin:14px 0;border-left:4px solid var(--gold);background:rgba(201,148,58,0.05)}
+.phase.early{border-left-color:#2a5080;background:rgba(42,80,128,0.07)}
+.phase.mid{border-left-color:var(--gold-dark);background:rgba(201,148,58,0.07)}
+.phase.late{border-left-color:#7a2a1a;background:rgba(122,42,26,0.07)}
+.phase-title{font-family:var(--font-head);font-size:0.84rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:7px;color:var(--gold-dark)}
+.phase.early .phase-title{color:#2a5080}
+.phase.late .phase-title{color:#7a2a1a}
+.phase p{font-size:0.94rem;margin-bottom:0.6rem;color:var(--ink)}
+.phase p:last-child{margin-bottom:0}
+.unit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin:16px 0}
+.unit-card{border:1px solid var(--border);background:var(--light);padding:14px 16px;border-top:3px solid var(--gold)}
+.unit-card.kazuki-card{border-top-color:#6a3080}
+.unit-card.emma-card{border-top-color:#2a6080}
+.unit-card.alisa-card{border-top-color:#2a6030}
+.unit-card.neutral-card{border-top-color:#5a4a2a}
+.unit-card.skill-card{border-top-color:#8a8020}
+.unit-name{font-family:var(--font-head);font-size:0.88rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink);margin-bottom:2px}
+.unit-type{font-family:var(--font-head);font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);margin-bottom:7px;display:block}
+.unit-card.kazuki-card .unit-type{color:#6a3080}
+.unit-card.emma-card .unit-type{color:#2a6080}
+.unit-card.alisa-card .unit-type{color:#2a6030}
+.unit-card.skill-card .unit-type{color:#7a7010}
+.unit-card p{font-size:0.88rem;line-height:1.6;color:var(--ink);margin-bottom:0}
+.orn{text-align:center;color:var(--gold);font-size:0.8rem;letter-spacing:0.35em;padding:28px 0 8px;opacity:0.65}
+.gloss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:1px;background:var(--border);margin-top:16px;border:1px solid var(--border)}
+.gloss-item{background:var(--light);padding:9px 13px;display:flex;gap:10px;align-items:flex-start}
+.gloss-item:nth-child(even){background:var(--parchment)}
+.gloss-term{font-family:var(--font-head);font-size:0.75rem;font-weight:700;color:var(--ink);white-space:normal;min-width:120px;max-width:150px;word-break:break-word;letter-spacing:0.04em;text-transform:uppercase}
+.gloss-def{font-size:0.86rem;color:var(--mid);line-height:1.55}
+#back-top{position:fixed;bottom:26px;right:26px;width:40px;height:40px;background:var(--steel);border:1px solid var(--gold-dark);color:var(--gold);font-size:1rem;display:flex;align-items:center;justify-content:center;text-decoration:none;opacity:0;transform:translateY(8px);transition:opacity 0.3s,transform 0.3s;z-index:90}
+#back-top.visible{opacity:1;transform:none}
+#back-top:hover{background:var(--gold-dark);color:var(--parchment)}
+#footer{margin-top:40px;border-top:1px solid var(--border);padding:20px 64px;font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);text-align:center}
+@media(max-width:880px){
+  :root{--sidebar-w:0px}
+  #sidebar-toggle{display:flex;align-items:center;justify-content:center}
+  #sidebar{transform:translateX(-100%);transition:transform 0.26s ease;width:264px}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  #hero,#content,#footer{padding-left:22px;padding-right:22px}
+  #progress-bar{left:0}
+  .unit-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+<button id="sidebar-toggle" aria-label="Menu">&#9776;</button>
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <div id="sidebar-title">Front Mission 3: Remake</div>
+    <div id="sidebar-sub">The MIDAS Dossier &mdash; MegaPixel Studio / Forever Entertainment</div>
+  </div>
+  <div id="sidebar-nav">
+    <div class="nav-section">The World</div>
+    <a class="nav-item" href="#s01">01 &middot; Japan 2112 &amp; the MIDAS Crisis</a>
+    <a class="nav-item" href="#s02">02 &middot; Game Overview</a>
+    <a class="nav-item" href="#s03">03 &middot; The Branching Choice</a>
+    <div class="nav-section">Core Systems</div>
+    <a class="nav-item" href="#s04">04 &middot; Combat Fundamentals</a>
+    <a class="nav-item" href="#s05">05 &middot; The Ace Rank System</a>
+    <a class="nav-item" href="#s06">06 &middot; Battle Skills</a>
+    <a class="nav-item" href="#s07">07 &middot; The Combo System</a>
+    <a class="nav-item" href="#s08">08 &middot; Terrain &amp; Range</a>
+    <div class="nav-section">Wanzer Engineering</div>
+    <a class="nav-item" href="#s09">09 &middot; Wanzer Archetypes</a>
+    <a class="nav-item" href="#s10">10 &middot; Parts: Body, Arms &amp; Legs</a>
+    <a class="nav-item" href="#s11">11 &middot; Weapons &amp; Shields</a>
+    <a class="nav-item" href="#s12">12 &middot; The Computer</a>
+    <a class="nav-item" href="#s13">13 &middot; Remodelling &amp; Upgrades</a>
+    <div class="nav-section">Pilots &amp; Campaign</div>
+    <a class="nav-item" href="#s14">14 &middot; Kazuki &amp; Ryogo</a>
+    <a class="nav-item" href="#s15">15 &middot; Emma Route: Key Pilots</a>
+    <a class="nav-item" href="#s16">16 &middot; Alisa Route: Key Pilots</a>
+    <a class="nav-item" href="#s17">17 &middot; The Network</a>
+    <a class="nav-item" href="#s18">18 &middot; The Battle Simulator</a>
+    <div class="nav-section">Strategy</div>
+    <a class="nav-item" href="#s19">19 &middot; Emma Route Strategy</a>
+    <a class="nav-item" href="#s20">20 &middot; Alisa Route Strategy</a>
+    <a class="nav-item" href="#s21">21 &middot; Early Game Doctrine</a>
+    <a class="nav-item" href="#s22">22 &middot; Mid &amp; Late Game</a>
+    <a class="nav-item" href="#s23">23 &middot; Squad Composition</a>
+    <a class="nav-item" href="#s24">24 &middot; Advanced Tactics</a>
+    <a class="nav-item" href="#s25">25 &middot; Common Mistakes</a>
+    <div class="nav-section">Reference</div>
+    <a class="nav-item" href="#s26">26 &middot; Glossary</a>
+  </div>
+</nav>
+
+<div id="main">
+<div id="hero">
+  <div class="hero-eyebrow">Nadir Strategy Archive &nbsp;&middot;&nbsp; MegaPixel Studio / Forever Entertainment &nbsp;&middot;&nbsp; Square Enix &nbsp;&middot;&nbsp; Japan, 2112</div>
+  <h1 class="hero-title">Front Mission 3: Remake</h1>
+  <p class="hero-subtitle">The MIDAS Dossier &mdash; A Complete Tactical &amp; Strategic Guide to Both Routes</p>
+  <div class="hero-tags">
+    <span class="hero-tag">Japan / DHZ 2112</span>
+    <span class="hero-tag">26 Chapters</span>
+    <span class="hero-tag">Both Routes Covered</span>
+    <span class="hero-tag">Battle Skill System</span>
+    <span class="hero-tag">Combo Doctrine</span>
+    <span class="hero-tag">All Key Pilots</span>
+    <span class="hero-tag">Full Glossary</span>
+  </div>
+</div>
+
+<div id="content">
+
+<!-- S01 -->
+<section class="section" id="s01">
+<h2 class="section-title"><span class="sec-num">&sect;01</span> Japan 2112 &amp; the MIDAS Crisis</h2>
+<div class="lore-block">
+  <p>MIDAS is not a weapon the way a rifle is a weapon. A rifle makes you capable of killing one person. MIDAS makes you capable of killing ten thousand, and the person who designed it has to live with the knowledge that she made this possible and has spent every hour since trying to ensure that she will be the last person who ever knows how it works. The problem is that she is not the only person who wants that. The problem is that everybody who knows about it wants something different and none of those things are the same as what she wants. The problem is Kazuki Takemura, who wants nothing except his sister back, and cannot seem to stop accidentally uncovering conspiracies on the way to finding her.</p>
+  <span class="source">// KIRISHIMA HEAVY INDUSTRIES INCIDENT REPORT &middot; YOKOSUKA BASE &middot; NOVEMBER 2112 //</span>
+</div>
+
+<p>Front Mission 3: Remake is set in 2112, ten years after the events of Front Mission 2. The world of 2112 is a world of superblocs and corporate militarism, where the lines between state authority and private enterprise have been eroded by decades of proxy conflicts and arms development contracts. Three powers dominate the game&apos;s political landscape: the <strong>Oceania Cooperative Union (O.C.U.)</strong>, the <strong>Unified Continental States (U.C.S.)</strong>, and the <strong>Da Han Zhong (D.H.Z.)</strong> &mdash; the Chinese successor state that has become the dominant power in the Pacific region over the preceding decade.</p>
+
+<p>Japan occupies an uncomfortable middle position in this structure. The <strong>Japanese Defense Force (J.D.F.)</strong> is technically an O.C.U. military organisation, but Japanese industrial and political interests frequently align with neither of the major blocs, particularly when Kirishima Heavy Industries &mdash; the country&apos;s largest Wanzer manufacturer &mdash; is involved. The game begins in Japan and quickly expands to encompass the Philippines, the Da Han Zhong&apos;s contested territories, and the geopolitical pressure points of an entire Pacific region in a state of armed instability.</p>
+
+<h2 class="sub-title">MIDAS: The Weapon Without Radiation</h2>
+<p><strong>MIDAS</strong> &mdash; the game&apos;s central MacGuffin and its most morally complex element &mdash; is a biological weapon developed by the U.S.N. that kills like a nuclear warhead but leaves no fallout. In a world where nuclear weapons have been made strategically self-defeating by the certainty of mutual assured destruction and environmental consequence, MIDAS represents something more dangerous: a weapon of mass destruction with no deterrent consequence for the user. Whoever holds MIDAS holds the ability to annihilate an enemy&apos;s population with no environmental penalty. Every state, corporation, and power broker in the Pacific region wants it. The scientist who created it wants to destroy it.</p>
+
+<div class="callout emma">
+  <div class="callout-title">Emir &ldquo;Emma&rdquo; Klamsky &mdash; The Weight of Creation</div>
+  <p>Dr. Emir Klamsky &mdash; universally known as Emma &mdash; is one of the few genuinely tragic figures in the Front Mission series. She did not design MIDAS as a weapon. She was a researcher whose work was appropriated by the USN military apparatus and developed into something she never intended and cannot unmake. Her arc in the game she bears her name on is not about stopping MIDAS &mdash; it is about whether the person responsible for a catastrophe can meaningfully atone for it. Front Mission 3 does not answer this cleanly. That is why it is still being discussed twenty-five years after the original release.</p>
+</div>
+
+<h2 class="sub-title">Kirishima Heavy Industries and Kazuki</h2>
+<p>Kazuki Takemura is a Wanzer test pilot for Kirishima Heavy Industries &mdash; the most prominent Japanese Wanzer manufacturer and a company with its own complicated relationship to the conflicts surrounding MIDAS. He is not a soldier. He is not an intelligence operative. He is a test pilot who accepted a delivery contract at the wrong moment, and whose determination to find his adopted sister Alisa keeps pulling him deeper into a conspiracy that most of its participants would prefer he died knowing nothing about.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S02 -->
+<section class="section" id="s02">
+<h2 class="section-title"><span class="sec-num">&sect;02</span> Game Overview</h2>
+<p>Front Mission 3: Remake is a <strong>tactical turn-based RPG</strong> developed by MegaPixel Studio and published by Forever Entertainment, released on June 26, 2025, for Nintendo Switch, PlayStation, Xbox, and PC via Steam. It is a faithful remake of the original Front Mission 3 (Squaresoft, PlayStation, 2000) &mdash; the first Front Mission title released outside Japan &mdash; with updated visuals, modern accessibility options, and the same dual-route campaign structure that made the original distinctive.</p>
+
+<p>FM3 represents a significant departure from FM2&apos;s design philosophy. Where FM2 was the series&apos; most mechanically complex and demanding entry, FM3 was deliberately designed as an accessible entry point for players new to the franchise. Missions are smaller in scale, the pace is faster, the protagonists are more emotionally expressive, and the Battle Skill system replaces FM2&apos;s AP-and-Honor mechanics with something more immediately intuitive. FM3 is easier than FM2 but not shallow &mdash; its skill and customisation systems have genuine depth that rewards players who invest in understanding them.</p>
+
+<h2 class="sub-title">What Makes FM3 Distinctive</h2>
+<table class="data-table">
+  <thead><tr><th>Feature</th><th>How FM3 Implements It</th><th>Why It Matters</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Dual Route System</strong></td><td>One early choice produces two completely different campaigns</td><td>Two full playthroughs required for the complete story; routes cover opposing sides of the same conflict</td></tr>
+    <tr><td><strong>Battle Skills</strong></td><td>100 skills learned from Wanzer parts, stored in the computer, triggered by chance based on weapon use</td><td>The core depth system; combo chains; customisation of every pilot&apos;s combat function</td></tr>
+    <tr><td><strong>Ace Rank</strong></td><td>Pilot performance rating 0&ndash;9 that expands the Battle Skill computer capacity</td><td>Higher Ace Rank = more skills per computer = more combos and passive bonuses</td></tr>
+    <tr><td><strong>Wanzer Archetypes</strong></td><td>Five part types (Assault, Gunner, Grappler, Sniper, Launcher) that can be mixed freely</td><td>No class lock; total build flexibility within weight limits</td></tr>
+    <tr><td><strong>Expanded Network</strong></td><td>In-game internet with email, forums, downloadable files, and Battle Simulator access</td><td>Critical for lore, mission tips, item acquisition, and pilot development</td></tr>
+    <tr><td><strong>Battle Simulator</strong></td><td>VR training that can be repeated infinitely for experience and skill development</td><td>Primary out-of-mission development tool; no resource cost</td></tr>
+    <tr><td><strong>Remodelling</strong></td><td>Wanzer parts can be upgraded multiple times for improved stats</td><td>Extends useful lifespan of parts; enables endgame builds from early-game favourites</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">FM3 vs. Previous Entries</h2>
+<p>Players coming from FM1 or FM2 should note that FM3 does not use the AP system or the Honor system from FM2. There is no Panic from encirclement. Movement and attack are discrete actions rather than AP-governed. The game is more approachable but compensates with depth concentrated in the Battle Skill system &mdash; a system that is, in its own way, more complex than either previous title&apos;s skill mechanics.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S03 -->
+<section class="section" id="s03">
+<h2 class="section-title"><span class="sec-num">&sect;03</span> The Branching Choice &mdash; Emma or Alisa</h2>
+<div class="lore-block">
+  <p>The question Ryogo asked was simple. He had a job to do and he wanted company on the drive. If Kazuki went with him, the explosion at Yokosuka Base happened while Kazuki was approaching from the access road. He found Emma first. If Kazuki did not go with him, he had time to check his messages before heading out. His sister sent him one. He went to find her at the base instead. He found Liu Hei Fong. The same explosion. The same conspiracy. Completely different wars. The smallest possible cause. Every consequence thereafter.</p>
+  <span class="source">// KAZUKI TAKEMURA &middot; PERSONAL LOG &middot; NOVEMBER 2112 //</span>
+</div>
+
+<p>Front Mission 3&apos;s branching system is triggered by a single dialogue choice approximately thirty minutes into the game, immediately after the tutorial mission. Ryogo Kusama asks Kazuki if he wants to accompany him to the Yokosuka Base delivery. This seemingly inconsequential decision determines which of two complete campaigns the player experiences.</p>
+
+<div class="unit-grid" style="grid-template-columns:1fr 1fr;">
+  <div class="unit-card emma-card">
+    <div class="unit-name">Emma Route (USN Path)</div>
+    <span class="unit-type">GO WITH RYOGO &middot; USN ALIGNMENT &middot; RECOMMENDED FIRST</span>
+    <p>Kazuki encounters USN intelligence operative Emma Klamsky first. The route aligns Kazuki with USN interests as they chase MIDAS through Japan and eventually into DHZ territory. More character development; introduces most of the cast&apos;s major figures; Emma&apos;s moral arc is the route&apos;s emotional centrepiece. The intended first playthrough for most players.</p>
+  </div>
+  <div class="unit-card alisa-card">
+    <div class="unit-name">Alisa Route (DHZ Path)</div>
+    <span class="unit-type">REFUSE RYOGO &middot; DHZ ALIGNMENT &middot; RECOMMENDED SECOND</span>
+    <p>Kazuki checks his email first and goes to find his sister Alisa at the base. The route aligns him with DHZ intelligence and the Hua Lian resistance. Harder than the Emma route in specific missions; provides the opposing perspective on every shared event; the Alisa route&apos;s unique pilot Miho Shinjo is available only here. Complete the Emma route first to understand the full picture.</p>
+  </div>
+</div>
+
+<h2 class="sub-title">What Changes Between Routes</h2>
+<p>The two routes share the same protagonist (Kazuki), the same best friend (Ryogo), and the same antagonist conspiracy (MIDAS). They diverge on:</p>
+<ul class="guide-list">
+  <li><strong>Allies:</strong> Emma and her USN connections in the Emma route; Alisa and DHZ agent Liu Hei Fong in the Alisa route.</li>
+  <li><strong>Enemies:</strong> The Emma route fights DHZ forces extensively; the Alisa route fights JDF and USN forces extensively. The same factions appear on opposite sides.</li>
+  <li><strong>Available Wanzers:</strong> Some Wanzer models are exclusive to one route. The Alisa route gives access to the Meledyne M1 (Alisa&apos;s Wanzer), whose parts teach skills unavailable in the Emma route.</li>
+  <li><strong>Missions:</strong> Many missions are unique to each route; some are mirror versions (defend vs. attack the same location from opposing sides).</li>
+  <li><strong>Endings:</strong> Both routes converge on the same fundamental resolution but with meaningfully different character outcomes.</li>
+</ul>
+
+<div class="callout tip">
+  <div class="callout-title">Play Order Recommendation</div>
+  <p>Play the Emma route first. It has more narrative scaffolding, introduces the story&apos;s conspiracy elements more gradually, and provides better character development for Emma specifically &mdash; whose arc is the game&apos;s moral centrepiece. The Alisa route then works as a complement: you understand what the DHZ was trying to do because you watched it from the USN perspective first. The reverse order works, but many Alisa route events are more impactful with the Emma route&apos;s perspective already established.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S04 -->
+<section class="section" id="s04">
+<h2 class="section-title"><span class="sec-num">&sect;04</span> Combat Fundamentals</h2>
+<div class="lore-block">
+  <p>A Wanzer test pilot learns the machine before they learn the war. Kazuki had been trained by Kirishima engineers who considered combat simulations a distraction from the real work of understanding power-to-weight ratios and actuator response curves. This turned out to be genuinely useful when the real work became keeping himself alive while the actuators engaged real targets. Kirishima&apos;s philosophy was correct: understand the machine first. Everything else follows from that.</p>
+  <span class="source">// KAZUKI TAKEMURA &middot; KIRISHIMA HEAVY INDUSTRIES PILOT EVALUATION LOG //</span>
+</div>
+
+<p>Front Mission 3 uses a grid-based turn-based tactical structure. Units take turns moving and attacking. Each unit may move and then attack (or attack then move in some builds), with terrain affecting both movement cost and combat accuracy. The system is cleaner and more accessible than FM2 but supports substantial tactical depth through the Battle Skill and combo mechanics.</p>
+
+<h2 class="sub-title">Turn Structure</h2>
+<p>Each turn, a unit may:</p>
+<ul class="guide-list">
+  <li><strong>Move:</strong> Up to the unit&apos;s movement range, modified by terrain. Movement is free and does not limit weapon use.</li>
+  <li><strong>Attack:</strong> Fire or strike an enemy unit within weapon range. The attack resolves immediately; Battle Skills trigger probabilistically based on the computer&apos;s activation rate.</li>
+  <li><strong>Use an item:</strong> Repair kits and support items can be used instead of attacking.</li>
+  <li><strong>Guard:</strong> Reduce incoming damage at the cost of the turn&apos;s action.</li>
+</ul>
+
+<h2 class="sub-title">Counter-fire</h2>
+<p>When attacked, enemy units typically fire back. Counter-fire is resolved simultaneously and can damage your attacking unit. Counter-fire is prevented if the enemy&apos;s arms are destroyed (no weapons). This makes arm destruction a priority tactical objective against heavily armed opponents.</p>
+
+<h2 class="sub-title">Helicopters and Special Units</h2>
+<p>Some missions include aerial units (helicopters) and non-Wanzer ground units (tanks, trucks, infantry on foot). Helicopters are immune to low-trajectory weapons &mdash; most melee and shotgun attacks cannot hit them at their operational altitude. Use missiles, rifles, or dedicated anti-air weapons against helicopters. They can be one of the most frustrating early-game threats because new players try to attack them with the wrong weapon types and wonder why nothing connects.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S05 -->
+<section class="section" id="s05">
+<h2 class="section-title"><span class="sec-num">&sect;05</span> The Ace Rank System</h2>
+<p>The Ace Rank is FM3&apos;s primary pilot progression metric, replacing FM2&apos;s Honor and skill-slot system. It measures combat performance through a 0&ndash;9 scale, with higher ranks unlocking larger Battle Skill computers and access to more powerful passive and active skill configurations.</p>
+
+<h2 class="sub-title">How Ace Rank Works</h2>
+<p>Pilots earn experience points through combat actions. As the rank rises from 0 to 9, the pilot&apos;s overall performance improves and &mdash; most critically &mdash; their <strong>computer slot count increases</strong>. A pilot with a higher Ace Rank can store more Battle Skills in their computer simultaneously, which translates directly into more frequent combos, more powerful passive bonuses, and more tactical flexibility in every engagement.</p>
+
+<table class="data-table">
+  <thead><tr><th>Ace Rank</th><th>Computer Slots Available</th><th>Effective Impact</th></tr></thead>
+  <tbody>
+    <tr><td>0&ndash;1</td><td>2&ndash;3</td><td>Limited skill selection; basic combos only; fragile builds</td></tr>
+    <tr><td>2&ndash;3</td><td>4</td><td>Standard combat capability; two-skill combos reliable</td></tr>
+    <tr><td>4&ndash;5</td><td>5&ndash;6</td><td>Mid-game competent; three-skill combo chains possible</td></tr>
+    <tr><td>6&ndash;7</td><td>7&ndash;8</td><td>Strong; consistent combos; can stack multiple ROF1up or defensive passives</td></tr>
+    <tr><td>8&ndash;9</td><td>9+</td><td>Maximum capability; full combo chains; devastating output; late-game endgame builds</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Maximising Ace Rank Growth</h2>
+<p>Ace Rank advances through combat experience. Key principles:</p>
+<ul class="guide-list">
+  <li><strong>Part destruction earns more EXP than damage alone.</strong> Deliberately targeting and destroying individual parts (arms, legs, body separately) rather than rush-killing enemies provides more total EXP. The Battle Simulator (Chapter 18) exploits this efficiently.</li>
+  <li><strong>Use the Battle Simulator between missions.</strong> It is available after a certain early-game unlock, provides free EXP without mission risk, and can be repeated as many times as needed. Running it consistently ensures your pilots stay ahead of enemy power scaling.</li>
+  <li><strong>Distribute kills across the squad.</strong> A pilot who never acts falls behind in Ace Rank. Ensure every pilot participates in each mission, even if only to finish weakened enemies or destroy isolated parts.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S06 -->
+<section class="section" id="s06">
+<h2 class="section-title"><span class="sec-num">&sect;06</span> Battle Skills &mdash; The Heart of FM3</h2>
+<div class="lore-block">
+  <p>The engineers at Kirishima called them &ldquo;instinctive combat subroutines.&rdquo; The pilots called them &ldquo;the thing that happens when you stop thinking and your Wanzer starts doing what it was built to do.&rdquo; Both descriptions are technically accurate. The computer runs the calculation. The pilot provides the intent. The skill is the intersection of those two things at the moment of maximum stress. That is what the Battle Computer is trying to encode. Most of the time it works. Most of the time is enough.</p>
+  <span class="source">// KIRISHIMA HEAVY INDUSTRIES WANZER SYSTEMS DOCUMENTATION &middot; COMPUTER MODULE SERIES //</span>
+</div>
+
+<p>Battle Skills are FM3&apos;s defining mechanical layer. There are approximately 100 distinct skills, each providing a specific combat benefit. Skills are <strong>learned from Wanzer parts</strong> during combat encounters, <strong>stored in the pilot&apos;s computer</strong>, and <strong>triggered probabilistically</strong> based on the computer&apos;s activation rate when the associated weapon type is used. Understanding this system fully is the prerequisite for all advanced play.</p>
+
+<h2 class="sub-title">How Battle Skills Are Learned</h2>
+<p>Specific Wanzer parts have associated Battle Skills. When a pilot uses a part in combat, there is a chance they will learn the skill attached to that part. Once learned, the skill is permanently available to be programmed into any of that pilot&apos;s computer slots. Skills are learned through combat &mdash; repeated use of the part increases the chance of learning &mdash; and can also be trained deliberately in the Battle Simulator.</p>
+<p>This creates a compelling incentive to maintain the same Wanzer parts across multiple missions even when upgraded alternatives exist: a part with a highly valuable skill should not be replaced until the skill has been learned.</p>
+
+<h2 class="sub-title">How Skills Trigger</h2>
+<p>Each pilot&apos;s computer has a base <strong>activation rate</strong> that determines the probability of a stored skill triggering during any given attack. Computers with higher activation rates produce skills more frequently. When a skill triggers, it executes as part of the attack sequence &mdash; potentially chaining into the next skill if the conditions align, producing a combo.</p>
+
+<h2 class="sub-title">Essential Skills Reference</h2>
+<div class="unit-grid">
+  <div class="unit-card skill-card">
+    <div class="unit-name">ROF1up / ROF2up</div>
+    <span class="unit-type">RATE OF FIRE &middot; 1&ndash;2 SLOTS &middot; UNIVERSAL</span>
+    <p>Rate of fire increase: fires the weapon one or two additional times per attack. The foundation of most effective combo chains. Stack multiple copies of ROF1up in 1-slot configurations for consistent multi-hit combos. Ryogo learns ROF1up from his starting Wanzer. Prioritise this above almost any other early skill.</p>
+  </div>
+  <div class="unit-card skill-card">
+    <div class="unit-name">Shield Atk-I / II</div>
+    <span class="unit-type">SHIELD ATTACK &middot; 1&ndash;2 SLOTS &middot; MELEE + SHIELD</span>
+    <p>Attacks with the equipped shield as a weapon, dealing significant bonus damage. Requires both a melee weapon equipped AND a functional shield. One of the highest-damage skills per slot in the game. Pham Luis and her Zeros Wanzer teach this skill. Stack Shield Atk-I (1 slot) for optimal efficiency.</p>
+  </div>
+  <div class="unit-card skill-card">
+    <div class="unit-name">Stun Punch</div>
+    <span class="unit-type">STATUS &middot; 1 SLOT &middot; MELEE</span>
+    <p>Strikes the enemy and has a chance to stun the pilot, preventing counter-attack. One of the best single-slot melee skills; chains well with Shield Atk and other melee combos. From the Kasel M2 arm. Activate frequently; even a 30% stun rate changes the outcome of melee engagements significantly.</p>
+  </div>
+  <div class="unit-card skill-card">
+    <div class="unit-name">Dbl Shot-I / II</div>
+    <span class="unit-type">DOUBLE SHOT &middot; 1&ndash;2 SLOTS &middot; RIFLE</span>
+    <p>Fires the rifle twice in one attack. The rifle equivalent of ROF1up. Particularly strong on high-accuracy rifle builds because each shot benefits from the accuracy bonus. Liu Hei Fong&apos;s Shangdi learns this. Combined with a beam weapon in the late game, Double Shot produces devastating single-activation damage.</p>
+  </div>
+  <div class="unit-card skill-card">
+    <div class="unit-name">Skill+1up / 2up / 3up</div>
+    <span class="unit-type">SKILL RANK BOOST &middot; 1&ndash;3 SLOTS &middot; UNIVERSAL</span>
+    <p>Increases the weapon&apos;s damage rank by 1, 2, or 3 for the triggering attack. Powerful multiplicative damage bonus; stacks with other skills. The Alisa route&apos;s Meledyne M1 legs teach Skill+1up. Skill+3up takes three slots which is significant cost &mdash; Skill+1up (1 slot) is usually the better investment per slot.</p>
+  </div>
+  <div class="unit-card skill-card">
+    <div class="unit-name">Toppleshot</div>
+    <span class="unit-type">KNOCKBACK &middot; 2 SLOTS &middot; MOST WEAPONS</span>
+    <p>Knocks the enemy Wanzer back, simultaneously dealing damage and reducing their position advantage. Works on regular Wanzers (not helicopters or armoured vehicles). Useful for pushing enemies out of cover positions. Combine with Offensive skills for simultaneous attack and disruption. Available via specific computers.</p>
+  </div>
+  <div class="unit-card skill-card">
+    <div class="unit-name">AP 30%</div>
+    <span class="unit-type">AMMO RESTORE &middot; CONDITIONAL &middot; MISSILE</span>
+    <p>Activates when the equipped weapon is at 30% ammo, instantly restoring its ammunition to full. The enabler of infinite missile builds on pilots with a high-activation computer. Combined with a slow-firing but high-damage launcher, AP 30% allows essentially unlimited heavy fire for the entire mission. Very niche but extremely powerful in the right build.</p>
+  </div>
+  <div class="unit-card skill-card">
+    <div class="unit-name">Salvo</div>
+    <span class="unit-type">ALL MISSILES &middot; CONDITION-BASED &middot; MISSILE</span>
+    <p>Fires ALL remaining missiles in the launcher at once in a devastating volley. Spectacular damage on the triggering turn; then the missile rack is empty. Pairs with AP 30% to create a cycle where the rack refills, then empties again catastrophically. More a situational weapon than a sustained build cornerstone, but an entertaining and effective one at the right moment.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S07 -->
+<section class="section" id="s07">
+<h2 class="section-title"><span class="sec-num">&sect;07</span> The Combo System</h2>
+<div class="lore-block">
+  <p>The engineers documented the combo activation cascade as &ldquo;sequential skill chain execution.&rdquo; Ryogo described it differently. &ldquo;You hit them once,&rdquo; he said, &ldquo;and then your Wanzer decides that once was not enough and keeps going.&rdquo; The computer only runs the probability calculations. The pilot has to have set up the computer correctly for those probabilities to cascade instead of stutter. Getting it right is the entire game.</p>
+  <span class="source">// RYOGO KUSAMA &middot; PERSONAL NOTES ON WANZER COMPUTER PROGRAMMING //</span>
+</div>
+
+<p>The Combo System is what separates FM3&apos;s Battle Skill system from a simple buff list. When a skill triggers during an attack, it creates a condition in which the <strong>next skill in the computer may also trigger</strong>, and so on down the chain. A well-designed computer can produce two, three, or even four sequential skill activations in a single attack &mdash; dramatically multiplying damage output and applying multiple status effects simultaneously.</p>
+
+<h2 class="sub-title">Building Combo Chains</h2>
+<p>The principles of effective combo chain design:</p>
+<ul class="guide-list">
+  <li><strong>Fill slots with 1-slot skills wherever possible.</strong> A computer with nine 1-slot skills can trigger nine activations in a chain. A computer with three 3-slot skills can trigger at most three. The same total slot count provides far more combo potential in single-slot increments. ROF1up is the ideal 1-slot skill precisely because it creates additional firing opportunities that can trigger further skills.</li>
+  <li><strong>Understand activation conditions.</strong> Some skills require specific weapon types to be equipped (&ldquo;condition: melee&rdquo;, &ldquo;condition: no grenades&rdquo;). A computer filled with skills whose conditions the pilot&apos;s loadout satisfies will activate far more reliably than one with skills whose conditions are partially met. Match computer contents to weapon loadout explicitly.</li>
+  <li><strong>The computer&apos;s activation rate is the baseline multiplier.</strong> A computer with 60% activation rate means each skill has a 60% independent chance to trigger. Higher activation rate computers produce more reliable chains. Invest in high-activation computers as a priority hardware upgrade.</li>
+  <li><strong>Offensive skills chain with each other under standard conditions.</strong> Damage-dealing skills (ROF1up, Dbl Shot, Shield Atk, Skill+Xup) chain freely. Skills with special conditions (stun, knockback) may have their own chain rules. Stack your primary damage delivery skills together.</li>
+</ul>
+
+<div class="callout skill">
+  <div class="callout-title">The ROF1up Stack &mdash; The Optimal Early Build</div>
+  <p>The most reliable early-to-mid game combo configuration: fill every available computer slot with ROF1up (1 slot each). At a computer with 60% activation rate and four slots of ROF1up, Ryogo&apos;s machine gun fires an average of 3.2 times per activation &mdash; hitting different parts each time, accumulating damage to multiple components, and earning EXP for every separate hit. This is the simplest expression of FM3&apos;s combo philosophy and it is effective for most of the campaign. Ryogo specifically learns ROF1up from his starting Wanzer, making him the natural first demonstration pilot.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S08 -->
+<section class="section" id="s08">
+<h2 class="section-title"><span class="sec-num">&sect;08</span> Terrain &amp; Range</h2>
+<p>FM3 retains terrain effects from the previous entries. Each map hex has a terrain type affecting movement cost and accuracy modifiers for both attacker and defender. The tactical principle is identical to FM1 and FM2: seek cover for defensive positions; contest elevation for offensive ones.</p>
+
+<h2 class="sub-title">Terrain Effects</h2>
+<table class="data-table">
+  <thead><tr><th>Terrain</th><th>Movement</th><th>Defensive Bonus</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Clear / Road</strong></td><td>Normal</td><td>None</td><td>Maximum speed; no protection; use only for transit</td></tr>
+    <tr><td><strong>Forest / Jungle</strong></td><td>Slow</td><td>High accuracy penalty for attackers</td><td>Best available cover in outdoor missions; weight-restricted movement</td></tr>
+    <tr><td><strong>Elevated Ground</strong></td><td>Moderate</td><td>Accuracy bonus when firing down</td><td>Contest elevation for snipers and missile platforms; attacks downhill are more accurate</td></tr>
+    <tr><td><strong>Urban Cover</strong></td><td>Variable</td><td>Moderate</td><td>Reliable cover in city missions; controls movement corridors</td></tr>
+    <tr><td><strong>Water</strong></td><td>Impassable</td><td>N/A</td><td>Channels movement; define chokepoints</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Weapon Range Classes</h2>
+<p>FM3 weapons have distinct range bands that strongly influence tactical positioning:</p>
+<ul class="guide-list">
+  <li><strong>Melee:</strong> Adjacent hex only. Highest damage per contact. Requires advancing into counter-fire range. First Strike equivalent skill (Stun Punch, Shield Atk) provides pre-emptive strike advantage.</li>
+  <li><strong>Shotgun / Machine Gun:</strong> Short range, 1&ndash;3 hexes. Multi-hit; can reach multiple parts. Standard forward-engagement weapon for most Assault and Gunner builds.</li>
+  <li><strong>Rifle / Beam:</strong> Medium to long range. Single high-damage shot. Accuracy dependent on arm type and computer. Sniper-type pilots use these as primary weapons.</li>
+  <li><strong>Missiles / Launchers:</strong> Long range; no counter-fire provocation from outside threshold. Area variant launchers affect multiple hexes. Requires ammo management. Helicopter-effective.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S09 -->
+<section class="section" id="s09">
+<h2 class="section-title"><span class="sec-num">&sect;09</span> Wanzer Archetypes</h2>
+<div class="lore-block">
+  <p>Kirishima&apos;s design philosophy was that no single Wanzer type should be definitively superior to another in all conditions. An Assault frame with a melee weapon closes faster and hits harder at contact range. A Launcher frame carries more missiles and can engage before the enemy knows it exists. A Gunner frame provides the best sustained-fire accuracy. A Grappler frame is the fastest and most mobile. A Sniper frame has the longest effective range. The question is not which type is best. The question is which conditions your next mission will reward, and whether your pilot has what the conditions require.</p>
+  <span class="source">// KIRISHIMA HEAVY INDUSTRIES WANZER DESIGN PHILOSOPHY DOCUMENTATION //</span>
+</div>
+
+<p>FM3 introduces five Wanzer part archetypes &mdash; Assault, Gunner, Grappler, Sniper, and Launcher &mdash; that broadly correspond to combat roles. Crucially, <strong>any part from any archetype can be combined with any other</strong>, subject only to the weight budget of the body. This is the source of FM3&apos;s build flexibility: there is no class system, only a weight budget and a set of trade-offs.</p>
+
+<div class="unit-grid">
+  <div class="unit-card neutral-card">
+    <div class="unit-name">Assault</div>
+    <span class="unit-type">ARCHETYPE &middot; HIGH HP &middot; HIGH MOVEMENT</span>
+    <p>High HP; high movement range; standard weapons capability. The all-rounder archetype. Kazuki&apos;s starting Zenislev body is an Assault-class frame with outstanding HP for its tier. Best for front-line brawlers who need to take hits while closing range. Assault bodies provide excellent HP per weight unit.</p>
+  </div>
+  <div class="unit-card neutral-card">
+    <div class="unit-name">Gunner</div>
+    <span class="unit-type">ARCHETYPE &middot; HIGH ACCURACY &middot; MID-RANGE</span>
+    <p>Arms with Hit bonuses; optimised for machine gun and rifle fire at mid-range. Emma&apos;s natural archetype; strong sustained fire in consistent engagements. Lower HP than Assault but better accuracy bonuses. The most versatile archetype for players who want reliable performance without extreme specialisation.</p>
+  </div>
+  <div class="unit-card neutral-card">
+    <div class="unit-name">Grappler</div>
+    <span class="unit-type">ARCHETYPE &middot; HIGHEST MOVEMENT &middot; LIGHTEST WEIGHT</span>
+    <p>Maximum mobility; lowest engine capacity (cannot carry heavy weapons). Ideal for melee builds where weapon weight is minimal and movement is the primary constraint. Some of the most powerful melee skills come from Grappler-class arms. The Grappler approach: get there first, hit hardest, rely on combo chains for burst damage.</p>
+  </div>
+  <div class="unit-card neutral-card">
+    <div class="unit-name">Sniper</div>
+    <span class="unit-type">ARCHETYPE &middot; ACCURACY &middot; LONG RANGE</span>
+    <p>Maximum accuracy bonuses; arms designed for rifles and beam weapons. Lower HP; intended to engage from distance where counter-fire is limited or absent. Liu Hei Fong is the natural Sniper archetype pilot. Rifle + Dbl Shot + high-activation computer on a Sniper arm produces excellent long-range sustained damage.</p>
+  </div>
+  <div class="unit-card neutral-card">
+    <div class="unit-name">Launcher</div>
+    <span class="unit-type">ARCHETYPE &middot; HEAVIEST ENGINE &middot; MAXIMUM PAYLOAD</span>
+    <p>Highest engine output; can carry the heaviest weaponry including large missile launchers. Slowest movement. Emma&apos;s USN connections give the Emma route preferential access to Launcher-class parts and weapons. Position Launcher Wanzers on elevation at mission start; they do not need to move if correctly deployed.</p>
+  </div>
+</div>
+
+<h2 class="sub-title">Mixing Archetypes</h2>
+<p>The freedom to mix archetypes is FM3&apos;s most powerful design feature. A Grappler body (high movement) with Sniper arms (accuracy) gives a fast-moving accurate shooter. An Assault body (high HP) with Launcher arms (missile capacity) gives a durable missile carrier. A Gunner body with Grappler legs (high movement) gives an accurate mid-range fighter with excellent repositioning. Experiment within weight limits; the best builds often involve non-obvious cross-archetype combinations.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S10 -->
+<section class="section" id="s10">
+<h2 class="section-title"><span class="sec-num">&sect;10</span> Parts: Body, Arms &amp; Legs</h2>
+<h2 class="sub-title">The Body</h2>
+<p>The body provides <strong>HP, engine capacity (weight budget), and base movement</strong>. Its primary archetype determines weight capacity: Launcher bodies carry the most, Grappler bodies the least. When choosing a body:</p>
+<ul class="guide-list">
+  <li>Prioritise HP for front-line pilots who will absorb incoming fire.</li>
+  <li>Engine capacity determines the entire build&apos;s flexibility. A higher-engine body opens more options.</li>
+  <li>The body is also the source of some Battle Skills &mdash; check what skill a body teaches before selling or replacing it.</li>
+</ul>
+<p>Kazuki&apos;s starting Zenislev body has exceptional HP for its tier &mdash; it is one of the best bodies available in the early game and justifies keeping it until a clear upgrade is available. Do not replace it simply because newer models exist; check the HP comparison carefully.</p>
+
+<h2 class="sub-title">Arms</h2>
+<p>Arms hold weapons and provide accuracy bonuses (Hit stat). Each arm has a weapon slot and optionally a shield slot if the arm supports it. The arm&apos;s archetype affects accuracy &mdash; Sniper arms have the highest Hit bonuses, Grappler arms have the lowest but weigh less.</p>
+<ul class="guide-list">
+  <li><strong>Match arm type to weapon role.</strong> A Sniper arm with a machine gun wastes the accuracy bonus; a Grappler arm with a rifle underperforms on accuracy. Build intentionally.</li>
+  <li><strong>Arm HP is the buffer protecting your weapons.</strong> Destroyed arms lose weapons. Keep arm HP adequate on front-line pilots.</li>
+  <li><strong>Both arms can hold weapons or one weapon and one shield.</strong> The weapon-plus-shield configuration provides defensive bonuses and enables Shield Attack skills. The dual-weapon configuration maximises firepower.</li>
+</ul>
+
+<h2 class="sub-title">Legs</h2>
+<p>Legs determine movement range. Higher-movement legs allow greater tactical repositioning each turn. Leg HP is the first component to be targeted by enemies who want to immobilise you. Key leg priorities:</p>
+<ul class="guide-list">
+  <li>Forward scouts and melee pilots need maximum movement to close range before acting.</li>
+  <li>Missile and rifle platforms can accept lower movement if deployed in good initial positions.</li>
+  <li>Some of the game&apos;s most valuable Battle Skills are learned from specific leg models &mdash; the Alisa route&apos;s Meledyne M1 legs teach Skill+1up, unavailable in the Emma route without significant effort.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S11 -->
+<section class="section" id="s11">
+<h2 class="section-title"><span class="sec-num">&sect;11</span> Weapons &amp; Shields</h2>
+<p>FM3 has a wider weapon variety than either FM1 or FM2. Weapons are equipped in arm slots and interact with the Battle Skill system through their associated conditions. Choosing the right weapon for a pilot&apos;s skill package is as important as choosing the right weapon for the tactical situation.</p>
+
+<h2 class="sub-title">Weapon Categories</h2>
+<table class="data-table">
+  <thead><tr><th>Category</th><th>Range</th><th>Characteristics</th><th>Best For</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Melee (Rods, Fists)</strong></td><td>Adjacent</td><td>Highest per-hit damage; light weight; no ammo; enables Stun/Shield skills</td><td>Grappler/Assault builds; Kazuki&apos;s preferred engagement range</td></tr>
+    <tr><td><strong>Machine Gun</strong></td><td>Short (1&ndash;3)</td><td>Multi-hit burst; good accuracy; no ammo limit; enables ROF chain combos</td><td>Most Gunner builds; Ryogo&apos;s primary weapon throughout the game</td></tr>
+    <tr><td><strong>Shotgun</strong></td><td>Short (1&ndash;2)</td><td>High damage per shot; lower accuracy; limited arc; useful on Assault bodies</td><td>Close-range front-liners who can&apos;t reliably reach melee</td></tr>
+    <tr><td><strong>Rifle / Beam</strong></td><td>Medium&ndash;Long</td><td>High single-shot damage; excellent accuracy; beam variants ignore some defences</td><td>Sniper builds; Liu Hei Fong; late-game precision damage</td></tr>
+    <tr><td><strong>Missiles / Launchers</strong></td><td>Long</td><td>No counter-fire from range; ammo-dependent; area variants hit multiple hexes; helicopter-effective</td><td>Emma (route) and dedicated Launcher builds; helicopter engagement</td></tr>
+    <tr><td><strong>Grenade Launcher</strong></td><td>Medium (arc)</td><td>Area damage; targets multiple hexes; some skills require &ldquo;no grenade&rdquo; condition</td><td>Crowd control; disrupting clustered enemies; niche builds</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Shields</h2>
+<p>Shields occupy one arm slot (the arm must support a shield slot). They provide passive damage reduction and enable Shield Attack skills when combined with melee weapons. The community consensus across decades of FM3 play is that <strong>shields are worth equipping on most front-line pilots</strong> due to the combination of passive damage reduction and the power of Shield Atk-I (1 slot, high damage, chains effectively).</p>
+
+<div class="callout tip">
+  <div class="callout-title">Shield Configuration Recommendation</div>
+  <p>The most reliable general configuration for front-line Assault or Grappler builds: melee weapon in one arm, shield in the other arm. Equip a computer with Shield Atk-I (1 slot each, fill available slots). This provides passive defensive reduction, offensive Shield Attack chains on every melee combo, and the Stun Punch option if the arm teaches it. A pilot built this way with a high-activation computer and 5+ Ace Rank is one of the most consistent damage dealers in the game&apos;s first half.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S12 -->
+<section class="section" id="s12">
+<h2 class="section-title"><span class="sec-num">&sect;12</span> The Computer</h2>
+<p>The Battle Computer is the interface between a pilot&apos;s learned skills and their combat application. It has two core properties: the number of <strong>slots</strong> (determined by pilot Ace Rank and the specific computer model) and the <strong>activation rate</strong> (percentage chance each stored skill triggers during an attack).</p>
+
+<h2 class="sub-title">Computer Selection Principles</h2>
+<ul class="guide-list">
+  <li><strong>High activation rate is the primary selection criterion.</strong> A computer with 8 slots and 40% activation rate will trigger fewer skills per combat than a computer with 6 slots and 65% activation rate. Activation rate determines how reliably your combos execute; slot count determines how many can be stored.</li>
+  <li><strong>Match the computer to the Ace Rank.</strong> Higher Ace Rank pilots can use computers with more slots. Equipping a high-slot computer on a low-Ace-Rank pilot wastes the capacity; the pilot cannot fill all the slots yet. Match slot count to current available skills.</li>
+  <li><strong>Check for computer-specific skills.</strong> Some computers have built-in skills (sometimes called &ldquo;normal COM skills&rdquo;) that trigger independently of the programmed slots. These are bonuses on top of your configured skills; factor them into computer comparison.</li>
+</ul>
+
+<h2 class="sub-title">Programming the Computer</h2>
+<p>After learning skills from Wanzer parts, they are programmed into the computer&apos;s slots manually. The order matters: skills at the top of the slot list have a higher chance to trigger first. If you want a specific skill to initiate your combo chain (rather than terminate it), place it in the highest priority slot position.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S13 -->
+<section class="section" id="s13">
+<h2 class="section-title"><span class="sec-num">&sect;13</span> Remodelling &amp; Upgrades</h2>
+<p>The Remodelling system allows Wanzer parts to be upgraded at the shop, improving their stats &mdash; HP, Hit, movement &mdash; beyond their base values. Each part can typically be upgraded multiple times, with each tier providing a stat increase and sometimes unlocking additional Battle Skills.</p>
+
+<h2 class="sub-title">Remodelling Strategy</h2>
+<ul class="guide-list">
+  <li><strong>Remodel parts that teach valuable skills before replacing them.</strong> If a body part teaches Tackle-I and you have not yet learned it, upgrade the part to increase the chance of learning the skill before discarding it for a newer model.</li>
+  <li><strong>Focus remodelling resources on your primary combat pilots&apos; key components.</strong> Upgrading Kazuki&apos;s Zenislev body HP extends its viability significantly beyond what its base stats suggest. Remodelling is often more cost-effective than a full part replacement, especially early in the campaign when new shop inventory is expensive.</li>
+  <li><strong>Remodel legs for movement if movement is a constraint.</strong> Extra movement range on melee pilots is often worth more than equivalent resources spent on accuracy upgrades for rear-line shooters.</li>
+</ul>
+
+<div class="callout tip">
+  <div class="callout-title">The Upgrade vs. Replace Decision</div>
+  <p>When a new Wanzer part becomes available, compare: new part base stats vs. current part remodelled stats vs. new part after its first remodel. Often, a current part at maximum remodel tier is competitive with or superior to a new part at base tier, while costing significantly less. Only replace when the new part&apos;s stats clearly exceed the current part at comparable investment level, or when the new part teaches a skill you need.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S14 -->
+<section class="section" id="s14">
+<h2 class="section-title"><span class="sec-num">&sect;14</span> Kazuki &amp; Ryogo &mdash; The Constants</h2>
+<div class="lore-block">
+  <p>Kazuki&apos;s primary motivation never changes in either route. Find Alisa. Stop MIDAS. Keep Ryogo alive. He acquired these goals in the order they presented themselves and they have not left him since. The geopolitics he can barely follow. The corporations he does not trust. The military alliances he finds disposable. What he will not compromise on is the list. Three items. Everything else is logistics.</p>
+  <span class="source">// RYOGO KUSAMA &middot; PERSONAL JOURNAL &middot; EMMA ROUTE, WEEK FOUR //</span>
+</div>
+
+<p>Kazuki Takemura and Ryogo Kusama are the two constants across both routes. They begin together, travel together, and end together regardless of which campaign is played. Their starting Wanzers, starting skills, and base combat specialisations establish the squad&apos;s foundation before any route-specific pilots join.</p>
+
+<table class="data-table">
+  <thead><tr><th>Pilot</th><th>Starting Wanzer</th><th>Combat Specialty</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Kazuki Takemura</strong></td><td>Zenislev (Assault)</td><td>Melee / All-Rounder</td><td>Outstanding HP via Zenislev body. Natural front-line brawler. Learns Tackle-I from body; pairs well with Shield Atk builds. &ldquo;Shut Up&rdquo; is his catchphrase; getting his sister back is his plot arc.</td></tr>
+    <tr><td><strong>Ryogo Kusama</strong></td><td>Kyojun Mk107 (Gunner)</td><td>Machine Gun / Combo Chain</td><td>Learns ROF1up from starting Wanzer. Stack ROF1up in his computer from Mission 1. Ryogo&apos;s combo chains become one of the most reliable damage outputs in the early game. His personality is the squad&apos;s consistent levity; his combat performance is serious.</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Building Kazuki and Ryogo</h2>
+<p><strong>Kazuki:</strong> Develop as a front-line melee/shield pilot. His Zenislev body&apos;s exceptional HP means he can absorb fire during the approach. Programme his computer with Stun Punch + Shield Atk-I (x remaining slots). He will be your primary melee damage dealer and the most reliable counter-fire preventer in the squad through stun application.</p>
+<p><strong>Ryogo:</strong> Develop as a machine gun combo chain pilot. Load ROF1up into every computer slot from the first opportunity. At Ace Rank 3+, a Ryogo with 5 slots of ROF1up firing a machine gun combo chains 3&ndash;4 times per activation at 60%+ activation rate. He is not the squad&apos;s primary damage dealer &mdash; he is the squad&apos;s consistent part-stripper who destroys arms and legs to disable enemies for the rest of the unit.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S15 -->
+<section class="section" id="s15">
+<h2 class="section-title"><span class="sec-num">&sect;15</span> Emma Route: Key Pilots</h2>
+
+<div class="unit-grid">
+  <div class="unit-card emma-card">
+    <div class="unit-name">Emir &ldquo;Emma&rdquo; Klamsky</div>
+    <span class="unit-type">USN OPERATIVE &middot; DRAKE M2C &middot; ACE RANK 1 &middot; MISSILES</span>
+    <p>Emma&apos;s Drake M2C is a natural Launcher platform with a starting Ace Rank advantage. Her specialty is missile fire: long-range, no counter-fire provocation, effective against helicopters. Replace her body and arms with Zenislev-class HP upgrades if she is being pushed into closer range. Keep her in missile builds throughout &mdash; her Launcher aptitude is the highest in the Emma route squad. The AP 30% build (missile + high-activation computer + AP 30% skill) is her late-game optimal configuration.</p>
+  </div>
+  <div class="unit-card neutral-card">
+    <div class="unit-name">Pham Luis</div>
+    <span class="unit-type">OPTIONAL JOIN &middot; ZEROS (PINK) &middot; ACE RANK 2 &middot; MELEE/SHIELD</span>
+    <p>Pham is difficult to like as a character and extremely useful as a pilot. Her Zeros Wanzer teaches Shield Atk-I &mdash; one of the game&apos;s best skills &mdash; and she arrives at Ace Rank 2, already above the starting rank of most squad members. Learn Shield Atk-I from the Zeros arms before replacing them; then build her as a shield-melee brawler with high computer slots. She performs better than her personality suggests.</p>
+  </div>
+  <div class="unit-card neutral-card">
+    <div class="unit-name">Marcus Seligman</div>
+    <span class="unit-type">EMMA ROUTE ONLY &middot; NETWORK CONTACT &middot; MID-GAME JOIN</span>
+    <p>A USN contact who joins through Network interaction. Keep up with Marcus&apos;s email exchanges throughout the Emma route &mdash; they are required to trigger his eventual recruitment and provide useful intelligence about upcoming missions. He brings his own Wanzer with a skill worth learning. His personality is the squad&apos;s contrast to Kazuki&apos;s emotional directness.</p>
+  </div>
+  <div class="unit-card neutral-card">
+    <div class="unit-name">Roevy Saibzu</div>
+    <span class="unit-type">LATE JOIN &middot; EMMA ROUTE &middot; SPECIALIST</span>
+    <p>Joins late in the Emma route. His Wanzer&apos;s parts include skills worth learning regardless of whether he remains in the active squad. The late-campaign squad adjustment points are when Roevy&apos;s skills should be harvested from his starting parts before remodelling into your preferred configuration.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S16 -->
+<section class="section" id="s16">
+<h2 class="section-title"><span class="sec-num">&sect;16</span> Alisa Route: Key Pilots</h2>
+
+<div class="unit-grid">
+  <div class="unit-card alisa-card">
+    <div class="unit-name">Alisa Takemura</div>
+    <span class="unit-type">KAZUKI&apos;S SISTER &middot; MELEDYNE M1 &middot; DHZ ALIGNMENT</span>
+    <p>Alisa&apos;s Meledyne M1 is the Alisa route&apos;s most valuable asset. Its <strong>legs teach Skill+1up</strong> &mdash; a 1-slot damage rank boost unavailable in the Emma route without significant effort. Extract Skill+1up from her legs before any upgrades. Her Wanzer&apos;s arms teach PanicShot, which can inflict Confusion status. She is a competent ranged fighter; her Wanzer parts are even more valuable than her combat stats.</p>
+  </div>
+  <div class="unit-card alisa-card">
+    <div class="unit-name">Liu Hei Fong</div>
+    <span class="unit-type">DHZ INTELLIGENCE &middot; SHANGDI 1 &middot; ACE RANK 1 &middot; RIFLE</span>
+    <p>The best sniper in the game. Liu&apos;s Shangdi teaches Dbl Shot-II; combined with a late-game beam weapon and a high-activation computer, he fires twice per activation for devastating single-target damage. In the Emma route he is an enemy; in the Alisa route, he is your most reliable long-range damage dealer. Develop him as a pure Sniper: Sniper arms, highest-accuracy rifle or beam, Dbl Shot + Skill+1up computer.</p>
+  </div>
+  <div class="unit-card alisa-card">
+    <div class="unit-name">Miho Shinjo</div>
+    <span class="unit-type">ALISA ROUTE EXCLUSIVE &middot; KYOKEI Mk108 &middot; MELEE/SHOTGUN</span>
+    <p>Available only in the Alisa route. Miho starts with a police Wanzer (Kyokei Mk108) that is inadequate for military combat &mdash; replace it as soon as possible. Her actual combat potential is solid once she has a proper military-grade Wanzer. Her melee/shotgun hybrid build is effective in the mid-range environments the Alisa route frequently provides. Her quick thinking makes her a narrative asset even when her starting equipment is not.</p>
+  </div>
+  <div class="unit-card alisa-card">
+    <div class="unit-name">Sakata Jin</div>
+    <span class="unit-type">ALISA ROUTE &middot; JDF PILOT &middot; MID-GAME JOIN</span>
+    <p>A J.D.F. pilot who joins during the Alisa route&apos;s middle act. His starting Wanzer carries parts with valuable skills. Harvest his parts&apos; skills before remodelling into a preferred configuration. As a former JDF pilot, his combat style is trained and consistent &mdash; build him as an Assault or Gunner depending on squad needs at the time of his joining.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S17 -->
+<section class="section" id="s17">
+<h2 class="section-title"><span class="sec-num">&sect;17</span> The Network</h2>
+<div class="lore-block">
+  <p>The Network knows things the squad does not. It knows things the squad should not know and sometimes things the squad specifically needs to know before the next mission becomes survivable. Ryogo checks it every time they stop moving. Kazuki refuses to look at it unless Emma or Liu is standing behind him explaining what he is looking at. The Network is not a luxury feature. In the Da Han Zhong sections, it is what keeps them from walking into something they cannot walk out of.</p>
+  <span class="source">// RYOGO KUSAMA &middot; PERSONAL NOTES ON MISSION PREPARATION //</span>
+</div>
+
+<p>Front Mission 3 features a vastly expanded version of FM2&apos;s in-game Network, modelling a pseudo-internet complete with websites, email, user forums, downloadable files, and interactive links between contacts. It is not optional content &mdash; several critical game functions are accessible <em>only</em> through the Network.</p>
+
+<h2 class="sub-title">What the Network Provides</h2>
+<ul class="guide-list">
+  <li><strong>Email exchanges with key characters:</strong> Several pilot recruitments and story revelations are triggered by specific email chains. Marcus Seligman (Emma route) requires ongoing email interaction. Missing these exchanges can lock out characters permanently for the playthrough.</li>
+  <li><strong>Shop addresses:</strong> Many specialised shops &mdash; selling parts, weapons, and upgrades not available at the standard store &mdash; are accessible only via Network address codes obtained through NPC conversations or email contacts. Talking to characters in intermission hubs and entering their addresses is how you access the best equipment in the game.</li>
+  <li><strong>Mission intelligence:</strong> Pre-mission enemy compositions and terrain information is available through specific Network sites. Reviewing enemy loadouts before difficult missions enables proactive Wanzer preparation rather than reactive improvisation.</li>
+  <li><strong>Downloadable files:</strong> Certain files available on the Network provide gameplay benefits including map data for specific missions. The infamous sewer mission in the Alisa route is navigable safely only with the map downloaded from the Network beforehand.</li>
+  <li><strong>World-building:</strong> Corporate histories, political analysis, and faction backgrounds that contextualise the MIDAS conspiracy and the geopolitical context of both routes.</li>
+</ul>
+
+<div class="callout danger">
+  <div class="callout-title">The Network Is Not Optional</div>
+  <p>Do not skip the Network between missions. The consequences of missing Network interactions range from minor (missing good equipment in side shops) to significant (failing to recruit pilots) to severe (failing to obtain map data for a mission where Ryogo must navigate a sewer on foot with incomplete information, which historically caused many players to fail repeatedly before discovering the Network solution). Check the Network after every mission and after every major NPC interaction in hub areas. If you spoke to someone new, their address may unlock new content.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S18 -->
+<section class="section" id="s18">
+<h2 class="section-title"><span class="sec-num">&sect;18</span> The Battle Simulator</h2>
+<p>The Battle Simulator is the Battle Simulator is FM3&apos;s most important non-combat feature. Accessed through the Network after a certain early-game unlock, it provides unlimited virtual training battles that award real pilot experience and facilitate Battle Skill learning at no resource cost and with no mission risk.</p>
+
+<h2 class="sub-title">How to Use the Battle Simulator</h2>
+<ul class="guide-list">
+  <li><strong>Run it after every story mission without exception.</strong> Experience from the Simulator compounds over the campaign. Pilots who are consistently Simulator-trained arrive at each mission story-point with Ace Ranks well above what story missions alone would provide.</li>
+  <li><strong>Target part destruction for maximum EXP per session.</strong> As with the Arena in FM1 and Colosseum in FM2, destroying individual parts earns more experience than simply killing the enemy Wanzer. Attack systematically: arms first (eliminating counter-fire), then legs (immobilising), then body (kill). Five EXP events instead of one.</li>
+  <li><strong>Use it specifically to learn new skills.</strong> When a pilot equips a part that has an associated skill not yet learned, run the Simulator repeatedly with that part equipped until the skill is acquired. The Simulator provides a safe, zero-cost environment for this specific grind.</li>
+  <li><strong>Train every active squad member.</strong> Not just your primary damage dealers. Supporting pilots and recent joiners who are behind in Ace Rank need Simulator time most urgently.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S19 -->
+<section class="section" id="s19">
+<h2 class="section-title"><span class="sec-num">&sect;19</span> Emma Route Strategy</h2>
+<div class="lore-block">
+  <p>Emma told Kazuki on the third day: &ldquo;The USN did not steal MIDAS. MIDAS was stolen from the USN. We are not on the same side as the people who built it. We are on the same side as the people trying to recover it.&rdquo; Kazuki stared at her for a long moment. &ldquo;What is the difference?&rdquo; he asked. She found she did not have an immediately satisfying answer. That was when she knew he was going to be more trouble than he looked.</p>
+  <span class="source">// EMIR KLAMSKY &middot; PRIVATE NOTES &middot; EARLY EMMA ROUTE //</span>
+</div>
+
+<p>The Emma route aligns Kazuki with USN intelligence and Emma Klamsky&apos;s mission to recover and destroy MIDAS. The narrative takes the squad from Japan through the Philippines and eventually into DHZ territory. Key strategic characteristics:</p>
+
+<div class="phase early">
+  <div class="phase-title">Japan Section (Missions 1&ndash;8): Establishment</div>
+  <p>The most controlled section. Enemy forces are J.D.F. units &mdash; competent but predictable. The primary mission during this section is establishing Battle Skill foundations: get ROF1up on Ryogo immediately, start learning Tackle and Shield skills from Kazuki&apos;s Zenislev body, and programme Emma&apos;s computer for her missile specialty. Use the Simulator aggressively. The Japan section missions are winnable with suboptimal builds; subsequent sections are not.</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">Philippines Section (Missions 9&ndash;18): Escalation</div>
+  <p>The squad encounters the full scope of the MIDAS conspiracy. Enemy variety increases: OCU forces, DHZ units, and paramilitary contractors appear alongside J.D.F. remnants. The Taal Volcano mission is one of the game&apos;s most memorable &mdash; Emma&apos;s confrontation with MIDAS&apos;s actual deployment is a defining narrative moment. Tactically, this section introduces helicopter waves that require missile-equipped pilots. Emma&apos;s Launcher build becomes essential.</p>
+</div>
+
+<div class="phase late">
+  <div class="phase-title">DHZ Section (Missions 19+): Endgame</div>
+  <p>The squad enters Da Han Zhong and engages in some of the game&apos;s most complex missions. Enemy Wanzers are fully upgraded; skill builds must be complete. Liu Hei Fong appears as an enemy in this section &mdash; in the Alisa route he is your ally; here he is a competent adversary whose rifle accuracy is a serious threat. Prioritise his targeting as a high-value opponent in every engagement where he appears.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S20 -->
+<section class="section" id="s20">
+<h2 class="section-title"><span class="sec-num">&sect;20</span> Alisa Route Strategy</h2>
+<div class="lore-block">
+  <p>Liu Hei Fong explained the D.H.Z.&apos;s position clearly: &ldquo;We want MIDAS destroyed as much as you do. The difference is that we are also trying to prevent the USN from ever admitting they built it.&rdquo; Kazuki considered this. &ldquo;Why does that matter if it gets destroyed?&rdquo; Liu looked at him with the particular patience of someone who has explained geopolitics to soldiers before. &ldquo;Because destroyed is only permanent if the person who built it cannot simply build it again.&rdquo; Kazuki had no answer to that either. He was beginning to see a pattern.</p>
+  <span class="source">// KAZUKI TAKEMURA &middot; PERSONAL LOG &middot; EARLY ALISA ROUTE //</span>
+</div>
+
+<p>The Alisa route aligns Kazuki with DHZ intelligence officer Liu Hei Fong and the Hua Lian resistance. The route is generally considered harder than the Emma route in specific missions &mdash; several missions have tighter constraints and less favourable enemy compositions. Key strategic characteristics:</p>
+
+<div class="phase early">
+  <div class="phase-title">Japan Section: Higher Pressure</div>
+  <p>The Alisa route&apos;s Japan section features heavier enemy engagement in the escape missions. The early missions where Ryogo must operate on foot (not in a Wanzer) are the route&apos;s most mechanically punishing sequences. Keep Ryogo shielded by Wanzer-equipped allies; his foot mobility is his vulnerability. The Network map download for the sewer mission is not optional.</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">The DHZ Section: Alisa Route&apos;s Core</div>
+  <p>Where the Emma route spends most of its mid-game in the Philippines, the Alisa route enters DHZ territory earlier and more extensively. The Hua Lian rebel alliance missions offer some of the route&apos;s best narrative content &mdash; the contrast between the rebel cause and the compromises required to achieve it is the Alisa route&apos;s thematic centrepiece. Liu&apos;s rifle builds come fully online here; he should be at Ace Rank 4+ by this section with Dbl Shot-II programmed.</p>
+</div>
+
+<div class="phase late">
+  <div class="phase-title">Convergence Section: The Same Conspiracy</div>
+  <p>Both routes converge on the same fundamental MIDAS revelation and the same final adversary. The difference is who is alive and who is not, and whose perspective on the conspiracy the player carries. The Alisa route&apos;s ending is emotionally distinct from the Emma route&apos;s; playing both is the only way to understand the full moral weight of the game&apos;s conclusion.</p>
+</div>
+
+<div class="callout alisa">
+  <div class="callout-title">Alisa Route Exclusive: The Meledyne M1 Skills</div>
+  <p>The Alisa route provides access to Alisa&apos;s Meledyne M1 Wanzer, whose legs teach Skill+1up (unavailable in the Emma route without extreme effort) and whose arms teach PanicShot (Confusion status infliction). Extract both skills from the Meledyne M1 parts before upgrading or replacing them. Skill+1up at 1 slot per copy is one of the most efficient damage boosts in the game and is a significant competitive advantage exclusive to this route.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S21 -->
+<section class="section" id="s21">
+<h2 class="section-title"><span class="sec-num">&sect;21</span> Early Game Doctrine</h2>
+<div class="lore-block">
+  <p>The tutorial at the Kirishima test site teaches Kazuki everything and nothing simultaneously. It teaches him the machine. It does not teach him the war. The difference between a test pilot and a combat pilot is the same difference as between knowing how to drive and knowing where to go. The first mission covers the first lesson. All subsequent lessons are paid for in enemy Wanzers.</p>
+  <span class="source">// KIRISHIMA HEAVY INDUSTRIES TEST PILOT ONBOARDING DOCUMENTATION //</span>
+</div>
+
+<div class="phase early">
+  <div class="phase-title">Tutorial Mission: Free EXP Available</div>
+  <p>The Kirishima test facility tutorial offers free training EXP by repeatedly destroying practice targets. Push Kazuki through the tutorial with maximum part-destruction behaviour &mdash; destroy arms, then legs, then body on every target rather than rushing kills. This earns enough EXP to advance Kazuki to Ace Rank 1 before the game&apos;s first real mission, providing an immediate computer slot advantage.</p>
+</div>
+
+<div class="phase early">
+  <div class="phase-title">Missions 1&ndash;5: Foundation Phase</div>
+  <p>First priority: get ROF1up on Ryogo. His default Kyojun teaches it; run the Simulator immediately after the first battle until it is learned. Second priority: learn Tackle-I from Kazuki&apos;s Zenislev body and begin building his melee/shield computer. Third priority: equip Emma with a missile launcher and a computer configured for her Launcher specialty. Do not use her as a short-range fighter until the squad has enough forward HP to absorb what she cannot. She should be firing from the back, never the front.</p>
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">Priority Skill Learning Order &mdash; Early Game</div>
+  <p>Learn these skills in roughly this order during the early campaign: ROF1up (Ryogo, from Kyojun Mk107), Tackle-I (Kazuki, from Zenislev body), Shield Atk-I (any melee pilot, from Zeros arm when available or equivalent), Dbl Shot-I (Liu in the Alisa route, from Shangdi 1). These four skills form the foundation of every viable early-game build. With them learned and programmed, the squad&apos;s damage output increases by approximately 50% over their base attack values through combo activation.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S22 -->
+<section class="section" id="s22">
+<h2 class="section-title"><span class="sec-num">&sect;22</span> Mid &amp; Late Game</h2>
+<p>The mid-game begins when the squad reaches the Philippines (Emma route) or early DHZ engagement (Alisa route) and enemy Wanzers begin carrying significantly heavier armament. The late game begins when the conspiracy&apos;s full scope is revealed and the final adversary&apos;s identity becomes apparent.</p>
+
+<h2 class="sub-title">Mid-Game Priorities</h2>
+<ul class="guide-list">
+  <li><strong>Beam weapons unlock game-changing damage output.</strong> The P-Beam Gun and equivalent beam weapons fire a single high-damage shot that ignores some enemy defences. Combined with AP 30% skill (which triggers when ammo runs low) and a high-activation computer, beam weapons can fire every turn effectively. When beam weapons appear in the shop, evaluate them seriously for Sniper and Gunner pilots.</li>
+  <li><strong>All pilots should have 4+ Ace Rank before the Philippines/DHZ section.</strong> If any pilot is below this, prioritise their Simulator training specifically. Below Ace Rank 4, skill chains are unreliable; above it, combos become consistent enough to depend on for damage calculations.</li>
+  <li><strong>Part upgrades matter now.</strong> Enemy HP in the mid-game is high enough that under-upgraded Wanzers noticeably underperform. Spend remodelling resources on primary combat pilots&apos; bodies and key weapons. The stat differences between base and max-remodel are meaningful.</li>
+</ul>
+
+<h2 class="sub-title">Late-Game Build Completion</h2>
+<p>By the late campaign, every active pilot should have their build complete: weapon assigned, computer fully loaded with the optimised skill configuration for that weapon, and Wanzer parts remodelled to maximum or near-maximum. The late campaign does not provide learning time; it tests what was built. Ensure the Simulator has been used consistently enough that all critical skills are learned and programmed.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S23 -->
+<section class="section" id="s23">
+<h2 class="section-title"><span class="sec-num">&sect;23</span> Squad Composition</h2>
+<p>FM3 missions typically deploy four pilots. The standard four-pilot composition should cover melee/short range, machine gun, missile support, and sniper/rifle. Both routes have specific optimal compositions based on available pilots.</p>
+
+<h2 class="sub-title">Emma Route Composition</h2>
+<div class="phase mid">
+  <div class="phase-title">Recommended Four: Kazuki / Ryogo / Emma / Pham</div>
+  <p>Kazuki as front-line melee brawler (Stun Punch + Shield Atk chains); Ryogo as machine gun chain pilot (ROF1up stack); Emma as Launcher support (missile fire from elevated rear positions, AP 30% build); Pham as secondary melee (Shield Atk chains, Zeros arm skills). This composition covers all range bands, handles helicopters via Emma, and provides two reliable melee pilots for corridor missions.</p>
+</div>
+
+<h2 class="sub-title">Alisa Route Composition</h2>
+<div class="phase mid">
+  <div class="phase-title">Recommended Four: Kazuki / Ryogo / Liu / Alisa or Miho</div>
+  <p>Kazuki as front-line melee; Ryogo as chain gun; Liu as precision Sniper (Dbl Shot + Skill+1up on beam weapon); Alisa (Skill+1up extraction, then ranged) or Miho (melee hybrid). The Alisa route benefits from Liu&apos;s exceptional accuracy making him the primary high-value target eliminator. If Miho is in the squad, build her as a close-range support: shotgun or melee with Shield Atk after replacing the Kyokei.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S24 -->
+<section class="section" id="s24">
+<h2 class="section-title"><span class="sec-num">&sect;24</span> Advanced Tactics</h2>
+<h2 class="sub-title">The Condition Purge</h2>
+<p>Skills with restrictive conditions (&ldquo;no grenades,&rdquo; &ldquo;melee equipped&rdquo;) will not trigger if their condition is not met, but they still occupy computer slots. Audit every pilot&apos;s computer and remove any skill whose condition your current loadout cannot satisfy. A computer slot occupied by a non-activatable skill is wasted activation potential. This audit should happen every time a pilot&apos;s weapon loadout changes.</p>
+
+<h2 class="sub-title">The AP 30% Missile Loop</h2>
+<p>The most powerful sustain build in FM3: equip a Launcher pilot with their highest-damage missile launcher and a computer with high activation rate + AP 30% skill. Once the missile count drops below 30%, AP 30% has a chance to trigger and restore to full. With a high-activation computer, this triggers frequently enough to sustain near-continuous heavy missile fire for entire missions. Emma is the natural pilot for this build; her Launcher archetype and Ace Rank advantage make the activation rate competitive early.</p>
+
+<h2 class="sub-title">Grenade Launchers &mdash; When to Use Them</h2>
+<p>Grenade launchers carry a significant penalty: they prevent &ldquo;no grenade&rdquo; condition skills from activating. Many valuable skills have this condition. Most experienced FM3 players avoid grenade launchers on primary combat pilots specifically because the skill condition penalty outweighs the area-damage benefit. Reserve grenade launchers for dedicated crowd-control secondary pilots whose computer is configured around non-conditional skills.</p>
+
+<h2 class="sub-title">The Tutorial EXP Farm</h2>
+<p>The Kirishima test facility tutorial allows repeated attacks on practice dummies with no consequence. Before advancing past the tutorial, exhaust every available attack repetition, targeting parts systematically. This is the fastest way to reach Ace Rank 1 on Kazuki before his first real combat mission &mdash; providing an extra computer slot from the very start of the campaign. First-time players who rush through the tutorial and then wonder why their builds feel weak are consistently missing this foundational efficiency step.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S25 -->
+<section class="section" id="s25">
+<h2 class="section-title"><span class="sec-num">&sect;25</span> Common Mistakes</h2>
+
+<div class="phase late"><div class="phase-title">Mistake 1 &mdash; Ignoring the Network</div>
+<p>The Network is not optional content. Missing email chains locks out pilot recruitments. Missing shop addresses locks out the game&apos;s best equipment. Missing the sewer map download turns a navigable mission into a repeated failure. Check the Network after every mission and every NPC conversation in hub areas. Always.</p></div>
+
+<div class="phase late"><div class="phase-title">Mistake 2 &mdash; Not Learning Skills Before Replacing Parts</div>
+<p>Selling or discarding a Wanzer part whose associated skill has not been learned permanently loses access to that skill for the pilot. Before replacing any part, check what skill it teaches. If the skill has not been learned, run the Simulator with that part equipped until it is. This is especially critical for Alisa route&apos;s Meledyne M1 (Skill+1up) and Emma route&apos;s Zeros (Shield Atk-I).</p></div>
+
+<div class="phase late"><div class="phase-title">Mistake 3 &mdash; Filling the Computer with High-Slot Skills</div>
+<p>A computer loaded with 3-slot skills produces fewer combo opportunities than the same computer filled with 1-slot skills. Prefer 1-slot skills wherever possible. The exception is skills so powerful that their slot cost is justified (Skill+3up on a max-Ace-Rank pilot with a beam weapon is an argument that can be made). For most configurations, maximise skill count over individual skill power.</p></div>
+
+<div class="phase late"><div class="phase-title">Mistake 4 &mdash; Using Emma as a Close-Range Fighter</div>
+<p>Emma&apos;s Drake M2C is a Launcher platform. Her counter-attack in close range is a Hardblow (the weakest possible melee attack). She will take damage she cannot deal in return if pushed into short range. Keep her positioned in the rear at long range, firing missiles. If enemies close to her, have other squad members intercept &mdash; never let Emma be the one taking melee contact.</p></div>
+
+<div class="phase late"><div class="phase-title">Mistake 5 &mdash; Skipping the Tutorial EXP Farm</div>
+<p>The tutorial practice dummies provide free, unlimited EXP. Rushing through the tutorial costs Kazuki an Ace Rank that could have been earned at zero cost before the campaign&apos;s first real challenge. Spend fifteen minutes farming the tutorial targets with systematic part destruction and start the game at Ace Rank 1 instead of Ace Rank 0.</p></div>
+
+<div class="phase late"><div class="phase-title">Mistake 6 &mdash; Equipping Grenade Launchers on Primary Pilots</div>
+<p>Grenade launchers disable &ldquo;no grenade&rdquo; condition skills on the equipped pilot. Most of the game&apos;s best skills have this condition. The area damage from a grenade launcher rarely compensates for the combo chain effectiveness lost by adding one to a primary pilot&apos;s loadout. If you want grenade coverage, dedicate a secondary pilot specifically to it and build their computer around non-conditional skills.</p></div>
+
+<div class="phase late"><div class="phase-title">Mistake 7 &mdash; Not Running the Battle Simulator Regularly</div>
+<p>The Simulator provides free EXP and free skill learning opportunities with no resource cost and no mission risk. Players who skip it arrive at mid-campaign missions with pilots at Ace Rank 2&ndash;3 instead of 4&ndash;5, computers with fewer slots, and skill chains that fail to chain. Run the Simulator after every story mission. It takes ten minutes and its cumulative benefit across a full campaign is enormous.</p></div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S26 -->
+<section class="section" id="s26">
+<h2 class="section-title"><span class="sec-num">&sect;26</span> Glossary</h2>
+<div class="gloss-grid">
+  <div class="gloss-item"><div class="gloss-term">Ace Rank</div><div class="gloss-def">Pilot performance rating on a 0&ndash;9 scale; higher rank increases computer slot capacity; advances through combat experience and Battle Simulator use.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Activation Rate</div><div class="gloss-def">The computer&apos;s base percentage chance for each stored Battle Skill to trigger during an attack; higher activation rate = more reliable combos; the primary selection criterion for computer choice.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Alisa Route</div><div class="gloss-def">The campaign branch where Kazuki refuses Ryogo&apos;s request and finds his sister first, leading to DHZ alignment; harder in specific missions; provides unique access to the Meledyne M1 and Liu Hei Fong as an ally.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Alisa Takemura</div><div class="gloss-def">Kazuki&apos;s adopted sister; a scientist caught up in the MIDAS conspiracy; provides the Meledyne M1 Wanzer (Skill+1up and PanicShot parts) exclusively in the Alisa route.</div></div>
+  <div class="gloss-item"><div class="gloss-term">AP 30%</div><div class="gloss-def">Battle Skill that triggers when missile ammo drops to 30%, restoring it to full; the enabler of the infinite missile loop on Launcher-class pilots with high-activation computers.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Assault (Archetype)</div><div class="gloss-def">Wanzer part type with high HP and high movement; the general-purpose archetype; Kazuki&apos;s Zenislev is Assault-class; ideal for front-line melee brawlers.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Battle Computer</div><div class="gloss-def">The Wanzer component that stores Battle Skills and provides activation rate for their probabilistic triggering; slot count determined by computer model and pilot Ace Rank.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Battle Simulator</div><div class="gloss-def">VR training feature accessible through the Network; provides unlimited EXP and skill-learning opportunities at no resource cost; the primary out-of-mission pilot development tool.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Battle Skill</div><div class="gloss-def">One of approximately 100 special abilities learned from Wanzer parts; stored in the computer; triggered probabilistically during combat; the core depth system of Front Mission 3.</div></div>
+  <div class="gloss-item"><div class="gloss-term">D.H.Z. (Da Han Zhong)</div><div class="gloss-def">The Chinese successor state; dominant Pacific power in 2112; the Alisa route&apos;s primary allied faction; the location of both routes&apos; final act.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Dbl Shot-I / II</div><div class="gloss-def">Battle Skill for rifle weapons; fires the rifle twice per activation; Liu Hei Fong&apos;s Shangdi teaches this; devastating in combination with beam weapons and Skill+1up.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Emma Route</div><div class="gloss-def">The campaign branch where Kazuki goes with Ryogo and encounters Emma first, leading to USN alignment; recommended first playthrough; stronger character development for Emma.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Emir Klamsky (Emma)</div><div class="gloss-def">USN scientist who created MIDAS; joins in the Emma route; Launcher archetype specialist; her moral arc around responsibility for MIDAS is the Emma route&apos;s emotional core.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Grappler (Archetype)</div><div class="gloss-def">Highest movement; lowest engine capacity; lightest weight; ideal for melee builds where weapon weight is minimal; some of the best melee skills come from Grappler arms.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Grenade Launcher</div><div class="gloss-def">Area-damage weapon that prevents &ldquo;no grenade&rdquo; condition skills from activating; most of the game&apos;s best skills require this condition; avoid on primary combat pilots.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Gunner (Archetype)</div><div class="gloss-def">High accuracy arms; optimised for machine gun and rifle at mid-range; the most versatile archetype; Emma&apos;s natural configuration.</div></div>
+  <div class="gloss-item"><div class="gloss-term">J.D.F. (Japanese Defense Force)</div><div class="gloss-def">Japan&apos;s O.C.U.-affiliated military; the primary antagonist faction in the early game of both routes; their Wanzers are the first enemy types the squad encounters.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Kazuki Takemura</div><div class="gloss-def">The protagonist of both routes; Kirishima Heavy Industries test pilot; Assault archetype; his consistent motivation is finding his sister and stopping MIDAS; his catchphrase is &ldquo;Shut Up.&rdquo;</div></div>
+  <div class="gloss-item"><div class="gloss-term">Kirishima Heavy Industries</div><div class="gloss-def">Japan&apos;s largest Wanzer manufacturer; Kazuki and Ryogo&apos;s employer; the source of several uniquely capable prototype Wanzers accessible through the campaign.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Launcher (Archetype)</div><div class="gloss-def">Highest engine capacity; can carry heaviest weapons; slowest movement; ideal for missile carriers deployed in stationary positions; Emma&apos;s natural archetype.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Liu Hei Fong</div><div class="gloss-def">DHZ intelligence agent; enemy in Emma route, ally in Alisa route; the game&apos;s best Sniper pilot; his Shangdi teaches Dbl Shot-II; devastating with beam weapons at high Ace Rank.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Meledyne M1</div><div class="gloss-def">Alisa Takemura&apos;s Wanzer; Alisa route exclusive; legs teach Skill+1up and arms teach PanicShot; extract both before replacing any parts; the most skill-valuable Wanzer in the Alisa route.</div></div>
+  <div class="gloss-item"><div class="gloss-term">MIDAS</div><div class="gloss-def">A biological weapon of mass destruction that kills without radiation; developed by USN; the central MacGuffin and moral anchor of the entire game; pursued by every power in the Pacific for different reasons.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Miho Shinjo</div><div class="gloss-def">Police officer pilot; Alisa route exclusive; starts in the inadequate Kyokei Mk108; must be re-equipped immediately; develops well as a melee/shotgun hybrid once properly armed.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Network</div><div class="gloss-def">FM3&apos;s expanded in-game pseudo-internet; provides email interactions (pilot recruitment triggers), shop addresses (exclusive equipment), mission intelligence, map downloads, and world-building; never optional.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Pham Luis</div><div class="gloss-def">Optional pilot join; Emma route; Ace Rank 2; her Zeros Wanzer teaches Shield Atk-I; she is more useful as a pilot than she appears as a character.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Remodelling</div><div class="gloss-def">The upgrade system allowing Wanzer parts to have their stats improved through multiple tiers; often more cost-effective than full part replacement; keep high-value-skill parts until the skill is learned.</div></div>
+  <div class="gloss-item"><div class="gloss-term">ROF1up</div><div class="gloss-def">Rate of Fire +1 Battle Skill; fires the weapon one additional time per attack trigger; 1 slot; the foundation of most effective combo chains; Ryogo learns it from his starting Kyojun Mk107.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Ryogo Kusama</div><div class="gloss-def">Kazuki&apos;s best friend; machine gun chain specialist; learns ROF1up from starting Wanzer; his combo chains with stacked ROF1up are the squad&apos;s most reliable damage source through the early-mid game.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Salvo</div><div class="gloss-def">Battle Skill that fires all remaining missiles at once in a devastating volley; pairs with AP 30% for a cycle of full-discharge and refill; spectacular burst damage.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Shield Atk-I / II</div><div class="gloss-def">Battle Skill requiring a shield equipped; attacks with the shield for significant bonus damage; 1&ndash;2 slots; one of the best damage skills in the game; taught by Pham Luis&apos;s Zeros arms.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Skill+1up / 2up / 3up</div><div class="gloss-def">Battle Skills that increase weapon damage rank for the triggering attack; 1&ndash;3 slots; Skill+1up (1 slot) is the most efficient per-slot; taught by Alisa route&apos;s Meledyne M1 legs.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Sniper (Archetype)</div><div class="gloss-def">Maximum accuracy bonuses; designed for rifles and beam weapons at long range; lower HP; Liu Hei Fong&apos;s natural archetype.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Stun Punch</div><div class="gloss-def">Battle Skill (melee, 1 slot); strikes and may stun the enemy pilot, preventing their counter-attack; taught by Kasel M2 arm; excellent on front-line brawlers for counter-fire suppression.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Toppleshot</div><div class="gloss-def">Battle Skill that knocks the enemy back, dealing damage and disrupting their position; 2 slots; works on regular Wanzers only; combine with offensive skills for simultaneous damage and disruption.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Zenislev</div><div class="gloss-def">Kazuki Takemura&apos;s starting Wanzer body; exceptional HP for its tier; teaches Tackle-I; should be kept until a clear HP-superior replacement is available; remodelled versions remain competitive well into the mid-game.</div></div>
+</div>
+</section>
+
+</div><!-- /content -->
+<footer id="footer">
+  Front Mission 3: Remake &nbsp;&middot;&nbsp; MegaPixel Studio / Forever Entertainment / Square Enix &nbsp;&middot;&nbsp; Nadir Strategy Archive &nbsp;&middot;&nbsp; Japan &amp; Da Han Zhong, 2112
+</footer>
+</div><!-- /main -->
+<a id="back-top" href="#hero" title="Back to top">&#8593;</a>
+<script>
+const bar=document.getElementById('progress-bar');
+const bt=document.getElementById('back-top');
+const tog=document.getElementById('sidebar-toggle');
+const sb=document.getElementById('sidebar');
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;
+  bar.style.transform='scaleX('+(s/t)+')';
+  bt.classList.toggle('visible',s>400);
+},{passive:true});
+const secs=document.querySelectorAll('.section[id]');
+const navs=document.querySelectorAll('.nav-item');
+const obs=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){navs.forEach(n=>n.classList.remove('active'));const a=document.querySelector('.nav-item[href="#'+e.target.id+'"]');if(a){a.classList.add('active');a.scrollIntoView({block:'nearest'});}}});
+},{rootMargin:'-20% 0px -70% 0px'});
+secs.forEach(s=>obs.observe(s));
+tog.addEventListener('click',()=>sb.classList.toggle('open'));
+document.querySelectorAll('.nav-item').forEach(i=>i.addEventListener('click',()=>sb.classList.remove('open')));
+document.querySelectorAll('.section').forEach((s,i)=>{s.style.animationDelay=i*0.03+'s';});
+</script>
+</body>
+</html>

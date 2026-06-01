@@ -177,9 +177,9 @@ body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-i
     <div class="hero-rule"></div>
     <p class="hero-desc">Comprehensive guides covering both sides, all systems, and every scenario &mdash; for historical wargames and grand strategy titles.</p>
     <div class="hero-stats">
-      <div class="hero-stat"><span class="hero-stat-num" id="stat-guides">14</span><span class="hero-stat-label">Complete Guides</span></div>
+      <div class="hero-stat"><span class="hero-stat-num" id="stat-guides">16</span><span class="hero-stat-label">Complete Guides</span></div>
       <div class="hero-stat"><span class="hero-stat-num" id="stat-eras">4</span><span class="hero-stat-label">Eras Covered</span></div>
-      <div class="hero-stat"><span class="hero-stat-num">240+</span><span class="hero-stat-label">Chapters Written</span></div>
+      <div class="hero-stat"><span class="hero-stat-num">420+</span><span class="hero-stat-label">Chapters Written</span></div>
     </div>
   </div>
 </header>
@@ -239,7 +239,7 @@ body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-i
 </main>
 
 <footer class="site-footer">
-  Strategy Guide Library &nbsp;&middot;&nbsp; Community Resource &nbsp;&middot;&nbsp; Avalon Digital / Strategy Game Studio / Matrix Games / Harebrained Schemes / Forever Entertainment
+  Strategy Guide Library &nbsp;&middot;&nbsp; Community Resource &nbsp;&middot;&nbsp; Avalon Digital / Strategy Game Studio / Matrix Games / Harebrained Schemes / Forever Entertainment / Illwinter / Paradox Interactive
 </footer>
 
 <div class="modal-overlay" id="modal-overlay">
@@ -553,6 +553,50 @@ const GUIDES = [
     file:  'https://t1ckles.github.io/nadir/distant_worlds_universe.html',
     steam: 'https://store.steampowered.com/app/261470/Distant_Worlds_Universe/',
     site:  'https://www.matrixgames.com/game/distant-worlds-universe',
+  },
+  {
+    id:        'conquest-of-elysium-5',
+    title:     'Conquest of Elysium 5',
+    subtitle:  'Dark Fantasy Conquest of the Planes, Elysium',
+    era:       'scifi',
+    period:    'Science Fiction & Fantasy',
+    engine:    'Illwinter Game Design',
+    sections:  24,
+    scenarios: 4,
+    sides:     ['Your Chosen Faction', 'Rival Factions & the Planes'],
+    hardest:   'Demonologist (Binding Risk) / Pale One (Prophecy System)',
+    sidesLabel:    'Your Faction & Its Rivals',
+    scenariosLabel: 'Society Settings',
+    desc:      'A quick turn-based dark fantasy strategy game with twenty-four radically distinct factions, each playing by a completely different set of rules. No two factions share a resource system, a ritual tree, or a win condition. The Baron fields levies. The Druid grows forests. The Scourge Lord drains the life from the land itself. The Necromancer feeds on the battlefield’s dead. The same map; entirely different games.',
+    detail:    'The Elysium Codex covers all twenty-four factions and ten planes across 24 chapters. The guide walks through every resource type — Gold, Iron, Herbs, Sacrifices, Gems, Mushrooms, Hands of Glory, Relics, Corpses, Lifeforce, and Candles — alongside the full ritual tier system (Level 1 through 3), the roguelike random starting ritual set, the automated battle column system, seasonal events and catastrophic random occurrences (from bumper harvests to underworld gates opening simultaneously across the map), all ten planes (Elysium, Agartha, Inferno, Hades, Celestial, four Elemental Planes, and the Cloud Layer), per-faction strategic guidance for every class from the beginner Baron through the advanced Scourge Lord and Demonologist, the arcane-vs-martial timing problem, and the full four Society setting variants. Includes a 45-entry glossary.',
+    sideA: { label: 'Arcane & Ritual Factions', body: 'Necromancer, Demonologist, Scourge Lord, Warlock, High Cultist, Illusionist, and others. Low early power; exponential late-game scaling through ritual investment. Must survive the martial factions’ early pressure window before rituals come online. Enormously powerful when they do.' },
+    sideB: { label: 'Martial & Nature Factions', body: 'Baron, Druid, Barbarian, Troll King, Enchanter, Senator, and others. Strong from Turn 1. Peak before arcane factions develop. The Baron’s annual levy of free knights and spearmen, the Druid’s Ent armies, and the Enchanter’s elemental-immune Clockwork Dragons represent three completely different paths to dominance.' },
+    tags:  ['24 Factions','Roguelike Strategy','Dark Fantasy','Ritual System','10 Planes','Random Events','Arcane vs Martial','Illwinter'],
+    file:  'https://t1ckles.github.io/nadir/conquest_of_elysium_5.html',
+    steam: 'https://store.steampowered.com/app/1606340/Conquest_of_Elysium_5/',
+    site:  'https://www.illwinter.com/coe5/',
+  },
+  {
+    id:        'stellaris',
+    title:     'Stellaris',
+    subtitle:  'Galactic Grand Strategy, the Year 2200',
+    era:       'scifi',
+    period:    'Science Fiction',
+    engine:    'Paradox Development Studio (v4.x)',
+    sections:  35,
+    scenarios: 4,
+    sides:     ['Your Empire', 'The Galaxy & End-Game Crises'],
+    hardest:   'Surviving the End-Game Crisis (Grand Admiral + 25x)',
+    sidesLabel:    'Your Empire & Its Rivals',
+    scenariosLabel: 'Victory Conditions',
+    desc:      'The definitive space grand strategy. In the year 2200 your species takes its first steps into a procedurally generated galaxy of hundreds of star systems, alien civilisations, ancient ruins, and sleeping powers older than your homeworld. Build an empire from a single planet to galactic dominance — through conquest, diplomacy, trade, espionage, or by becoming the crisis yourself.',
+    detail:    'The Galactic Codex covers every system of Stellaris 4.x across 35 chapters. The guide walks through empire creation in full depth — species traits, the four ethical axes, all authority types (Democratic through Machine Intelligence), all major civics and their synergies, and all key origins from Prosperous Unification through Shattered Ring and Void Dwellers — then moves through the complete economy (the Pop Group system, Districts and Specialisation, Building Slot management, Consumer Goods bottleneck, Trade and Markets), the Tradition tree system across all eight trees, all Ascension Perks, the three Ascension Paths (Synthetic, Psionic, Biological), fleet design and naval doctrine, the Leader and Council system, Federations and the Galactic Community, espionage operations, Fallen and Awakened Empires, all three End-Game Crises (Unbidden, Prethoryn Scourge, Contingency), and the Become the Crisis mechanic. Gestalt empires (Hive Minds and Machine Intelligences) receive dedicated treatment. Includes a 50-entry glossary covering all DLC systems.',
+    sideA: { label: 'Your Empire (All Archetypes)', body: 'Standard empires, MegaCorps, Hive Minds, and Machine Intelligences each require fundamentally different economic and military strategies. The guide covers all four archetypes with dedicated build paths, tradition priorities, and ascension recommendations for each.' },
+    sideB: { label: 'The Galaxy & End-Game Crises', body: 'Rival empires, Fallen Empires, the Galactic Community, and three galaxy-threatening end-game crises. The Unbidden arrive through a dimensional portal; the Prethoryn Scourge consumes everything biological; the Contingency activates Sterilization Hubs on your worlds. Surviving any of them requires preparation that begins at year 50.' },
+    tags:  ['4X Grand Strategy','Pop Groups','Ascension Paths','End-Game Crises','Galactic Community','Federations','Ethics & Civics','Paradox'],
+    file:  'https://t1ckles.github.io/nadir/stellaris.html',
+    steam: 'https://store.steampowered.com/app/281990/Stellaris/',
+    site:  'https://www.paradoxinteractive.com/games/stellaris/about',
   },
 ];
 

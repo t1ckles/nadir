@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conquest of Elysium 5 &mdash; The Elysium Codex</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1410;--parchment:#f0eadc;--gold:#c9943a;--gold-dark:#8b6420;--gold-pale:#f0d9a8;
+  --mid:#4a3f32;--light:#f5efe4;--border:rgba(201,148,58,0.3);--shadow:rgba(26,20,16,0.22);
+  /* CoE5 specific palette — deep arcane greens and purples over the parchment base */
+  --grove:#1a2e18;--grove-pale:#d8ecd4;
+  --void:#1e1428;--void-pale:#e4d8f5;
+  --bone:#2e2010;--bone-pale:#f5edd4;
+  --inferno:#2e0e08;--inferno-pale:#f5d8cc;
+  --celestial:#0e1e30;--celestial-pale:#d4e4f5;
+  --font-head:'Cinzel','Times New Roman',serif;
+  --font-body:'Crimson Pro','Georgia',serif;
+  --sidebar-w:292px;
+}
+html{scroll-behavior:smooth;font-size:17px}
+body{background:var(--parchment);color:var(--ink);font-family:var(--font-body);line-height:1.75;display:flex;min-height:100vh}
+/* Subtle arcane vellum texture */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");opacity:0.6}
+a{color:inherit;text-decoration:none}button{cursor:pointer;font-family:inherit}
+#progress-bar{position:fixed;top:0;left:var(--sidebar-w);right:0;height:3px;background:var(--gold);transform-origin:left;transform:scaleX(0);z-index:500;transition:transform 0.1s linear}
+/* Sidebar — styled as a tome's spine, dark vellum */
+#sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:#12100e;position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;border-right:2px solid var(--gold-dark);display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--gold-dark) #12100e}
+#sidebar-header{padding:28px 20px 20px;border-bottom:1px solid rgba(201,148,58,0.25);background:linear-gradient(180deg,#080604 0%,#12100e 100%)}
+#sidebar-title{font-family:var(--font-head);font-size:0.88rem;font-weight:900;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;line-height:1.3}
+#sidebar-sub{font-family:var(--font-body);font-size:0.67rem;color:rgba(240,215,160,0.4);margin-top:6px;letter-spacing:0.04em;font-style:italic}
+#sidebar-nav{padding:8px 0 40px;flex:1}
+.nav-section{padding:10px 20px 3px;font-family:var(--font-head);font-size:0.55rem;letter-spacing:0.2em;color:var(--gold-dark);text-transform:uppercase;margin-top:8px;opacity:0.85}
+.nav-item{display:block;padding:6px 20px 6px 28px;font-family:var(--font-body);font-size:0.78rem;color:rgba(240,215,160,0.58);text-decoration:none;border-left:2px solid transparent;transition:all 0.15s ease;line-height:1.35;position:relative}
+.nav-item::before{content:'&#10022;';position:absolute;left:11px;top:6px;color:var(--gold-dark);opacity:0;transition:opacity 0.12s;font-size:0.55rem}
+.nav-item:hover,.nav-item.active{color:var(--gold-pale);border-left-color:var(--gold);background:rgba(201,148,58,0.08);padding-left:30px}
+.nav-item:hover::before,.nav-item.active::before{opacity:1}
+#sidebar-toggle{display:none;position:fixed;top:10px;left:10px;z-index:200;background:#12100e;border:1px solid var(--gold-dark);color:var(--gold);font-size:1.1rem;padding:5px 9px;border-radius:2px}
+#main{margin-left:var(--sidebar-w);flex:1;min-width:0}
+/* Hero — dark arcane night sky, stars, deep green forest horizon */
+#hero{background:linear-gradient(175deg,#040208 0%,#0a0812 30%,#080e06 65%,#100c04 100%);min-height:480px;display:flex;flex-direction:column;justify-content:flex-end;padding:0 64px 64px;position:relative;overflow:hidden;border-bottom:3px solid var(--gold-dark)}
+#hero::before{content:'';position:absolute;inset:0;
+  background-image:
+    radial-gradient(1px 1px at 8% 12%,rgba(255,255,200,0.7) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 18% 5%,rgba(255,255,220,0.5) 0%,transparent 0%),
+    radial-gradient(1px 1px at 32% 18%,rgba(255,255,200,0.6) 0%,transparent 0%),
+    radial-gradient(1px 1px at 47% 8%,rgba(200,220,255,0.55) 0%,transparent 0%),
+    radial-gradient(2px 2px at 55% 14%,rgba(255,255,200,0.4) 0%,transparent 0%),
+    radial-gradient(1px 1px at 63% 6%,rgba(255,220,200,0.5) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 73% 20%,rgba(255,255,220,0.6) 0%,transparent 0%),
+    radial-gradient(1px 1px at 81% 10%,rgba(200,220,255,0.5) 0%,transparent 0%),
+    radial-gradient(1px 1px at 92% 4%,rgba(255,255,200,0.7) 0%,transparent 0%),
+    radial-gradient(1px 1px at 25% 25%,rgba(255,255,200,0.4) 0%,transparent 0%),
+    radial-gradient(1px 1px at 88% 28%,rgba(255,220,255,0.45) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 42% 32%,rgba(255,255,200,0.35) 0%,transparent 0%)}
+#hero::after{content:'';position:absolute;bottom:0;left:64px;right:64px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.hero-eyebrow{font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.28em;color:var(--gold-dark);text-transform:uppercase;margin-bottom:14px;position:relative}
+.hero-title{font-family:var(--font-head);font-size:clamp(2rem,5vw,3.6rem);font-weight:900;color:var(--parchment);letter-spacing:0.04em;text-transform:uppercase;line-height:1.05;margin-bottom:8px;position:relative;text-shadow:0 2px 12px rgba(0,0,0,0.8)}
+.hero-subtitle{font-family:var(--font-body);font-size:1.05rem;font-style:italic;color:rgba(240,217,168,0.72);font-weight:300;margin-bottom:26px;position:relative}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;position:relative}
+.hero-tag{font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-pale);border:1px solid rgba(201,148,58,0.38);padding:3px 10px;background:rgba(201,148,58,0.07)}
+#content{padding:0 64px 80px;max-width:960px}
+.section{padding:54px 0 6px;animation:fadeUp 0.45s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.sec-num{display:inline-block;font-family:var(--font-head);font-size:0.78rem;font-weight:400;letter-spacing:0.1em;color:var(--gold-dark);margin-right:0.5em;vertical-align:middle}
+.section-title{font-family:var(--font-head);font-size:clamp(1.25rem,2.4vw,1.75rem);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink);padding-bottom:12px;margin-bottom:20px;border-bottom:2px solid var(--border);position:relative}
+.section-title::after{content:'';position:absolute;bottom:-2px;left:0;width:58px;height:2px;background:var(--gold)}
+.sub-title{font-family:var(--font-head);font-size:1rem;font-weight:600;letter-spacing:0.05em;color:var(--mid);margin:26px 0 9px;text-transform:uppercase}
+p{margin-bottom:1rem;font-size:1rem}
+.guide-list{margin:0.5rem 0 1rem 1.2rem}
+.guide-list li{margin-bottom:0.5rem;font-size:1rem}
+.guide-list li::marker{color:var(--gold-dark)}
+/* Callouts */
+.callout{padding:15px 20px;margin:20px 0;border-left:4px solid var(--gold);background:var(--light);border-radius:0 3px 3px 0}
+.callout.grove{border-left-color:#2a6020;background:var(--grove-pale)}
+.callout.void{border-left-color:#5a3a8a;background:var(--void-pale)}
+.callout.bone{border-left-color:#7a5a20;background:var(--bone-pale)}
+.callout.inferno{border-left-color:#8a2a10;background:var(--inferno-pale)}
+.callout.celestial{border-left-color:#2050a0;background:var(--celestial-pale)}
+.callout.tip{border-left-color:#3a5c1a;background:#edf5e4}
+.callout.warning{border-left-color:#7a3a10;background:#f5edda}
+.callout-title{font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;margin-bottom:5px;color:var(--gold-dark)}
+.callout.grove .callout-title{color:#2a6020}
+.callout.void .callout-title{color:#5a3a8a}
+.callout.bone .callout-title{color:#7a5a20}
+.callout.inferno .callout-title{color:#8a2a10}
+.callout.celestial .callout-title{color:#2050a0}
+.callout.tip .callout-title{color:#3a5c1a}
+.callout.warning .callout-title{color:#7a3a10}
+.callout p{font-size:0.94rem;margin-bottom:0.5rem}
+.callout p:last-child{margin-bottom:0}
+/* Arcane scroll / lore blocks */
+.lore-block{padding:16px 22px;margin:22px 0;border:1px solid rgba(139,100,32,0.45);background:rgba(30,20,8,0.06);position:relative}
+.lore-block::before{content:'FROM THE CHRONICLE OF ELYSIUM';position:absolute;top:-0.6rem;left:1rem;font-family:var(--font-head);font-size:0.54rem;letter-spacing:0.22em;color:var(--gold-dark);background:var(--parchment);padding:0 0.5rem}
+.lore-block p{font-style:italic;color:#2e2010;font-size:0.96rem;line-height:1.88}
+.lore-block .source{font-family:var(--font-head);font-size:0.58rem;color:rgba(139,100,32,0.6);text-align:right;display:block;margin-top:0.6rem;letter-spacing:0.1em}
+/* Data tables */
+.data-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.9rem}
+.data-table th{background:#12100e;color:var(--gold-pale);font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;padding:8px 11px;text-align:left;border:1px solid rgba(201,148,58,0.2)}
+.data-table td{padding:7px 11px;border:1px solid var(--border);vertical-align:top;line-height:1.5;color:var(--ink)}
+.data-table tr:nth-child(even) td{background:rgba(201,148,58,0.04)}
+.data-table tr:hover td{background:rgba(201,148,58,0.07)}
+/* Faction cards */
+.faction-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:16px;margin:16px 0}
+.faction-card{border:1px solid var(--border);background:var(--light);padding:14px 16px;border-top:3px solid var(--gold);position:relative}
+.faction-card.arcane{border-top-color:#5a3a8a}
+.faction-card.nature{border-top-color:#2a6020}
+.faction-card.mortal{border-top-color:#6a4820}
+.faction-card.undead{border-top-color:#3a3a3a}
+.faction-card.infernal{border-top-color:#8a2a10}
+.faction-card.construct{border-top-color:#4a6080}
+.faction-card.divine{border-top-color:#c0a020}
+.faction-name{font-family:var(--font-head);font-size:0.88rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink);margin-bottom:2px}
+.faction-type{font-family:var(--font-head);font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);margin-bottom:7px;display:block}
+.faction-card.arcane .faction-type{color:#5a3a8a}
+.faction-card.nature .faction-type{color:#2a6020}
+.faction-card.mortal .faction-type{color:#6a4820}
+.faction-card.undead .faction-type{color:#3a3a3a}
+.faction-card.infernal .faction-type{color:#8a2a10}
+.faction-card.construct .faction-type{color:#4a6080}
+.faction-card.divine .faction-type{color:#c0a020}
+.faction-card p{font-size:0.88rem;line-height:1.6;color:var(--ink);margin-bottom:0}
+/* Phase blocks */
+.phase{padding:16px 20px;margin:14px 0;border-left:4px solid var(--gold);background:rgba(201,148,58,0.05)}
+.phase.early{border-left-color:#2a5080;background:rgba(42,80,128,0.07)}
+.phase.mid{border-left-color:var(--gold-dark);background:rgba(201,148,58,0.07)}
+.phase.late{border-left-color:#7a2a1a;background:rgba(122,42,26,0.07)}
+.phase-title{font-family:var(--font-head);font-size:0.84rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:7px;color:var(--gold-dark)}
+.phase.early .phase-title{color:#2a5080}
+.phase.late .phase-title{color:#7a2a1a}
+.phase p{font-size:0.94rem;margin-bottom:0.6rem;color:var(--ink)}
+.phase p:last-child{margin-bottom:0}
+/* Ritual block */
+.ritual-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin:14px 0}
+.ritual-card{border:1px solid rgba(139,100,32,0.4);background:rgba(30,20,8,0.04);padding:12px 14px;position:relative}
+.ritual-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold-dark),transparent)}
+.ritual-name{font-family:var(--font-head);font-size:0.82rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink);margin-bottom:3px}
+.ritual-cost{font-family:var(--font-head);font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:6px;display:block}
+.ritual-card p{font-size:0.86rem;line-height:1.55;color:var(--mid);margin-bottom:0}
+/* Ornamental divider — runic style */
+.orn{text-align:center;color:var(--gold-dark);font-size:0.72rem;letter-spacing:0.5em;padding:28px 0 8px;opacity:0.7}
+/* Glossary */
+.gloss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:1px;background:var(--border);margin-top:16px;border:1px solid var(--border)}
+.gloss-item{background:var(--light);padding:9px 13px;display:flex;gap:10px;align-items:flex-start}
+.gloss-item:nth-child(even){background:var(--parchment)}
+.gloss-term{font-family:var(--font-head);font-size:0.75rem;font-weight:700;color:var(--ink);white-space:normal;min-width:120px;max-width:150px;word-break:break-word;letter-spacing:0.04em;text-transform:uppercase}
+.gloss-def{font-size:0.86rem;color:var(--mid);line-height:1.55}
+#back-top{position:fixed;bottom:26px;right:26px;width:40px;height:40px;background:#12100e;border:1px solid var(--gold-dark);color:var(--gold);font-size:1rem;display:flex;align-items:center;justify-content:center;text-decoration:none;opacity:0;transform:translateY(8px);transition:opacity 0.3s,transform 0.3s;z-index:90}
+#back-top.visible{opacity:1;transform:none}
+#back-top:hover{background:var(--gold-dark);color:var(--parchment)}
+#footer{margin-top:40px;border-top:1px solid var(--border);padding:20px 64px;font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);text-align:center}
+@media(max-width:880px){
+  :root{--sidebar-w:0px}
+  #sidebar-toggle{display:flex;align-items:center;justify-content:center}
+  #sidebar{transform:translateX(-100%);transition:transform 0.26s ease;width:264px}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  #hero,#content,#footer{padding-left:22px;padding-right:22px}
+  #progress-bar{left:0}
+  .faction-grid,.ritual-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+<button id="sidebar-toggle" aria-label="Menu">&#9776;</button>
+
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <div id="sidebar-title">Conquest of Elysium 5</div>
+    <div id="sidebar-sub">The Elysium Codex &mdash; Illwinter Game Design</div>
+  </div>
+  <div id="sidebar-nav">
+    <div class="nav-section">The World</div>
+    <a class="nav-item" href="#s01">01 &middot; What Is Elysium?</a>
+    <a class="nav-item" href="#s02">02 &middot; Game Overview</a>
+    <a class="nav-item" href="#s03">03 &middot; The Planes of Existence</a>
+    <div class="nav-section">Core Systems</div>
+    <a class="nav-item" href="#s04">04 &middot; Resources</a>
+    <a class="nav-item" href="#s05">05 &middot; Rituals</a>
+    <a class="nav-item" href="#s06">06 &middot; Map &amp; Terrain</a>
+    <a class="nav-item" href="#s07">07 &middot; Combat</a>
+    <a class="nav-item" href="#s08">08 &middot; Seasons &amp; Events</a>
+    <div class="nav-section">The Factions</div>
+    <a class="nav-item" href="#s09">09 &middot; Beginner Factions</a>
+    <a class="nav-item" href="#s10">10 &middot; Mortal Warlords</a>
+    <a class="nav-item" href="#s11">11 &middot; Nature &amp; Ancient Powers</a>
+    <a class="nav-item" href="#s12">12 &middot; Dark Sorcery</a>
+    <a class="nav-item" href="#s13">13 &middot; Divine &amp; Planar Classes</a>
+    <a class="nav-item" href="#s14">14 &middot; The Strange &amp; Unique</a>
+    <div class="nav-section">Strategy</div>
+    <a class="nav-item" href="#s15">15 &middot; Choosing Your Faction</a>
+    <a class="nav-item" href="#s16">16 &middot; Early Game Doctrine</a>
+    <a class="nav-item" href="#s17">17 &middot; Mid-Game Escalation</a>
+    <a class="nav-item" href="#s18">18 &middot; The Late Game</a>
+    <a class="nav-item" href="#s19">19 &middot; Army Composition</a>
+    <a class="nav-item" href="#s20">20 &middot; Arcane vs. Martial Factions</a>
+    <a class="nav-item" href="#s21">21 &middot; Multiplayer Doctrine</a>
+    <a class="nav-item" href="#s22">22 &middot; Common Mistakes</a>
+    <div class="nav-section">Reference</div>
+    <a class="nav-item" href="#s23">23 &middot; Settings &amp; Difficulty</a>
+    <a class="nav-item" href="#s24">24 &middot; Glossary</a>
+  </div>
+</nav>
+
+<div id="main">
+<div id="hero">
+  <div class="hero-eyebrow">Nadir Strategy Archive &nbsp;&middot;&nbsp; Illwinter Game Design &nbsp;&middot;&nbsp; Dark Fantasy Conquest &nbsp;&middot;&nbsp; The Realms of Elysium</div>
+  <h1 class="hero-title">Conquest of Elysium 5</h1>
+  <p class="hero-subtitle">The Elysium Codex &mdash; A Complete Guide to All Factions, Systems, and the Planes Beyond</p>
+  <div class="hero-tags">
+    <span class="hero-tag">24 Factions</span>
+    <span class="hero-tag">24 Chapters</span>
+    <span class="hero-tag">10 Planes</span>
+    <span class="hero-tag">All Resources</span>
+    <span class="hero-tag">Ritual Systems</span>
+    <span class="hero-tag">Rogue-like Strategy</span>
+    <span class="hero-tag">Full Glossary</span>
+  </div>
+</div>
+
+<div id="content">
+
+<!-- S01 -->
+<section class="section" id="s01">
+<h2 class="section-title"><span class="sec-num">&sect;01</span> What Is Elysium?</h2>
+<div class="lore-block">
+  <p>In the ages before men named the land, it was simply called what it was: Elysium. A world of impossible contradictions. Of ancient forests where the trees remember gods long forgotten. Of mountains whose roots touch caverns that lead, if the old texts are believed, all the way to the fires beneath creation. Of graves that open when no one is watching. Of gods that have not yet decided whether they are gods. It has been conquered a hundred times and liberated from each conqueror by the weight of its own strange nature. It waits, now, for the next attempt.</p>
+  <span class="source">// CHRONICLE OF ELYSIUM &middot; FRAGMENT FROM THE THIRD AGE OF CONTENTION //</span>
+</div>
+
+<p>Conquest of Elysium 5 is a <strong>turn-based fantasy strategy game with roguelike elements</strong>, developed by Illwinter Game Design — the studio behind the Dominions series. It shares Dominions&apos; love of deep, idiosyncratic systems and its absolute refusal to hand-hold the player, but it is a considerably more focused and faster-playing experience. Where Dominions is an ocean, CoE5 is a river: fast, directed, and capable of carrying you somewhere unexpected in the time you have available.</p>
+
+<p>The game&apos;s core premise is elegantly simple: you are one of twenty-four unique faction leaders, each with radically different mechanics, resources, and win conditions. You are placed on a randomly generated map alongside AI opponents. You expand, you gather resources, you perform rituals to summon powerful beings or create powerful infrastructure, and you fight until one faction controls enough of Elysium to declare victory — or until something from the Planes makes the question moot.</p>
+
+<h2 class="sub-title">What Makes CoE5 Different</h2>
+<p>Most strategy games offer faction variety as a cosmetic layer over a shared set of core mechanics. CoE5 does not. The twenty-four factions in this game play so differently that calling them variations of the same game is a category error. The Baron needs gold, raises levies, and commands armies of knights. The Druid needs herbs, doesn&apos;t particularly care about gold, and grows forests to harvest materials for nature summons that have no use for mines at all. The Scourge Lord needs lifeforce, a resource found nowhere in any shop, generated only by structures of power that drain the very vitality from the land until it becomes desert. The Necromancer needs corpses. The Demonologist needs sacrifices and the willingness to risk a demon turning on you during a binding ritual.</p>
+
+<p>These are not different paths to the same destination. They are different games, sharing a map and a ruleset.</p>
+
+<div class="callout tip">
+  <div class="callout-title">For Players Coming from Dominions 6</div>
+  <p>CoE5 and Dominions 6 share a studio and a design philosophy but not a mechanical system. CoE5 has no research, no national units in the Dominions sense, and no turn-simultaneous multiplayer core. It is faster, more accessible as a single-player experience, and deliberately roguelike in its map variety. Your Dominions experience will help you appreciate CoE5&apos;s depth but will not transfer its mechanical knowledge.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S02 -->
+<section class="section" id="s02">
+<h2 class="section-title"><span class="sec-num">&sect;02</span> Game Overview</h2>
+<p>CoE5 is published by Illwinter Game Design, the Swedish studio of Johan Karlsson and Kristoffer Osterman. It is a <strong>direct sequel to Conquest of Elysium 4</strong> and was released in 2021. The fifth version added four new planes (bringing the total to ten), three new factions (Cloud Lord, Kobold King, Monkey Maharaja; with Rakshasa added subsequently), new ritual types across all existing factions, boats and ocean travel, and numerous quality-of-life improvements.</p>
+
+<h2 class="sub-title">Game Loop Structure</h2>
+<p>Each turn in CoE5 proceeds through:</p>
+<ol class="guide-list">
+  <li><strong>Resource income:</strong> Gold, iron, and special resources from controlled tiles accumulate.</li>
+  <li><strong>Events:</strong> Random events fire (bumper harvest, bandit raid, gate to the underworld opening, and dozens more).</li>
+  <li><strong>Ritual phase:</strong> Your leader and commanders may perform rituals if sufficient resources are available.</li>
+  <li><strong>Movement and orders:</strong> All armies move, explore, attack, or garrison.</li>
+  <li><strong>Combat resolution:</strong> Battles resolve where armies meet.</li>
+</ol>
+<p>This cycle repeats until a faction triggers the victory condition, which is most commonly holding a sufficient portion of the map for a defined number of turns — though specific conditions vary by the Society setting.</p>
+
+<h2 class="sub-title">Randomness and Replayability</h2>
+<p>CoE5 is deliberately roguelike in its randomness. The map is procedurally generated every game. Many factions start with a <strong>random subset of their available rituals</strong> — this means two games as the Necromancer will play differently because you may have Raise Skeletons in one and Summon Spectres in another. The random map will distribute your required resources (herbs, gems, sacrificial locations) differently each run. Random events will fire at unpredictable intervals. No two games are the same, and the game&apos;s depth is substantial enough to reward many dozens of playthroughs without exhaustion.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S03 -->
+<section class="section" id="s03">
+<h2 class="section-title"><span class="sec-num">&sect;03</span> The Planes of Existence</h2>
+<div class="lore-block">
+  <p>The scholars argue about how many planes there are. The demons do not argue. The demons know exactly how many planes there are because they have been to most of them, often involuntarily. The Sleeping Ones know, but they are not in the habit of explaining things. The Necromancers know about two of them because necessity is the best cartographer. The Witches know about one because the Sleeping Ones told them, when the Sleeping Ones were in a communicative mood. Everyone else is guessing.</p>
+  <span class="source">// ACADEMIC DISPUTATION ON PLANAR COSMOLOGY &middot; YEAR OF THE AMBER CONJUNCTION //</span>
+</div>
+
+<p>CoE5 contains <strong>ten planes</strong> that can be interacted with during play. Most campaigns will take place primarily on Elysium, but specific factions have home planes, specific rituals open planar portals, and certain random events can breach planar barriers unexpectedly.</p>
+
+<table class="data-table">
+  <thead><tr><th>Plane</th><th>Character</th><th>Key Features</th><th>Access</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Elysium</strong></td><td>The primary world; the main battlefield</td><td>All terrain types; all standard resources; all factions start here or adjacent</td><td>Default</td></tr>
+    <tr><td><strong>Agartha</strong></td><td>Vast underground cavern realm, gold and gem rich</td><td>Deep Ones, blind olms, cave cows; gem deposits; can be flooded; no desert/tundra</td><td>Burrowing units; specific rituals</td></tr>
+    <tr><td><strong>Inferno</strong></td><td>The realm of Demon Lords; fire, ice, ashen fields, and the Abyss</td><td>Four regions: Inferno, Kokytos (ice), Pandemonium, Abyss; demon lords in citadels; sinners in mines</td><td>Demonologist rituals; specific events</td></tr>
+    <tr><td><strong>Hades</strong></td><td>The realm of the dead; dark mirror of Elysium</td><td>Detrimental to living; spirits of the dead; Stygian paths for fast travel; Necromancer home territory</td><td>Necromancer rituals; Death gates</td></tr>
+    <tr><td><strong>Celestial</strong></td><td>The abode of angels; high above Elysium</td><td>Beanstalks, rainbows, mountain spires as access; angels and celestial beings; Voice of El&apos;s domain</td><td>Beanstalks; certain divine rituals</td></tr>
+    <tr><td><strong>Elemental Planes</strong></td><td>Four elemental realms (Fire, Water, Air, Earth)</td><td>Elemental beings; special resources; risky to non-elemental armies; Elemental Kings rule here</td><td>Specific faction rituals</td></tr>
+    <tr><td><strong>Cloud Layer</strong></td><td>Home of the Cloud Lord and sky powers</td><td>Sky terrain; airborne units; floating castles; accessible via beanstalks and mountain spires</td><td>Cloud Lord home; beanstalks; air magic</td></tr>
+  </tbody>
+</table>
+
+<div class="callout void">
+  <div class="callout-title">Planes as Strategic Wildcards</div>
+  <p>Planes are rarely worth actively pursuing for most factions &mdash; the risk-to-reward ratio of invading Inferno or storming Hades is poor unless you are specifically a planar faction (Demonologist, Necromancer, Voice of El). However, planes matter strategically as surprise elements: a Demonologist who summons a demon lord creates a power vacuum in Inferno that affects that plane&apos;s politics permanently. A Necromancer who learns Stygian travel can move armies across the map at impossible speed via Hades. Understanding which planes your faction can interact with, and watching for planar breach events, distinguishes competent players from beginners.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S04 -->
+<section class="section" id="s04">
+<h2 class="section-title"><span class="sec-num">&sect;04</span> Resources &mdash; The Currencies of Power</h2>
+<div class="lore-block">
+  <p>Every war is ultimately a war over what the combatants need. The Baron needs gold and iron. The Druid needs the forest itself. The Demonologist needs blood and breath and the willingness of the community to offer up its weakest members. The Scourge Lord needs something that has no name in most languages &mdash; the vital force that separates living land from dead desert. All of them want Elysium. None of them can take it for the same reason.</p>
+  <span class="source">// TREATISE ON THE ECONOMICS OF CONQUEST &middot; ROYAL ACADEMY OF ELYSIUM //</span>
+</div>
+
+<p>CoE5 has a layered resource system. All factions use <strong>Gold</strong> for basic units and upkeep. Most use <strong>Iron</strong> for military equipment. Each faction also relies on one or more <strong>special resources</strong> unique to their playstyle. Understanding your faction&apos;s resource dependencies &mdash; and the map tiles that generate them &mdash; is the foundation of every strategy.</p>
+
+<h2 class="sub-title">Universal Resources</h2>
+<table class="data-table">
+  <thead><tr><th>Resource</th><th>Primary Sources</th><th>Primary Uses</th><th>Factions Dependent</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Gold</strong></td><td>Mines, settlements (hamlets through cities), trading posts</td><td>Most unit recruitment; upkeep; basic rituals</td><td>All factions, though degree varies widely</td></tr>
+    <tr><td><strong>Iron</strong></td><td>Iron mines (surface and underground); Iron Bog</td><td>Heavy infantry, cavalry; heavily armoured units; certain constructs</td><td>Baron, Barbarian, Senator, Markgraf; most martial factions</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Special Resources by Faction</h2>
+<table class="data-table">
+  <thead><tr><th>Resource</th><th>Faction(s)</th><th>Sources</th><th>Used For</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Herbs</strong></td><td>Druid, Dryad Queen, Witch (partial)</td><td>Forests, jungles, swamps, specific special locations</td><td>Nature summons; rituals; Grove expansion; nature creatures</td></tr>
+    <tr><td><strong>Sacrifices</strong></td><td>Demonologist, High Priestess, High Cultist</td><td>Villages, towns (inhabitants consumed per ritual)</td><td>Demon summoning; divine rituals; elder being contact</td></tr>
+    <tr><td><strong>Gems (Ruby/Sapphire/Emerald/Diamond)</strong></td><td>Warlock, Enchanter, Illusionist (general gems), others</td><td>Gem mines, Agartha gem deposits, Elemental Planes, special sites</td><td>Golem creation; illusion rituals; magical constructs; arcane summons</td></tr>
+    <tr><td><strong>Mushrooms</strong></td><td>Troll King, Bakemono</td><td>Fungus forests, troll pits, specific underground sites</td><td>Troll forest creation; goblin shaman rituals; fungal magic</td></tr>
+    <tr><td><strong>Hands of Glory</strong></td><td>Witch, Warlock</td><td>Graveyards, certain dark ritual locations</td><td>Dark sorcery rituals; horror summons</td></tr>
+    <tr><td><strong>Relics</strong></td><td>High Priestess, Priest King, Voice of El</td><td>Holy sites, temples, sacred groves, divine locations</td><td>Divine summons; blessings; sacred ceremonies</td></tr>
+    <tr><td><strong>Corpses</strong></td><td>Necromancer</td><td>Graveyards, battlefields (after combat), Village of the Damned</td><td>Raising undead; liches; bone constructs; armies of the dead</td></tr>
+    <tr><td><strong>Lifeforce</strong></td><td>Scourge Lord (exclusive)</td><td>Populated and vegetated map tiles drained by Pillars/Pyramids of Power</td><td>All Scourge Lord rituals; Herald recruitment; land desertification</td></tr>
+    <tr><td><strong>Candles</strong></td><td>Pale One</td><td>Specific Pale One sites, ritual locations</td><td>Pale One rituals; the Prophecy system</td></tr>
+  </tbody>
+</table>
+
+<div class="callout grove">
+  <div class="callout-title">Resource Priority &mdash; The Map Matters</div>
+  <p>Your resource income is entirely map-dependent. A Druid starting on a map with sparse forests will struggle significantly. A Demonologist whose starting area has few villages will have limited sacrifices early. Before committing to aggressive expansion, evaluate your starting position&apos;s resource profile. Prioritise capturing the specific tile types your faction needs over capturing high-gold settlements you do not require. A Druid with ten forests and minimal gold is often stronger than a Druid with ten gold mines and no herbs.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S05 -->
+<section class="section" id="s05">
+<h2 class="section-title"><span class="sec-num">&sect;05</span> Rituals &mdash; The Engine of Faction Power</h2>
+<div class="lore-block">
+  <p>The difference between a warlord and a sorcerer is not one of power but of patience. The warlord&apos;s power arrives with his army. The sorcerer&apos;s power arrives when the ritual is complete, when the candles have burned correctly, when the stars are in the position the old texts describe and the reagents are the right temperature and the chanting has lasted precisely as long as it was supposed to. The warlord can kill you immediately. The sorcerer can kill you with something that did not exist yet when the warlord struck. Both of these approaches have their enthusiastic adherents.</p>
+  <span class="source">// DISCOURSE ON MAGICAL THEORY &middot; ACADEMY OF HIGHER MAGIC //</span>
+</div>
+
+<p>Rituals are the primary mechanism through which most factions develop their power over the course of a game. Unlike standard unit recruitment (which costs gold and produces units immediately), rituals require specific resources, may take multiple turns to complete, and produce effects that range from permanent strategic improvements to catastrophic tactical summons.</p>
+
+<h2 class="sub-title">Ritual Structure</h2>
+<p>Most factions have rituals organised into three tiers (Level 1, 2, 3), with higher tiers requiring more resources and producing more powerful effects. You begin with access to a <strong>random subset of your faction&apos;s available rituals</strong>. Additional rituals can sometimes be learned during play by visiting specific map locations (Magic Libraries, Academies) or through in-game events.</p>
+
+<div class="ritual-grid">
+  <div class="ritual-card">
+    <div class="ritual-name">Level 1 Rituals</div>
+    <span class="ritual-cost">Low cost &middot; Early access</span>
+    <p>Foundation rituals. Summon basic creatures, establish initial special structures, or provide modest but reliable bonuses. Druid: summon wolves. Necromancer: raise skeletons from corpses. Baron: build forts in hamlets. These are the rituals that define your early game identity.</p>
+  </div>
+  <div class="ritual-card">
+    <div class="ritual-name">Level 2 Rituals</div>
+    <span class="ritual-cost">Moderate cost &middot; Mid-game</span>
+    <p>Escalation rituals. Summon powerful unique creatures, establish major strategic infrastructure, or access planar effects. Demonologist: summon a Greater Demon. Enchanter: create a Crystal Golem. Necromancer: raise an army in a single ritual. These define the mid-game power spike.</p>
+  </div>
+  <div class="ritual-card">
+    <div class="ritual-name">Level 3 Rituals</div>
+    <span class="ritual-cost">High cost &middot; Late game</span>
+    <p>Game-changing effects. Demon Lords. Lich transformations. Portal creation. Ent armies. These are the endgame expressions of each faction&apos;s identity and the culmination of their resource accumulation. When you can afford a Level 3 ritual, you are probably close to winning or losing.</p>
+  </div>
+  <div class="ritual-card">
+    <div class="ritual-name">Random Starting Set</div>
+    <span class="ritual-cost">Varies by faction &middot; RNG element</span>
+    <p>Most factions do not start with access to their entire ritual list. This randomness is intentional and drives replayability. Adapt your strategy to what you have. A Necromancer who starts with Spectres instead of Skeletons plays very differently from one who starts with Skeletons &mdash; and both can win.</p>
+  </div>
+</div>
+
+<div class="callout warning">
+  <div class="callout-title">The Demonologist&apos;s Risk &mdash; Failed Binding</div>
+  <p>The Demonologist&apos;s summoning rituals carry a <strong>failure chance</strong>. A failed binding releases the demon without binding it to your service &mdash; and an unbound demon will immediately attack your leader. The failure chance scales with the demon&apos;s power tier. Attempting a Demon Lord summoning with inadequate resources or a weak leader is a common cause of sudden Demonologist death. Always have an escape army nearby when attempting high-tier summonings, and invest in your leader&apos;s defensive stats before attempting the largest rituals.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S06 -->
+<section class="section" id="s06">
+<h2 class="section-title"><span class="sec-num">&sect;06</span> Map &amp; Terrain</h2>
+<p>The CoE5 map is a grid of tiles, each with a terrain type that affects movement cost, resource production, and combat modifiers. The map is randomly generated every game, with the available terrain profile directly shaping which factions will be powerful in this particular run.</p>
+
+<h2 class="sub-title">Key Terrain Types</h2>
+<table class="data-table">
+  <thead><tr><th>Terrain</th><th>Resource</th><th>Strategic Value</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Forest</strong></td><td>Herbs (Druid); concealment</td><td>Essential for nature factions; provides cover from scouts; Troll forests create hazard zones</td></tr>
+    <tr><td><strong>Mine (Surface / Mountain)</strong></td><td>Gold, Iron, Gems</td><td>Universal value; contested heavily; Iron mines critical for martial factions</td></tr>
+    <tr><td><strong>Farm</strong></td><td>Gold (low); levy soldiers (Baron)</td><td>Population-generating; Baron levies; Senator growth; moderate but reliable income</td></tr>
+    <tr><td><strong>Village / Town / City</strong></td><td>Gold (scaling with size); Sacrifices</td><td>Gold core; Demonologist/High Priestess sacrifice source; population growth; militia defence</td></tr>
+    <tr><td><strong>Graveyard</strong></td><td>Corpses; Hands of Glory</td><td>Essential for Necromancer; Witch dark rituals; small gold; random undead spawning</td></tr>
+    <tr><td><strong>Swamp</strong></td><td>Herbs; some special resources</td><td>Slow movement; bog iron; some factions have swamp affinity (Witches)</td></tr>
+    <tr><td><strong>Sacred Site / Temple</strong></td><td>Relics; divine resources</td><td>Priest King, High Priestess, Voice of El primary resource; generates divine power</td></tr>
+    <tr><td><strong>Magic Library / Academy</strong></td><td>Ritual knowledge</td><td>Can teach new rituals to your leader; extremely high value; contest aggressively</td></tr>
+    <tr><td><strong>Ancient Forest</strong></td><td>High herb density; special Ent ties</td><td>Druid and Dryad Queen endgame resource; Ent summoning &mdash; each Ent costs ~100 Herbs for 313 HP</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Movement and Exploration</h2>
+<p>Unexplored tiles are hidden. Scouts are essential for safe expansion &mdash; sending your main army into unexplored territory risks ambush by hostile wildlife that can kill a weak commander before you understand what you walked into. Aggressive wildlife is a permanent feature of Elysium; the map is never passive. Priority for any new game: establish scout coverage of your immediate expansion zone before committing your leader to remote exploration.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S07 -->
+<section class="section" id="s07">
+<h2 class="section-title"><span class="sec-num">&sect;07</span> Combat</h2>
+<div class="lore-block">
+  <p>The battle does not care what the strategy was. The battle is what remains when the strategy collides with the enemy&apos;s strategy and both of them shatter. The Enchanter&apos;s golems do not negotiate with the Baron&apos;s knights. The Necromancer&apos;s shades do not discuss philosophy with the Barbarian&apos;s berserkers. The battle is its own argument, made in the only language both sides share.</p>
+  <span class="source">// MILITARY HISTORY OF THE THIRD ELYSIAN CONTENTION //</span>
+</div>
+
+<p>Combat in CoE5 is <strong>automated</strong>. When two opposing forces occupy the same tile, battle resolves automatically with a visual display you can watch. You do not directly control individual units in battle; instead, you influence outcomes through <strong>pre-battle positioning</strong> (which units are in which column), <strong>combat spells</strong> (castable by commanders with sufficient magical ability), and most importantly <strong>army composition and unit quality</strong>.</p>
+
+<h2 class="sub-title">The Battle Columns</h2>
+<p>Units are deployed in columns (typically six). Front columns receive melee attacks first; rear columns are protected by front columns until those units die or retreat. The basic column discipline:</p>
+<ul class="guide-list">
+  <li><strong>Front columns:</strong> High HP, high defence, melee-focused units. Heavy infantry, golems, undead, Ents, berserkers, demons.</li>
+  <li><strong>Middle columns:</strong> Mixed or transitional units. Spearmen, archers who can also fight in melee.</li>
+  <li><strong>Rear columns:</strong> Fragile but powerful units. Ranged attackers (archers, crossbows), mages, summoners, artillery. Commanders themselves should typically be positioned in middle or rear columns unless they are powerful combatants.</li>
+</ul>
+
+<h2 class="sub-title">Combat Spells</h2>
+<p>Commanders with magical ability may cast combat spells before or during battle. These are separate from rituals &mdash; combat spells are immediate battlefield effects (area fire damage, fear auras, summoning reinforcements mid-battle). Most factions start with a random set of combat spells just as they start with random rituals. A commander with a powerful area-damage spell can turn unwinnable-looking battles into decisive victories. Conversely, being caught without combat spells against an opponent who has them is a significant tactical disadvantage.</p>
+
+<h2 class="sub-title">Charging</h2>
+<p>Knights and cavalry have a <strong>charging</strong> mechanic that deals bonus damage in the first phase of combat. This makes cavalry devastating on the initial contact but less effective in prolonged engagements. The Baron&apos;s knights are the most prominent expression of this mechanic. Counter-charging with your own cavalry before the enemy completes their charge approach is an advanced tactic available to factions with mounted units.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S08 -->
+<section class="section" id="s08">
+<h2 class="section-title"><span class="sec-num">&sect;08</span> Seasons &amp; Random Events</h2>
+<p>CoE5 has a seasonal cycle that affects the map, certain resource production, and creature behaviour. The year cycles through Spring, Summer, Autumn, and Winter, with each season modifying:</p>
+<ul class="guide-list">
+  <li><strong>Winter:</strong> Reduced income from some tile types; snow terrain; some cold-weather events. Certain units (undead, constructs) are unaffected. Living armies may suffer cold attrition if poorly equipped.</li>
+  <li><strong>Summer:</strong> Peak production; some summer-specific events; heightened wildlife activity in certain biomes.</li>
+  <li><strong>Seasonal events:</strong> Bumper Harvests, Blights, and seasonal variations in specific tile output.</li>
+</ul>
+
+<h2 class="sub-title">Random Events</h2>
+<p>Random events are one of CoE5&apos;s most distinctive features. They range from trivially beneficial (a wandering merchant who sells cheap units) to catastrophic (the underworld gates open and undead flood out of every graveyard simultaneously). Key event categories:</p>
+<div class="faction-grid" style="grid-template-columns:1fr 1fr 1fr;">
+  <div class="faction-card nature">
+    <div class="faction-name">Beneficial</div>
+    <span class="faction-type">POSITIVE EVENTS</span>
+    <p>Bumper harvest (gold/herb windfall); wandering traders; abandoned treasure hordes; banished creatures who join your cause; weather boons. Enjoy them while they last.</p>
+  </div>
+  <div class="faction-card undead">
+    <div class="faction-name">Disruptive</div>
+    <span class="faction-type">NEUTRAL/NEGATIVE</span>
+    <p>Bandits raiding your settlements; disease reducing population; monster migrations; rebellions in captured towns; rival faction scouts in your territory.</p>
+  </div>
+  <div class="faction-card infernal">
+    <div class="faction-name">Catastrophic</div>
+    <span class="faction-type">WORLD-ALTERING</span>
+    <p>Gates to the Underworld opening (undead spawn everywhere); demonic incursions; planar breaches; great beasts awakening. These change the game&apos;s strategic situation for everyone simultaneously.</p>
+  </div>
+</div>
+
+<div class="callout bone">
+  <div class="callout-title">Adapting to Events &mdash; The Roguelike Mindset</div>
+  <p>CoE5 rewards what roguelike players call &quot;reading the run.&quot; If undead spawn events start firing repeatedly, build forces with strong magic resistance. If a demonic incursion appears, evaluate whether you have fire-resistant units or can summon the right counter. The events are not there to frustrate you &mdash; they are there to ensure that no two games develop identically, and that your strategic flexibility is as important as your opening build.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S09 -->
+<section class="section" id="s09">
+<h2 class="section-title"><span class="sec-num">&sect;09</span> Beginner-Friendly Factions</h2>
+<div class="lore-block">
+  <p>Every newcomer to Elysium makes the same mistake: they choose the Demonologist because the name sounds powerful. Three turns later they are staring at a dead leader who failed a binding ritual and are wondering what went wrong. The answer is always the same. They should have started with the Baron. The Baron is the game explaining itself to you in terms you can understand before it starts explaining itself in terms you cannot.</p>
+  <span class="source">// VETERAN&apos;S NOTES ON ELYSIAN FACTIONAL POLITICS &middot; ANONYMOUS //</span>
+</div>
+
+<p>Three factions are consistently recommended for players new to CoE5: the <strong>Baron</strong>, the <strong>Troll King</strong>, and the <strong>Druid</strong>. Each teaches a different core CoE5 concept while remaining forgiving of early mistakes.</p>
+
+<div class="faction-grid">
+  <div class="faction-card mortal">
+    <div class="faction-name">The Baron</div>
+    <span class="faction-type">HUMAN WARLORD &middot; MARTIAL &middot; GOLD/IRON</span>
+    <p><strong>Why start here:</strong> The Baron&apos;s mechanics mirror conventional strategy game logic. Capture settlements for gold, build forts for defence, field cavalry for speed. His annual levy system (free knights and spearmen from settlements each summer) means you always have reinforcements without complex resource management. Teaching game for the core loop.</p>
+  </div>
+  <div class="faction-card nature">
+    <div class="faction-name">The Troll King</div>
+    <span class="faction-type">TROLL/GOBLIN &middot; HYBRID &middot; MUSHROOMS/GOLD</span>
+    <p><strong>Why start here:</strong> One incredibly powerful leader (the Troll King himself) supported by expendable goblins teaches combat column management and the value of a single overwhelming unit. Goblin archers are the main useful support. The King is nearly unkillable in the early game. The simplicity of having one star unit demystifies army composition.</p>
+  </div>
+  <div class="faction-card nature">
+    <div class="faction-name">The Druid</div>
+    <span class="faction-type">NATURE &middot; RITUALIST &middot; HERBS</span>
+    <p><strong>Why start here:</strong> The Druid teaches the ritual system in its most accessible form. Herbs from forests, rituals that summon nature creatures and expand forests, eventual endgame with massive Ent armies. No complex binding risks, no sacrifice management. Forest expansion teaches territorial resource control. Good introduction to long-term ritual planning.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S10 -->
+<section class="section" id="s10">
+<h2 class="section-title"><span class="sec-num">&sect;10</span> Mortal Warlords &mdash; The Martial Factions</h2>
+<p>Mortal warlord factions rely primarily on trained soldiers, economic superiority, and scale rather than supernatural power. They are generally more accessible to players from conventional strategy game backgrounds and less dependent on specific resource concentrations.</p>
+
+<div class="faction-grid">
+  <div class="faction-card mortal">
+    <div class="faction-name">Baron</div>
+    <span class="faction-type">FEUDAL LORD &middot; LEVY ARMIES &middot; GOLD + IRON</span>
+    <p>Wide variety of human troops; annual levy mechanics; knights charge for bonus damage; high lords are mobile mounted commanders. Excellent siege engines. Build forts in hamlets; capture farms and villages for levy triggers. Summer is your season &mdash; the free levy arrives and your army grows without cost.</p>
+  </div>
+  <div class="faction-card mortal">
+    <div class="faction-name">Barbarian</div>
+    <span class="faction-type">WARRIOR CHIEFTAIN &middot; BERSERKERS &middot; IRON</span>
+    <p>Fewer economic tools than the Baron; compensated by devastating berserker infantry. Berserkers fight until they die, causing massive casualties before falling. Less strategic depth in early game; compensated by raw combat power. The Barbarian wins through military aggression, not economic development.</p>
+  </div>
+  <div class="faction-card mortal">
+    <div class="faction-name">Senator / Republic</div>
+    <span class="faction-type">ROMAN ANALOG &middot; POPULATION &middot; GOLD</span>
+    <p>Empire-based mechanics: population growth in settlements, legions recruited from population. Excellent long-term economic scaling but slow early game. The Republic grows stronger the longer the game goes. Cities are the priority, not small settlements. A later-stage Senator with a fully developed empire is extremely hard to defeat by attrition.</p>
+  </div>
+  <div class="faction-card mortal">
+    <div class="faction-name">Markgraf</div>
+    <span class="faction-type">MILITARY GOVERNOR &middot; FORTS &middot; GOLD + IRON</span>
+    <p>Specialises in fortifications and garrison combat. Forts are cheaper and easier to build than for other factions. Excellent defensive capabilities; outposts project power efficiently. Plays as a territorial consolidator &mdash; build forts everywhere, force enemies to siege, grind them down. Less powerful in open field engagements than the Baron.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S11 -->
+<section class="section" id="s11">
+<h2 class="section-title"><span class="sec-num">&sect;11</span> Nature &amp; Ancient Powers</h2>
+
+<div class="faction-grid">
+  <div class="faction-card nature">
+    <div class="faction-name">Druid</div>
+    <span class="faction-type">NATURE RITUALIST &middot; HERBS &middot; FOREST EMPIRE</span>
+    <p>Forest expansion through ritual; no mine requirement; creatures of the woods; Ents as endgame. Ancient Forest gives cheap, powerful Ent summons (~100 herbs each for 313 HP walls of wood). Standard mid-game army: columns of Ents fronting Iron Flies backing Hoburg Crossbows. Requires herb-rich map but is devastatingly powerful when it finds one.</p>
+  </div>
+  <div class="faction-card nature">
+    <div class="faction-name">Dryad Queen</div>
+    <span class="faction-type">FOREST SPIRIT &middot; HERBS &middot; ENCHANTED FORESTS</span>
+    <p>Similar to Druid in herb dependency but with a more magical aesthetic: faeries, dryads, enchanted creatures. Transforms captured forests into enchanted forests that produce unique resources. Lighter military profile than the Druid but with more magical options. Recommended after mastering the Druid&apos;s forest management principles.</p>
+  </div>
+  <div class="faction-card undead">
+    <div class="faction-name">Troll King</div>
+    <span class="faction-type">TROLL/GOBLIN &middot; MUSHROOMS &middot; TROLL FORESTS</span>
+    <p>The King himself is a powerhouse warrior backed by expendable goblin hordes. Troll forest rituals create hazardous terrain where dying creatures animate as plant-animated corpses. Goblin archers are surprisingly effective despite fragility. The King&apos;s mother is a goblin shaman who can transform forests and perform fungal rituals. Play the King as a blade with goblin support, not as a goblin commander.</p>
+  </div>
+  <div class="faction-card nature">
+    <div class="faction-name">Pale One</div>
+    <span class="faction-type">DEEP DWELLERS &middot; CANDLES &middot; THE PROPHECY</span>
+    <p>Unique mechanics: the Prophecy system tracks conditions that must be fulfilled for the Pale Ones to triumph. Powerful underground creatures; candle resource from specific sites. Unusual and rewarding to master; community guides are available specifically for this faction. Not recommended as a first faction; strong for players who enjoy asymmetric win conditions.</p>
+  </div>
+  <div class="faction-card nature">
+    <div class="faction-name">Bakemono</div>
+    <span class="faction-type">SPIRIT FOLK &middot; MUSHROOMS &middot; EASTERN AESTHETIC</span>
+    <p>Japanese-themed spirit faction with mushroom magic and spirit creatures. Powerful shamanic leaders; unique creature roster. Plays similarly to the Troll King in its dual-layer magic/warrior structure but with more variety in ritual options. Good intermediate faction after completing beginner runs.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S12 -->
+<section class="section" id="s12">
+<h2 class="section-title"><span class="sec-num">&sect;12</span> Dark Sorcery &mdash; Summoners and Binders</h2>
+<div class="lore-block">
+  <p>There is a question that students in the Academy of Higher Magic ask their masters in their first year: &quot;What is the difference between a Necromancer and a Demonologist?&quot; The masters&apos; answer is always the same. The Necromancer summons things that are already dead and therefore cannot disobey. The Demonologist summons things that are very much alive and have opinions about it. The students who ask follow-up questions about the third type &mdash; the Witch, who summons something sleeping &mdash; are usually told to come back after they have mastered the first two concepts.</p>
+  <span class="source">// LECTURE NOTES &middot; ACADEMY OF HIGHER MAGIC &middot; INTRODUCTORY YEAR //</span>
+</div>
+
+<div class="faction-grid">
+  <div class="faction-card undead">
+    <div class="faction-name">Necromancer</div>
+    <span class="faction-type">DEATH MAGIC &middot; CORPSES &middot; UNDEAD ARMIES</span>
+    <p>The classic dark faction. Requires corpses from graveyards and battlefields. Raise skeletons, zombies, spectres, liches. Armies do not tire, do not pay upkeep in gold (corpse cost instead), and cannot be demoralised. Hades travel for rapid repositioning. Scaling power &mdash; wins more battles &mdash; generates more corpses &mdash; raises more undead. Snowballs aggressively once rolling. Weakness: early game before corpse generation is established.</p>
+  </div>
+  <div class="faction-card infernal">
+    <div class="faction-name">Demonologist</div>
+    <span class="faction-type">INFERNAL MAGIC &middot; SACRIFICES &middot; DEMONS</span>
+    <p>High risk, high reward. Sacrifice villagers to summon increasingly powerful demons. Risk of failed binding grows with demon tier &mdash; a failed Demon Lord summoning kills your leader instantly. Build your leader&apos;s HP/defence before attempting high-tier bindings. Fire-resistant enemies counter fire-based demons. Enormous endgame power; fragile path to get there. The faction that punishes overconfidence most severely.</p>
+  </div>
+  <div class="faction-card void">
+    <div class="faction-name">Witch</div>
+    <span class="faction-type">SLEEPING ONES &middot; HERBS + HANDS OF GLORY &middot; CURSES</span>
+    <p>Serves the primordial Sleeping Ones &mdash; beings of pre-human power who sleep under Elysium&apos;s surface. Unique curses and hexes; swamp affinity; Hag units with powerful magic; some nature creature access. A blend of nature and dark magic with a distinctive playstyle. Feared by both troll and man. Intermediate difficulty; rewards players who understand terrain exploitation.</p>
+  </div>
+  <div class="faction-card void">
+    <div class="faction-name">Warlock</div>
+    <span class="faction-type">DARK SCHOLAR &middot; GEMS + HANDS OF GLORY &middot; ARCANE SUMMONS</span>
+    <p>Studies forbidden magical knowledge; summons dark scholars, magical beasts, and planar entities. Gem and Hands of Glory dependent. Unique ability to gain a Necromancer&apos;s Apprentice as an ally if one can be recruited, providing hybrid undead options. Flexible and interesting; strong when gem deposits are plentiful on the map.</p>
+  </div>
+  <div class="faction-card void">
+    <div class="faction-name">Illusionist</div>
+    <span class="faction-type">MIRROR MAGIC &middot; GEMS &middot; PHANTASMS</span>
+    <p>Creates mirrors and illusions; captures spells from enemies; creates simulacra; ultimately builds a Palace of Everchanging Dreams. The only faction using a generalised Gem resource (rather than specific gem types). Mirror Gate ritual enables rapid planar transit. Unusual win condition; very distinctive playstyle. Only recommended to players who enjoy mechanical novelty.</p>
+  </div>
+  <div class="faction-card infernal">
+    <div class="faction-name">High Cultist</div>
+    <span class="faction-type">ELDER BEINGS &middot; SACRIFICES &middot; COSMIC HORROR</span>
+    <p>Serves Great Old Ones whose nature the High Cultist cannot fully comprehend. Must summon an Old One to access the most powerful rituals (the cultist himself cannot perform them). Starspawn use astrology to find enemies. The Queen of the Deep summons entire armies. Excellent once Old Ones are active; fragile path to establishing that situation.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S13 -->
+<section class="section" id="s13">
+<h2 class="section-title"><span class="sec-num">&sect;13</span> Divine &amp; Planar Classes</h2>
+
+<div class="faction-grid">
+  <div class="faction-card divine">
+    <div class="faction-name">High Priestess</div>
+    <span class="faction-type">DIVINE DARK &middot; RELICS + SACRIFICES &middot; ZIGGURAT MAGIC</span>
+    <p>Performs grand ceremonies at ziggurats and desert temples; summons ancient Mesopotamian-flavoured divine creatures including Sirrush and Arachne. Sacrifice and Relic dependent. Desert terrain synergy. Powerful unique creature roster; complex ritual management. Strong mid-game summons; requires geographic luck with desert and temple placement.</p>
+  </div>
+  <div class="faction-card divine">
+    <div class="faction-name">Priest King</div>
+    <span class="faction-type">DIVINE WARRIOR &middot; RELICS &middot; HOLY ARMIES</span>
+    <p>Combination of martial and divine; holy warriors supported by sacred ceremonies. Paladin-type units; divine blessings and protections. More accessible than the High Priestess; the divine equivalent of the Baron in approachability. Good for players who want religious flavour with military reliability.</p>
+  </div>
+  <div class="faction-card celestial">
+    <div class="faction-name">Voice of El</div>
+    <span class="faction-type">CELESTIAL &middot; RELICS &middot; ANGELS</span>
+    <p>Serves a monotheistic deity; commands angelic hosts; accesses the Celestial plane. Angels are powerful, difficult to replace, and immune to many status effects. The Voice is the most heavenward faction &mdash; literally; the Celestial plane is their extended home territory. Endgame angels are among the most individually powerful units in the game.</p>
+  </div>
+  <div class="faction-card celestial">
+    <div class="faction-name">Cloud Lord</div>
+    <span class="faction-type">CLOUD PLANE &middot; AERIAL &middot; SKY MAGIC</span>
+    <p>New in CoE5; commands the Cloud Layer. Sky creatures, rain magic, aerial movement. Distinctive because the Cloud Layer is a home terrain advantage unavailable to most other factions. Unique positional game: many enemies cannot easily access the clouds, but you can descend to attack them. Intermediate difficulty with a very distinctive style.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S14 -->
+<section class="section" id="s14">
+<h2 class="section-title"><span class="sec-num">&sect;14</span> The Strange &amp; Unique</h2>
+
+<div class="faction-grid">
+  <div class="faction-card construct">
+    <div class="faction-name">Enchanter</div>
+    <span class="faction-type">CONSTRUCT MAGIC &middot; GEMS &middot; GOLEMS</span>
+    <p>Creates living statues and golems from gems. Golems have enormous HP and do not bleed, tire, or feel fear. Fire, Frost, and Shock immunity depending on golem type. Never Heals: golems cannot recover HP between battles. Clockwork Dragons in the endgame are devastating. The Burgmeister/Enchanter&apos;s construct immunity to elemental effects makes them uniquely resistant to magical factions. Agartha is a gem bonanza for Enchanters.</p>
+  </div>
+  <div class="faction-card construct">
+    <div class="faction-name">Burgmeister (Horology)</div>
+    <span class="faction-type">CLOCKWORK &middot; GOLD + CONSTRUCTS &middot; MECHANICAL</span>
+    <p>Clockwork constructs with 100% immunity to Fire, Frost, and Shock. Can conquer elemental planes that destroy organic armies. Ents from ritual for impressive frontline tanks. Hoburg Crossbow for sustained ranged damage. Only Level 1 and 2 powers available; no endgame Level 3 spike. Wins through consistent mid-game power rather than a decisive late-game ritual &mdash; requires continuous pressure.</p>
+  </div>
+  <div class="faction-card void">
+    <div class="faction-name">Scourge Lord</div>
+    <span class="faction-type">LIFE DRAIN &middot; LIFEFORCE &middot; LAND DESERTIFICATION</span>
+    <p>The most distinctive resource system in the game. Pillars and Pyramids of Power drain lifeforce from surrounding land &mdash; killing vegetation and creating desert permanently. Heralds are powerful unique commanders. Extremely powerful endgame; generates a wasteland in its wake. The Scourge Lord&apos;s power literally consumes the land it inhabits. Sea tiles can be drained indefinitely. A faction with a genuinely unique feel and genuine strategic consequences for the world.</p>
+  </div>
+  <div class="faction-card nature">
+    <div class="faction-name">Kobold King</div>
+    <span class="faction-type">KOBOLD HATCHERY &middot; TRAP MAGIC &middot; MULTIPLE TYPES</span>
+    <p>New in CoE5. Multiple kobold types (Black, Red, Blue, White, Green) each with different rune traps and abilities. Dragon summoning via ritual. Foretelling ability for intelligence. Kobold Stronghold for territorial control. Unusual mix of trap-setting and small-unit swarming. Fun for experienced players seeking novelty.</p>
+  </div>
+  <div class="faction-card divine">
+    <div class="faction-name">Monkey Maharaja</div>
+    <span class="faction-type">SIMIAN COURT &middot; SOUTH ASIAN AESTHETIC &middot; VARIED</span>
+    <p>New in CoE5. Monkey troops with diverse abilities; the Maharaja&apos;s Palace as a special resource location. Colourful and distinctive. An in-depth community guide exists specifically for this faction on the Steam Workshop. Intermediate difficulty; rewards players comfortable with the resource management framework.</p>
+  </div>
+  <div class="faction-card infernal">
+    <div class="faction-name">Raksharaja</div>
+    <span class="faction-type">DEMON-KINGS &middot; SOUTH ASIAN DEMONS &middot; VARIED</span>
+    <p>The most recent addition to CoE5. Rakshasa demon-king faction with powerful individual commanders and summoned demon courts. Thematically distinctive; complex ritual tree. For experienced CoE5 players looking for the newest and least-documented faction challenge.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S15 -->
+<section class="section" id="s15">
+<h2 class="section-title"><span class="sec-num">&sect;15</span> Choosing Your Faction</h2>
+<p>The most important decision in every CoE5 game is made before the game starts. Choosing your faction is choosing your game. There is no shared underlying system that all factions play variations of — each faction plays through a different set of rules that happen to take place on the same map. The decision framework:</p>
+
+<div class="phase early">
+  <div class="phase-title">For Complete Newcomers</div>
+  <p>Play the <strong>Baron</strong> first. Two or three games as the Baron teaches the core loop: capture settlements for gold, build forts for defence, levy armies seasonally, field cavalry for mobile pressure. Once you understand the core expansion rhythm and how combat columns work, you are prepared for more complex factions.</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">For Players with 5&ndash;10 Games Played</div>
+  <p>Try the <strong>Druid</strong> (teaches ritual planning and resource-specific expansion), the <strong>Necromancer</strong> (teaches snowball mechanics and graveyard control), or the <strong>Enchanter</strong> (teaches gem management and construct combat). Each is a second-tier challenge that introduces a completely new mental model without the binary risk of factions like the Demonologist.</p>
+</div>
+
+<div class="phase late">
+  <div class="phase-title">For Experienced Players</div>
+  <p>The Demonologist, Illusionist, Scourge Lord, Pale One, and High Cultist all reward deep system knowledge. The Demonologist&apos;s binding risk, the Illusionist&apos;s mirror game, the Scourge Lord&apos;s lifeforce ecology, the Pale One&apos;s Prophecy, and the High Cultist&apos;s Old One dependency all require understanding the game&apos;s systems well enough to manage multiple simultaneous failure modes. They produce some of the most memorable games CoE5 can generate.</p>
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">The Map Matters As Much As the Faction</div>
+  <p>Generate two or three maps before starting and look at the resource distribution. If you want to play the Druid but the map has sparse forests, consider either rerolling or switching to a gold-dependent faction for this run. The roguelike element of CoE5 means some faction/map combinations are significantly harder than others &mdash; and recognising that a difficult early game is map-driven (not player error) is part of developing CoE5 literacy.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S16 -->
+<section class="section" id="s16">
+<h2 class="section-title"><span class="sec-num">&sect;16</span> Early Game Doctrine</h2>
+<div class="lore-block">
+  <p>The first ten turns of any game of Elysium determine the shape of everything that follows. Not the outcome &mdash; the outcome can still change significantly. But the shape: which territories are yours, which resources flow to you, which rituals you are working toward. The Elysian scholars call this the Formative Period. Soldiers call it the scramble. Everyone agrees that losing it is very difficult to recover from.</p>
+  <span class="source">// MILITARY DOCTRINE OF THE THIRD ELYSIAN ERA //</span>
+</div>
+
+<div class="phase early">
+  <div class="phase-title">Turns 1&ndash;5: Secure and Scout</div>
+  <p>Your immediate priority: <strong>establish scout coverage</strong> of all adjacent tiles before sending your main force anywhere. Never move your leader into unexplored territory without scouting ahead &mdash; Elysium&apos;s wildlife can kill a low-HP leader before you understand what happened. Second priority: identify the specific tile types your faction needs and chart the fastest path to controlling them. A Druid who spends five turns taking mines instead of forests has not begun their game yet.</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">Turns 6&ndash;15: First Rituals, Expansion Axis</div>
+  <p>By turn 6, you should have your first special resource income established. Perform your first Level 1 ritual as soon as resources allow &mdash; the units or structures it produces are the difference between a defended territory and an exposed one. Choose your expansion axis: which direction offers the most of what you need, with the least resistance. Aggressive wildlife will challenge every expansion; plan around it with adequate forces, not minimum forces.</p>
+</div>
+
+<div class="phase late">
+  <div class="phase-title">Turns 15&ndash;30: Ritual Escalation or Military Pressure</div>
+  <p>By turn 15, the map is partially revealed and opponent positions are known. You should be deciding between two escalation paths: <strong>ritual investment</strong> (save resources for Level 2 rituals; slow military expansion in exchange for strategic power spike) or <strong>military pressure</strong> (field the largest possible army now; attack opponents before they escalate; win by tempo). Most factions support one path better than the other &mdash; the Baron is a military pressure faction; the Demonologist is a ritual investment faction.</p>
+</div>
+
+<div class="callout grove">
+  <div class="callout-title">Magic Library Priority</div>
+  <p>Magic Libraries and Academies teach your leader new rituals when visited. If one appears within reasonable travel distance, it is almost always worth a detour to access it &mdash; expanding your ritual options is often more valuable than the resources in the tiles you would have captured instead. Check the map regularly for these locations and contest them aggressively.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S17 -->
+<section class="section" id="s17">
+<h2 class="section-title"><span class="sec-num">&sect;17</span> Mid-Game Escalation</h2>
+<p>The mid-game begins when multiple factions have established territories and begin encountering each other on contested borders. It is characterised by escalating ritual power, larger armies, and the first decisive military engagements. Key mid-game dynamics:</p>
+
+<h2 class="sub-title">The Ritual Power Spike</h2>
+<p>Every faction has a Level 2 ritual that dramatically increases their combat power when activated. The Druid&apos;s Ent summons. The Necromancer&apos;s mass-raise rituals. The Enchanter&apos;s golem creation. The Demonologist&apos;s Greater Demon bindings. The mid-game race is often about reaching this power spike before your opponents reach theirs &mdash; or surviving long enough through defensive play to perform yours first.</p>
+
+<h2 class="sub-title">Responding to Opponent Factions</h2>
+<p>The mid-game requires awareness of what your opponents are playing. Different factions require different counter-strategies:</p>
+<table class="data-table">
+  <thead><tr><th>Opponent</th><th>Primary Threat</th><th>Counter Approach</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Demonologist</strong></td><td>Fire-using demons; powerful late bindings</td><td>Fire-resistant units; attack before Demon Lord is summoned; destroy sacrificial settlements</td></tr>
+    <tr><td><strong>Necromancer</strong></td><td>Undead army snowball; Hades transit speed</td><td>Holy fire damage; attack early before corpse economy grows; graveyard denial</td></tr>
+    <tr><td><strong>Enchanter/Burgmeister</strong></td><td>Elemental-immune constructs; high HP golems</td><td>Physical damage units; magic weapons; overwhelm with numbers since golems never heal</td></tr>
+    <tr><td><strong>Druid/Dryad Queen</strong></td><td>Ent army; forest terrain control</td><td>Fire magic or fire units; avoid engaging in deep forest; destroy herb supply by clearing forests</td></tr>
+    <tr><td><strong>Scourge Lord</strong></td><td>Lifeforce-powered Heralds; land desertification</td><td>Attack the Pillars of Power; engage early before land becomes desert; sea-based strategies unaffected</td></tr>
+  </tbody>
+</table>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S18 -->
+<section class="section" id="s18">
+<h2 class="section-title"><span class="sec-num">&sect;18</span> The Late Game</h2>
+<div class="lore-block">
+  <p>By the time an Elysian war reaches its final phase, the world looks different from how it started. Some of the forests are on fire. Some of them are moving. Some of the mines are occupied by creatures that have no interest in gold. The Necromancer&apos;s armies do not need to rest. The Demonologist&apos;s Demon Lord is standing in what used to be a city. The Scourge Lord&apos;s territory is a spreading desert that was, last year, a forest. Every endgame in Elysium is a lesson in consequences.</p>
+  <span class="source">// CHRONICLE OF THE SEVENTH GREAT CONTENTION &middot; FINAL VOLUME //</span>
+</div>
+
+<p>The late game (roughly turns 40+, map-size dependent) is defined by Level 3 rituals, consolidated territories, and the decisive military encounters that determine final victory. Key late-game considerations:</p>
+<ul class="guide-list">
+  <li><strong>Victory condition awareness:</strong> Know your Society&apos;s win condition. On default settings, holding the majority of key locations for a defined number of consecutive turns wins. Map coverage becomes more important than army size in the final stretch.</li>
+  <li><strong>Level 3 ritual timing:</strong> Your most powerful ritual should be deployed as a decisive tool, not a routine one. Saving it for the battle that ends the game rather than spending it on a minor engagement produces better outcomes.</li>
+  <li><strong>Independent faction threats:</strong> CoE5 has independent AI factions that fight each other. By the late game, some of these may have grown powerful enough to contest tiles you need for victory. Factor them into your military planning.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S19 -->
+<section class="section" id="s19">
+<h2 class="section-title"><span class="sec-num">&sect;19</span> Army Composition Doctrine</h2>
+<p>CoE5&apos;s automated combat means your pre-battle decisions &mdash; what units to field, where to place them, which commanders lead the army &mdash; are the entirety of your tactical contribution. Getting army composition right is therefore one of the most important skills in the game.</p>
+
+<h2 class="sub-title">The Universal Principles</h2>
+<ul class="guide-list">
+  <li><strong>Frontline HP matters most.</strong> Your frontline units absorb all incoming melee damage before your precious summoned creatures and commanders are threatened. The highest-HP units you have &mdash; golems, Ents, undead, heavy infantry &mdash; belong in the front columns. Never put a fragile but important unit in a front column.</li>
+  <li><strong>Ranged units in the rear amplify the frontline.</strong> Archers and crossbowmen deal damage every turn without absorbing hits. The Druid&apos;s standard late-game army (Ents + Hoburg Crossbows) is effective precisely because the crossbows fire freely from behind the Ent wall for the entire battle.</li>
+  <li><strong>Commander positioning affects combat spells.</strong> Commanders need to survive long enough to cast their combat spells. Middle or rear column placement protects them while ensuring they can contribute magically.</li>
+  <li><strong>Match force size to the encounter.</strong> Sending your entire elite army to capture a lightly defended farm wastes potential elsewhere on the map. Minimum necessary force for mundane expansion; maximum force for key encounters and contested borders.</li>
+</ul>
+
+<h2 class="sub-title">Faction-Specific Composition Notes</h2>
+<p>Every faction has a canonical &ldquo;late game stack&rdquo; that represents their optimal army at peak development:</p>
+<ul class="guide-list">
+  <li><strong>Druid:</strong> 1 column of 6 Ents + 3&ndash;8 Iron Flies + 2&ndash;5 columns of 40&ndash;100 Hoburg Crossbows. Repeat for 2&ndash;8 separate armies.</li>
+  <li><strong>Necromancer:</strong> Frontline zombies/skeleton warriors + middle bone constructs + rear spectres and liches as magical support.</li>
+  <li><strong>Enchanter:</strong> Appropriate golem type for the elemental plane being conquered + physical back-rank attackers for non-elemental threats.</li>
+  <li><strong>Baron:</strong> Knights (front charge) + heavy infantry (sustained frontline) + archers/crossbows (rear). Siege engines for fort reduction.</li>
+  <li><strong>Demonologist:</strong> Bound demons of increasing tier as the game progresses. No standard infantry required if demon bindings succeed; fire-resistant troops for situations where enemy has fire protection.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S20 -->
+<section class="section" id="s20">
+<h2 class="section-title"><span class="sec-num">&sect;20</span> Arcane vs. Martial Factions</h2>
+<p>One of CoE5&apos;s most interesting design tensions is the race between the game&apos;s time horizons. Martial factions (Baron, Barbarian, Markgraf) peak early: their armies are powerful from the first turn and scale linearly with territory. Arcane factions (Demonologist, Necromancer, Scourge Lord) peak late: their power is initially modest but grows exponentially once ritual infrastructure is established.</p>
+
+<h2 class="sub-title">The Timing Problem</h2>
+<p>In a game where a Demonologist and a Baron start equidistant from each other, the Baron&apos;s knights will likely reach the Demonologist&apos;s starting territory by turn 15&ndash;20, before the Demonologist has established enough sacrifice income for powerful demon bindings. A Demonologist who survives this pressure window &mdash; through defensive rituals, geographic barriers, or allied positioning &mdash; and reaches their Level 2 and Level 3 rituals will likely overwhelm the Baron in the late game. A Demonologist who does not survive it is simply dead.</p>
+
+<div class="callout void">
+  <div class="callout-title">Arcane Faction Survival Strategy</div>
+  <p>Playing an arcane faction against aggressive martial opponents requires one of: geographic distance (expand away from martial factions; do not fight them early), barriers (water, mountains, established fortifications slow martial advances enough to buy ritual time), or allied pressure (other AI factions attacking the martial player from the other side). Recognise that your early game is your weakness and plan to survive it, not to win it.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S21 -->
+<section class="section" id="s21">
+<h2 class="section-title"><span class="sec-num">&sect;21</span> Multiplayer Doctrine</h2>
+<p>CoE5 supports simultaneous-turn network multiplayer. All players issue orders simultaneously, then all turns resolve together. This changes the strategic dynamic significantly from solo play:</p>
+<ul class="guide-list">
+  <li><strong>Diplomacy becomes meaningful.</strong> In solo play, AI factions will eventually attack you. In multiplayer, human players can negotiate non-aggression pacts, trade information, and coordinate against dominant factions. Build diplomatic relationships early.</li>
+  <li><strong>Arcane factions need human allies more.</strong> The Baron will not stop attacking you because you explained that you are saving for a Demon Lord. A human ally who applies pressure to the Baron&apos;s other flank while you develop will.</li>
+  <li><strong>Timing the ritual power spike with map awareness.</strong> In multiplayer, your opponents can see where you are building ritual infrastructure if they scout your territory. Protect your key structures; a Scourge Lord whose Pyramids of Power are destroyed early loses their entire game plan.</li>
+  <li><strong>Item sharing.</strong> CoE5 allows giving magic items to allies. Equipment that provides elemental immunity can be traded to allies who will use it to conquer otherwise inaccessible planes. Coordinate these transfers deliberately rather than hoarding items you cannot use yourself.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S22 -->
+<section class="section" id="s22">
+<h2 class="section-title"><span class="sec-num">&sect;22</span> Common Mistakes</h2>
+
+<div class="phase late"><div class="phase-title">Mistake 1 &mdash; Starting with the Demonologist</div>
+<p>The Demonologist is not a beginner faction. The binding risk, the sacrifice management, the leader HP requirements, and the fire-resistance counter all require understanding of systems that the game has not yet taught you. Start with the Baron. Return to the Demonologist after you know how combat works.</p></div>
+
+<div class="phase late"><div class="phase-title">Mistake 2 &mdash; Moving the Leader Unscouted</div>
+<p>Elysium&apos;s wildlife kills leaders. A fragile leader who walks into an unexplored tile containing a powerful monster or hostile AI settlement is dead before you can respond. Always scout before your leader moves into new territory. Every time.</p></div>
+
+<div class="phase late"><div class="phase-title">Mistake 3 &mdash; Ignoring Special Resources for Generic Gold</div>
+<p>Capturing gold mines when you are playing the Druid who needs herbs is not expansion &mdash; it is displacement. Every turn you spend capturing tiles your faction cannot use is a turn not spent capturing the tiles you need. Know your resource profile before the first move.</p></div>
+
+<div class="phase late"><div class="phase-title">Mistake 4 &mdash; Underestimating Random Events</div>
+<p>The random event system is not a minor annoyance. An underworld gate event followed by three turns of undead spawning from every graveyard on the map can destroy an inadequately defended early-game territory. Keep garrisons in your settlements from early turns. The minimum viable garrison &mdash; a small force that can handle a graveyard spawn &mdash; is not expensive and is frequently necessary.</p></div>
+
+<div class="phase late"><div class="phase-title">Mistake 5 &mdash; Ignoring Army Column Order</div>
+<p>Placing your most valuable units in front columns loses them. Mages, commanders, powerful summoned unique creatures all belong in middle or rear columns. The front two columns are for expendable high-HP units. This applies to every faction. The habit of examining column order before every significant battle separates consistent players from inconsistent ones.</p></div>
+
+<div class="phase late"><div class="phase-title">Mistake 6 &mdash; Not Visiting Magic Libraries</div>
+<p>Magic Libraries and Academies teach rituals you do not start with. A Library that teaches your faction&apos;s Level 3 ritual two turns earlier is worth a significant detour. Check the map regularly for library locations and prioritise visiting them over equivalent-value resource tiles.</p></div>
+
+<div class="phase late"><div class="phase-title">Mistake 7 &mdash; Attempting Demon Lord Binding With a Weak Leader</div>
+<p>If the binding fails, the Demon Lord kills your leader. Your leader is the only entity who can perform rituals. Without them, your game ends. The Demonologist must invest in leader HP and magical defences before attempting high-tier bindings. Always have an army nearby when attempting any risky ritual &mdash; not to win the fight if it goes wrong, but because the decision to attempt it at all should come after you have reduced the failure risk to acceptable levels.</p></div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S23 -->
+<section class="section" id="s23">
+<h2 class="section-title"><span class="sec-num">&sect;23</span> Settings, Difficulty &amp; Society Types</h2>
+<h2 class="sub-title">AI Difficulty</h2>
+<p>CoE5 offers several AI difficulty levels from Jester (trivial) through Count (moderate default) to higher settings. The AI in CoE5 is competent at the mechanical game but makes occasional strategic errors that experienced players can exploit. New players should begin on a setting one level below Count; experienced players will find Count appropriate; competitive players should use higher settings for genuine challenge.</p>
+
+<h2 class="sub-title">Society Settings</h2>
+<p>The Society setting determines the map&apos;s starting infrastructure and victory conditions:</p>
+<table class="data-table">
+  <thead><tr><th>Society</th><th>Map Character</th><th>Victory Condition Notes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Dawn of a New Empire</strong></td><td>Frontier map; many untamed areas; few large settlements</td><td>Standard conquest; good for longer games with fuller exploration</td></tr>
+    <tr><td><strong>Age of Bronze</strong></td><td>Ancient world setting; more ruins; more random events</td><td>Increased event frequency; good for chaotic roguelike play</td></tr>
+    <tr><td><strong>Empire</strong></td><td>Established civilisation; more cities; more gold from the start</td><td>Faster economic development; good for martial factions</td></tr>
+    <tr><td><strong>Fallen Empire</strong></td><td>Post-collapse world; ruins everywhere; fewer active settlements</td><td>Darker world; more monsters; good for dark factions (Necromancer, Scourge Lord)</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Map Size</h2>
+<p>Map size strongly affects which faction types are favoured. Small maps: martial factions who can field armies immediately win before arcane factions develop. Large maps: arcane factions have time to complete ritual escalation before being overwhelmed. New players should start with Small or Medium maps to avoid games that feel like they never end.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S24 -->
+<section class="section" id="s24">
+<h2 class="section-title"><span class="sec-num">&sect;24</span> Glossary</h2>
+<div class="gloss-grid">
+  <div class="gloss-item"><div class="gloss-term">Agartha</div><div class="gloss-def">The vast underground cavern realm beneath Elysium; rich in gold and gems; home to Deep Ones; accessible via burrowing units and specific rituals.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Ancient Forest</div><div class="gloss-def">Special terrain tile enabling cheap Ent summons for the Druid (~100 herbs per Ent with 313 HP); one of the most powerful resource tiles in the game for nature factions.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Bakemono</div><div class="gloss-def">Spirit folk faction with Japanese aesthetic; mushroom magic; powerful shamanic leaders; similar dual-layer structure to the Troll King. Intermediate difficulty.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Baron</div><div class="gloss-def">The feudal warlord; recommended first faction; annual levy system provides free knights and soldiers from farms and villages each summer; excellent cavalry and siege engines.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Binding Risk</div><div class="gloss-def">The probability a Demonologist&apos;s ritual fails; on failure, the demon attacks the leader. Risk increases with demon tier; invest in leader HP before high-tier summonings.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Burgmeister</div><div class="gloss-def">Clockwork construct faction (Horology); constructs have 100% immunity to Fire, Frost, and Shock; can conquer elemental planes; only Level 1 and 2 rituals available.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Candles</div><div class="gloss-def">Special resource used exclusively by the Pale One faction; gathered from specific sites; powers the Prophecy system.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Celestial Plane</div><div class="gloss-def">The realm of angels high above Elysium; accessible via beanstalks, rainbows, and mountain spires; home territory for the Voice of El; contains powerful angelic beings.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Cloud Lord</div><div class="gloss-def">New-in-CoE5 aerial faction; commands the Cloud Layer plane; sky creatures and rain magic; unique positional advantage as most enemies cannot easily access clouds.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Combat Spell</div><div class="gloss-def">Battlefield spell cast by commanders during combat; separate from rituals; provides immediate tactical effects (damage, summoning, fear); randomly allocated like rituals at game start.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Corpses</div><div class="gloss-def">Special resource for the Necromancer; gathered from graveyards and generated by battles; used to raise undead armies; the primary Necromancer snowball mechanism.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Demonologist</div><div class="gloss-def">Infernal summoner who sacrifices villagers to bind demons; high risk (binding failure kills the leader) but enormous endgame power via Demon Lords. Not a beginner faction.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Druid</div><div class="gloss-def">Nature ritualist; herb-dependent; no mine requirement; forest expansion ritual; endgame Ent armies from Ancient Forests; one of the three recommended beginner factions.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Dryad Queen</div><div class="gloss-def">Forest spirit faction; similar to Druid but with more magical creatures and enchanted forest transformation; more magical, less military than the Druid.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Dwarf Queen</div><div class="gloss-def">Underground faction focused on mines; produces units at a set rate from mine infrastructure; units are difficult to replace; build to last rather than to expand rapidly.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Enchanter</div><div class="gloss-def">Construct mage who creates golems from gems; golems have extreme HP but never heal between battles; gem-dependent; Clockwork Dragons as endgame units.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Ents</div><div class="gloss-def">Ancient tree spirits; ~313 HP each; summoned by Druids and others; extremely durable frontline units; weak to fire; the Druid&apos;s primary combat unit at scale.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Gems</div><div class="gloss-def">Special resource in four types (Ruby, Sapphire, Emerald, Diamond) used by Warlock, Enchanter, and others; found in gem mines, Agartha, and the Elemental Planes.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Hades</div><div class="gloss-def">The realm of the dead; a dark reflection of Elysium; detrimental to living beings; contains spirits of the dead; Necromancers use Stygian paths for rapid cross-map travel.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Hands of Glory</div><div class="gloss-def">Dark resource from graveyards and ritual locations; used by Witch and Warlock for dark sorcery rituals.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Herbs</div><div class="gloss-def">Nature resource gathered primarily from forests; primary resource for Druid and Dryad Queen; used for creature summoning and grove expansion rituals.</div></div>
+  <div class="gloss-item"><div class="gloss-term">High Cultist</div><div class="gloss-def">Serves Great Old Ones; must summon an Old One to access the most powerful rituals; Starspawn use astrology; Queen of the Deep summons armies. Complex multi-step progression.</div></div>
+  <div class="gloss-item"><div class="gloss-term">High Priestess</div><div class="gloss-def">Dark divine faction; sacrifice and relic dependent; desert and ziggurat synergy; summons ancient Mesopotamian-flavoured divine creatures including Sirrush.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Illwinter</div><div class="gloss-def">The Swedish development studio (Johan Karlsson and Kristoffer Osterman) behind CoE5 and the Dominions series.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Illusionist</div><div class="gloss-def">Mirror magic faction; captures spells from enemies; creates simulacra; uses generalised Gem resource; endgame Palace of Everchanging Dreams. Unusual win condition.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Inferno</div><div class="gloss-def">The realm of Demon Lords; four regions (Inferno, Kokytos, Pandemonium, Abyss); home of devils and demons; Demonologist can access via summoning; Demon Lords destroyed here permanently.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Kobold King</div><div class="gloss-def">New-in-CoE5 faction; five kobold types with different rune traps; dragon summoning; foretelling for intelligence; Kobold Stronghold for territory. Experienced players.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Levy</div><div class="gloss-def">The Baron&apos;s annual free unit generation; farms produce spearmen; villages produce knights; arrives each summer without gold cost; core of the Baron&apos;s economic model.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Lifeforce</div><div class="gloss-def">Exclusive resource of the Scourge Lord; drained from populated and vegetated terrain via Pillars and Pyramids of Power; converts land to desert; sea tiles drain indefinitely.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Magic Library / Academy</div><div class="gloss-def">Special map tiles that teach leaders new rituals when visited; extremely high strategic value; always worth a significant detour to access.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Markgraf</div><div class="gloss-def">Military governor specialising in fortifications; cheaper and faster fort construction; strong defensive posture; less effective in open field combat than the Baron.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Monkey Maharaja</div><div class="gloss-def">New-in-CoE5 simian court faction with South Asian aesthetic; Maharaja&apos;s Palace as special resource; community-favourite novelty faction with detailed Steam Workshop guide.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Mushrooms</div><div class="gloss-def">Special resource used by Troll King and Bakemono; gathered from fungus forests and troll pits; powers fungal rituals and troll forest transformation.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Necromancer</div><div class="gloss-def">Death magic faction; corpse-dependent undead army; Hades travel for rapid movement; snowball mechanic; armies do not pay gold upkeep; grows stronger as more enemies die.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Pale One</div><div class="gloss-def">Deep dweller faction; candle resource; unique Prophecy win condition; powerful underground creatures. Community guides available; not recommended as first faction.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Pillars / Pyramids of Power</div><div class="gloss-def">Scourge Lord structures that drain lifeforce from surrounding terrain; create permanent desertification of drained tiles; the Scourge Lord&apos;s primary power generation mechanism.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Priest King</div><div class="gloss-def">Divine warrior faction; combination of martial and holy power; paladin-type units; relic-dependent; accessible divine faction compared to the High Priestess&apos;s complexity.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Raksharaja</div><div class="gloss-def">The most recently added CoE5 faction; demon-king class with powerful individual commanders; South Asian demon aesthetic. For experienced players seeking the newest challenge.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Relics</div><div class="gloss-def">Divine resource gathered from holy sites, temples, and sacred groves; primary resource for High Priestess, Priest King, and Voice of El.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Ritual</div><div class="gloss-def">Special power available to each faction&apos;s leader; organised in Levels 1&ndash;3 of escalating cost and effect; most factions start with a random subset of their available rituals.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Sacrifices</div><div class="gloss-def">Dark resource consumed from village and town populations; used by Demonologist, High Priestess, and High Cultist; limits how many powerful summonings can be performed.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Scourge Lord</div><div class="gloss-def">Life-draining faction with exclusive Lifeforce resource; Pillars/Pyramids of Power consume the land; powerful Heralds; creates desert in its wake; sea tiles unaffected.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Senator / Republic</div><div class="gloss-def">Roman-themed faction; population growth mechanics; legions from population; excellent long-term economic scaling; slow early game requiring patience and defensive posture.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Society Setting</div><div class="gloss-def">Map generation parameter determining starting civilisation level; affects settlement density, ruins, random event frequency, and which faction archetypes are favoured.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Troll King</div><div class="gloss-def">One of three recommended beginner factions; the King himself is nearly unkillable in early game; backed by expendable goblin archers; mushroom-based rituals for troll forest creation.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Voice of El</div><div class="gloss-def">Monotheistic divine faction commanding angelic hosts; accesses the Celestial plane; angels are powerful and hard to replace; one of the most heavenward factions in the game.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Warlock</div><div class="gloss-def">Dark scholar studying forbidden knowledge; gem and Hands of Glory dependent; can recruit a Necromancer&apos;s Apprentice; flexible arcane summons with dark magical flavour.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Witch</div><div class="gloss-def">Serves the ancient Sleeping Ones; herb and Hands of Glory dependent; swamp affinity; curse and hex magic; feared by both troll and man; intermediate difficulty.</div></div>
+</div>
+</section>
+
+</div><!-- /content -->
+<footer id="footer">
+  Conquest of Elysium 5 &nbsp;&middot;&nbsp; Illwinter Game Design &nbsp;&middot;&nbsp; Nadir Strategy Archive &nbsp;&middot;&nbsp; The Realms of Elysium
+</footer>
+</div><!-- /main -->
+<a id="back-top" href="#hero" title="Back to top">&#8593;</a>
+<script>
+const bar=document.getElementById('progress-bar');
+const bt=document.getElementById('back-top');
+const tog=document.getElementById('sidebar-toggle');
+const sb=document.getElementById('sidebar');
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;
+  bar.style.transform='scaleX('+(s/t)+')';
+  bt.classList.toggle('visible',s>400);
+},{passive:true});
+const secs=document.querySelectorAll('.section[id]');
+const navs=document.querySelectorAll('.nav-item');
+const obs=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){navs.forEach(n=>n.classList.remove('active'));const a=document.querySelector('.nav-item[href="#'+e.target.id+'"]');if(a){a.classList.add('active');a.scrollIntoView({block:'nearest'});}}});
+},{rootMargin:'-20% 0px -70% 0px'});
+secs.forEach(s=>obs.observe(s));
+tog.addEventListener('click',()=>sb.classList.toggle('open'));
+document.querySelectorAll('.nav-item').forEach(i=>i.addEventListener('click',()=>sb.classList.remove('open')));
+document.querySelectorAll('.section').forEach((s,i)=>{s.style.animationDelay=i*0.03+'s';});
+</script>
+</body>
+</html>

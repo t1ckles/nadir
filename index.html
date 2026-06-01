@@ -177,9 +177,9 @@ body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-i
     <div class="hero-rule"></div>
     <p class="hero-desc">Comprehensive guides covering both sides, all systems, and every scenario &mdash; for historical wargames and grand strategy titles.</p>
     <div class="hero-stats">
-      <div class="hero-stat"><span class="hero-stat-num" id="stat-guides">11</span><span class="hero-stat-label">Complete Guides</span></div>
+      <div class="hero-stat"><span class="hero-stat-num" id="stat-guides">14</span><span class="hero-stat-label">Complete Guides</span></div>
       <div class="hero-stat"><span class="hero-stat-num" id="stat-eras">4</span><span class="hero-stat-label">Eras Covered</span></div>
-      <div class="hero-stat"><span class="hero-stat-num">170+</span><span class="hero-stat-label">Chapters Written</span></div>
+      <div class="hero-stat"><span class="hero-stat-num">240+</span><span class="hero-stat-label">Chapters Written</span></div>
     </div>
   </div>
 </header>
@@ -206,7 +206,7 @@ body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-i
       <button class="filter-btn" data-filter="scifi">Sci-Fi &amp; Fantasy</button>
     </div>
     <div class="toolbar-right">
-      <span class="results-count" id="results-count">11 guides</span>
+      <span class="results-count" id="results-count">14 guides</span>
       <select id="sort-select" aria-label="Sort guides">
         <option value="default">Default Order</option>
         <option value="alpha">A &rarr; Z</option>
@@ -230,7 +230,6 @@ body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-i
     </div>
   </div>
 
-  <!-- COMING SOON — empty for now; add future entries here -->
   <div id="coming-section" style="display:none">
     <div class="section-label">In Progress</div>
     <h2 class="section-title">Upcoming Guides</h2>
@@ -240,7 +239,7 @@ body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-i
 </main>
 
 <footer class="site-footer">
-  Strategy Guide Library &nbsp;&middot;&nbsp; Community Resource &nbsp;&middot;&nbsp; Avalon Digital / Strategy Game Studio / Matrix Games / Harebrained Schemes
+  Strategy Guide Library &nbsp;&middot;&nbsp; Community Resource &nbsp;&middot;&nbsp; Avalon Digital / Strategy Game Studio / Matrix Games / Harebrained Schemes / Forever Entertainment
 </footer>
 
 <div class="modal-overlay" id="modal-overlay">
@@ -414,13 +413,79 @@ const GUIDES = [
     sidesLabel:    'Your Company & Its Enemies',
     scenariosLabel: 'Game Modes',
     desc:      'Turn-based \u2018Mech warfare and hard-nosed mercenary management in the far future. Command a lance of towering BattleMechs through the Aurigan Reach\u2019s civil war \u2014 balancing initiative, heat, stability, and C-bill solvency while building a company that can survive the brutal attrition of the Inner Sphere.',
-    detail:    'The Mercenary Commander\u2019s Field Manual covers every system of Harebrained Schemes\u2019 2018 BattleTech in 24 in-depth chapters. The guide walks through the full tactical layer \u2014 initiative phases and the power of Reservation, the heat threshold system, the stability-knockdown-called shot pipeline, evasion mechanics and their late-game limitations, and the morale-driven Vigilance and Precision Strike abilities \u2014 alongside complete pilot skill tree analysis across all four branches (Gunnery, Piloting, Guts, Tactics), six named pilot class builds, all four \u2018Mech weight classes, a 13-entry key \u2018Mech roster with strategic notes, the full Argo upgrade priority guide, salvage strategy and C-bill management doctrine, contract selection and star map routing, phased early/mid/late-game progression frameworks, four named lance archetypes, and a 40-entry glossary. Every section opens with in-universe lore dispatches from the commanders, crew, and MechWarriors of the Aurigan Reach.',
+    detail:    'The Mercenary Commander\u2019s Field Manual covers every system of Harebrained Schemes\u2019 2018 BattleTech in 24 in-depth chapters. The guide walks through the full tactical layer \u2014 initiative phases and the power of Reservation, the heat threshold system, the stability-knockdown-called shot pipeline, evasion mechanics and their late-game limitations, and the morale-driven Vigilance and Precision Strike abilities \u2014 alongside complete pilot skill tree analysis across all four branches (Gunnery, Piloting, Guts, Tactics), six named pilot class builds, all four \u2018Mech weight classes, a 13-entry key \u2018Mech roster with strategic notes, the full Argo upgrade priority guide, salvage strategy and C-bill management doctrine, contract selection and star map routing, phased early/mid/late-game progression frameworks, four named lance archetypes, and a 40-entry glossary.',
     sideA: { label: 'Your Mercenary Company', body: 'Four \u2018Mechs, a battered Argo, and a roster of pilots whose skills must be developed through careful XP investment. Every tactical decision \u2014 heat, initiative, focus fire, called shots \u2014 has a financial consequence on the campaign layer. Master both layers or lose both.' },
     sideB: { label: 'The Aurigan Directorate & Enemies', body: 'Escalating opposition from light lances to full assault \u2018Mech formations, scaled by contract skull rating. Story missions bring Directorate commanders and named units. Understanding what you face \u2014 and building the lance to counter it \u2014 is the strategic game.' },
     tags:  ['Turn-Based Tactics','Mercenary Management','Heat Management','Lance Composition','Pilot Skills','Salvage','Argo Upgrades','Inner Sphere 3025'],
     file:  'https://t1ckles.github.io/nadir/battletech.html',
     steam: 'https://store.steampowered.com/app/637090/BATTLETECH/',
     site:  'https://www.paradoxinteractive.com/games/battletech/about',
+  },
+  {
+    id:        'front-mission-1st',
+    title:     'Front Mission 1st: Remake',
+    subtitle:  'The Second Huffman Conflict, OCU &amp; UCS, 2090',
+    era:       'scifi',
+    period:    'Science Fiction & Far Future',
+    engine:    'MegaPixel Studio / Forever Entertainment',
+    sections:  24,
+    scenarios: 2,
+    sides:     ['O.C.U. (Canyon Crows)', 'U.C.S. Forces'],
+    hardest:   'UCS Campaign (Special Forces Deployment)',
+    sidesLabel:    'The Two Campaigns',
+    scenariosLabel: 'Story Routes',
+    desc:      'The classic that started it all, remade for modern platforms. Captain Royd Clive is discharged from the O.C.U. military after the Larcus Incident destroys his unit and his fianc\u00e9e goes missing. Recruited to lead the Canyon Crows mercenaries, he hunts for answers while Huffman Island descends into the Second Conflict \u2014 and discovers a conspiracy neither side wants exposed.',
+    detail:    'The Huffman Field Manual covers both the OCU and UCS campaigns across 24 chapters. The guide walks through the grid-based combat system, individual Wanzer part targeting and destruction (body, arms, legs), the use-based skill growth system for Melee, Short, Long, and Dodge categories, all key Battle Skills (First, Stun, Switch, Double, Part Target), Wanzer anatomy and the weight budget, all five archetype types, the Arena development system, the inter-mission Network, and phased early/mid/late-game strategic frameworks. Every chapter opens with in-universe lore dispatches from the Canyon Crows. Includes a 35-entry glossary covering all pilots, mechanics, factions, and the complete Front Mission 1st universe.',
+    sideA: { label: 'O.C.U. Canyon Crows (Primary)', body: 'Royd Clive leads a growing mercenary squad through Huffman Island\u2019s civil war. More character development, more pilots, more strategic depth. The intended first playthrough \u2014 learn the system here before tackling the harder USN side.' },
+    sideB: { label: 'U.C.S. (Kevin Greenfield)', body: 'Special forces operative on the opposing side of every event in the OCU campaign. Harder missions, smaller squad, morally ambiguous objectives. Designed as the second playthrough \u2014 the opposing perspective that recontextualises the entire conflict.' },
+    tags:  ['Huffman Island','Wanzer Customisation','Part Targeting','Arena','Battle Skills','Two Campaigns','OCU vs UCS','2090'],
+    file:  'https://t1ckles.github.io/nadir/front_mission_1st.html',
+    steam: 'https://store.steampowered.com/app/2399730/FRONT_MISSION_1st_Remake/',
+    site:  'https://frontmissionremake.com/',
+  },
+  {
+    id:        'front-mission-2',
+    title:     'Front Mission 2: Remake',
+    subtitle:  'The Alordesh Coup D\u2019\u00e9tat, 2102',
+    era:       'scifi',
+    period:    'Science Fiction & Far Future',
+    engine:    'Storm Trident / Forever Entertainment',
+    sections:  27,
+    scenarios: 3,
+    sides:     ['Ash Faruk (Muddy Otters)', 'Thomas Norland / Lisa Stanley'],
+    hardest:   'Lisa Stanley Campaign (Intelligence Operations)',
+    sidesLabel:    'Three Perspectives',
+    scenariosLabel: 'Story Perspectives',
+    desc:      'Twelve years after Huffman, a military coup tears apart the People\'s Republic of Alordesh. Three unconnected survivors \u2014 OCU corporal Ash Faruk, mercenary Thomas Norland, and intelligence operative Lisa Stanley \u2014 discover the coup is a front for something far more dangerous. The most mechanically complex Front Mission title, introducing the AP system and the GEO terrain mechanics that define the series at its hardest.',
+    detail:    'The Alordesh Dossier covers all three protagonist perspectives across 27 chapters. The guide provides a complete deep-dive into the AP (Action Point) system \u2014 FM2\'s defining mechanic, where current AP governs accuracy, evasion, and Panic status simultaneously \u2014 the GEO terrain integration, counter-fire conditions, the Honor Point and Combat Skill development system (First Strike, Double Attack, Evade, AP Boost), the new head component and its tactical targeting implications, computer upgrades and mode-switching, the Light Mobility Doctrine for front-line builds, per-squad composition guides for all three protagonist teams, and the Network lore layer. Includes a 35-entry glossary. The definitive guide to the series\u2019 hardest entry.',
+    sideA: { label: 'Ash Faruk \u2014 Muddy Otters', body: 'OCU-MDF corporal trapped in his own home country when the coup erupts. Guerrilla operations in urban and forest terrain. The most character-driven perspective; the natural entry point into FM2\'s three-way narrative.' },
+    sideB: { label: 'Thomas Norland / Lisa Stanley', body: 'Thomas: mercenary contractor whose only loyalty is his crew \u2014 the game\'s most morally ambiguous perspective. Lisa: intelligence operative who understands the FENRIR conspiracy before anyone else and cannot share what she knows. Both perspectives are required for the full story.' },
+    tags:  ['AP System','GEO Terrain','Alordesh','FENRIR','Three Protagonists','Honor Skills','Panic Mechanic','2102'],
+    file:  'https://t1ckles.github.io/nadir/front_mission_2.html',
+    steam: 'https://store.steampowered.com/app/2865440/FRONT_MISSION_2_Remake/',
+    site:  'https://frontmissionremake.com/front-mission-2/',
+  },
+  {
+    id:        'front-mission-3',
+    title:     'Front Mission 3: Remake',
+    subtitle:  'The MIDAS Conspiracy, Japan &amp; Da Han Zhong, 2112',
+    era:       'scifi',
+    period:    'Science Fiction & Far Future',
+    engine:    'MegaPixel Studio / Forever Entertainment',
+    sections:  26,
+    scenarios: 2,
+    sides:     ['Emma Route (USN Path)', 'Alisa Route (DHZ Path)'],
+    hardest:   'Alisa Route \u2014 Harder Missions, Exclusive Pilots',
+    sidesLabel:    'The Two Routes',
+    scenariosLabel: 'Story Routes',
+    desc:      'A routine Wanzer delivery goes wrong when a weapon of mass destruction \u2014 MIDAS, a biological bomb with no radiation signature \u2014 goes missing and every Pacific power scrambles to claim it. Test pilot Kazuki Takemura is caught in the middle, and a single early choice sends him down one of two complete campaigns with different allies, enemies, available Wanzers, and endings. The most accessible Front Mission entry, built around the Battle Skill combo system.',
+    detail:    'The MIDAS Dossier covers both the Emma and Alisa routes across 26 chapters. The guide provides a full analysis of the Battle Skill system \u2014 100 skills learned from Wanzer parts, stored in the pilot\u2019s computer, triggered by activation rate to produce combo chains \u2014 the Ace Rank progression (0\u20139, expanding computer slot count), all eight essential skill types (ROF1up, Shield Atk, Stun Punch, Dbl Shot, Skill+Xup, Toppleshot, AP 30%, Salvo), the five Wanzer archetypes (Assault, Gunner, Grappler, Sniper, Launcher) and their cross-archetype mixing freedom, the Network\u2019s critical role in recruitment and equipment access, the Battle Simulator, and per-route character guides for all key pilots in both campaigns. Includes a 35-entry glossary.',
+    sideA: { label: 'Emma Route (Go with Ryogo)', body: 'Kazuki allies with USN operative Emma Klamsky, whose arc of responsibility for MIDAS is the game\u2019s moral core. More narrative scaffolding; preferred first playthrough; gives access to Pham Luis and her Shield Atk-I teaching Zeros Wanzer.' },
+    sideB: { label: 'Alisa Route (Stay Behind)', body: 'Kazuki allies with DHZ intelligence and his sister Alisa. Harder in specific missions; provides exclusive access to Liu Hei Fong as an ally and Alisa\u2019s Meledyne M1 Wanzer whose legs teach the route-exclusive Skill+1up Battle Skill.' },
+    tags:  ['Battle Skills','Ace Rank','Combo System','Dual Routes','MIDAS','Wanzer Archetypes','Network','Battle Simulator','2112'],
+    file:  'https://t1ckles.github.io/nadir/front_mission_3.html',
+    steam: 'https://store.steampowered.com/app/3795900/FRONT_MISSION_3_Remake/',
+    site:  'https://frontmissionremake.com/front-mission-3/',
   },
   {
     id:        'dominions-6',

@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Front Mission 2: Remake — The Alordesh Dossier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1410;--parchment:#f5efe4;--gold:#c9943a;--gold-dark:#8b6420;--gold-pale:#f0d9a8;
+  --mid:#4a3f32;--light:#f9f4ec;--border:rgba(201,148,58,0.3);--shadow:rgba(26,20,16,0.18);
+  --steel:#16202e;
+  --ash:#1a3040;--ash-pale:#d5e4ef;
+  --thomas:#2c1a10;--thomas-pale:#f0e4d8;
+  --lisa:#1a2c1a;--lisa-pale:#d8efd8;
+  --danger:#7a1a1a;--danger-pale:#f5dada;
+  --font-head:'Cinzel','Times New Roman',serif;
+  --font-body:'Crimson Pro','Georgia',serif;
+  --sidebar-w:292px;
+}
+html{scroll-behavior:smooth;font-size:17px}
+body{background:var(--parchment);color:var(--ink);font-family:var(--font-body);line-height:1.75;display:flex;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.5}
+a{color:inherit;text-decoration:none}button{cursor:pointer;font-family:inherit}
+#progress-bar{position:fixed;top:0;left:var(--sidebar-w);right:0;height:3px;background:var(--gold);transform-origin:left;transform:scaleX(0);z-index:500;transition:transform 0.1s linear}
+#sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--steel);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;border-right:2px solid var(--gold-dark);display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--gold-dark) var(--steel)}
+#sidebar-header{padding:28px 20px 20px;border-bottom:1px solid rgba(201,148,58,0.2);background:linear-gradient(180deg,#0a0e16 0%,var(--steel) 100%)}
+#sidebar-title{font-family:var(--font-head);font-size:0.9rem;font-weight:900;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;line-height:1.3}
+#sidebar-sub{font-family:var(--font-body);font-size:0.67rem;color:rgba(255,255,255,0.38);margin-top:6px;letter-spacing:0.04em;font-style:italic}
+#sidebar-nav{padding:8px 0 40px;flex:1}
+.nav-section{padding:10px 20px 3px;font-family:var(--font-head);font-size:0.55rem;letter-spacing:0.2em;color:var(--gold-dark);text-transform:uppercase;margin-top:8px;opacity:0.85}
+.nav-item{display:block;padding:6px 20px 6px 28px;font-family:var(--font-body);font-size:0.78rem;color:rgba(245,239,228,0.62);text-decoration:none;border-left:2px solid transparent;transition:all 0.15s ease;line-height:1.35;position:relative}
+.nav-item::before{content:'&#8250;';position:absolute;left:14px;top:6px;color:var(--gold-dark);opacity:0;transition:opacity 0.12s}
+.nav-item:hover,.nav-item.active{color:var(--gold-pale);border-left-color:var(--gold);background:rgba(201,148,58,0.07);padding-left:30px}
+.nav-item:hover::before,.nav-item.active::before{opacity:1}
+#sidebar-toggle{display:none;position:fixed;top:10px;left:10px;z-index:200;background:var(--steel);border:1px solid var(--gold-dark);color:var(--gold);font-size:1.1rem;padding:5px 9px;border-radius:2px}
+#main{margin-left:var(--sidebar-w);flex:1;min-width:0}
+#hero{background:linear-gradient(160deg,#08100e 0%,#101820 40%,#1a1006 75%,#080e14 100%);min-height:460px;display:flex;flex-direction:column;justify-content:flex-end;padding:0 64px 64px;position:relative;overflow:hidden;border-bottom:3px solid var(--gold-dark)}
+#hero::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(-55deg,transparent,transparent 40px,rgba(201,148,58,0.025) 40px,rgba(201,148,58,0.025) 41px)}
+#hero::after{content:'';position:absolute;bottom:0;left:64px;right:64px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.hero-eyebrow{font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.28em;color:var(--gold-dark);text-transform:uppercase;margin-bottom:14px;position:relative}
+.hero-title{font-family:var(--font-head);font-size:clamp(2rem,5vw,3.6rem);font-weight:900;color:var(--parchment);letter-spacing:0.04em;text-transform:uppercase;line-height:1.05;margin-bottom:8px;position:relative}
+.hero-subtitle{font-family:var(--font-body);font-size:1.05rem;font-style:italic;color:rgba(240,217,168,0.72);font-weight:300;margin-bottom:26px;position:relative}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;position:relative}
+.hero-tag{font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-pale);border:1px solid rgba(201,148,58,0.38);padding:3px 10px;background:rgba(201,148,58,0.07)}
+#content{padding:0 64px 80px;max-width:960px}
+.section{padding:54px 0 6px;animation:fadeUp 0.45s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.sec-num{display:inline-block;font-family:var(--font-head);font-size:0.78rem;font-weight:400;letter-spacing:0.1em;color:var(--gold-dark);margin-right:0.5em;vertical-align:middle}
+.section-title{font-family:var(--font-head);font-size:clamp(1.25rem,2.4vw,1.75rem);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink);padding-bottom:12px;margin-bottom:20px;border-bottom:2px solid var(--border);position:relative}
+.section-title::after{content:'';position:absolute;bottom:-2px;left:0;width:58px;height:2px;background:var(--gold)}
+.sub-title{font-family:var(--font-head);font-size:1rem;font-weight:600;letter-spacing:0.05em;color:var(--mid);margin:26px 0 9px;text-transform:uppercase}
+p{margin-bottom:1rem;font-size:1rem}
+.guide-list{margin:0.5rem 0 1rem 1.2rem}
+.guide-list li{margin-bottom:0.5rem;font-size:1rem}
+.guide-list li::marker{color:var(--gold-dark)}
+.callout{padding:15px 20px;margin:20px 0;border-left:4px solid var(--gold);background:var(--light);border-radius:0 3px 3px 0}
+.callout.ash{border-left-color:#2a6080;background:var(--ash-pale)}
+.callout.thomas{border-left-color:#8b4020;background:var(--thomas-pale)}
+.callout.lisa{border-left-color:#2a6020;background:var(--lisa-pale)}
+.callout.danger{border-left-color:var(--danger);background:var(--danger-pale)}
+.callout.tip{border-left-color:#3a5c1a;background:#edf5e4}
+.callout-title{font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;margin-bottom:5px;color:var(--gold-dark)}
+.callout.ash .callout-title{color:#2a6080}
+.callout.thomas .callout-title{color:#8b4020}
+.callout.lisa .callout-title{color:#2a6020}
+.callout.danger .callout-title{color:var(--danger)}
+.callout.tip .callout-title{color:#3a5c1a}
+.callout p{font-size:0.94rem;margin-bottom:0.5rem}
+.callout p:last-child{margin-bottom:0}
+.lore-block{padding:16px 20px;margin:22px 0;border:1px solid rgba(26,40,56,0.4);background:rgba(26,32,48,0.05);position:relative}
+.lore-block::before{content:'FIELD DISPATCH';position:absolute;top:-0.6rem;left:1rem;font-family:var(--font-head);font-size:0.54rem;letter-spacing:0.22em;color:#2a4060;background:var(--parchment);padding:0 0.5rem}
+.lore-block p{font-style:italic;color:#2a3a52;font-size:0.94rem;line-height:1.82}
+.lore-block .source{font-family:var(--font-head);font-size:0.58rem;color:rgba(42,64,96,0.6);text-align:right;display:block;margin-top:0.6rem;letter-spacing:0.1em}
+.data-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.9rem}
+.data-table th{background:var(--steel);color:var(--gold-pale);font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;padding:8px 11px;text-align:left;border:1px solid rgba(201,148,58,0.2)}
+.data-table td{padding:7px 11px;border:1px solid var(--border);vertical-align:top;line-height:1.5;color:var(--ink)}
+.data-table tr:nth-child(even) td{background:var(--light)}
+.data-table tr:hover td{background:rgba(201,148,58,0.04)}
+.phase{padding:16px 20px;margin:14px 0;border-left:4px solid var(--gold);background:rgba(201,148,58,0.05)}
+.phase.early{border-left-color:#2a5080;background:rgba(42,80,128,0.07)}
+.phase.mid{border-left-color:var(--gold-dark);background:rgba(201,148,58,0.07)}
+.phase.late{border-left-color:#7a2a1a;background:rgba(122,42,26,0.07)}
+.phase-title{font-family:var(--font-head);font-size:0.84rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:7px;color:var(--gold-dark)}
+.phase.early .phase-title{color:#2a5080}
+.phase.late .phase-title{color:#7a2a1a}
+.phase p{font-size:0.94rem;margin-bottom:0.6rem;color:var(--ink)}
+.phase p:last-child{margin-bottom:0}
+.unit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin:16px 0}
+.unit-card{border:1px solid var(--border);background:var(--light);padding:14px 16px;border-top:3px solid var(--gold)}
+.unit-card.ash-card{border-top-color:#2a6080}
+.unit-card.thomas-card{border-top-color:#8b4020}
+.unit-card.lisa-card{border-top-color:#2a6020}
+.unit-card.danger-card{border-top-color:var(--danger)}
+.unit-card.neutral-card{border-top-color:#5a4a2a}
+.unit-name{font-family:var(--font-head);font-size:0.88rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink);margin-bottom:2px}
+.unit-type{font-family:var(--font-head);font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);margin-bottom:7px;display:block}
+.unit-card.ash-card .unit-type{color:#2a6080}
+.unit-card.thomas-card .unit-type{color:#8b4020}
+.unit-card.lisa-card .unit-type{color:#2a6020}
+.unit-card.danger-card .unit-type{color:var(--danger)}
+.unit-card p{font-size:0.88rem;line-height:1.6;color:var(--ink);margin-bottom:0}
+.orn{text-align:center;color:var(--gold);font-size:0.8rem;letter-spacing:0.35em;padding:28px 0 8px;opacity:0.65}
+.gloss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:1px;background:var(--border);margin-top:16px;border:1px solid var(--border)}
+.gloss-item{background:var(--light);padding:9px 13px;display:flex;gap:10px;align-items:flex-start}
+.gloss-item:nth-child(even){background:var(--parchment)}
+.gloss-term{font-family:var(--font-head);font-size:0.75rem;font-weight:700;color:var(--ink);white-space:normal;min-width:120px;max-width:150px;word-break:break-word;letter-spacing:0.04em;text-transform:uppercase}
+.gloss-def{font-size:0.86rem;color:var(--mid);line-height:1.55}
+#back-top{position:fixed;bottom:26px;right:26px;width:40px;height:40px;background:var(--steel);border:1px solid var(--gold-dark);color:var(--gold);font-size:1rem;display:flex;align-items:center;justify-content:center;text-decoration:none;opacity:0;transform:translateY(8px);transition:opacity 0.3s,transform 0.3s;z-index:90}
+#back-top.visible{opacity:1;transform:none}
+#back-top:hover{background:var(--gold-dark);color:var(--parchment)}
+#footer{margin-top:40px;border-top:1px solid var(--border);padding:20px 64px;font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);text-align:center}
+@media(max-width:880px){
+  :root{--sidebar-w:0px}
+  #sidebar-toggle{display:flex;align-items:center;justify-content:center}
+  #sidebar{transform:translateX(-100%);transition:transform 0.26s ease;width:264px}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  #hero,#content,#footer{padding-left:22px;padding-right:22px}
+  #progress-bar{left:0}
+  .unit-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+<button id="sidebar-toggle" aria-label="Menu">&#9776;</button>
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <div id="sidebar-title">Front Mission 2: Remake</div>
+    <div id="sidebar-sub">The Alordesh Dossier &mdash; Storm Trident / Forever Entertainment</div>
+  </div>
+  <div id="sidebar-nav">
+    <div class="nav-section">The World</div>
+    <a class="nav-item" href="#s01">01 &middot; Alordesh &amp; the Second Coup</a>
+    <a class="nav-item" href="#s02">02 &middot; Game Overview</a>
+    <a class="nav-item" href="#s03">03 &middot; The Three Perspectives</a>
+    <div class="nav-section">Core Systems</div>
+    <a class="nav-item" href="#s04">04 &middot; The AP System</a>
+    <a class="nav-item" href="#s05">05 &middot; GEO &amp; Terrain</a>
+    <a class="nav-item" href="#s06">06 &middot; Combat Fundamentals</a>
+    <a class="nav-item" href="#s07">07 &middot; Part Targeting &amp; Destruction</a>
+    <a class="nav-item" href="#s08">08 &middot; Status Effects</a>
+    <div class="nav-section">Pilot Development</div>
+    <a class="nav-item" href="#s09">09 &middot; Honor &amp; Skills</a>
+    <a class="nav-item" href="#s10">10 &middot; Pilot Roles</a>
+    <a class="nav-item" href="#s11">11 &middot; The Colosseum</a>
+    <div class="nav-section">Wanzer Engineering</div>
+    <a class="nav-item" href="#s12">12 &middot; Wanzer Anatomy</a>
+    <a class="nav-item" href="#s13">13 &middot; Body, Arms, Legs &amp; Head</a>
+    <a class="nav-item" href="#s14">14 &middot; Computers &amp; Backpacks</a>
+    <a class="nav-item" href="#s15">15 &middot; Weapons &amp; Roles</a>
+    <a class="nav-item" href="#s16">16 &middot; Mobility &amp; the Light Doctrine</a>
+    <div class="nav-section">Characters &amp; Campaign</div>
+    <a class="nav-item" href="#s17">17 &middot; The Muddy Otters</a>
+    <a class="nav-item" href="#s18">18 &middot; Thomas &amp; Burg Transportation</a>
+    <a class="nav-item" href="#s19">19 &middot; Lisa &amp; the Intelligence Net</a>
+    <a class="nav-item" href="#s20">20 &middot; The Network</a>
+    <div class="nav-section">Strategy</div>
+    <a class="nav-item" href="#s21">21 &middot; Early Campaign Doctrine</a>
+    <a class="nav-item" href="#s22">22 &middot; Mid &amp; Late Game</a>
+    <a class="nav-item" href="#s23">23 &middot; Squad Composition</a>
+    <a class="nav-item" href="#s24">24 &middot; Advanced Tactics</a>
+    <a class="nav-item" href="#s25">25 &middot; Common Mistakes</a>
+    <div class="nav-section">Reference</div>
+    <a class="nav-item" href="#s26">26 &middot; New Game Plus</a>
+    <a class="nav-item" href="#s27">27 &middot; Glossary</a>
+  </div>
+</nav>
+
+<div id="main">
+<div id="hero">
+  <div class="hero-eyebrow">Nadir Strategy Archive &nbsp;&middot;&nbsp; Storm Trident / Forever Entertainment &nbsp;&middot;&nbsp; Square Enix &nbsp;&middot;&nbsp; Alordesh, 2102</div>
+  <h1 class="hero-title">Front Mission 2: Remake</h1>
+  <p class="hero-subtitle">The Alordesh Dossier &mdash; A Complete Tactical &amp; Strategic Field Guide</p>
+  <div class="hero-tags">
+    <span class="hero-tag">Alordesh 2102</span>
+    <span class="hero-tag">27 Chapters</span>
+    <span class="hero-tag">Three Perspectives</span>
+    <span class="hero-tag">AP System Deep Dive</span>
+    <span class="hero-tag">GEO Mechanics</span>
+    <span class="hero-tag">All Pilots Covered</span>
+    <span class="hero-tag">Full Glossary</span>
+  </div>
+</div>
+
+<div id="content">
+
+<!-- S01 -->
+<section class="section" id="s01">
+<h2 class="section-title"><span class="sec-num">&sect;01</span> Alordesh &amp; the Second Coup D&apos;&eacute;tat</h2>
+<div class="lore-block">
+  <p>Corporal Ash Faruk was not supposed to be the one standing in the ruins of Rimian Base at 0632 on June 12, 2102. He was supposed to be on rotation leave, nowhere near the base when the artillery opened up. He was not on leave. He was in the motor pool, running diagnostics on a Wanzer that kept throwing hydraulic warnings, when the first rounds hit the barracks. By the time he understood what was happening, Alordesh had already declared independence. By the time he reached his unit, the war had already begun without him.</p>
+  <span class="source">// MUDDY OTTERS AFTER-ACTION LOG &middot; FIRST 48 HOURS, SECOND ALORDESH COUP &middot; JUNE 2102 //</span>
+</div>
+
+<p>Front Mission 2: Remake is set twelve years after the events of Front Mission 1st, and the world it depicts has changed in the specific ways that worlds change when wars end badly for one side. The Second Huffman Conflict &mdash; which the first game depicts &mdash; left Alordesh, formerly known as Bangladesh, with a devastated economy, deep anti-OCU sentiment, and a military whose loyalty was to its own country before the superbloc that technically commanded it.</p>
+
+<p>The <strong>People's Republic of Alordesh</strong> had been deteriorating for years. Its brief economic boom during the Second Huffman Conflict &mdash; fuelled by war production contracts &mdash; ended with the peace. Foreign investment withdrew. Businesses closed. The OCU provided foreign aid, but the conditions attached to that aid were humiliating, and the Alordeshi people knew it. By 2098, a failed first coup attempt had already demonstrated that the breaking point was close. When the second coup came on June 12, 2102, it was not a surprise to anyone who had been paying attention. The OCU had not been paying attention.</p>
+
+<h2 class="sub-title">The Second Alordesh Coup</h2>
+<p>The coup was planned with genuine military competence. Three OCU military bases were hit simultaneously at 0630 on June 12. Parliament was seized within the first hour. The Forces of Alordesh, led by General Ven Mackarge, declared independence from the OCU before noon. OCU forces on the island were either destroyed, captured, or scattered &mdash; the few units that survived intact were cut off, surrounded by hostile territory, with no clear path to extraction and no clear orders from a headquarters that had been caught completely off-guard.</p>
+
+<div class="callout ash">
+  <div class="callout-title">Ash Faruk &mdash; The Reluctant Hero</div>
+  <p>Ash was born in Alordesh itself &mdash; a Bangladeshi national who enlisted in the OCU Military Defence Force after being discharged from the Alordesh Army under murky circumstances in 2098. His connection to Alordesh is personal in ways that complicate every tactical decision he makes. He is not simply a soldier trying to escape a war zone. He is a man whose home country is the war zone, and whose history with the coup's leadership is more entangled than his unit knows. This complexity is what elevates Front Mission 2 above a straightforward escape narrative.</p>
+</div>
+
+<h2 class="sub-title">The Conspiracy Behind the Coup</h2>
+<p>What appears to be a straightforward independence movement is not. The Forces of Alordesh are receiving support from an unidentified third party. They are in possession of a device codenamed <strong>FENRIR</strong> &mdash; a weapons system whose true nature and origin implicates the OCU itself at the highest levels. The conspiracy that surfaces as the three protagonists dig deeper is not a simple story of foreign intervention. It is a story about who knew what, who authorised what, and how far the institutions that are supposed to protect people will go to protect themselves instead.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S02 -->
+<section class="section" id="s02">
+<h2 class="section-title"><span class="sec-num">&sect;02</span> Game Overview</h2>
+<p>Front Mission 2: Remake is a <strong>tactical turn-based RPG</strong> developed by Storm Trident and published by Forever Entertainment, released on Nintendo Switch in 2023 and on PC via Steam on April 30, 2024. It is the first official English-language release of Front Mission 2, which was originally published by Squaresoft for PlayStation in 1997 and had remained Japan-exclusive for over two decades.</p>
+<p>Among Front Mission series veterans, FM2 has a well-established reputation as the most mechanically demanding and strategically complex entry in the franchise. The <strong>Action Point (AP) system</strong> &mdash; first introduced here &mdash; fundamentally changes how combat works compared to Front Mission 1st. Combined with the <strong>GEO terrain system</strong>, the <strong>Panic status effect</strong>, an expanded computer upgrade path, and missions regularly throwing twenty or more enemies at varied difficulty configurations, FM2 requires a higher degree of strategic preparation than its predecessor. It is not forgiving of casual play, and it does not apologise for this.</p>
+
+<h2 class="sub-title">What Is New in FM2 vs. FM1</h2>
+<table class="data-table">
+  <thead><tr><th>Feature</th><th>Front Mission 1st</th><th>Front Mission 2</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Action Points</strong></td><td>Simple turn: move then act</td><td>AP pool governs movement, attacks, and accuracy/evasion simultaneously</td></tr>
+    <tr><td><strong>Accuracy/Evasion</strong></td><td>Based on weapon, skill, arm stats</td><td>Dynamically tied to current AP level; high AP = better combat performance</td></tr>
+    <tr><td><strong>Terrain</strong></td><td>GEO as static defence bonus</td><td>GEO dynamic &mdash; affects AP recovery, evasion, and movement costs simultaneously</td></tr>
+    <tr><td><strong>Pilot Development</strong></td><td>Skill EXP via weapon use</td><td>Honor points system unlocking Combat Skills; use-based proficiency still present</td></tr>
+    <tr><td><strong>Computer</strong></td><td>Fixed stat bonus by type</td><td>Upgradeable; multiple modes; can provide unique skills</td></tr>
+    <tr><td><strong>Wanzer Head</strong></td><td>Not a separate component</td><td>Dedicated head slot with HP and specific functions</td></tr>
+    <tr><td><strong>Narrative structure</strong></td><td>Single protagonist (or two campaigns)</td><td>Three rotating protagonists with intersecting storylines</td></tr>
+    <tr><td><strong>Network</strong></td><td>Not present</td><td>In-game pseudo-internet providing world-building and optional lore</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Difficulty Settings</h2>
+<p>Front Mission 2: Remake offers three standard difficulty settings &mdash; Private (easy), Corporal (normal), and Sergeant (hard). A fourth tier, unlocked via New Game Plus, provides additional challenge. Sergeant difficulty is not recommended for players new to the AP system &mdash; the second mission on Sergeant has a well-documented reputation as a sudden, brutal difficulty spike that has driven many players to restart. Begin on Corporal, understand the systems, and escalate on replay.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S03 -->
+<section class="section" id="s03">
+<h2 class="section-title"><span class="sec-num">&sect;03</span> The Three Perspectives</h2>
+<div class="lore-block">
+  <p>Three people survived Rimian Base on June 12 who should not have. Ash Faruk of the Muddy Otters, who happened to be in the motor pool. Captain Thomas Norland of Burg Transportation, who happened to be running a contract in the wrong district. Lisa Stanley of the OCU intelligence service, who happened to be exactly where she was supposed to be, doing exactly what she was not supposed to be doing in a country that had just gone to war. None of them knew the others were there. None of them knew what was coming. The conspiracy does not respect the convenient arrangement of protagonists.</p>
+  <span class="source">// GDFIA INCIDENT ASSESSMENT &middot; SECOND ALORDESH COUP &middot; CLASSIFIED //</span>
+</div>
+
+<p>Front Mission 2 tells its story through three distinct protagonists whose storylines intersect, contradict, and eventually converge. Each perspective reveals aspects of the conspiracy that the others cannot see, and the narrative withholds information deliberately until the rotating viewpoint allows it to be revealed. This structure is not a gimmick &mdash; it is the mechanism by which the game prevents any single character from being the unambiguous hero.</p>
+
+<div class="unit-grid">
+  <div class="unit-card ash-card">
+    <div class="unit-name">Ash Faruk</div>
+    <span class="unit-type">OCU-MDF CORPORAL &middot; MUDDY OTTERS &middot; 41ST BATTALION</span>
+    <p>The primary protagonist. Born in Alordesh; discharged from its army in 2098 for reasons tied to the first failed coup; enlisted in the OCU two years later. His stated goal is simply to survive and get his team out. The truth of what he knows and when he knew it unfolds slowly. Morally grounded but haunted. The heart of the game when others' motives are clouded.</p>
+  </div>
+  <div class="unit-card thomas-card">
+    <div class="unit-name">Thomas Norland</div>
+    <span class="unit-type">BURG TRANSPORTATION &middot; CONTRACTOR &middot; MERCENARY</span>
+    <p>A mercenary Wanzer pilot running a cargo contract when the coup hits. Opportunistic, self-interested, and surprisingly competent. Feels no loyalty to the OCU or to Alordesh &mdash; his only declared goal is profit and protecting his team: Rocky and Roswell. His Wanzer is nicknamed Ace Joker. He is a better person than he presents. This takes time to become apparent.</p>
+  </div>
+  <div class="unit-card lisa-card">
+    <div class="unit-name">Lisa Stanley</div>
+    <span class="unit-type">OCU INTELLIGENCE &middot; GDFIA OPERATIVE &middot; CAPTAIN</span>
+    <p>An OCU intelligence officer in Alordesh for reasons her own superiors keep changing. Disciplined, strategic, and operating on information nobody else has access to. Her mission evolves as the conspiracy deepens. Most likely to understand the full picture earliest; least likely to share it with the other protagonists until forced to. The most dangerous member of the ensemble.</p>
+  </div>
+</div>
+
+<h2 class="sub-title">How the Perspectives Structure Gameplay</h2>
+<p>The game rotates between the three protagonists at set story points. Each section uses the protagonist's squad and resources independently &mdash; Ash's Muddy Otters, Thomas's Burg Transportation crew, and Lisa's intelligence unit do not share equipment, funds, or upgrades between their respective sections. This means you must manage three parallel development arcs, ensuring each squad is adequately equipped and each pilot appropriately skilled when their section of the story arrives. Neglecting Thomas's crew because the game has been in Ash's section for several missions is a common strategic error.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S04 -->
+<section class="section" id="s04">
+<h2 class="section-title"><span class="sec-num">&sect;04</span> The AP System &mdash; The Engine of Everything</h2>
+<div class="lore-block">
+  <p>A Wanzer at full charge moves like it costs nothing. The joints are responsive, the targeting systems are crisp, the pilot is alert and the machine is exactly as fast as its specifications say it is. A Wanzer running on empty moves like it is already dead. The joints are sluggish, the targeting is late, the pilot is compensating for systems that are operating below threshold. The AP counter is not a resource bar. It is a measure of how much of your Wanzer you still have left.</p>
+  <span class="source">// OCU-MDF TECHNICAL OPERATIONS MANUAL &middot; WANZER POWER MANAGEMENT, CHAPTER 7 //</span>
+</div>
+
+<p>The Action Point system is the defining mechanic of Front Mission 2 and the feature that most distinguishes it from FM1. Every Wanzer has a maximum AP value and a current AP value. All activities &mdash; movement, attacking, counter-attacking &mdash; consume AP. AP recovers between activations based on the unit's current situation. The critical insight: <strong>AP does not just govern what you can do. It determines how well you do it.</strong></p>
+
+<h2 class="sub-title">AP and Combat Performance</h2>
+<p>This is the system's most important &mdash; and least obvious &mdash; property. Accuracy and evasion in FM2 are dynamically tied to the attacking and defending unit's current AP:</p>
+<ul class="guide-list">
+  <li><strong>High AP = high accuracy and high evasion.</strong> A Wanzer at maximum AP hits reliably and evades reliably.</li>
+  <li><strong>Low AP = degraded accuracy and severely degraded evasion.</strong> A Wanzer with depleted AP will miss more often and be hit far more frequently than its base stats suggest.</li>
+  <li>This creates a critical tactical principle: <strong>never attack when your AP is dangerously low unless you have no choice.</strong> A low-AP Wanzer firing is a Wanzer that misses, takes full-accuracy return fire, and degrades further. A Wanzer that waits to recover AP before engaging performs dramatically better in every dimension.</li>
+</ul>
+
+<h2 class="sub-title">AP Recovery Modifiers</h2>
+<p>AP does not recover at a flat rate. Several factors dynamically affect how much AP a Wanzer regains at the start of each turn:</p>
+<table class="data-table">
+  <thead><tr><th>Factor</th><th>Effect on AP Recovery</th><th>Tactical Implication</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Allied units adjacent</strong></td><td>Positive: more allies nearby = faster AP recovery</td><td>Keep your squad together; isolated units recover AP slowly</td></tr>
+    <tr><td><strong>Enemy units adjacent</strong></td><td>Negative: more enemies nearby = slower AP recovery and Panic risk</td><td>Being surrounded is catastrophic; never let a unit get fully encircled</td></tr>
+    <tr><td><strong>Terrain (GEO value)</strong></td><td>Positive: good terrain (forest, elevation) helps AP recovery</td><td>Positioning on high-GEO terrain provides both defensive and AP benefits</td></tr>
+    <tr><td><strong>Pilot skills/computer modes</strong></td><td>Variable: some skills and computer modes modify AP gain</td><td>Advanced build consideration; relevant for late-game optimisation</td></tr>
+  </tbody>
+</table>
+
+<div class="callout danger">
+  <div class="callout-title">Critical Mechanic &mdash; The Encirclement Trap</div>
+  <p>If an enemy unit has more enemies adjacent to it than allies, it risks entering <strong>Panic</strong> status. A Panicked Wanzer loses AP dramatically, cannot counter-attack, and costs additional AP to perform any action. Being surrounded by enemy units is not just numerically disadvantageous &mdash; it triggers a mechanical cascade that can take a fully functional Wanzer and reduce it to a helpless target within two turns. This is the AP system's most dangerous implication. Never leave a unit isolated forward of your main line.</p>
+</div>
+
+<h2 class="sub-title">AP and Movement Planning</h2>
+<p>Because movement consumes AP and low AP degrades combat performance, every movement decision in FM2 carries an implicit combat readiness cost. A Wanzer that sprints to maximum range arrives with depleted AP and diminished accuracy and evasion. A Wanzer that moves conservatively &mdash; closing the distance gradually over two turns rather than one &mdash; arrives ready to fight at full capability. The game rewards patience. The missions are often long enough that the tactical advantage of arriving with full AP outweighs the cost of the extra turn taken to preserve it.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S05 -->
+<section class="section" id="s05">
+<h2 class="section-title"><span class="sec-num">&sect;05</span> GEO &amp; Terrain Mechanics</h2>
+<p>The GEO (Geographic) system in Front Mission 2 builds on the terrain effects of FM1 but integrates them more deeply into the AP and combat systems. Every hex has a GEO value representing its defensive quality &mdash; but in FM2, this value does more than provide a passive accuracy penalty to attackers.</p>
+
+<h2 class="sub-title">What GEO Affects</h2>
+<ul class="guide-list">
+  <li><strong>Evasion:</strong> High-GEO terrain (forest, elevation, urban cover) provides a bonus to the defending unit's evasion chance, stacking with the AP-based evasion modifier.</li>
+  <li><strong>AP Recovery:</strong> Units positioned on good GEO terrain recover AP more efficiently between turns. A Wanzer sitting in forest cover between engagements is not just safer from direct fire &mdash; it is recovering the AP it needs to perform well in the next exchange.</li>
+  <li><strong>Attacker Accuracy:</strong> As in FM1, attackers firing at units in high-GEO terrain face accuracy penalties. Combined with the AP-evasion system, a well-positioned unit in excellent GEO terrain is genuinely difficult to hit.</li>
+</ul>
+
+<h2 class="sub-title">Terrain Types</h2>
+<table class="data-table">
+  <thead><tr><th>Terrain</th><th>GEO Bonus</th><th>Movement Cost</th><th>AP Recovery</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Clear / Road</strong></td><td>None</td><td>Low</td><td>Baseline</td><td>Maximum movement efficiency; zero protection; avoid as stationary position</td></tr>
+    <tr><td><strong>Forest / Bush</strong></td><td>High</td><td>High for heavy wanzers</td><td>Above baseline</td><td>Best available cover in most missions; weight-restricted access</td></tr>
+    <tr><td><strong>Elevated Ground</strong></td><td>Moderate to High</td><td>High (ascending)</td><td>Good</td><td>Accuracy bonus when firing downhill; excellent defensive anchor</td></tr>
+    <tr><td><strong>Urban Cover</strong></td><td>Moderate</td><td>Variable</td><td>Moderate</td><td>Reliable cover in city missions; limits flanking routes</td></tr>
+    <tr><td><strong>Cliff/Escarpment</strong></td><td>Very High</td><td>Impassable direct</td><td>Excellent</td><td>Must be accessed via specific routes; premium defensive position when reached</td></tr>
+    <tr><td><strong>Water</strong></td><td>None</td><td>Impassable/penalised</td><td>N/A</td><td>Channels movement; controls approach routes</td></tr>
+  </tbody>
+</table>
+
+<div class="callout tip">
+  <div class="callout-title">The GEO Priority Principle</div>
+  <p>In every mission, before your first move, identify the highest-GEO terrain positions in the engagement area. These are the positions you want to occupy and hold. A Wanzer in a forest hex on elevated ground is difficult to hit, recovering AP efficiently, and &mdash; if your squad maintains mutual support range &mdash; is also buffering against Panic. Contesting the best terrain positions is as important as attacking the enemy. Sometimes more important.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S06 -->
+<section class="section" id="s06">
+<h2 class="section-title"><span class="sec-num">&sect;06</span> Combat Fundamentals</h2>
+<div class="lore-block">
+  <p>The Wanzer engagement envelope is a function of three things: range, AP, and what your enemy does not expect. You want to be outside their optimal range until you are ready to be inside it. You want maximum AP at the moment of engagement. And you want them to be committed to a position they cannot easily escape. Everything else is details.</p>
+  <span class="source">// BURG TRANSPORTATION TACTICAL NOTES &middot; THOMAS NORLAND &middot; PERSONAL LOG //</span>
+</div>
+
+<p>Combat in FM2 uses the same grid-based structure as FM1 but with the AP system modifying every exchange. When your unit attacks, both attacker and defender consume AP from the exchange &mdash; the attacker from the cost of the attack action, the defender potentially from counter-fire. When counter-fire occurs, it is resolved simultaneously with the initial attack.</p>
+
+<h2 class="sub-title">Counter-Fire in FM2</h2>
+<p>Counter-fire is conditional in ways it was not in FM1. A unit cannot counter-attack if:</p>
+<ul class="guide-list">
+  <li>Its arms are destroyed (no weapons to fire)</li>
+  <li>It is in Panic status (AP too low; counter-attack suppressed)</li>
+  <li>It is attacked by a long-range weapon from outside counter-fire range</li>
+  <li>The attacker uses a skill that suppresses counter-fire</li>
+</ul>
+<p>Eliminating counter-fire is one of the primary tactical objectives in any engagement. An enemy that cannot counter-attack is dramatically less dangerous and can be finished efficiently without risk of mutual destruction. The two most reliable methods: destroy or heavily damage one or both arms (removing weapons) before closing, or use the Panic-inducing encirclement to suppress their AP to the point where counter-fire is unavailable.</p>
+
+<h2 class="sub-title">Targeting in FM2</h2>
+<p>FM2 retains the part-targeting system but with a critical difference from FM1: <strong>the head is now a separate component</strong>. Destroying the head provides specific tactical benefits beyond the body/arm/leg destruction that FM1 supported. The head is the pilot's primary sensory and targeting interface &mdash; a damaged or destroyed head significantly degrades a Wanzer's combat capability even when the rest of the machine is intact. This makes the head a priority target in certain tactical situations, particularly against high-accuracy enemy snipers.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S07 -->
+<section class="section" id="s07">
+<h2 class="section-title"><span class="sec-num">&sect;07</span> Part Targeting &amp; Destruction</h2>
+<p>FM2 adds a <strong>head component</strong> to the four-part system of FM1 (body, two arms, legs). Five targetable components now exist, each with distinct HP and distinct consequences when destroyed. As in FM1, the ability to select specific target parts is a skill that unlocks as pilots develop &mdash; early-game attacks are distributed randomly across parts.</p>
+
+<h2 class="sub-title">Component Destruction Effects</h2>
+<table class="data-table">
+  <thead><tr><th>Component</th><th>Effect When Destroyed</th><th>Tactical Priority</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Body</strong></td><td>Wanzer destroyed; pilot killed or evacuated</td><td>Ultimate kill target; heavily armoured; last to fall</td></tr>
+    <tr><td><strong>Head</strong></td><td>Accuracy severely degraded; targeting systems offline; sensor range reduced</td><td>High against precision-fire enemies; opens next attack with high miss rate from them</td></tr>
+    <tr><td><strong>Arm (either)</strong></td><td>Weapon in that arm lost; if both destroyed, no counter-attack possible</td><td>Very High &mdash; disarms the target and eliminates counter-fire threat</td></tr>
+    <tr><td><strong>Legs</strong></td><td>Movement reduced to minimum; can still engage but cannot reposition or retreat</td><td>Very High &mdash; immobilises enemy; enables safe follow-up fire</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">The Disarm-Then-Close Pipeline</h2>
+<p>The most reliable offensive sequence in FM2: use long-range fire to target and destroy one or both arms, removing the enemy's weapons and eliminating counter-fire. Then advance melee or short-range units to close range against the now-defenceless Wanzer and finish it efficiently. This pipeline requires coordination between your Lancer (long-range support, handling disarm) and your front-line Strikers (handling the close-range finish). It is more reliable in FM2 than FM1 because the AP system provides a reason to keep units supporting each other rather than spreading out.</p>
+
+<div class="callout tip">
+  <div class="callout-title">EXP Farming via Part Stripping</div>
+  <p>As in FM1, pilots earn experience for each part destroyed, not just for the final kill. When a combat situation is controlled &mdash; particularly in the Colosseum or against isolated, weakened enemies &mdash; systematically stripping parts one by one before the body kill maximises EXP per engagement. In FM2, this technique has additional value because the Honor Point system rewards sustained combat performance, and more actions per engagement means more Honor accumulation per mission.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S08 -->
+<section class="section" id="s08">
+<h2 class="section-title"><span class="sec-num">&sect;08</span> Status Effects</h2>
+<p>FM2 introduces several combat status effects tied to the AP system. Understanding them prevents catastrophic tactical situations and enables deliberate exploitation of enemy vulnerabilities.</p>
+
+<div class="unit-grid">
+  <div class="unit-card danger-card">
+    <div class="unit-name">Panic</div>
+    <span class="unit-type">STATUS &middot; WORST CASE &middot; TRIGGERED BY ENCIRCLEMENT</span>
+    <p>The most dangerous status in the game. Triggered when a Wanzer has more enemies adjacent than allies. Dramatically reduces AP recovery; prohibits counter-attacks; increases AP cost of all actions. A Panicked unit is nearly helpless. Prevention: never leave units isolated from allied support range. Treatment: reposition allies to outnumber adjacent enemies, or extract the Panicked unit.</p>
+  </div>
+  <div class="unit-card danger-card">
+    <div class="unit-name">AP Drain (Sweating)</div>
+    <span class="unit-type">STATUS &middot; VISIBLE INDICATOR &middot; AP-RELATED</span>
+    <p>A visual sweating effect on the Wanzer indicates severe AP depletion leading toward Panic conditions. This is an early warning sign. See it and act: pull adjacent allies toward the affected unit immediately. An untreated sweating Wanzer is a turn or two from full Panic and potential loss.</p>
+  </div>
+  <div class="unit-card neutral-card">
+    <div class="unit-name">Head Damage Debuff</div>
+    <span class="unit-type">PARTIAL STATUS &middot; ACCURACY DEGRADATION</span>
+    <p>A heavily damaged or destroyed head significantly reduces the unit's accuracy on all attacks. This is valuable to inflict on high-accuracy enemy Lancers whose missile or long-range fire is otherwise reliably hitting your units. It does not eliminate the threat but makes subsequent attacks from that unit much less dangerous.</p>
+  </div>
+  <div class="unit-card neutral-card">
+    <div class="unit-name">Weapon Disabled</div>
+    <span class="unit-type">PARTIAL STATUS &middot; ARM DESTROYED</span>
+    <p>Loss of one arm removes one weapon; loss of both arms eliminates all counter-fire capability. Unlike Panic, this is a permanent status for the remainder of the engagement &mdash; destroyed arms do not regenerate within a mission. A double-disarmed enemy is effectively a training dummy.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S09 -->
+<section class="section" id="s09">
+<h2 class="section-title"><span class="sec-num">&sect;09</span> Honor &amp; Skills</h2>
+<div class="lore-block">
+  <p>Amia keeps a running tally of the Muddy Otters' confirmed engagements on a whiteboard in the motor pool. Ash told her to stop after the first week. She ignored him. She says it helps her calculate maintenance schedules. She says a lot of things that are technically true but not quite honest. The real reason is that she knows that pilots who see their numbers improving fight better. Psychology is also maintenance.</p>
+  <span class="source">// MUDDY OTTERS UNIT LOG &middot; AMIA McCALUM &middot; PERSONAL NOTATION //</span>
+</div>
+
+<p>FM2 replaces FM1's pure use-based skill growth with a layered development system. Pilots still develop proficiency in weapon categories (Melee, Short, Long, Dodge) through combat use &mdash; but they now also accumulate <strong>Honor Points</strong> that unlock <strong>Combat Skills</strong> at specific thresholds.</p>
+
+<h2 class="sub-title">Honor Points</h2>
+<p>Honor is earned through combat actions: attacking, destroying parts, and completing enemies. It accumulates on a scale from 0 to 350+, with skill slots unlocking at specific thresholds:</p>
+<table class="data-table">
+  <thead><tr><th>Honor Points</th><th>Honor Stars</th><th>Skill Slots Unlocked</th></tr></thead>
+  <tbody>
+    <tr><td>0</td><td>0</td><td>None</td></tr>
+    <tr><td>20</td><td>1</td><td>No new slot</td></tr>
+    <tr><td>50</td><td>2</td><td>No new slot</td></tr>
+    <tr><td>90</td><td>3</td><td>First Combat Skill slot unlocked</td></tr>
+    <tr><td>140</td><td>4</td><td>Second slot unlocked</td></tr>
+    <tr><td>200</td><td>5</td><td>Third slot</td></tr>
+    <tr><td>270</td><td>6</td><td>Fourth slot</td></tr>
+    <tr><td>350</td><td>7</td><td>Fifth slot (maximum)</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Combat Skills</h2>
+<p>Skills are unlocked when a pilot earns enough Honor to open a skill slot. Skills provide active and passive bonuses that significantly change a pilot's tactical capability. Key skills and what they do:</p>
+<ul class="guide-list">
+  <li><strong>Evade:</strong> Passive evasion bonus; stacks with AP-based evasion and GEO bonuses. First priority for any front-line pilot.</li>
+  <li><strong>Counter:</strong> Improves counter-attack performance. Valuable for any unit that regularly absorbs incoming fire and needs reliable counter-fire.</li>
+  <li><strong>First Strike:</strong> Attack before the enemy can fire their counter-attack. The FM2 equivalent of FM1&apos;s First skill &mdash; essential for melee builds to avoid eating a full salvo before landing their blow.</li>
+  <li><strong>Double Attack:</strong> Fire the equipped weapon twice in one action. Devastating damage output when combined with high-damage weapons; available at higher Honor levels.</li>
+  <li><strong>AP Boost:</strong> Increases AP maximum or recovery rate. Strategic value is significant given how central AP is to every combat function.</li>
+  <li><strong>Accuracy Up:</strong> Direct accuracy bonus, stacking with weapon accuracy and computer bonuses. High priority for Long-range pilots whose missile/launcher accuracy is otherwise unreliable at extreme range.</li>
+</ul>
+
+<h2 class="sub-title">Multiple Skills Per Activation</h2>
+<p>A critical feature of FM2's skill system: <strong>a pilot can use multiple skills in a single activation</strong>, subject to AP cost. Combining First Strike + Double Attack on a melee brawler produces an attack that fires twice before the enemy can respond &mdash; one of the game's most powerful individual combat performances. Planning which skill combinations work within a pilot's AP budget is a late-game optimisation task.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S10 -->
+<section class="section" id="s10">
+<h2 class="section-title"><span class="sec-num">&sect;10</span> Pilot Roles</h2>
+<p>FM2 does not have formal pilot classes, but the combination of weapon proficiency, Honor-unlocked skills, and Wanzer configuration creates four distinct functional roles. Assigning each pilot a consistent role and building their Wanzer, computer, and skill choices around it is the foundation of effective squad design.</p>
+<div class="unit-grid">
+  <div class="unit-card ash-card">
+    <div class="unit-name">Striker (Short Range)</div>
+    <span class="unit-type">MACHINE GUNS &middot; FRONT LINE &middot; HIGH MOBILITY</span>
+    <p>The most reliable general-purpose combat role. Machine guns provide burst fire that covers multiple parts; high Short proficiency improves per-round hit chance. The Mobility Doctrine (Chapter 16) applies most forcefully here: keep weapon count minimal for weight savings; use high-speed, low-weight legs; prioritise Evade and First Strike skills. These pilots need to be fast enough to close range before taking serious damage.</p>
+  </div>
+  <div class="unit-card thomas-card">
+    <div class="unit-name">Brawler (Melee)</div>
+    <span class="unit-type">RODS / PILE DRIVERS &middot; EXTREME RANGE &middot; AP-INTENSIVE</span>
+    <p>Highest damage potential at close range; lightest weapon weights enable maximum body HP investment. Absolutely requires First Strike before becoming combat-safe &mdash; without it, a melee pilot takes a full gun burst before their rod connects. Best combined with the Disarm Pipeline: Lancer strips arms at range, Brawler closes against a defenceless target and finishes. Extremely effective in indoor/corridor missions where range advantages disappear.</p>
+  </div>
+  <div class="unit-card lisa-card">
+    <div class="unit-name">Lancer (Long Range)</div>
+    <span class="unit-type">LAUNCHERS / MISSILES &middot; SUPPORT &middot; ELEVATED POSITIONS</span>
+    <p>Fire support from range without provoking counter-fire. Softens targets; strips arms; suppresses high-threat enemies before front-liners engage. Needs high Long proficiency and Accuracy Up skill for reliable hits at maximum range. Keep on elevated GEO terrain; requires backpack for ammo resupply. Paul-type pilots (the archetype from FM1) translate directly here. The AP system rewards keeping them stationary on good terrain &mdash; they recover AP while firing rather than moving.</p>
+  </div>
+  <div class="unit-card neutral-card">
+    <div class="unit-name">Support</div>
+    <span class="unit-type">ITEMS / SUPPRESSION &middot; FLEXIBLE</span>
+    <p>Smoke and chaff grenade deployment; acid bomb use; ammo resupply for Lancers; repair support. Not every squad needs a dedicated support unit, but in long missions with heavy enemy fire, a pilot carrying smoke grenades and acid bombs extends the combat effectiveness of the rest of the squad significantly. One pilot per squad should always carry at least one acid bomb for armoured late-game enemies.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S11 -->
+<section class="section" id="s11">
+<h2 class="section-title"><span class="sec-num">&sect;11</span> The Colosseum</h2>
+<div class="lore-block">
+  <p>Ash spent a year fighting in the colosseum after Rimian. He had reasons. Not good ones &mdash; there are no good reasons to spend a year punching other Wanzers for money in a glorified cage match &mdash; but his kind of reasons. The kind where you need to be somewhere loud and violent and uncomplicated because the alternative is sitting quietly and thinking about things you would rather not think about. It worked, after a fashion. He was a significantly better pilot when Olson found him. He was also considerably more damaged. The colosseum does that.</p>
+  <span class="source">// JOYCE S. WHITFIELD &middot; MUDDY OTTERS FIELD NOTES //</span>
+</div>
+
+<p>The Colosseum is FM2's equivalent of FM1's Arena: a 1-versus-1 combat facility available between missions where individual Wanzers fight AI opponents for prize money and pilot development. Its function in FM2 is identical in principle but modified by the Honor and AP systems in practice.</p>
+
+<h2 class="sub-title">Colosseum Functions</h2>
+<ul class="guide-list">
+  <li><strong>Income:</strong> Prize money funds Wanzer upgrades across all three squads. Regular Colosseum use provides a meaningful supplement to story mission payouts. Run your highest-skill pilot against the highest available tier for maximum return per match.</li>
+  <li><strong>Honor accumulation:</strong> Each Colosseum match earns Honor Points. Deliberately extending matches to maximise Honor is the most efficient path to unlocking skill slots for pilots who are lagging behind their squad-mates in development.</li>
+  <li><strong>Weapon proficiency:</strong> Using specific weapon types in the Colosseum advances the corresponding proficiency track. Assign pilots to Colosseum matches using the weapon type they are being trained in.</li>
+  <li><strong>Dodge training:</strong> Being attacked advances Dodge proficiency. The extended-match technique from FM1 applies here: partially disarm the opponent, then use Guard and Shield to absorb non-lethal hits for Dodge EXP before finishing.</li>
+</ul>
+
+<div class="callout tip">
+  <div class="callout-title">Multi-Squad Colosseum Discipline</div>
+  <p>Because FM2 has three separate squad development arcs, the Colosseum load is tripled relative to FM1. Use Colosseum sessions specifically to catch up under-developed pilots from whichever squad section is approaching. Before a Thomas section, run his Burg Transportation pilots through several Colosseum matches. Before a Lisa section, do the same. Arriving in each section with Honor-developed pilots makes the missions dramatically more manageable.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S12 -->
+<section class="section" id="s12">
+<h2 class="section-title"><span class="sec-num">&sect;12</span> Wanzer Anatomy</h2>
+<div class="lore-block">
+  <p>The Zephir V is not glamorous. It does not have the high-power output of the military-spec Phalanx or the hardened armour of the Raidens the coup forces are running. What it has is versatility. You can bolt almost anything to it, it weighs less than comparable frames, and when you cannot afford the Phalanx you want, you can still build something functional out of what you have. Half this war is being fought with Zephirs because half the people in it cannot get anything better. That turns out to be exactly the kind of experience you need to know how to use them well.</p>
+  <span class="source">// BURG TRANSPORTATION EQUIPMENT LOG &middot; THOMAS NORLAND //</span>
+</div>
+
+<p>FM2 Wanzers have <strong>five separate components</strong>: Body, Left Arm, Right Arm, Legs, and Head. Each has independent HP and functional consequences when destroyed. The body&apos;s Engine stat sets the weight budget for all other components and loadout items. All engineering decisions must be made within this budget.</p>
+
+<h2 class="sub-title">The Weight Budget in FM2</h2>
+<p>The weight constraint is more nuanced in FM2 than in FM1 because mobility is mechanically more important. In FM1, heavy Wanzers with maximum weapons were viable if slower. In FM2, a Wanzer with poor mobility generates less AP, recovers it more slowly, has weaker evasion, and is more susceptible to Panic. The ideal of maximum firepower and maximum mobility is not achievable &mdash; but the trade-off is less tolerant of overloading than it was in FM1. The Light Doctrine (Chapter 16) formalises this insight.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S13 -->
+<section class="section" id="s13">
+<h2 class="section-title"><span class="sec-num">&sect;13</span> Body, Arms, Legs &amp; Head</h2>
+<h2 class="sub-title">The Body</h2>
+<p>As in FM1, the body is the most critical single component. It provides Engine (weight budget), HP, and base Power. The principle is identical: always prioritise body upgrades over weapons upgrades. A high-HP body with a strong Engine enables every other build decision; a weak body constrains everything. In FM2, the body also contributes to the Wanzer's overall Mobility through the weight relationship &mdash; a lighter body allows lighter total loadout, which preserves Mobility for the AP and evasion benefits described in Chapters 4 and 16.</p>
+
+<h2 class="sub-title">Arms</h2>
+<p>Arms hold weapons and provide Hit bonuses to accuracy. In FM2, arms are priority targets for skilled enemies &mdash; the game's enemies use the same disarm logic that you should be using against them. Protect arm HP on front-line Wanzers, particularly for melee builds that have only one or two melee weapons and cannot function if one arm is destroyed.</p>
+
+<h2 class="sub-title">Legs</h2>
+<p>Legs in FM2 have greater importance than in FM1 because Mobility directly affects AP recovery and evasion. <strong>Speed-focused legs are essential for front-line Strikers and Brawlers</strong> &mdash; not just for movement range, but for the AP recovery rate and the associated combat performance bonuses. For Lancers who position once and fire repeatedly, leg weight savings (accepting lower Mobility) are an acceptable trade for additional backpack or weapon capacity.</p>
+
+<h2 class="sub-title">The Head</h2>
+<p>The head is FM2&apos;s new component. It provides the Wanzer&apos;s targeting and sensor functions. A heavily damaged head significantly degrades accuracy on all weapon systems &mdash; effectively making the pilot fight at a substantial disadvantage even if all other components are intact. Key head principles:</p>
+<ul class="guide-list">
+  <li><strong>Protect high-accuracy pilots&apos; heads</strong> &mdash; a marksman-type pilot with a destroyed head is no longer a marksman.</li>
+  <li><strong>Target enemy heads</strong> when facing high-accuracy opponents whose fire you cannot easily avoid. A head-damaged enemy Long-range pilot misses far more and poses dramatically less threat.</li>
+  <li><strong>Head HP varies by model</strong> &mdash; check head HP when upgrading; lower HP heads may need replacement earlier than other components.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S14 -->
+<section class="section" id="s14">
+<h2 class="section-title"><span class="sec-num">&sect;14</span> Computers &amp; Backpacks</h2>
+<h2 class="sub-title">The Computer in FM2</h2>
+<p>FM2 expands the computer from a simple stat-bonus component into an upgradeable, mode-switching system. A computer can be upgraded multiple times during the campaign, and many computers can switch between different operational modes providing different bonuses depending on tactical needs.</p>
+<ul class="guide-list">
+  <li><strong>Match to weapon type:</strong> Like FM1, computers provide the highest benefits when their bonus category matches the pilot&apos;s primary weapon type. Short-range computers for Strikers; Long-range for Lancers; Melee for Brawlers.</li>
+  <li><strong>Upgrade regularly:</strong> Computer upgrades are available through the shop and Colosseum rewards. Unlike in FM1 where computers were simply replaced with better models, FM2 allows your existing computer to grow with your pilot. Upgrade the computer of your primary combat pilots as a consistent budget priority.</li>
+  <li><strong>Mode switching:</strong> Some advanced computers have multiple modes. Learning which mode is active in a given mission type (and switching before deployment) is a mid-to-late-game optimisation step. The benefit is meaningful at high difficulty levels.</li>
+</ul>
+
+<h2 class="sub-title">Backpacks</h2>
+<p>Backpacks expand inventory capacity. In FM2, the backpack carries crucial importance for Lancer builds specifically because launchers require ammunition and the Colosseum/supply chain may not always provide resupply between mission phases. The largest available backpack on Lancer units ensures sustained firing capability throughout long missions. For Striker and Brawler builds, a smaller backpack (or none, to save weight and preserve Mobility) is acceptable if the pilot carries at minimum one repair kit.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S15 -->
+<section class="section" id="s15">
+<h2 class="section-title"><span class="sec-num">&sect;15</span> Weapons &amp; Combat Roles</h2>
+<div class="lore-block">
+  <p>Rocky keeps running dual machine guns on the grounds that more bullets means more problems solved. Thomas keeps pointing out that the weight of dual machine guns affects their Mobility and therefore their AP recovery. Rocky keeps not listening. After mission eight, when Rocky&apos;s Wanzer absorbed three full bursts at close range and the evasion system was clearly not pulling its weight, Thomas stopped pointing it out and Rocky started listening. There is an argument to be made for learning through experience. It is usually an expensive argument.</p>
+  <span class="source">// BURG TRANSPORTATION FIELD LOG &middot; THOMAS NORLAND //</span>
+</div>
+
+<h2 class="sub-title">Short-Range Weapons</h2>
+<p><strong>Machine guns</strong> remain the most reliable short-range option: multi-round burst fire with decent accuracy per round and the ability to hit multiple parts per attack. Machine guns are the recommended default for Strikers throughout the campaign. Their weight is moderate; their ammo is effectively unlimited in normal play; and their multi-hit nature applies consistent pressure to all enemy parts simultaneously.</p>
+<p><strong>Rifles</strong> provide higher single-hit damage at the cost of lower accuracy and fewer rounds per attack. Best suited for high-Short proficiency pilots with Accuracy Up skills &mdash; in those hands, a rifle shot to a specific vulnerable part is a decisive blow. Earlier in the campaign before proficiency develops, machine guns are more reliable.</p>
+
+<h2 class="sub-title">Long-Range Weapons</h2>
+<p>Launchers and missiles fire without provoking counter-fire from outside threshold range. In FM2, this remains their primary tactical advantage. The difference is that their AP cost per shot is significant &mdash; Lancer pilots who fire multiple times in a turn deplete their AP and lose combat effectiveness. The ideal Lancer behaviour is: occupy an elevated GEO position, fire once or twice per turn (preserving AP above the critical accuracy threshold), and recover AP between turns while remaining stationary on good terrain.</p>
+
+<h2 class="sub-title">Melee Weapons</h2>
+<p>Melee weapons in FM2 are heavier and higher-damage than in FM1. The weight trade-off is more significant. Build melee Wanzers with minimum weapons (one melee rod and optionally a shield) to preserve Mobility for the AP and evasion benefits. The First Strike skill is mandatory before Brawlers are safe in front-line positions. Double Attack + First Strike at higher Honor levels produces devastating burst damage in a single activation.</p>
+
+<div class="callout tip">
+  <div class="callout-title">The Single Weapon Doctrine</div>
+  <p>Community experience with FM2 consistently validates a principle that runs counter to intuition: front-line Strikers and Brawlers fight better with one weapon and a shield than with two weapons. One weapon reduces total Wanzer weight, improving Mobility and therefore AP recovery and evasion. The shield provides damage absorption during the approach. A high-mobility Wanzer with one weapon and a shield evades more, takes less damage when hit, maintains better AP, and performs more consistently than a heavily-armed Wanzer that moves slower and takes every hit cleanly. Load Lancers and backline support with maximum firepower; keep front-liners lean.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S16 -->
+<section class="section" id="s16">
+<h2 class="section-title"><span class="sec-num">&sect;16</span> Mobility &amp; the Light Doctrine</h2>
+<p>The Mobility stat in FM2 does several things simultaneously that it did not do in FM1. It affects movement range. It affects AP recovery. And through the AP system, it affects accuracy and evasion. A high-Mobility Wanzer recovers AP faster, maintains better combat performance across a longer engagement, and evades more reliably. A low-Mobility Wanzer is slower in every dimension: slower to move, slower to recover, slower to perform.</p>
+
+<h2 class="sub-title">What Determines Mobility</h2>
+<p>Mobility is determined by the ratio of the Wanzer&apos;s leg speed rating to its total weight. The lighter the Wanzer relative to its legs&apos; capacity, the higher the Mobility. Achieving high Mobility requires:</p>
+<ul class="guide-list">
+  <li>Speed-focused leg models (prioritising speed rating over HP)</li>
+  <li>Minimum weapons loadout (one weapon + shield rather than two weapons)</li>
+  <li>Lighter body models (acceptable HP trade for weight savings on some builds)</li>
+  <li>Avoiding heavy backpacks unless functionally necessary</li>
+</ul>
+
+<div class="callout ash">
+  <div class="callout-title">The Light Doctrine in Practice</div>
+  <p>The effective principle: for any Wanzer that will be engaging in close-to-mid range combat (Strikers and Brawlers), Mobility is the primary engineering priority after body HP. A Striker with 80% Mobility that fires one machine gun hits reliably, evades frequently, recovers AP quickly, and maintains good combat performance across a full mission. A Striker with 40% Mobility that fires two machine guns will be more dangerous in theory and less effective in practice &mdash; slower to recover AP, more frequently hit, and degraded in all accuracy and evasion calculations. Back-liners (Lancers, support) can tolerate lower Mobility because they are not intended to absorb incoming fire; their design priority is maximum firepower from stationary elevated positions.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S17 -->
+<section class="section" id="s17">
+<h2 class="section-title"><span class="sec-num">&sect;17</span> The Muddy Otters &mdash; Ash's Squad</h2>
+<p>The Muddy Otters are the 41st Battalion&apos;s OCU-MDF squad: Ash Faruk, Joyce S. Whitfield, and Amia McCallum. They are the game&apos;s primary player perspective and the most developed characters in the narrative. Additional pilots join as the story progresses.</p>
+
+<table class="data-table">
+  <thead><tr><th>Pilot</th><th>Initial Role</th><th>Strengths</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Ash Faruk</strong></td><td>Versatile Short</td><td>Solid across all categories; balanced growth potential</td><td>The player-identified protagonist; good all-rounder; develops well as either Striker or Brawler depending on your preference</td></tr>
+    <tr><td><strong>Joyce S. Whitfield</strong></td><td>Short Range</td><td>Strong Short proficiency growth; reliable machine gun platform</td><td>Consistently one of Ash&apos;s most useful combat pilots; straightforward development path as a Striker</td></tr>
+    <tr><td><strong>Amia McCallum</strong></td><td>Support/Short</td><td>Versatile; good support item capabilities</td><td>Useful in a hybrid role: Short combat with secondary support function; can carry repair and suppression items</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Building the Muddy Otters</h2>
+<p>The Muddy Otters are designed around reliability and forward pressure. Two Strikers (Ash and Joyce in machine-gun-equipped light builds) and Amia in a flexible support/Striker role covers most of the Ash sections&apos; mission requirements. As the story develops and additional pilots join, consider adding a Lancer (Long-range) to the rotation for missions with open terrain and ranged engagement distances. The Muddy Otters&apos; section missions tend toward guerrilla operations in urban and forest terrain where the mobility-heavy light doctrine excels.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S18 -->
+<section class="section" id="s18">
+<h2 class="section-title"><span class="sec-num">&sect;18</span> Thomas Norland &amp; Burg Transportation</h2>
+<div class="lore-block">
+  <p>Thomas does not fight for Alordesh. He does not fight for the OCU. He fights because he is in the middle of a war he did not choose, with people he is responsible for, and the exit is through the other side of it. Rocky handles the left flank without being asked. Roswell handles logistics. Thomas handles whatever neither of them is handling. This has been the operational model of Burg Transportation for three years. It has a higher casualty rate than most businesses but a better survival rate than most mercenary outfits. Thomas considers this an acceptable trade.</p>
+  <span class="source">// BURG TRANSPORTATION OPERATIONAL SUMMARY &middot; INTERNAL DOCUMENT //</span>
+</div>
+
+<p>Thomas Norland and his Burg Transportation crew &mdash; Rocky and Roswell &mdash; represent FM2&apos;s most morally ambiguous perspective. They are mercenaries who made a business decision to work with whoever would pay, and who find themselves increasingly entangled in a conspiracy they did not sign up for. Thomas is intelligent and pragmatic; Rocky is reliable muscle; Roswell is the technical support that holds the team&apos;s equipment together.</p>
+
+<h2 class="sub-title">Building the Burg Transportation Team</h2>
+<p>The Thomas sections of the campaign feature missions that emphasise rapid deployment and aggressive action over the guerrilla positioning of Ash&apos;s sections. Build Thomas&apos;s team around offensive versatility:</p>
+<ul class="guide-list">
+  <li><strong>Thomas:</strong> Best developed as a versatile Striker/command pilot. His Wanzer, nicknamed Ace Joker, should be built for sustained mid-range engagement with high Mobility. First Strike and Evade are priority skills for his development.</li>
+  <li><strong>Rocky:</strong> Reliable front-line brawler. Machine gun or melee depending on your preference, but the Mobility doctrine applies fully. Do not load Rocky with two heavy weapons. One weapon, one shield, high-speed legs.</li>
+  <li><strong>Roswell:</strong> Natural Lancer support. Equip with a rocket or missile launcher, a large backpack for resupply, and position on elevation for each engagement. Roswell rarely needs to move if positioned correctly at the start of each mission.</li>
+</ul>
+
+<div class="callout thomas">
+  <div class="callout-title">Thomas Team Warning &mdash; Missions Begin Split</div>
+  <p>Several early Thomas sections begin with the squad physically separated on the map. Thomas&apos;s squad enters from one point and the Ash-section characters (if present) from another. The AI will push Thomas forward aggressively before the teams can link up. Use this by positioning Thomas in the nearest available GEO terrain rather than charging forward &mdash; let the enemy come to him while Rocky and Roswell catch up. The mission 2 difficulty spike famously originates from Thomas running ahead of his team into concentrated enemy fire before the player understands this dynamic.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S19 -->
+<section class="section" id="s19">
+<h2 class="section-title"><span class="sec-num">&sect;19</span> Lisa Stanley &amp; the Intelligence Net</h2>
+<div class="lore-block">
+  <p>Captain Lisa Stanley of the OCU General Defence Force Intelligence Agency operated in Alordesh under three different cover identities over a period of nine months before the coup. Her primary mission objective, as formally stated, was monitoring the political situation. Her actual mission objective, which she has discussed with exactly two people and neither of them is in her chain of command, was something different. She is the person who understands FENRIR before any of the others do. She is also the person least able to do anything about it alone.</p>
+  <span class="source">// GDFIA OPERATION ASSESSMENT &middot; CLASSIFIED ABOVE YOUR CLEARANCE LEVEL //</span>
+</div>
+
+<p>Lisa&apos;s sections of the campaign operate most differently from Ash&apos;s. She is an intelligence operative, not a front-line soldier &mdash; her team is smaller, her resources are tighter, and her missions frequently involve objectives that require precision and information management rather than direct combat superiority. Her sections are often the hardest of the three perspectives.</p>
+
+<h2 class="sub-title">Lisa Section Strategy</h2>
+<p>Lisa&apos;s missions are frequently asymmetric: her squad faces larger enemy forces or tighter objective constraints than the Ash or Thomas sections. The strategies that work in her sections lean toward careful terrain exploitation and AP preservation rather than aggressive engagement:</p>
+<ul class="guide-list">
+  <li><strong>Exploit GEO terrain aggressively.</strong> Lisa&apos;s team is too small to win attrition fights. Position every unit in the highest available GEO terrain at the start of each mission and force enemies to come to you at accuracy penalties.</li>
+  <li><strong>Long-range suppression is essential.</strong> Use Lancer-role pilots to suppress high-threat enemies before they can close range. Lisa&apos;s sections often feature enemies whose close-range firepower would overwhelm her small squad in direct exchanges.</li>
+  <li><strong>Never split the squad.</strong> With a small team, Panic from encirclement is an immediate game-ending threat. Maintain tight mutual support at all times. The AP recovery bonus from adjacent allies is more critical here than in the larger Ash or Thomas formations.</li>
+</ul>
+
+<div class="callout lisa">
+  <div class="callout-title">Saribash Labra &mdash; A Critical Alliance</div>
+  <p>Lisa&apos;s sections introduce Saribash Labra, an Alordeshi resistance contact who provides crucial story context and operational support. His involvement is what ultimately enables the three squads to understand FENRIR. Paying attention to his dialogue &mdash; not just in missions but in the inter-mission scenes &mdash; provides the conspiratorial context that makes the game&apos;s plot coherent. FM2&apos;s story rewards close reading.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S20 -->
+<section class="section" id="s20">
+<h2 class="section-title"><span class="sec-num">&sect;20</span> The Network</h2>
+<p>The Network is a feature unique to Front Mission 2 among the series&apos; titles: an in-game pseudo-internet accessible from the inter-mission hub that provides text-based content about the game&apos;s world. It is not required for mechanical understanding of the game &mdash; you can ignore it entirely and still complete the campaign &mdash; but it provides the richest world-building in the Front Mission series.</p>
+
+<h2 class="sub-title">What the Network Contains</h2>
+<ul class="guide-list">
+  <li><strong>News articles</strong> reporting on the coup from multiple perspectives (OCU official channels, Alordeshi underground press, international observers)</li>
+  <li><strong>Corporate information</strong> on Burg Transportation and the entities involved in the conspiracy</li>
+  <li><strong>Historical records</strong> expanding on the world backstory including the First and Second Huffman Conflicts&apos; economic consequences for Alordesh</li>
+  <li><strong>Hidden information</strong> that contextualises FENRIR and the Black Geese that is not fully explained in the main narrative</li>
+  <li><strong>Optional lore</strong> connecting FM2 to events that are later elaborated in Front Mission 4 and Front Mission 5</li>
+</ul>
+
+<p>Read the Network after each story mission block, not just between sections. The articles update as the story progresses and provide a running parallel narrative of how the outside world is interpreting events that you are experiencing from the inside. The contrast between official OCU reporting on the coup and the ground reality your characters are living is one of the game&apos;s most effective thematic tools.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S21 -->
+<section class="section" id="s21">
+<h2 class="section-title"><span class="sec-num">&sect;21</span> Early Campaign Doctrine</h2>
+<div class="lore-block">
+  <p>The second mission was a mess. Not because the enemy was clever &mdash; they were not &mdash; but because we had not yet adjusted to how different this was from training simulations. In training, you learn that high AP means better performance. You do not learn, viscerally, what low AP feels like until the first time you watch a pilot with full ammunition and full parts fail to hit an enemy Wanzer that is standing still. That is when you start to believe the theory. Unfortunately the mission does not pause while you work through the experience.</p>
+  <span class="source">// MUDDY OTTERS AFTER-ACTION ANALYSIS &middot; MISSION 2 &middot; ASH FARUK //</span>
+</div>
+
+<p>The early campaign (Missions 1&ndash;8 across all three perspectives) is where the AP system&apos;s consequences are learned. The game does not have a tutorial mode; it throws you into combat and expects you to develop understanding through application. The good news: early missions are survivable on normal difficulty even with imperfect AP management. The bad news: habits formed in the early campaign persist and become more costly as enemy quality escalates.</p>
+
+<div class="phase early">
+  <div class="phase-title">Missions 1&ndash;4: System Orientation</div>
+  <p>Focus entirely on understanding AP. Watch the AP bars during every engagement. Notice how accuracy degrades when you attack after moving to maximum range. Notice how enemies who are adjacent to multiple allies are less effective than isolated ones. Do not optimise equipment yet &mdash; use what you have and use it to understand the system. Run every pilot through at least one Colosseum match after each story mission. Assign consistent weapon types to each pilot from the first mission and do not deviate.</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">Missions 5&ndash;12: Role Commitment and Build Discipline</div>
+  <p>By mission 5, you should have enough understanding to commit to specific builds. Assign roles explicitly: which pilot is the Striker, which the Brawler, which the Lancer? Build their Wanzers to match. Equip computers to match weapon roles. Begin evaluating leg choices for Mobility. Run targeted Colosseum sessions for each squad before their narrative sections appear. Begin accumulating Honor toward First Strike for melee pilots &mdash; they are not combat-safe without it.</p>
+</div>
+
+<div class="callout danger">
+  <div class="callout-title">The Mission 2 Trap</div>
+  <p>Mission 2 on Sergeant difficulty has a well-documented reputation as a sudden brutal difficulty spike. The Thomas section begins split, with Thomas separated from Rocky and Roswell, facing concentrated enemy fire before the team can link up. On Sergeant, the enemies deal enough damage to destroy poorly-positioned Wanzers in one or two hits. The solution: do not advance Thomas. Hold him on the nearest available GEO terrain, let the team close, and face the enemy as a unified squad. New Sergeant players who treat Mission 2 as a charging-forward problem have a high failure rate. It is a positioning problem.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S22 -->
+<section class="section" id="s22">
+<h2 class="section-title"><span class="sec-num">&sect;22</span> Mid &amp; Late Game</h2>
+<p>The mid-game (Missions 13&ndash;20 approximately) is where FM2&apos;s full complexity becomes apparent. Enemy formations are larger, more diverse, and include units with AP-aware behaviour that will specifically target your weakest and most isolated pilots. FENRIR&apos;s nature is clarified; the three perspectives begin to converge; the missions grow more complex with multi-objective structures and time-pressure elements.</p>
+
+<h2 class="sub-title">Mid-Game Priorities</h2>
+<ul class="guide-list">
+  <li><strong>Part targeting must be available.</strong> If any of your primary combat pilots have not yet unlocked the ability to select target parts, use the Colosseum to develop them toward that threshold before advancing the story. Part targeting transforms the Disarm Pipeline from a hoped-for random result into a reliable tactical technique.</li>
+  <li><strong>Honor development for all three squads.</strong> By the mid-game, pilots across all three squads should be reaching their first or second Honor skill slots. Prioritise Evade for front-liners and First Strike for Brawlers across all squads. The missions requiring each squad in the late game are harder than the early ones.</li>
+  <li><strong>Computer upgrades.</strong> The shop inventory expands in the mid-game. Computer upgrades available at this stage provide meaningful accuracy and AP bonuses. Budget for computer upgrades on all three squads&apos; primary combat pilots as a consistent priority.</li>
+</ul>
+
+<h2 class="sub-title">The Late Game &mdash; FENRIR and the Black Geese</h2>
+<p>The late campaign introduces the Black Geese &mdash; a special forces unit operating under OCU intelligence command &mdash; and the full revelation of FENRIR&apos;s nature. These missions are among the game&apos;s hardest: the Black Geese use advanced Wanzers with high-HP components, sophisticated AP management, and targeted attack patterns that specifically threaten your weakest units. The Acid Bomb becomes essential in the late game: a fully armoured Black Geese Wanzer can absorb significant fire before showing vulnerability; an Acid-Bombed one does not.</p>
+<p>By the late campaign, every pilot across all three squads should have at minimum: Evade and one offensive skill (First Strike for Brawlers, Accuracy Up for Lancers, Double Attack for Strikers). The combined squad that eventually forms for the final missions is most effective when all three development arcs have been maintained in parallel rather than one being neglected in favour of another.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S23 -->
+<section class="section" id="s23">
+<h2 class="section-title"><span class="sec-num">&sect;23</span> Squad Composition</h2>
+<p>Each of the three squads has a slightly different optimal composition based on their role in the narrative and the mission types their sections feature.</p>
+
+<h2 class="sub-title">Muddy Otters (Ash)</h2>
+<div class="phase mid">
+  <div class="phase-title">Recommended Composition: Two Strikers + One Flexible</div>
+  <p>Ash sections feature urban guerrilla and forest operations where mobility and close-range engagement dominate. Two machine-gun Strikers (Ash and Joyce) in high-Mobility light builds form the core. Amia in a flexible support/Striker role with repair items and at least one suppression grenade rounds out the unit. A Lancer can be substituted for Amia in open-terrain missions but is less generally useful across the variety of environments Ash sections feature.</p>
+</div>
+
+<h2 class="sub-title">Burg Transportation (Thomas)</h2>
+<div class="phase mid">
+  <div class="phase-title">Recommended Composition: One Striker + One Brawler + One Lancer</div>
+  <p>Thomas sections feature more open combat with clearer range separation between engagement zones. Thomas as mobile Striker (or Brawler if you prefer close combat); Rocky as front-line brawler or second Striker; Roswell as the Lancer in elevated support position. The Thomas team&apos;s missions frequently have more enemies than the Muddy Otters encounter, making Roswell&apos;s long-range suppression more consistently valuable.</p>
+</div>
+
+<h2 class="sub-title">Intelligence Unit (Lisa)</h2>
+<div class="phase late">
+  <div class="phase-title">Recommended Composition: Precision Minimum Footprint</div>
+  <p>Lisa&apos;s team is small. Every unit counts more than in the other squads. Prioritise: one high-Mobility Striker, one Lancer with maximum range, and Lisa herself in a command/support role with repair items and acid bombs. Do not try to build an aggressive squad for Lisa&apos;s sections &mdash; the maps and enemy distributions favour patient defensive positioning. The smallest squad that can hold a strong GEO position and systematically eliminate enemies from cover will outperform a more aggressive composition that depletes AP quickly and lacks the numbers to prevent encirclement.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S24 -->
+<section class="section" id="s24">
+<h2 class="section-title"><span class="sec-num">&sect;24</span> Advanced Tactics</h2>
+
+<h2 class="sub-title">The Encirclement Attack</h2>
+<p>The AP system&apos;s social dynamics (AP recovery bonuses from allies, AP penalties from adjacent enemies) can be weaponised offensively. Surround a high-value enemy unit with multiple allied Wanzers simultaneously, triggering Panic or at minimum severe AP degradation. The Panicked enemy cannot counter-attack and performs poorly. Finish with your highest-damage unit from point-blank range. This technique requires sufficient squad mobility and coordination to execute but eliminates counter-fire risk entirely against dangerous enemies.</p>
+
+<h2 class="sub-title">AP Preservation in Approach</h2>
+<p>Rather than moving to maximum range in a single turn (arriving with depleted AP), approach in stages. Move half the distance to the target this turn (preserving most AP), engage at moderate range with acceptable accuracy, then advance the remaining distance next turn. Two-turn approaches produce better combat outcomes than one-turn sprints because each turn begins at higher AP. This is especially important for Brawlers who need maximum AP for First Strike + Double Attack combinations.</p>
+
+<h2 class="sub-title">Lancer Anchoring</h2>
+<p>Position Lancer units on elevated GEO terrain at the start of the mission and do not move them unless forced to. A stationary Lancer on high ground recovers AP efficiently between shots, fires with consistently high accuracy, and provides suppressive fire across large areas of the map. Moving to follow the front-liners reduces their AP, their accuracy, and their evasion simultaneously. Lancers fight best when the rest of the squad comes back to them, not when they chase the battle.</p>
+
+<h2 class="sub-title">The Skill Chain</h2>
+<p>Combining multiple skills in a single activation is FM2&apos;s highest-expression tactical play. The most powerful combinations:</p>
+<ul class="guide-list">
+  <li><strong>First Strike + Double Attack (Brawler):</strong> Strike twice before the enemy can fire. Highest burst damage in the game; can destroy armour and multiple parts in a single activation. Requires high Honor investment and AP budget to execute.</li>
+  <li><strong>Accuracy Up + Double Attack (Lancer):</strong> Two highly accurate long-range shots from elevation. Strips two parts or heavily damages the body without provoking counter-fire. The most efficient arm-removal technique in the game.</li>
+  <li><strong>Evade + Counter (Striker):</strong> Passive skill combination that significantly reduces damage taken while ensuring reliable counter-fire when attacked. Excellent for Strikers who expect to absorb fire during the approach phase.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S25 -->
+<section class="section" id="s25">
+<h2 class="section-title"><span class="sec-num">&sect;25</span> Common Mistakes</h2>
+
+<div class="phase late"><div class="phase-title">Mistake 1 &mdash; Attacking at Low AP</div>
+<p>Firing after sprint movement consistently produces missed shots and degraded evasion on counter-fire. Wait for AP recovery before engaging, or approach in stages. This is the most frequent cause of unexpected losses early in the game.</p></div>
+
+<div class="phase late"><div class="phase-title">Mistake 2 &mdash; Isolating Units Forward</div>
+<p>Pushing a single unit ahead of the squad into contact with multiple enemies guarantees both Panic risk and the loss of the AP recovery ally bonus. Always maintain mutual support. No Wanzer should ever be adjacent to more enemies than allies if you can prevent it.</p></div>
+
+<div class="phase late"><div class="phase-title">Mistake 3 &mdash; Heavy Loadout on Front-Liners</div>
+<p>Equipping dual weapons and a heavy backpack on your melee and short-range pilots destroys their Mobility and therefore their AP recovery and evasion. Front-liners should be as light as possible. One weapon, one shield, high-speed legs. Leave the heavy payloads for Lancers on stationary positions.</p></div>
+
+<div class="phase late"><div class="phase-title">Mistake 4 &mdash; Neglecting the Separated Squads</div>
+<p>Because the three squads rotate through narrative focus, it is easy to develop Ash's team extensively while Thomas's and Lisa's squads fall behind. Then a Thomas or Lisa section arrives and the pilots are under-skilled, under-upgraded, and tactically vulnerable against enemies calibrated for a more developed squad. Use Colosseum sessions to maintain all three squads in approximate development parity.</p></div>
+
+<div class="phase late"><div class="phase-title">Mistake 5 &mdash; Ignoring the Network</div>
+<p>Not a mechanical error &mdash; you will complete the game without reading the Network &mdash; but the conspiracy behind FENRIR, the Black Geese, and Pan Chang-Jang's role is substantially clearer if you read the Network&apos;s articles as they update. The game&apos;s final acts are more meaningful with the context the Network provides. Read it after each story block.</p></div>
+
+<div class="phase late"><div class="phase-title">Mistake 6 &mdash; Moving Thomas Forward in Mission 2</div>
+<p>The specific most common early failure: treating Thomas's movement in Mission 2 as a charging problem rather than a positioning problem. When Thomas&apos;s team begins split, hold Thomas on GEO terrain and let Rocky and Roswell close to his position. Engage as a unit from cover. Never advance alone into concentrated enemy fire regardless of how clear the path looks from the start position.</p></div>
+
+<div class="phase late"><div class="phase-title">Mistake 7 &mdash; Underestimating Computer Upgrades</div>
+<p>FM2&apos;s computer system offers meaningful mid-game upgrades that significantly improve pilot performance. Players who spend all available currency on Wanzer parts without upgrading computers arrive at the late game with pilots fighting at a consistent accuracy disadvantage. Budget computer upgrades as a regular priority alongside body and leg upgrades.</p></div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S26 -->
+<section class="section" id="s26">
+<h2 class="section-title"><span class="sec-num">&sect;26</span> New Game Plus</h2>
+<p>Front Mission 2: Remake includes a <strong>New Game Plus</strong> mode that allows players to restart the campaign carrying over everything from their previous playthrough: all Wanzers, all pilot experience and skills, all equipment, all currency, and all Honor progress. New Game Plus does not fundamentally change the story or the mission structure, but it does <strong>unlock three additional difficulty tiers</strong> beyond Sergeant, providing escalating challenges for veteran players.</p>
+
+<h2 class="sub-title">What Carries Over</h2>
+<ul class="guide-list">
+  <li>All three squads&apos; Wanzers with full equipment loadouts</li>
+  <li>All pilot experience, proficiency levels, and Honor stars</li>
+  <li>All combat skills unlocked</li>
+  <li>All currency (credits)</li>
+  <li>All items in inventory</li>
+</ul>
+
+<h2 class="sub-title">NG+ Difficulty Tiers</h2>
+<p>The additional difficulty settings in NG+ affect exclusively <strong>enemy attack power and defence values</strong> &mdash; they do not alter mission structures, enemy compositions, or AI behaviour. This means NG+ difficulty is a straightforward attrition challenge rather than a fundamentally different tactical experience. It rewards players with fully developed squads who want to test their builds against damage thresholds that make standard tactics substantially more marginal. Not recommended for the first playthrough; genuinely challenging for even experienced players at the highest tiers.</p>
+
+<div class="callout thomas">
+  <div class="callout-title">NG+ Optional Content &mdash; Secret Missions</div>
+  <p>FM2 contains several optional missions that require specific trigger conditions &mdash; choices made in story sequences, specific actions taken during missions, or items acquired at particular points. Some of these missions connect directly to the events of Front Mission 1st and expand on the fates of characters from that game. A NG+ playthrough with prior knowledge of the trigger conditions is the most efficient way to access all optional content. A Network walkthrough for optional mission triggers is available in the community guides.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S27 -->
+<section class="section" id="s27">
+<h2 class="section-title"><span class="sec-num">&sect;27</span> Glossary</h2>
+<div class="gloss-grid">
+  <div class="gloss-item"><div class="gloss-term">Action Points (AP)</div><div class="gloss-def">The central resource governing movement, attacks, and &mdash; critically &mdash; accuracy and evasion in FM2. High AP means better combat performance in every dimension. Low AP means degraded performance and Panic risk.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Acid Bomb</div><div class="gloss-def">Support item that reduces defence values on all target Wanzer components; essential against heavily armoured late-game enemies; causes subsequent attacks to deal dramatically more damage.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Alordesh</div><div class="gloss-def">The People's Republic of Alordesh; formerly Bangladesh; setting of Front Mission 2; a former war-production economy in post-war economic collapse that drives the political conditions for the Second Coup.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Amia McCallum</div><div class="gloss-def">Muddy Otters pilot; versatile Short/Support role; natural hybrid between combat and support functions; carries repair and suppression items in addition to standard combat loadout.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Ash Faruk</div><div class="gloss-def">OCU-MDF Corporal; primary protagonist; born in Alordesh; enrolled in OCU after discharge from Alordesh Army in 2098; leads the Muddy Otters through the Second Coup; his complicated history with the coup&apos;s leadership is the narrative&apos;s deepest personal thread.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Black Geese</div><div class="gloss-def">OCU intelligence special forces unit under Pan Chang-Jang; sent into Alordesh to cover up FENRIR; serves as the primary antagonist force in the late campaign; features advanced Wanzers requiring Acid Bomb and coordinated part-stripping to defeat efficiently.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Body</div><div class="gloss-def">The Wanzer&apos;s core component; provides Engine (weight budget), HP, and base Power; most important single upgrade in any build; always prioritise over weapons.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Brawler</div><div class="gloss-def">Pilot role specialising in melee weapons; highest damage at close range; requires First Strike skill for safety; most effective when the Disarm Pipeline enables closing without counter-fire.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Burg Transportation</div><div class="gloss-def">Thomas Norland&apos;s mercenary company; one of the three main squads in Front Mission 2; operates outside OCU military structure and therefore outside its moral authority.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Colosseum</div><div class="gloss-def">FM2&apos;s 1v1 combat facility; provides income, Honor accumulation, weapon proficiency development, and Dodge training; must be used for all three squads to maintain development parity.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Computer</div><div class="gloss-def">Wanzer component providing accuracy bonuses by weapon category; upgradeable in FM2; can switch between modes; match to pilot&apos;s primary weapon type for maximum benefit.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Counter-fire</div><div class="gloss-def">Defending Wanzer&apos;s automatic attack response; suppressed when arms are destroyed, when Panic status is active, or when the attacking unit uses a skill that prevents it.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Disarm Pipeline</div><div class="gloss-def">The two-stage tactical sequence: Lancer destroys or heavily damages enemy arms at range, eliminating counter-fire; Brawler or Striker closes against the defenceless target to finish efficiently.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Double Attack</div><div class="gloss-def">Combat skill allowing the pilot to fire their weapon twice in a single action; one of the highest-damage techniques in the game when combined with First Strike or Accuracy Up.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Encirclement</div><div class="gloss-def">Both a threat and a weapon: a Wanzer surrounded by more enemies than allies risks Panic and reduced AP recovery; deliberately encircling enemy units forces the same degradation onto them.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Engine</div><div class="gloss-def">The body component&apos;s weight capacity value; sets the maximum total weight of all equipped parts and loadout items; the fundamental design constraint of all Wanzer builds.</div></div>
+  <div class="gloss-item"><div class="gloss-term">FENRIR</div><div class="gloss-def">A weapons device in the possession of the Forces of Alordesh; provided by an unknown third party; the conspiracy at the heart of the game&apos;s narrative; its true nature implicates OCU intelligence at the highest levels.</div></div>
+  <div class="gloss-item"><div class="gloss-term">First Strike</div><div class="gloss-def">Combat skill allowing the pilot to attack before the enemy fires their counter-attack; mandatory for melee Brawler builds to be combat-safe; high priority Honor investment.</div></div>
+  <div class="gloss-item"><div class="gloss-term">GEO (Geographic Value)</div><div class="gloss-def">Terrain quality measure affecting evasion bonus, attacker accuracy penalty, and AP recovery rate simultaneously; high-GEO positions (forest, elevation, cliff) are the priority tactical real estate on every map.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Head</div><div class="gloss-def">FM2&apos;s new Wanzer component (not present in FM1); houses targeting and sensor functions; destroying the enemy head significantly degrades their accuracy; protecting your own pilots&apos; heads preserves combat performance.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Honor Points</div><div class="gloss-def">Currency earned through combat actions; accumulates on a 0&ndash;350+ scale; unlocks Combat Skill slots at specific thresholds; the mechanism by which pilots become significantly more effective in FM2&apos;s skill system.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Joyce S. Whitfield</div><div class="gloss-def">Muddy Otters pilot; strong Short proficiency growth; one of Ash&apos;s most reliable combat performers; develops naturally as a high-Mobility machine-gun Striker.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Lancer</div><div class="gloss-def">Pilot role specialising in long-range launchers and missiles; fires without provoking counter-fire; should be positioned on high-GEO terrain and kept stationary to maximise AP recovery between shots.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Light Doctrine</div><div class="gloss-def">The FM2-specific build philosophy: front-line Strikers and Brawlers should carry minimal weapons (one weapon + shield) and prioritise high-speed legs for maximum Mobility, AP recovery, and evasion performance over raw firepower.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Lisa Stanley</div><div class="gloss-def">OCU intelligence officer; GDFIA operative; one of three protagonists; most likely to understand FENRIR earliest; hardest sections of the campaign due to small squad size and high-precision mission objectives.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Mackarge, Ven</div><div class="gloss-def">Leader of the Forces of Alordesh and the Second Coup; Ash&apos;s former comrade and antagonist; his background and relationship with Ash is central to the OCU campaign&apos;s emotional core.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Mobility</div><div class="gloss-def">The FM2 stat derived from leg speed relative to total Wanzer weight; affects movement range, AP recovery rate, and evasion; the primary engineering priority for front-line combat Wanzers.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Muddy Otters</div><div class="gloss-def">The OCU-MDF 41st Battalion squad; Ash&apos;s unit; primary narrative perspective in the game; guerrilla-oriented urban and forest operations specialists.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Network</div><div class="gloss-def">In-game pseudo-internet providing world-building content; updates as the story progresses; provides the political and institutional context that makes FENRIR and the Black Geese conspiracy fully comprehensible.</div></div>
+  <div class="gloss-item"><div class="gloss-term">New Game Plus (NG+)</div><div class="gloss-def">Post-completion replay mode carrying over all equipment, pilot development, and currency; unlocks additional difficulty tiers; enables access to optional missions requiring specific trigger knowledge.</div></div>
+  <div class="gloss-item"><div class="gloss-term">O.C.U. (Oceania Cooperative Union)</div><div class="gloss-def">The superbloc representing Southeast Asia, South Asia, and Australasia; the nominal affiliation of Ash, Lisa, and the institutions that both protagonists work for and distrust.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Panic</div><div class="gloss-def">Status effect triggered when a Wanzer has more enemies adjacent than allies; dramatically reduces AP recovery; prohibits counter-attacks; the most dangerous tactical situation in the game; prevented by maintaining squad cohesion.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Pan Chang-Jang</div><div class="gloss-def">Senior OCU intelligence officer; GDFIA commander; Lisa&apos;s superior; his vested interest in FENRIR and willingness to suppress the evidence of its origin drives the final third of the conspiracy.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Rocky</div><div class="gloss-def">Thomas Norland&apos;s Burg Transportation teammate; front-line brawler; develops well as either a Striker or Brawler; must be kept light and fast per the Mobility Doctrine.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Rocky &amp; Roswell</div><div class="gloss-def">Thomas&apos;s Burg Transportation squad; Rocky as front-line combat; Roswell as Lancer support with natural long-range aptitude and the technical skills to maintain the team&apos;s equipment.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Saribash Labra</div><div class="gloss-def">Alordeshi resistance contact introduced in Lisa&apos;s sections; provides crucial story context about the coup&apos;s internal politics and FENRIR&apos;s origins; his dialogue is essential for understanding the game&apos;s conspiracy structure.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Striker</div><div class="gloss-def">Pilot role specialising in short-range machine guns or rifles; high-Mobility light build; most reliable general-purpose combat role; the backbone of all three squads.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Thomas Norland</div><div class="gloss-def">Burg Transportation mercenary; one of three protagonists; pragmatic, self-interested, and ultimately decent; his Wanzer is nicknamed Ace Joker; his perspective is the most politically uncommitted of the three.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Wanzer</div><div class="gloss-def">Wanderpanzer &mdash; "walking tank"; the bipedal armoured combat platform that is the primary weapon of war in 2102; composed of five modular components each with independent HP in FM2.</div></div>
+</div>
+</section>
+
+</div><!-- /content -->
+<footer id="footer">
+  Front Mission 2: Remake &nbsp;&middot;&nbsp; Storm Trident / Forever Entertainment / Square Enix &nbsp;&middot;&nbsp; Nadir Strategy Archive &nbsp;&middot;&nbsp; Alordesh, 2102
+</footer>
+</div><!-- /main -->
+<a id="back-top" href="#hero" title="Back to top">&#8593;</a>
+<script>
+const bar=document.getElementById('progress-bar');
+const bt=document.getElementById('back-top');
+const tog=document.getElementById('sidebar-toggle');
+const sb=document.getElementById('sidebar');
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;
+  bar.style.transform='scaleX('+(s/t)+')';
+  bt.classList.toggle('visible',s>400);
+},{passive:true});
+const secs=document.querySelectorAll('.section[id]');
+const navs=document.querySelectorAll('.nav-item');
+const obs=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){navs.forEach(n=>n.classList.remove('active'));const a=document.querySelector('.nav-item[href="#'+e.target.id+'"]');if(a){a.classList.add('active');a.scrollIntoView({block:'nearest'});}}});
+},{rootMargin:'-20% 0px -70% 0px'});
+secs.forEach(s=>obs.observe(s));
+tog.addEventListener('click',()=>sb.classList.toggle('open'));
+document.querySelectorAll('.nav-item').forEach(i=>i.addEventListener('click',()=>sb.classList.remove('open')));
+document.querySelectorAll('.section').forEach((s,i)=>{s.style.animationDelay=i*0.03+'s';});
+</script>
+</body>
+</html>

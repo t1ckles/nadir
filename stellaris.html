@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stellaris &mdash; The Galactic Codex</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#12100e;--parchment:#f2eee6;--gold:#c9943a;--gold-dark:#8b6420;--gold-pale:#f0d9a8;
+  --mid:#4a3f32;--light:#f8f3ea;--border:rgba(201,148,58,0.3);
+  --steel:#0e1622;
+  --teal:#0a2030;--teal-pale:#d0e8f2;
+  --purple:#1a1030;--purple-pale:#e4d8f5;
+  --green:#0a2010;--green-pale:#d0ecd8;
+  --red:#200808;--red-pale:#f5d8d8;
+  --amber:#201008;--amber-pale:#f5ecd0;
+  --font-head:'Cinzel','Times New Roman',serif;
+  --font-body:'Crimson Pro','Georgia',serif;
+  --sidebar-w:296px;
+}
+html{scroll-behavior:smooth;font-size:17px}
+body{background:var(--parchment);color:var(--ink);font-family:var(--font-body);line-height:1.75;display:flex;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.5}
+a{color:inherit;text-decoration:none}button{cursor:pointer;font-family:inherit}
+#progress-bar{position:fixed;top:0;left:var(--sidebar-w);right:0;height:3px;background:var(--gold);transform-origin:left;transform:scaleX(0);z-index:500;transition:transform 0.1s linear}
+#sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--steel);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;border-right:2px solid var(--gold-dark);display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--gold-dark) var(--steel)}
+#sidebar-header{padding:28px 20px 20px;border-bottom:1px solid rgba(201,148,58,0.2);background:linear-gradient(180deg,#060810 0%,var(--steel) 100%)}
+#sidebar-title{font-family:var(--font-head);font-size:0.86rem;font-weight:900;color:var(--gold);letter-spacing:0.08em;text-transform:uppercase;line-height:1.3}
+#sidebar-sub{font-family:var(--font-body);font-size:0.67rem;color:rgba(255,255,255,0.38);margin-top:6px;letter-spacing:0.04em;font-style:italic}
+#sidebar-nav{padding:6px 0 40px;flex:1}
+.nav-section{padding:10px 20px 3px;font-family:var(--font-head);font-size:0.52rem;letter-spacing:0.2em;color:var(--gold-dark);text-transform:uppercase;margin-top:6px;opacity:0.85}
+.nav-item{display:block;padding:5px 20px 5px 26px;font-family:var(--font-body);font-size:0.76rem;color:rgba(245,239,228,0.6);text-decoration:none;border-left:2px solid transparent;transition:all 0.15s ease;line-height:1.3;position:relative}
+.nav-item::before{content:'&#9654;';position:absolute;left:12px;top:5px;color:var(--gold-dark);opacity:0;transition:opacity 0.12s;font-size:0.45rem}
+.nav-item:hover,.nav-item.active{color:var(--gold-pale);border-left-color:var(--gold);background:rgba(201,148,58,0.07);padding-left:28px}
+.nav-item:hover::before,.nav-item.active::before{opacity:1}
+#sidebar-toggle{display:none;position:fixed;top:10px;left:10px;z-index:200;background:var(--steel);border:1px solid var(--gold-dark);color:var(--gold);font-size:1.1rem;padding:5px 9px;border-radius:2px}
+#main{margin-left:var(--sidebar-w);flex:1;min-width:0}
+#hero{background:linear-gradient(160deg,#020408 0%,#060c18 30%,#0a1020 60%,#040208 100%);min-height:500px;display:flex;flex-direction:column;justify-content:flex-end;padding:0 64px 64px;position:relative;overflow:hidden;border-bottom:3px solid var(--gold-dark)}
+#hero::before{content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(1px 1px at 5% 10%,rgba(180,200,255,0.8) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 12% 3%,rgba(255,255,200,0.7) 0%,transparent 0%),
+    radial-gradient(1px 1px at 22% 16%,rgba(180,200,255,0.6) 0%,transparent 0%),
+    radial-gradient(2px 2px at 30% 7%,rgba(255,220,180,0.5) 0%,transparent 0%),
+    radial-gradient(1px 1px at 38% 20%,rgba(200,230,255,0.65) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 48% 5%,rgba(255,255,200,0.6) 0%,transparent 0%),
+    radial-gradient(1px 1px at 57% 14%,rgba(180,200,255,0.55) 0%,transparent 0%),
+    radial-gradient(1px 1px at 65% 8%,rgba(255,200,180,0.6) 0%,transparent 0%),
+    radial-gradient(2px 2px at 72% 18%,rgba(200,230,255,0.5) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 80% 4%,rgba(255,255,220,0.7) 0%,transparent 0%),
+    radial-gradient(1px 1px at 88% 12%,rgba(180,200,255,0.6) 0%,transparent 0%),
+    radial-gradient(1px 1px at 94% 22%,rgba(255,220,200,0.55) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 15% 28%,rgba(200,230,255,0.45) 0%,transparent 0%),
+    radial-gradient(1px 1px at 43% 32%,rgba(255,255,200,0.4) 0%,transparent 0%),
+    radial-gradient(1px 1px at 70% 26%,rgba(180,200,255,0.5) 0%,transparent 0%),
+    radial-gradient(2px 2px at 90% 30%,rgba(255,220,180,0.4) 0%,transparent 0%)}
+#hero::after{content:'';position:absolute;bottom:0;left:64px;right:64px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.hero-eyebrow{font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.28em;color:var(--gold-dark);text-transform:uppercase;margin-bottom:14px;position:relative}
+.hero-title{font-family:var(--font-head);font-size:clamp(2rem,5vw,3.8rem);font-weight:900;color:var(--parchment);letter-spacing:0.04em;text-transform:uppercase;line-height:1.05;margin-bottom:8px;position:relative;text-shadow:0 2px 20px rgba(0,0,0,0.9)}
+.hero-subtitle{font-family:var(--font-body);font-size:1.05rem;font-style:italic;color:rgba(240,217,168,0.72);font-weight:300;margin-bottom:26px;position:relative}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;position:relative}
+.hero-tag{font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-pale);border:1px solid rgba(201,148,58,0.38);padding:3px 10px;background:rgba(201,148,58,0.07)}
+#content{padding:0 64px 80px;max-width:960px}
+.section{padding:54px 0 6px;animation:fadeUp 0.45s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.sec-num{display:inline-block;font-family:var(--font-head);font-size:0.78rem;font-weight:400;letter-spacing:0.1em;color:var(--gold-dark);margin-right:0.5em;vertical-align:middle}
+.section-title{font-family:var(--font-head);font-size:clamp(1.25rem,2.4vw,1.75rem);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink);padding-bottom:12px;margin-bottom:20px;border-bottom:2px solid var(--border);position:relative}
+.section-title::after{content:'';position:absolute;bottom:-2px;left:0;width:58px;height:2px;background:var(--gold)}
+.sub-title{font-family:var(--font-head);font-size:1rem;font-weight:600;letter-spacing:0.05em;color:var(--mid);margin:26px 0 9px;text-transform:uppercase}
+p{margin-bottom:1rem;font-size:1rem}
+.guide-list{margin:0.5rem 0 1rem 1.2rem}
+.guide-list li{margin-bottom:0.5rem;font-size:1rem}
+.guide-list li::marker{color:var(--gold-dark)}
+.callout{padding:15px 20px;margin:20px 0;border-left:4px solid var(--gold);background:var(--light);border-radius:0 3px 3px 0}
+.callout.teal{border-left-color:#1a7090;background:var(--teal-pale)}
+.callout.purple{border-left-color:#6a3a9a;background:var(--purple-pale)}
+.callout.green{border-left-color:#2a7040;background:var(--green-pale)}
+.callout.red{border-left-color:#9a2020;background:var(--red-pale)}
+.callout.amber{border-left-color:#9a6010;background:var(--amber-pale)}
+.callout.tip{border-left-color:#3a5c1a;background:#edf5e4}
+.callout.warning{border-left-color:#7a3010;background:#f5edd0}
+.callout-title{font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;margin-bottom:5px;color:var(--gold-dark)}
+.callout.teal .callout-title{color:#1a7090}
+.callout.purple .callout-title{color:#6a3a9a}
+.callout.green .callout-title{color:#2a7040}
+.callout.red .callout-title{color:#9a2020}
+.callout.amber .callout-title{color:#9a6010}
+.callout.tip .callout-title{color:#3a5c1a}
+.callout.warning .callout-title{color:#7a3010}
+.callout p{font-size:0.94rem;margin-bottom:0.5rem}
+.callout p:last-child{margin-bottom:0}
+.lore-block{padding:16px 22px;margin:22px 0;border:1px solid rgba(26,50,80,0.4);background:rgba(10,20,40,0.05);position:relative}
+.lore-block::before{content:'STELLAR TRANSMISSION';position:absolute;top:-0.6rem;left:1rem;font-family:var(--font-head);font-size:0.54rem;letter-spacing:0.22em;color:#1a5070;background:var(--parchment);padding:0 0.5rem}
+.lore-block p{font-style:italic;color:#12203a;font-size:0.96rem;line-height:1.88}
+.lore-block .source{font-family:var(--font-head);font-size:0.58rem;color:rgba(26,80,112,0.6);text-align:right;display:block;margin-top:0.6rem;letter-spacing:0.1em}
+.data-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.9rem}
+.data-table th{background:var(--steel);color:var(--gold-pale);font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;padding:8px 11px;text-align:left;border:1px solid rgba(201,148,58,0.2)}
+.data-table td{padding:7px 11px;border:1px solid var(--border);vertical-align:top;line-height:1.5;color:var(--ink)}
+.data-table tr:nth-child(even) td{background:rgba(201,148,58,0.04)}
+.data-table tr:hover td{background:rgba(201,148,58,0.07)}
+.phase{padding:16px 20px;margin:14px 0;border-left:4px solid var(--gold);background:rgba(201,148,58,0.05)}
+.phase.early{border-left-color:#2a5080;background:rgba(42,80,128,0.07)}
+.phase.mid{border-left-color:var(--gold-dark);background:rgba(201,148,58,0.07)}
+.phase.late{border-left-color:#7a2a1a;background:rgba(122,42,26,0.07)}
+.phase-title{font-family:var(--font-head);font-size:0.84rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:7px;color:var(--gold-dark)}
+.phase.early .phase-title{color:#2a5080}
+.phase.late .phase-title{color:#7a2a1a}
+.phase p{font-size:0.94rem;margin-bottom:0.6rem;color:var(--ink)}
+.phase p:last-child{margin-bottom:0}
+.unit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin:16px 0}
+.unit-card{border:1px solid var(--border);background:var(--light);padding:14px 16px;border-top:3px solid var(--gold)}
+.unit-card.teal-card{border-top-color:#1a7090}
+.unit-card.purple-card{border-top-color:#6a3a9a}
+.unit-card.green-card{border-top-color:#2a7040}
+.unit-card.red-card{border-top-color:#9a2020}
+.unit-card.amber-card{border-top-color:#9a6010}
+.unit-card.neutral-card{border-top-color:#5a4a2a}
+.unit-name{font-family:var(--font-head);font-size:0.88rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink);margin-bottom:2px}
+.unit-type{font-family:var(--font-head);font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);margin-bottom:7px;display:block}
+.unit-card.teal-card .unit-type{color:#1a7090}
+.unit-card.purple-card .unit-type{color:#6a3a9a}
+.unit-card.green-card .unit-type{color:#2a7040}
+.unit-card.red-card .unit-type{color:#9a2020}
+.unit-card.amber-card .unit-type{color:#9a6010}
+.unit-card p{font-size:0.88rem;line-height:1.6;color:var(--ink);margin-bottom:0}
+.orn{text-align:center;color:var(--gold-dark);font-size:0.72rem;letter-spacing:0.4em;padding:28px 0 8px;opacity:0.65}
+.gloss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:1px;background:var(--border);margin-top:16px;border:1px solid var(--border)}
+.gloss-item{background:var(--light);padding:9px 13px;display:flex;gap:10px;align-items:flex-start}
+.gloss-item:nth-child(even){background:var(--parchment)}
+.gloss-term{font-family:var(--font-head);font-size:0.75rem;font-weight:700;color:var(--ink);white-space:normal;min-width:120px;max-width:150px;word-break:break-word;letter-spacing:0.04em;text-transform:uppercase}
+.gloss-def{font-size:0.86rem;color:var(--mid);line-height:1.55}
+#back-top{position:fixed;bottom:26px;right:26px;width:40px;height:40px;background:var(--steel);border:1px solid var(--gold-dark);color:var(--gold);font-size:1rem;display:flex;align-items:center;justify-content:center;text-decoration:none;opacity:0;transform:translateY(8px);transition:opacity 0.3s,transform 0.3s;z-index:90}
+#back-top.visible{opacity:1;transform:none}
+#back-top:hover{background:var(--gold-dark);color:var(--parchment)}
+#footer{margin-top:40px;border-top:1px solid var(--border);padding:20px 64px;font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);text-align:center}
+@media(max-width:900px){
+  :root{--sidebar-w:0px}
+  #sidebar-toggle{display:flex;align-items:center;justify-content:center}
+  #sidebar{transform:translateX(-100%);transition:transform 0.26s ease;width:270px}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  #hero,#content,#footer{padding-left:22px;padding-right:22px}
+  #progress-bar{left:0}
+  .unit-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+<button id="sidebar-toggle" aria-label="Menu">&#9776;</button>
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <div id="sidebar-title">Stellaris</div>
+    <div id="sidebar-sub">The Galactic Codex &mdash; Paradox Interactive &mdash; v4.x</div>
+  </div>
+  <div id="sidebar-nav">
+    <div class="nav-section">The Galaxy</div>
+    <a class="nav-item" href="#s01">01 &middot; What Is Stellaris?</a>
+    <a class="nav-item" href="#s02">02 &middot; Game Overview &amp; Versions</a>
+    <a class="nav-item" href="#s03">03 &middot; The Galaxy &amp; Map</a>
+    <div class="nav-section">Empire Creation</div>
+    <a class="nav-item" href="#s04">04 &middot; Species &amp; Traits</a>
+    <a class="nav-item" href="#s05">05 &middot; Ethics &amp; Authority</a>
+    <a class="nav-item" href="#s06">06 &middot; Civics</a>
+    <a class="nav-item" href="#s07">07 &middot; Origins</a>
+    <a class="nav-item" href="#s08">08 &middot; Gestalt Empires</a>
+    <div class="nav-section">Core Economy</div>
+    <a class="nav-item" href="#s09">09 &middot; Resources</a>
+    <a class="nav-item" href="#s10">10 &middot; Pops &amp; Pop Groups</a>
+    <a class="nav-item" href="#s11">11 &middot; Planets: Districts &amp; Buildings</a>
+    <a class="nav-item" href="#s12">12 &middot; Planet Specialisation</a>
+    <a class="nav-item" href="#s13">13 &middot; Sectors &amp; Governors</a>
+    <a class="nav-item" href="#s14">14 &middot; Trade &amp; Markets</a>
+    <div class="nav-section">Research &amp; Development</div>
+    <a class="nav-item" href="#s15">15 &middot; Technology</a>
+    <a class="nav-item" href="#s16">16 &middot; Traditions</a>
+    <a class="nav-item" href="#s17">17 &middot; Ascension Perks</a>
+    <a class="nav-item" href="#s18">18 &middot; Ascension Paths</a>
+    <div class="nav-section">Expansion</div>
+    <a class="nav-item" href="#s19">19 &middot; Exploration &amp; Survey</a>
+    <a class="nav-item" href="#s20">20 &middot; Colonisation</a>
+    <a class="nav-item" href="#s21">21 &middot; Empire Sprawl &amp; Influence</a>
+    <a class="nav-item" href="#s22">22 &middot; Enclaves &amp; Megastructures</a>
+    <div class="nav-section">Military</div>
+    <a class="nav-item" href="#s23">23 &middot; Fleets &amp; Naval Capacity</a>
+    <a class="nav-item" href="#s24">24 &middot; Ship Design</a>
+    <a class="nav-item" href="#s25">25 &middot; Leaders &amp; Admirals</a>
+    <a class="nav-item" href="#s26">26 &middot; Armies &amp; Planetary Warfare</a>
+    <div class="nav-section">Diplomacy</div>
+    <a class="nav-item" href="#s27">27 &middot; Diplomacy System</a>
+    <a class="nav-item" href="#s28">28 &middot; Federations</a>
+    <a class="nav-item" href="#s29">29 &middot; Galactic Community</a>
+    <a class="nav-item" href="#s30">30 &middot; Subjects &amp; Vassals</a>
+    <a class="nav-item" href="#s31">31 &middot; Espionage</a>
+    <div class="nav-section">Late Game</div>
+    <a class="nav-item" href="#s32">32 &middot; Fallen &amp; Awakened Empires</a>
+    <a class="nav-item" href="#s33">33 &middot; End-Game Crises</a>
+    <a class="nav-item" href="#s34">34 &middot; Victory Conditions</a>
+    <a class="nav-item" href="#s35">35 &middot; Glossary</a>
+  </div>
+</nav>
+
+<div id="main">
+<div id="hero">
+  <div class="hero-eyebrow">Nadir Strategy Archive &nbsp;&middot;&nbsp; Paradox Interactive &nbsp;&middot;&nbsp; Grand Strategy &nbsp;&middot;&nbsp; The Year 2200</div>
+  <h1 class="hero-title">Stellaris</h1>
+  <p class="hero-subtitle">The Galactic Codex &mdash; A Complete Strategic Guide to Empire Building Across the Stars</p>
+  <div class="hero-tags">
+    <span class="hero-tag">v4.x Current</span>
+    <span class="hero-tag">35 Chapters</span>
+    <span class="hero-tag">All Empire Types</span>
+    <span class="hero-tag">Full Economy</span>
+    <span class="hero-tag">Military Doctrine</span>
+    <span class="hero-tag">Diplomacy System</span>
+    <span class="hero-tag">End-Game Crises</span>
+    <span class="hero-tag">Full Glossary</span>
+  </div>
+</div>
+
+<div id="content">
+
+<!-- S01 -->
+<section class="section" id="s01">
+<h2 class="section-title"><span class="sec-num">&sect;01</span> What Is Stellaris?</h2>
+<div class="lore-block">
+  <p>The stars had been there long before anyone thought to reach for them. They were there before the first carbon molecule folded into something that called itself alive, before the first nervous system fired the first thought that might have been curiosity, before the first hand-like appendage pointed upward at a burning point in the dark and made a sound that meant: what is that, and can we go there? The stars did not care. They continued burning, as they always had. It was the reaching that changed everything.</p>
+  <span class="source">// OPENING NARRATION FRAGMENT &middot; GALACTIC HISTORICAL ARCHIVE &middot; CIRCA 2200 //</span>
+</div>
+
+<p>Stellaris is a <strong>real-time grand strategy game with pausable simulation</strong>, developed by Paradox Development Studio and published by Paradox Interactive. It is set in the year 2200 and casts the player as the leader of one of hundreds of possible spacefaring civilisations taking their first steps into the galaxy. What follows &mdash; across decades or centuries of in-game time &mdash; is a story of exploration, colonisation, diplomacy, war, scientific discovery, cultural evolution, and, inevitably, contact with forces older and stranger than your young civilisation can comfortably process.</p>
+
+<p>Unlike most strategy games, Stellaris does not have a fixed scenario. Every game begins with a procedurally generated galaxy populated by dozens of AI-controlled empires, dozens more pre-sapient and primitive civilisations, and scattered throughout: the remains of something that came before you and left warnings you probably shouldn&apos;t ignore. No two games are the same, and the game&apos;s richness comes not from a designed narrative but from the emergent stories that arise when its interlocking systems interact under the pressure of player choices.</p>
+
+<h2 class="sub-title">What Stellaris Is Not</h2>
+<p>It is not a real-time strategy game &mdash; you cannot control individual ships in battle in the way a StarCraft player would. Battles resolve automatically when two fleets meet; your influence comes through preparation, design, and positioning, not through reaction. It is not a pure 4X game in the Civilisation tradition &mdash; the diplomatic and political systems are substantially more complex than a conventional 4X, and the mid-to-late game introduces narrative crises and galaxy-scale events that would be alien to most 4X players. It is closer to Crusader Kings or Europa Universalis in a space setting than it is to Civilisation or Master of Orion. Understanding this distinction prevents the most common new-player frustration: expecting to control more than the game allows.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S02 -->
+<section class="section" id="s02">
+<h2 class="section-title"><span class="sec-num">&sect;02</span> Game Overview &amp; Versions</h2>
+<p>Stellaris has been continuously developed since its initial release in May 2016. The current version as of this guide&apos;s writing is in the <strong>4.x series</strong>, which introduced one of the most significant mechanical overhauls in the game&apos;s history: the transition from individual Pop management to <strong>Pop Group mechanics</strong>, a complete rework of how Districts and Buildings interact with workforce, and major rebalancing of the economic systems that had accumulated power creep over years of DLC.</p>
+
+<h2 class="sub-title">Key Expansions (Current as of 4.x)</h2>
+<table class="data-table">
+  <thead><tr><th>Expansion</th><th>Key Additions</th><th>Importance</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Utopia</strong></td><td>Ascension Perks, Ascension Paths, Habitats, Traditions expansion</td><td>Essential; defines the late-game progression system</td></tr>
+    <tr><td><strong>Megacorp</strong></td><td>Corporate Authority, Branch Offices, Ecumenopolis, Caravaneer Enclaves</td><td>High; enables Corporate playstyle, adds economic depth</td></tr>
+    <tr><td><strong>Federations</strong></td><td>Federation types, Galactic Community, Galactic Senate</td><td>High; transforms mid-game diplomacy</td></tr>
+    <tr><td><strong>Nemesis</strong></td><td>Espionage system, Become the Crisis mechanic, Galactic Custodian</td><td>High; adds espionage layer and an alternative win condition</td></tr>
+    <tr><td><strong>Overlord</strong></td><td>New vassal interactions, new subject types, Enclaves, megastructures</td><td>High; expands the subject and vassal system substantially</td></tr>
+    <tr><td><strong>Galactic Paragons</strong></td><td>Leader traits, Council system, unique leader backgrounds</td><td>High; transforms the leader and council layer</td></tr>
+    <tr><td><strong>BioGenesis</strong></td><td>Biological ascension rework, new origin content</td><td>High; adds depth to organic empire building</td></tr>
+    <tr><td><strong>Astral Planes / Machine Age / others</strong></td><td>Varied content expansions</td><td>Moderate; adds specific playstyle depth</td></tr>
+  </tbody>
+</table>
+
+<div class="callout amber">
+  <div class="callout-title">DLC Recommendation for New Players</div>
+  <p>If you own no DLC, the base game is fully playable and enjoyable. The most impactful first purchases are Utopia (Ascension Perks and Paths define the late-game experience) and Federations (the Galactic Community transforms mid-game diplomacy). Everything else adds depth to specific playstyles rather than fundamental mechanics. Do not try to learn all DLC mechanics simultaneously on your first playthrough.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S03 -->
+<section class="section" id="s03">
+<h2 class="section-title"><span class="sec-num">&sect;03</span> The Galaxy &amp; Map</h2>
+<div class="lore-block">
+  <p>The survey ship catalogued the system in four hours: two gas giants, one asteroid belt, one habitable world with an oxygen-nitrogen atmosphere and surface temperatures in the acceptable range. The crew filed the standard reports. The captain sent the standard signal: system claimed, colonisation assessment pending. Nobody mentioned that the planet&apos;s continents were arranged in the shape of a screaming face. It had probably been that way forever. It was probably nothing.</p>
+  <span class="source">// SURVEY LOG 7742-BETA &middot; YEAR 2207 &middot; EXECUTIVE OUTCOMES INTERSTELLAR //</span>
+</div>
+
+<p>The Stellaris galaxy is a star map containing between 200 and 1,000 systems (depending on game settings), connected by <strong>hyperlane networks</strong>. Each system contains one star, a variable number of planets and moons, and various spatial objects (asteroid belts, nebulae, anomalies, derelict structures). Understanding the galaxy&apos;s structure is prerequisite to every strategic decision.</p>
+
+<h2 class="sub-title">Galaxy Shapes</h2>
+<table class="data-table">
+  <thead><tr><th>Shape</th><th>Characteristics</th><th>Strategic Implications</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Spiral (2/3/4/5 arms)</strong></td><td>Arms of densely connected systems radiating from a central core; the core connects all arms</td><td>Chokepoints in arm narrows; galactic core as late-game objective; most common recommended shape for new players</td></tr>
+    <tr><td><strong>Elliptical</strong></td><td>Dense and uniformly distributed; many connections; few natural chokepoints</td><td>Highly connected; fast expansion; difficult to defend; favours aggressive military expansion strategies</td></tr>
+    <tr><td><strong>Ring</strong></td><td>Systems arranged in a circle; only connects along the ring</td><td>Natural chokepoints at key junctions; linear expansion; fewer neighbours at any given point</td></tr>
+    <tr><td><strong>Irregular</strong></td><td>Random distribution with variable density</td><td>Unpredictable; can create natural isolated zones or hyper-connected regions; high variance between games</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Hyperlanes and Chokepoints</h2>
+<p>All FTL travel (in the default setting since 2.0) uses the <strong>Hyperlane network</strong>. You can only travel along established hyperlane connections. This makes the galaxy&apos;s topology critically important: a system with only one hyperlane connection is a natural chokepoint that can be defended from a single starbase. Identifying these on your galaxy map and building Gateway Starbases on them is one of the most impactful early-to-mid-game strategic decisions.</p>
+
+<h2 class="sub-title">Nebulae</h2>
+<p>Nebulae are special regions of space that affect sensor range (reducing it) and certain technology draw weights. Empires inside nebulae receive a natural intelligence advantage &mdash; enemies have reduced sensor range in the cloud. Some technologies and traits interact specifically with nebulae. Note when setting up a game whether your home system starts inside or adjacent to a nebula.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S04 -->
+<section class="section" id="s04">
+<h2 class="section-title"><span class="sec-num">&sect;04</span> Species &amp; Traits</h2>
+<div class="lore-block">
+  <p>The species questionnaire was twelve pages long. It asked about metabolic rate, reproductive strategy, social cohesion index, cognitive flexibility, attitude toward hierarchy, thermal comfort range, and preferred linguistic register. It did not ask whether the species was kind. Kindness, the designers noted in internal memos, was not a trait that could be meaningfully parameterised. It emerged from combinations of other things, or it did not. That was, arguably, the whole problem.</p>
+  <span class="source">// GALACTIC SEED ALGORITHM DOCUMENTATION &middot; PARADOX INTERNAL ARCHIVE //</span>
+</div>
+
+<p>Your species is the foundation of your empire. At empire creation, you design your founder species by selecting a portrait (appearance), naming it, and allocating <strong>trait points</strong> to purchase species traits. Traits provide permanent statistical modifiers that apply to every Pop of that species throughout the game. Every trait has a point cost (positive traits cost points; negative traits grant refunded points); your starting budget is 2 points, which can be expanded by taking negative traits.</p>
+
+<h2 class="sub-title">Trait Categories</h2>
+<p>Traits affect five broad categories of Pop performance:</p>
+<ul class="guide-list">
+  <li><strong>Resource output:</strong> Traits that modify how much a Pop produces from their job. Industrious (+15% Minerals), Intelligent (+10% Research from research jobs), Agrarian (+15% Food) are the foundational examples.</li>
+  <li><strong>Pop growth and assembly:</strong> Rapid Breeders (+10% Pop Growth Speed), Slow Breeders (-10%), Budding (a unique mechanic for some fungoid species allowing asexual reproduction).</li>
+  <li><strong>Habitability:</strong> Every planet has a planetary class with an associated climate preference (Continental, Ocean, Arid, etc.). Traits that match your preference range expand which worlds you can colonise efficiently. Tomb World Preference, for example, allows an empire to colonise irradiated nuclear hellscapes most species avoid.</li>
+  <li><strong>Amenities and happiness:</strong> Traits affecting how many Amenities pops consume or how difficult they are to keep happy. Charismatic (+20% Amenities from jobs), Communal (-10% Housing), Decadent (+20% Consumer Goods upkeep on slaves).</li>
+  <li><strong>Military:</strong> Strong (+5% Army Damage, +20% Leader skill level for Generals), Very Strong (+10%/+40%), Weak (negative).</li>
+</ul>
+
+<h2 class="sub-title">Recommended Trait Combinations</h2>
+<div class="unit-grid">
+  <div class="unit-card teal-card">
+    <div class="unit-name">Research Focus</div>
+    <span class="unit-type">RECOMMENDED FOR: TECH RUSH BUILDS</span>
+    <p>Intelligent (+2 points) is mandatory. Add Natural Engineers, Natural Physicists, or Natural Sociologists for additional research output in specific categories. Compensate the high point cost by taking Repugnant (-20% Amenities from jobs) &mdash; offset with Entertainer jobs. The research advantage compounds over the entire game.</p>
+  </div>
+  <div class="unit-card green-card">
+    <div class="unit-name">Production Focus</div>
+    <span class="unit-type">RECOMMENDED FOR: ECONOMIC BUILDS</span>
+    <p>Industrious or Agrarian depending on economy type. Combine with Rapid Breeders for faster Pop growth (more workers faster). Weak (-0.5 points) is an acceptable negative trait for production builds since army damage matters less than economy.</p>
+  </div>
+  <div class="unit-card amber-card">
+    <div class="unit-name">Adaptive Colonisers</div>
+    <span class="unit-type">RECOMMENDED FOR: WIDE EXPANSION</span>
+    <p>Adaptive (+2 points; +10% habitability) or Extremely Adaptive (+4 points; +20% habitability). Pays for itself on large galaxies by enabling efficient colonisation of more world types. Combine with Rapid Breeders. Expensive point-wise but enables territory control strategies other builds cannot.</p>
+  </div>
+  <div class="unit-card purple-card">
+    <div class="unit-name">Lithoid Builds</div>
+    <span class="unit-type">SPECIES TYPE: LITHOID ONLY</span>
+    <p>Lithoid species eat Minerals instead of Food and have innate habitability advantages. The Lithoid origin (requires the trait) starts you on a world other species would find barely habitable. Extremely effective for mining-focused builds. No food upkeep makes the economy significantly simpler.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S05 -->
+<section class="section" id="s05">
+<h2 class="section-title"><span class="sec-num">&sect;05</span> Ethics &amp; Authority</h2>
+<div class="lore-block">
+  <p>The philosophers had been arguing for three centuries about whether a truly egalitarian society could survive contact with the galaxy&apos;s less egalitarian inhabitants without eventually becoming one of them. The evidence from the historical record was not encouraging. The counter-argument, which the philosophers who survived long enough to make it generally agreed was compelling, was that the alternative &mdash; becoming what you feared before anyone else forced you to &mdash; was worse, and faster, and harder to come back from.</p>
+  <span class="source">// ACADEMIC PROCEEDINGS &middot; INSTITUTE OF POLITICAL THEORY &middot; YEAR 2280 //</span>
+</div>
+
+<p>Ethics define your empire&apos;s fundamental political and philosophical position. They determine which Civics you can select, how your pops react to your policies, which diplomatic actions are available or prohibited, and how other empires perceive and interact with you. Your empire starts with 3 ethics points to spend. Regular Ethics cost 1 point each; Fanatic Ethics cost 2 points and provide doubled bonuses.</p>
+
+<h2 class="sub-title">The Ethical Axes</h2>
+<table class="data-table">
+  <thead><tr><th>Axis</th><th>Opposed Pair</th><th>Key Effects</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Authority</strong></td><td>Egalitarian / Authoritarian</td><td>Egalitarian: more Factions, Elections, Faction Happiness bonuses, research bonuses. Authoritarian: Slavery policies, Stratification, Stability bonuses, Suppression of dissent</td></tr>
+    <tr><td><strong>Spirituality</strong></td><td>Materialist / Spiritualist</td><td>Materialist: Research speed bonuses, Robot-friendly, Synthetic ascension path access. Spiritualist: Unity production, Psionic ascension access, Faction bonuses, Robot restrictions</td></tr>
+    <tr><td><strong>Expansion</strong></td><td>Pacifist / Militarist</td><td>Pacifist: Diplomatic bonuses, Reduced War Exhaustion, Trade value. Militarist: Naval Capacity, Army damage, Morale, Warmongering tolerance among allies</td></tr>
+    <tr><td><strong>Collectivism</strong></td><td>Xenophile / Xenophobe</td><td>Xenophile: Migration treaties, Diplo weight with diverse species, Cultural exchange. Xenophobe: Purge policies, Species discrimination, Core world protection bonuses</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Ethics and Drift</h2>
+<p>Your empire&apos;s ethics are not fixed after game start. Over time, Factions gain influence and push your empire&apos;s ethics toward their preferred values. An empire that starts Egalitarian but consistently suppresses factions and exploits labour will find its ethics drifting Authoritarian. Conversely, an Authoritarian empire that grants broad rights and builds prosperity will drift Egalitarian. Managing ethical drift &mdash; either allowing it deliberately or fighting it through edicts and policies &mdash; is an ongoing mid-game governance task.</p>
+
+<h2 class="sub-title">Authority Types</h2>
+<table class="data-table">
+  <thead><tr><th>Authority</th><th>Government Type</th><th>Key Mechanic</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Democratic</strong></td><td>Egalitarian only; elections every 10 years</td><td>Elected ruler with mandate; strong Faction system; Leader xp bonuses</td></tr>
+    <tr><td><strong>Oligarchic</strong></td><td>Neutral authority; council of leaders</td><td>Flexible; moderate Faction system; good all-round performance</td></tr>
+    <tr><td><strong>Dictatorial</strong></td><td>Authoritarian leaning; single ruler</td><td>No elections; moderate death events; Edict fund bonuses</td></tr>
+    <tr><td><strong>Imperial</strong></td><td>Authoritarian; single ruler, hereditary</td><td>Claim costs reduced; Subject integration; Cohesion bonuses to large empires</td></tr>
+    <tr><td><strong>Corporate</strong></td><td>MegaCorp DLC; Fanatic Materialist or similar</td><td>Branch Offices on other empires&apos; worlds; Trade Value emphasis; unique civics</td></tr>
+    <tr><td><strong>Hive Mind</strong></td><td>Gestalt Consciousness; organic collective</td><td>No factions; no happiness; Drone jobs; unique playstyle</td></tr>
+    <tr><td><strong>Machine Intelligence</strong></td><td>Gestalt Consciousness; synthetic collective</td><td>No food; Pop Assembly instead of growth; unique civics and playstyle</td></tr>
+  </tbody>
+</table>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S06 -->
+<section class="section" id="s06">
+<h2 class="section-title"><span class="sec-num">&sect;06</span> Civics</h2>
+<p>Civics are the specific institutions and principles that define how your empire functions in practice. They are the most granular layer of empire customisation at game start, providing specific mechanical bonuses and unlocking unique buildings, units, and interactions. Empires start with <strong>two civics</strong>; a third is unlocked by researching Galactic Administration technology. Civics can be reformed every 20 years (spending 10 Unity per point of Empire Size).</p>
+
+<h2 class="sub-title">Highly Effective Civics</h2>
+<div class="unit-grid">
+  <div class="unit-card teal-card">
+    <div class="unit-name">Technocracy</div>
+    <span class="unit-type">MATERIALIST &middot; RESEARCH PRODUCTION</span>
+    <p>Researchers produce +1 Unity; +10% Research output. Excellent in combination with research-focused traditions. One of the most consistently powerful production-boosting civics. Research compounds throughout the game; this bonus pays dividends at every stage.</p>
+  </div>
+  <div class="unit-card teal-card">
+    <div class="unit-name">Meritocracy</div>
+    <span class="unit-type">OLIGARCHIC &middot; LEADER BONUSES</span>
+    <p>+1 Skill Level to Leaders; +3 Ruler Edict Capacity. Leaders are integral to the 4.x system. A Scientist with higher skill levels generates more research; an Admiral with higher skill wins more battles. This civic&apos;s bonus scales with the entire leader system and never becomes irrelevant.</p>
+  </div>
+  <div class="unit-card green-card">
+    <div class="unit-name">Mining Guilds</div>
+    <span class="unit-type">MATERIALIST-COMPATIBLE &middot; MINERALS</span>
+    <p>Miners produce more Minerals; Mineral districts more effective. Minerals are the foundation of every economy &mdash; alloys, consumer goods, buildings all cost minerals. A Mineral surplus in the early game enables faster expansion, faster ship building, faster everything. One of the best foundation civics for wide expansion.</p>
+  </div>
+  <div class="unit-card amber-card">
+    <div class="unit-name">Anglers</div>
+    <span class="unit-type">OCEAN WORLD &middot; HYBRID PRODUCTION</span>
+    <p>Agriculture districts produce Anglers and Pearl Divers, outputting Food, Consumer Goods, and Trade Value simultaneously. One of the strongest economy-diversification civics in 4.x &mdash; transforms previously weak Agricultural districts into multi-output powerhouses. Best on Ocean worlds.</p>
+  </div>
+  <div class="unit-card red-card">
+    <div class="unit-name">Barbaric Despoilers</div>
+    <span class="unit-type">MILITARIST/XENOPHOBE &middot; RAIDING</span>
+    <p>Raiding orbital bombardment stance kidnaps Pops from enemy worlds. Special Despoil war goal. Allows Pop importation without colonisation overhead. One of the most aggressive expansion-without-colonisation builds in the game. Synergises with Warrior Caste civ and Militarist ethics.</p>
+  </div>
+  <div class="unit-card purple-card">
+    <div class="unit-name">Inward Perfection</div>
+    <span class="unit-type">PACIFIST &middot; TALL/INTERNAL FOCUS</span>
+    <p>Cannot establish Branch Offices; cannot join Federations; cannot claim systems; +20% all resource output from Jobs; +10% Unity. The tall-play civic: sacrifices all aggressive options for enormous domestic production bonuses. Extremely powerful on small galaxies or when expecting a long peaceful middle game. Cannot make claims but can still go to war to defend territory.</p>
+  </div>
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">Civic Synergy: The Combo Is What Matters</div>
+  <p>Individual civics rarely define a build. Combinations do. Technocracy + Distinguished Admiralty (more admiral skill levels, more naval cap) creates a military-technological powerhouse. Meritocracy + Philosopher King (ruler is a Scientist) creates a research engine with leader bonuses. Inward Perfection + High populations create production empires that can outtech everyone. Before finalising civics, think about which traditions and ascension perks they synergise with.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S07 -->
+<section class="section" id="s07">
+<h2 class="section-title"><span class="sec-num">&sect;07</span> Origins</h2>
+<p>Origins, introduced in the Federations DLC, define your empire&apos;s backstory and starting conditions. They are perhaps the single most impactful empire creation choice after Ethics: they can alter your starting world, your starting resources, your early-game relationship with other empires, and even your fundamental win conditions.</p>
+
+<h2 class="sub-title">Notable Origins</h2>
+<table class="data-table">
+  <thead><tr><th>Origin</th><th>Starting Condition</th><th>Recommended For</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Prosperous Unification</strong></td><td>+1 guaranteed colonisable planet in starting system; higher starting resources</td><td>New players; general-purpose strength without complications; the default strong choice</td></tr>
+    <tr><td><strong>Shattered Ring</strong></td><td>Start on a massive Ring World section with one habitable segment; more start infrastructure</td><td>Tall builds; players who want enormous early production from a single world; high skill</td></tr>
+    <tr><td><strong>Void Dwellers</strong></td><td>Start in Habitats, not on a planet; planets are barely habitable; Habitats are home</td><td>Economic specialists; requires understanding of Habitat building but produces powerful output</td></tr>
+    <tr><td><strong>Clone Army</strong></td><td>Start with a powerful military; Pops are Clone Soldiers with military bonuses; Pop growth is capped</td><td>Early military aggression; expand while you can; manage the late-game growth problem</td></tr>
+    <tr><td><strong>Common Ground</strong></td><td>Start with a Federation already formed with 2 AI allies</td><td>Diplomatic builds; defensive plays; requires Federation DLC</td></tr>
+    <tr><td><strong>Hegemon</strong></td><td>Start with 2 subjects who already owe you loyalty</td><td>Vassal-play; expanded early economy through subjects; hegemonic strategies</td></tr>
+    <tr><td><strong>Lost Colony</strong></td><td>Start as a colony that separated from its parent empire; parent exists in the galaxy</td><td>Unique narrative; starts with a pre-existing relationship to resolve</td></tr>
+    <tr><td><strong>Here Be Dragons</strong></td><td>Start under the protection of a Guardian Wyrm; unique early events</td><td>Narrative interest; aggressive early neighbours discouraged by Wyrm protection</td></tr>
+    <tr><td><strong>Overtuned</strong></td><td>Extremely optimised species; massive bonus traits; severe short lifespan</td><td>Short-game domination; the aggressive tech rush build</td></tr>
+  </tbody>
+</table>
+
+<div class="callout teal">
+  <div class="callout-title">Prosperous Unification for New Players</div>
+  <p>Prosperous Unification is not the most exciting origin but it is consistently the most reliable. The guaranteed colonisable planet in your starting system gives you an early expansion target that requires no surveying; the higher starting resources smooth the critical early-game economy. While you learn the game&apos;s systems, PU prevents the &quot;I ran out of minerals in year 2210&quot; problem that kills many first playthroughs of more ambitious origins.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S08 -->
+<section class="section" id="s08">
+<h2 class="section-title"><span class="sec-num">&sect;08</span> Gestalt Empires</h2>
+<div class="lore-block">
+  <p>The question the diplomats from organic empires always asked, eventually, was: does the Hive know that it&apos;s a Hive? The answer, the Hive generally replied &mdash; insofar as it replied at all &mdash; was that the question presupposed a distinction between the knower and the known that the Hive had no framework to process. The diplomats found this unsatisfying. The Hive found the diplomats confusing. Both parties, in the diplomatic log, were recorded as finding the encounter broadly non-violent, which was considered a success.</p>
+  <span class="source">// GALACTIC DIPLOMATIC RECORD &middot; FIRST CONTACT ARCHIVE &middot; YEAR 2241 //</span>
+</div>
+
+<p>Gestalt Consciousness empires &mdash; Hive Minds and Machine Intelligences &mdash; represent a completely different playstyle from standard empires. They are not empires in the conventional political sense; they are unified organisms or collective intelligences with a single will expressed through all pops simultaneously.</p>
+
+<h2 class="sub-title">Hive Mind</h2>
+<p>Hive Minds require the Gestalt Consciousness ethic (which takes all 3 ethics points). They cannot have Factions, cannot experience unhappiness in the conventional sense, use Drone jobs instead of standard Pop jobs, and consume Food instead of Consumer Goods. Key mechanical differences:</p>
+<ul class="guide-list">
+  <li>No Happiness or Amenities system &mdash; replace with Hive Coordination and Drone Upkeep</li>
+  <li>No Immigration or Emigration &mdash; the Hive does not permit this</li>
+  <li>Unique Devouring Swarm civic: most extreme aggressive variant; consumes everything; no diplomacy possible</li>
+  <li>Terravore civic: can eat entire planets for resources</li>
+  <li>Unique Psionic ascension path: the Hive Transcendence leading to Psionic Hive</li>
+  <li>Cannot integrate other species without Assimilation civic; will exterminate otherwise</li>
+</ul>
+
+<h2 class="sub-title">Machine Intelligence</h2>
+<p>Machine Intelligences are robotic collectives requiring Machine Intelligence authority. They have no Food upkeep &mdash; machines don&apos;t eat &mdash; and instead assemble new Pops (at Energy cost) rather than growing them. Key differences:</p>
+<ul class="guide-list">
+  <li>Pop Assembly instead of Pop Growth; controllable production rate</li>
+  <li>No Consumer Goods upkeep; significant economic advantage in mid-game</li>
+  <li>Unique Maintenance Drones and Civilian Drone jobs</li>
+  <li>Unique Synthetic Evolution ascension path and unique crisis capability with Nemesis DLC</li>
+  <li>Driven Assimilator: converts organic species into machine pops; unique interaction with biological worlds</li>
+  <li>Rogue Servitor: protects organic species as pets/preserved beings; unique economic structure</li>
+</ul>
+
+<div class="callout purple">
+  <div class="callout-title">Gestalt Empires Are Not Beginner Friendly</div>
+  <p>Hive Minds and Machine Intelligences are powerful but their mechanical uniqueness makes them poor learning environments. Understand the standard empire&apos;s Pop, faction, happiness, and consumer goods systems first. Then try a Machine Intelligence, because the absence of consumer goods and the Pop Assembly system makes Machine empires mechanically simpler than Hive Minds once you understand what they&apos;re doing. Devouring Swarm is the most extreme and should only be attempted by experienced players who want a specific aggressive challenge.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S09 -->
+<section class="section" id="s09">
+<h2 class="section-title"><span class="sec-num">&sect;09</span> Resources &mdash; The Economy of Civilisation</h2>
+<div class="lore-block">
+  <p>The economists of a dozen species had independently derived the same conclusion: energy was the fundamental currency of spacefaring civilisation. Everything else &mdash; minerals, food, research, unity &mdash; was ultimately denominated in energy equivalents. The galaxy ran on physics, not on history. The irony was that the empires that understood this best were usually the ones spending the most energy on wars fought over things that could not be expressed in energy equivalents at all.</p>
+  <span class="source">// INSTITUTE FOR INTERSTELLAR ECONOMICS &middot; WORKING PAPER 7443 &middot; YEAR 2295 //</span>
+</div>
+
+<p>Stellaris has an interconnected multi-resource economy. Understanding how resources interact and where bottlenecks form is the most important skill in the game&apos;s early and mid-game phases.</p>
+
+<h2 class="sub-title">Basic Resources</h2>
+<table class="data-table">
+  <thead><tr><th>Resource</th><th>Primary Source</th><th>Primary Sink</th><th>Deficit Consequence</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Energy Credits</strong></td><td>Power Generators, trade value, energy deposits, solar panels</td><td>Building upkeep, ship upkeep, pop upkeep, market purchases</td><td>Buildings go offline; ships disabled; economic cascade</td></tr>
+    <tr><td><strong>Minerals</strong></td><td>Mining Districts, asteroid miners, mining stations</td><td>Building construction, district construction, alloy production</td><td>Construction halts; economic stagnation</td></tr>
+    <tr><td><strong>Food</strong></td><td>Farming Districts, agricultural stations, Anglers</td><td>Pop upkeep; Livestock (if applicable); Hive Food upkeep</td><td>Pop growth penalty; loyalty reduction; starvation events</td></tr>
+    <tr><td><strong>Consumer Goods</strong></td><td>Artisan jobs (industrial districts); trade</td><td>Pop Upkeep (all standard pops); Bureaucrat upkeep</td><td>Happiness collapse; faction unrest; economic disruption</td></tr>
+    <tr><td><strong>Alloys</strong></td><td>Foundry jobs (industrial districts, forge worlds)</td><td>Ship construction; megastructure construction; military buildings</td><td>Cannot build or maintain fleet; military stagnation</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Advanced Resources</h2>
+<table class="data-table">
+  <thead><tr><th>Resource</th><th>How Obtained</th><th>Primary Use</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Influence</strong></td><td>Monthly income from ruler, civics, traditions, rival factions, federation</td><td>Claiming systems, edicts, diplomatic actions, colonisation decisions</td></tr>
+    <tr><td><strong>Unity</strong></td><td>Clergy, administrators, cultural specialists, tradition trees</td><td>Unlocking tradition categories and individual traditions; Ascension Perks</td></tr>
+    <tr><td><strong>Research (Physics/Society/Engineering)</strong></td><td>Researcher jobs, science ships, stations</td><td>Technology discovery; advancement through the tech tree</td></tr>
+    <tr><td><strong>Exotic Gases / Rare Crystals / Volatile Motes</strong></td><td>Specific planet deposits and gas giant extractors</td><td>Strategic resource buildings; advanced ship components; unique technologies</td></tr>
+    <tr><td><strong>Dark Matter / Living Metal / Nanites / Zro</strong></td><td>Fallen Empire trades; specific late-game sources</td><td>Advanced megastructures; Psionic ascension (Zro); unique technologies</td></tr>
+  </tbody>
+</table>
+
+<div class="callout warning">
+  <div class="callout-title">The Consumer Goods Bottleneck</div>
+  <p>The most common economic crisis for new players in Stellaris is Consumer Goods deficit. Every non-slave, non-gestalt Pop consumes Consumer Goods as part of their upkeep. As your population grows, your Consumer Goods consumption grows proportionally. Consumer Goods are produced by Artisan jobs, which require Industrial Districts. If your Alloy production uses most of your Industrial Districts, Consumer Goods production is squeezed. Watch your Consumer Goods balance carefully in the mid-game. A deficit causes Happiness collapse, which causes faction unrest, which destabilises your entire economy. Always maintain a buffer surplus.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S10 -->
+<section class="section" id="s10">
+<h2 class="section-title"><span class="sec-num">&sect;10</span> Pops &amp; Pop Groups (4.x System)</h2>
+<p>In version 4.0, Stellaris transitioned from individual Pop management to a <strong>Pop Group system</strong>. Instead of tracking hundreds of individual pops, the game groups pops by species, strata, and job type into cohesive Pop Groups that produce resources collectively based on their Workforce contribution.</p>
+
+<h2 class="sub-title">How Pop Groups Work</h2>
+<p>Each Pop Group represents a collection of pops sharing the same species, social stratum (Ruler, Specialist, Worker, Slave, Drone), and job. They contribute <strong>Workforce</strong> to jobs rather than being individually assigned. Districts provide jobs; buildings provide jobs; Workforce from Pop Groups fills those jobs; and output is calculated based on how many Workforce units are filling each job slot.</p>
+
+<h2 class="sub-title">Social Strata</h2>
+<table class="data-table">
+  <thead><tr><th>Stratum</th><th>Jobs</th><th>Consumer Goods Upkeep</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Rulers</strong></td><td>Executive, Politician, Noble, Merchant, CEO</td><td>Highest (3 per pop)</td><td>Most influential; provides Unity, Trade, Stability</td></tr>
+    <tr><td><strong>Specialists</strong></td><td>Researcher, Artisan, Bureaucrat, Entertainer, Enforcer</td><td>Medium (2 per pop)</td><td>The economy&apos;s production backbone</td></tr>
+    <tr><td><strong>Workers</strong></td><td>Farmer, Miner, Technician, Clerk</td><td>Low (1 per pop)</td><td>Basic resource production; large numbers needed</td></tr>
+    <tr><td><strong>Slaves</strong></td><td>Chattel, Battle Thrall, Livestock</td><td>Minimal (type dependent)</td><td>No Consumer Goods; Happiness irrelevant; ethics-restricted</td></tr>
+    <tr><td><strong>Drones (Gestalt)</strong></td><td>All Gestalt jobs</td><td>No Consumer Goods; other upkeep</td><td>Unique to Hive Mind and Machine Intelligence</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Pop Growth and Assembly</h2>
+<p>Standard empires grow Pops biologically. Growth rate is affected by:</p>
+<ul class="guide-list">
+  <li>Traits (Rapid Breeders, Slow Breeders)</li>
+  <li>Planet Stability and Happiness (higher = faster growth)</li>
+  <li>Housing available (insufficient housing severely reduces growth)</li>
+  <li>Amenities (insufficient Amenities reduce Happiness and thus growth)</li>
+  <li>Cloning Vats (if researched and built, provide additional assembly)</li>
+</ul>
+<p>Pop growth is now <strong>empire-wide and distributed</strong> across all colonies rather than being generated independently on each planet. This means your total empire pop growth rate determines how many new pops are added across all colonies, and planets with good conditions will attract more of that growth. Maximising your empire-wide growth rate requires addressing it systematically rather than planet by planet.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S11 -->
+<section class="section" id="s11">
+<h2 class="section-title"><span class="sec-num">&sect;11</span> Planets: Districts &amp; Buildings</h2>
+<div class="lore-block">
+  <p>The colony ship arrived containing 20,000 colonists, six prefabricated administrative modules, a complete geological survey, 400 automated mining drones, and a strongly worded letter from the Colonial Development Committee outlining the minimum acceptable output targets for years one through fifteen. The colonists reviewed the targets, reviewed the planet, reviewed the targets again, and began building.</p>
+  <span class="source">// COLONIAL SETTLEMENT RECORD &middot; YEAR 2215 &middot; FRINGE SYSTEMS AUTHORITY //</span>
+</div>
+
+<p>In Stellaris 4.x, the planet economy works through an integrated District-Building-Job system. Understanding how these three layers interact is the foundation of effective planetary management.</p>
+
+<h2 class="sub-title">Districts</h2>
+<p>Districts are the basic structural slots on a planet. Each planet has a maximum district count based on its planet size. Districts come in several types and each provides base jobs:</p>
+<ul class="guide-list">
+  <li><strong>City Districts:</strong> Provide Housing and Clerk jobs; also generate one Building Slot per City District above the first. Building Slots are the key constraint on advanced production buildings.</li>
+  <li><strong>Industrial Districts:</strong> Provide Artisan (Consumer Goods) and Foundry (Alloys) jobs; managed via District Specialisation.</li>
+  <li><strong>Agricultural Districts:</strong> Provide Farmer jobs (Food); can be enhanced by Anglers civic.</li>
+  <li><strong>Mining Districts:</strong> Provide Miner jobs (Minerals).</li>
+  <li><strong>Generator Districts:</strong> Provide Technician jobs (Energy Credits).</li>
+</ul>
+
+<h2 class="sub-title">District Specialisation (4.x)</h2>
+<p>A major 4.x feature is District Specialisation: Industrial Districts can be specialised toward either Consumer Goods or Alloys production, providing additional jobs of the chosen type per district. This replaces the old system where both Artisans and Foundry workers competed for the same district slots. Specialise your industrial districts to match your planet&apos;s role in your economy.</p>
+
+<h2 class="sub-title">Buildings</h2>
+<p>Buildings are placed in Building Slots (which City Districts provide). They are more expensive than Districts but provide higher-quality specialist jobs. Key principles:</p>
+<ul class="guide-list">
+  <li><strong>Research Labs:</strong> Provide Researcher jobs; upgrade for more and better-quality research. Your most important early-game buildings on core worlds.</li>
+  <li><strong>Administrative Offices:</strong> Provide Bureaucrat jobs that reduce Empire Sprawl penalty. Essential as your empire expands.</li>
+  <li><strong>Holo-Theatres / Entertainment Forums:</strong> Provide Entertainer jobs that generate Amenities. Required to prevent Amenities deficit as population grows.</li>
+  <li><strong>Alloy Foundries:</strong> Provide additional Foundry jobs; essential on dedicated forge worlds.</li>
+  <li><strong>Capital Building:</strong> Every world has a capital building slot; the planet&apos;s tier of capital provides ruler jobs and administrative functions. Upgrade your Homeworld capital priority.</li>
+</ul>
+
+<div class="callout tip">
+  <div class="callout-title">Building Priority Rule</div>
+  <p>In the first 20 years: Capital upgrades on your homeworld, then Research Labs, then Administrative buildings once Empire Sprawl becomes relevant. In the mid-game: Alloy Foundries on dedicated Forge Worlds; Consumer Goods buildings on dedicated industrial worlds; Research Labs on your science worlds. Buildings are expensive &mdash; invest in the buildings that compound most over time, which means Research Labs for tech advancement and Alloy Foundries for military sustainability.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S12 -->
+<section class="section" id="s12">
+<h2 class="section-title"><span class="sec-num">&sect;12</span> Planet Specialisation</h2>
+<p>Once you have multiple colonies, the most effective approach to planetary management is <strong>specialisation</strong>: designating each world to a specific economic function rather than trying to make every planet self-sufficient in every resource. This creates a division of labour across your empire that maximises output from each world&apos;s particular strengths.</p>
+
+<h2 class="sub-title">Common Planet Designations</h2>
+<div class="unit-grid">
+  <div class="unit-card teal-card">
+    <div class="unit-name">Research World</div>
+    <span class="unit-type">PHYSICS / SOCIETY / ENGINEERING OUTPUT</span>
+    <p>Maximise City Districts (for Building Slots), Research Labs in all Building Slots, and prioritise Population growth to fill Researcher jobs. Feed this world from your agricultural worlds. This planet does not produce Minerals, Energy, or Alloys &mdash; it produces the technologies that multiply everyone else&apos;s output. Your homeworld is often your first Research World.</p>
+  </div>
+  <div class="unit-card amber-card">
+    <div class="unit-name">Forge World</div>
+    <span class="unit-type">ALLOY PRODUCTION</span>
+    <p>Maximum Industrial Districts specialised toward Foundries; Alloy Foundry buildings in all available slots. This world builds your fleet. Do not compromise its Alloy output for Consumer Goods; have a separate Consumer Goods world. The Forge World Planetary Designation provides +10% Foundry Job Output.</p>
+  </div>
+  <div class="unit-card green-card">
+    <div class="unit-name">Agricultural World</div>
+    <span class="unit-type">FOOD PRODUCTION</span>
+    <p>Maximum Agricultural Districts; Feed all colonies from this world. Agriculture can be combined with Consumer Goods production if using the Anglers civic. Agricultural World designation provides +10% Farmer Job Output. One or two agricultural worlds typically sustains a mid-sized empire&apos;s Food requirements.</p>
+  </div>
+  <div class="unit-card purple-card">
+    <div class="unit-name">Mining World / Ecumenopolis</div>
+    <span class="unit-type">MINERALS / MAXIMUM PRODUCTION</span>
+    <p>Mining Districts on worlds with high Mineral deposits; Ecumenopolis ascension transforms a city world into the most productive planet type in the game (massive Industrial output). Ecumenopolis requires the Ascension Perk and is a late-game transformation; treat it as an endgame Alloy engine.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S13 -->
+<section class="section" id="s13">
+<h2 class="section-title"><span class="sec-num">&sect;13</span> Sectors &amp; Governors</h2>
+<p>As your empire expands beyond your ability to micromanage every planet, Sectors become the administrative layer that organises your colonies into manageable groups. Each Sector can have a <strong>Sector Governor</strong> &mdash; a Leader whose skills and traits provide bonuses to all planets within that sector.</p>
+
+<h2 class="sub-title">Governor Skills and the Leader System (4.x)</h2>
+<p>With Galactic Paragons DLC, Leaders gain traits at every level and have unique background histories that affect their capabilities. A Governor with high Skill Level provides:</p>
+<ul class="guide-list">
+  <li>Production bonuses to their sector&apos;s planets</li>
+  <li>Stability contributions to their planets</li>
+  <li>Specific bonus effects from their individual traits</li>
+</ul>
+<p>Governor trait synergies are a significant quality-of-life multiplier: a Governor with the Architectural Enthusiasm trait (buildings cheaper) assigned to your primary construction sector reduces building costs across every world in that sector simultaneously.</p>
+
+<h2 class="sub-title">Martial Law and Military Governors</h2>
+<p>In 4.3, setting a Commander as a planet or sector Governor applies Martial Law: they provide a direct Stability bonus to any planet they are controlling, not just their home planet. On newly conquered worlds with unhappy alien pops, a Military Governor with high Skill Level can stabilise the planet faster than purely administrative approaches.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S14 -->
+<section class="section" id="s14">
+<h2 class="section-title"><span class="sec-num">&sect;14</span> Trade &amp; Markets</h2>
+<p>The Galactic Market (requires Federations DLC or sufficient game age) allows empires to buy and sell basic resources. The Market provides an economic safety valve: a temporary deficit in one resource can be covered by selling a surplus of another. Key market principles:</p>
+<ul class="guide-list">
+  <li><strong>Joining the Galactic Market</strong> requires gaining access (through being founded or a specific event); the founding member has a permanent Price advantage on all trades.</li>
+  <li><strong>Market prices fluctuate</strong> based on supply and demand from all participating empires. If everyone is selling Minerals, Mineral prices drop. Anticipate market movements rather than reacting to them.</li>
+  <li><strong>Trade Value</strong> (generated by Clerk jobs and Merchant positions) converts to Energy Credits based on trade routes and policies. Trade-focused civics and ethics (Xenophile, Pacifist, Corporate) generate significantly more value from trade routes than others.</li>
+  <li><strong>Strategic resource trading</strong> is often more valuable than selling basic resources &mdash; negotiate a trade for Exotic Gases or Rare Crystals that you lack rather than buying from the market, where prices can be steep.</li>
+</ul>
+
+<div class="callout green">
+  <div class="callout-title">The MegaCorp Economic Engine</div>
+  <p>Corporate authority empires (MegaCorp DLC) generate their primary income through Branch Offices: commercial buildings established on other empires&apos; worlds that produce Trade Value for the Corporation. A well-developed Corporate empire with multiple Branch Offices across several neighbouring empires generates enormous Trade Value income without any military cost. The Corporate playstyle is an economic domination strategy that wins through economic supremacy rather than military conquest. Highly recommended for players who want a complex but non-violent path to galactic dominance.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S15 -->
+<section class="section" id="s15">
+<h2 class="section-title"><span class="sec-num">&sect;15</span> Technology</h2>
+<div class="lore-block">
+  <p>The recursive irony of technological progress was that the technologies most useful for accelerating further technological progress were always the ones that were hardest to discover first. The species that figured out how to build better laboratories before they had very good laboratories had found the shortcut. The species that hadn&apos;t were usually working very hard in rooms that were mostly fine.</p>
+  <span class="source">// INSTITUTE FOR INTERSTELLAR RESEARCH &middot; METHODOLOGY REVIEW &middot; YEAR 2260 //</span>
+</div>
+
+<p>Technology in Stellaris is not a deterministic tree you advance through in a fixed order. Instead, you have a <strong>rolling card draw</strong>: each time you complete a technology, you draw three options from the available research pool in that category (Physics, Society, Engineering) and choose one. The technologies available in your draw depend on what you&apos;ve already researched, what your Scientists&apos; specialisations are, and various other factors.</p>
+
+<h2 class="sub-title">The Three Research Categories</h2>
+<table class="data-table">
+  <thead><tr><th>Category</th><th>Key Technologies</th><th>Priority Level</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Physics</strong></td><td>Energy production, Shields, Lasers, Computing, Sensors, Field Manipulation</td><td>Very High; Energy generation and shield tech are foundational</td></tr>
+    <tr><td><strong>Society</strong></td><td>Biology, Culture, Military Theory, Statecraft, Psionics</td><td>High; Pop growth, political tech, and ascension-gating tech</td></tr>
+    <tr><td><strong>Engineering</strong></td><td>Minerals, Armor, Kinetic Weapons, Robotics, Construction</td><td>Very High; Alloy and mineral productivity and ship armor</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Priority Research Targets</h2>
+<p>With limited control over which technologies appear, focus on priorities rather than a rigid order:</p>
+<ul class="guide-list">
+  <li><strong>Tier 1 (Years 1&ndash;30):</strong> Colonisation technologies, basic power generation, Galactic Administration (unlocks 3rd Civic), basic weapons and armor, early Mining and Farming boosts.</li>
+  <li><strong>Tier 2 (Years 30&ndash;60):</strong> Alloy production improvements, advanced Computing, Galactic Market access, Shield and Armor upgrades, basic robotic technology.</li>
+  <li><strong>Tier 3 (Years 60&ndash;100):</strong> Megastructure unlocks (Dyson Spheres, Ring Worlds), advanced strategic resource technologies, Ascension path technologies, end-game ship components.</li>
+</ul>
+
+<div class="callout teal">
+  <div class="callout-title">Scientist Specialisation and Draw Weights</div>
+  <p>Assign Scientist leaders to your Research ships and Research Council positions based on their specialisations. A Physicist Scientist increases the draw weight of Physics technologies; an Engineer increases Engineering options. Selecting Scientists for their trait synergies with your planned research direction &mdash; rather than just their highest raw skill level &mdash; meaningfully increases the probability of seeing the technologies you need when you need them.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S16 -->
+<section class="section" id="s16">
+<h2 class="section-title"><span class="sec-num">&sect;16</span> Traditions</h2>
+<p>Traditions are unlocked by spending Unity. Each Tradition Tree contains seven traditions arranged in a left-right-centre structure; you must unlock traditions in order within each branch, and the final centre Tradition (the Finisher) provides a powerful bonus when the entire tree is complete. You also gain an <strong>Ascension Perk slot</strong> for each fully completed Tradition Tree.</p>
+
+<h2 class="sub-title">Tradition Tree Overview</h2>
+<table class="data-table">
+  <thead><tr><th>Tree</th><th>Focus</th><th>Finisher Bonus</th><th>Recommended When</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Expansion</strong></td><td>Colonisation speed, influence costs, migration</td><td>Reduced Colonisation costs; Pop growth bonuses</td><td>Early game; planning wide expansion</td></tr>
+    <tr><td><strong>Discovery</strong></td><td>Science ships, anomalies, research output</td><td>Research speed; anomaly event bonuses</td><td>Tech rush builds; all early games benefit</td></tr>
+    <tr><td><strong>Domination</strong></td><td>Core worlds, edicts, subject management</td><td>Reduced Edict costs; vassal bonuses</td><td>Tall builds; vassal-oriented strategies</td></tr>
+    <tr><td><strong>Prosperity</strong></td><td>Job output, building construction, pop growth</td><td>Increased output from all jobs</td><td>Economic powerhouse builds; highly recommended</td></tr>
+    <tr><td><strong>Harmony</strong></td><td>Pop happiness, Stability, ethical drift control</td><td>Stability and Happiness bonuses</td><td>Diverse-species empires; wide empires with stability issues</td></tr>
+    <tr><td><strong>Supremacy</strong></td><td>Fleet power, naval cap, military bonuses</td><td>No Retreat doctrine; combat bonuses</td><td>Military builds; early conquest strategies</td></tr>
+    <tr><td><strong>Diplomacy</strong></td><td>Diplomatic weight, federations, trust</td><td>Federation founding; direct diplomacy trust</td><td>Federation builds; diplomatic victory strategies</td></tr>
+    <tr><td><strong>Adaptability</strong></td><td>Terraforming, habitability, colony management</td><td>Terraforming speed and cost</td><td>Expansion-heavy builds planning terraforming</td></tr>
+  </tbody>
+</table>
+
+<div class="callout amber">
+  <div class="callout-title">Optimal Tradition Order for Most Builds</div>
+  <p>The most consistent high-performance tradition opening across build types is: <strong>Expansion</strong> first (reduces early colonisation costs and gets your second and third worlds running faster), followed by <strong>Discovery</strong> (research output) and then <strong>Supremacy or Prosperity</strong> depending on your strategy. Completing Expansion early, then Discovery, gives you two Ascension Perk slots by year 40&ndash;50 and significantly accelerates the research engine that powers everything else.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S17 -->
+<section class="section" id="s17">
+<h2 class="section-title"><span class="sec-num">&sect;17</span> Ascension Perks</h2>
+<p>Ascension Perks are among the most impactful strategic decisions in Stellaris. They are unlocked by completing Tradition Trees and represent major civilisation-defining choices. Most empires unlock 4&ndash;6 Ascension Perks in a standard game length, so each choice matters enormously.</p>
+
+<h2 class="sub-title">Tier 1 Ascension Perks (Broadly Available)</h2>
+<div class="unit-grid">
+  <div class="unit-card teal-card">
+    <div class="unit-name">Executive Vigor</div>
+    <span class="unit-type">GOVERNANCE &middot; ALL BUILDS</span>
+    <p>+100% Edict Duration. Edicts provide powerful temporary bonuses to production, military, or happiness. Doubling their duration means half the Edict maintenance cost in Influence. Consistently strong in every build type. Take this early in most games.</p>
+  </div>
+  <div class="unit-card green-card">
+    <div class="unit-name">Interstellar Dominion</div>
+    <span class="unit-type">EXPANSION &middot; WIDE BUILDS</span>
+    <p>-25% Claim Cost; -25% Starbase Influence cost. For wide-expansion builds that plan to claim and conquer, this dramatically reduces the Influence cost of every territorial expansion action. Pays for itself rapidly in an aggressive early-expansion strategy.</p>
+  </div>
+  <div class="unit-card teal-card">
+    <div class="unit-name">One Vision</div>
+    <span class="unit-type">INTERNAL STABILITY &middot; ALL BUILDS</span>
+    <p>+10% Unity; +20% Governing Ethics Attraction; -50% Pop Ethic Divergence. For standard empires managing faction pressure, this provides meaningful Unity bonuses and dramatically reduces the rate at which pops drift toward unwanted ethics. Excellent for empires with diverse species populations.</p>
+  </div>
+  <div class="unit-card amber-card">
+    <div class="unit-name">Technological Ascendancy</div>
+    <span class="unit-type">RESEARCH &middot; TECH BUILDS</span>
+    <p>+10% Research speed; Rare technologies are more likely to appear in the draw. One of the highest long-term value Ascension Perks in the game for tech-rush strategies. The Rare technology draw weight is particularly valuable for unlocking Megastructures and advanced physics techs ahead of schedule.</p>
+  </div>
+  <div class="unit-card red-card">
+    <div class="unit-name">Mastery of Nature</div>
+    <span class="unit-type">EXPANSION &middot; PLANET MANAGEMENT</span>
+    <p>Can clear Blockers on planets for reduced cost; +2 Building Slots; +3 District count on all planets. The District and Building Slot increases are the primary value &mdash; every planet in your empire permanently gets more building capacity. Excellent for tall builds with a small number of heavily developed worlds.</p>
+  </div>
+</div>
+
+<h2 class="sub-title">Planetary Transformation Perks</h2>
+<div class="unit-grid">
+  <div class="unit-card purple-card">
+    <div class="unit-name">Ecumenopolis</div>
+    <span class="unit-type">MEGACITY WORLD &middot; LATE GAME</span>
+    <p>Transform a fully developed planet into an Ecumenopolis: a city covering the entire surface with enormous Industrial District capacity. The premier Alloy production platform in the game. Build on your highest-size planet or your homeworld. Capped at one per empire; place it wisely.</p>
+  </div>
+  <div class="unit-card neutral-card">
+    <div class="unit-name">Hive World / Machine World</div>
+    <span class="unit-type">GESTALT TRANSFORMATION &middot; GESTALT ONLY</span>
+    <p>The Gestalt equivalent of Ecumenopolis. Transforms a planet into a maximum-efficiency Drone or Machine production facility. Similarly capped and similarly powerful.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S18 -->
+<section class="section" id="s18">
+<h2 class="section-title"><span class="sec-num">&sect;18</span> Ascension Paths</h2>
+<div class="lore-block">
+  <p>Three ways to transcend the biological lottery. The Materialists said: augment the body and the mind with machines until the distinction between organic and synthetic is a matter of preference rather than physiology. The Spiritualists said: augment the mind with something that has nothing to do with machines, that reaches for the space between stars rather than the material of which stars are made. And the Biologists said: stop augmenting and start redesigning, because the answer was always in the code and the code could be rewritten. All three schools had their adherents. All three schools occasionally produced someone who was unsettling in ways their particular framework could not fully explain.</p>
+  <span class="source">// PHILOSOPHY OF TRANSCENDENCE &middot; ACADEMIC SUMMARY &middot; YEAR 2340 //</span>
+</div>
+
+<p>Ascension Paths are end-game civilisation-defining choices accessed through Ascension Perks. Each path fundamentally transforms how your pops work and what capabilities your empire has. Taking an Ascension Path typically requires two Ascension Perk slots and unlocks a unique series of further technologies and perks.</p>
+
+<div class="unit-grid">
+  <div class="unit-card teal-card">
+    <div class="unit-name">Synthetic Ascension</div>
+    <span class="unit-type">MATERIALIST &middot; REQUIRES: UTOPIA DLC</span>
+    <p>Transforms your organic pops into synthetic beings. Final state: pops become Robots with massive efficiency bonuses; no food; no happiness concerns; extreme late-game productivity. Two-step process via Engineered Evolution &rarr; Synthetic Evolution. Long route to completion but one of the most powerful economic outcomes. Requires Materialist or Fanatic Materialist ethics to begin.</p>
+  </div>
+  <div class="unit-card purple-card">
+    <div class="unit-name">Psionic Ascension</div>
+    <span class="unit-type">SPIRITUALIST &middot; REQUIRES: UTOPIA DLC</span>
+    <p>Awakens your pops&apos; psionic potential. Access to Zro (the Psionic resource), Psionic Shields (unique technology), and ultimately the Shroud &mdash; a dangerous extradimensional space from which Psions can draw power. Requires Spiritualist ethics and specific tradition/technology path. Psionic Armies are formidable. The Shroud&apos;s random events can be game-changing for good or ill.</p>
+  </div>
+  <div class="unit-card green-card">
+    <div class="unit-name">Biological Ascension</div>
+    <span class="unit-type">ANY ETHICS &middot; BIOGENESIS REWORK</span>
+    <p>Reworked in the BioGenesis expansion. Redesigns your species at the genetic level: add traits, remove traits, create new sub-species, tailor populations to specific planetary environments. The most flexible ascension path; no ethics requirements. Can create a species perfectly adapted to every world type; can create a Warrior Caste slave species designed for maximum Mineral output. Enormously versatile.</p>
+  </div>
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">Ascension Path Timing</div>
+  <p>Ascension Paths require the first Perk (which gates the path) by year 30&ndash;40 in a typical game to be fully developed before the end-game crisis. The path&apos;s full benefits require completing multiple technologies that take years to research. Plan your Tradition completion order to unlock enough Ascension Perk slots for both your early utility perks (Executive Vigor, Technological Ascendancy) and your chosen path by mid-game.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S19 -->
+<section class="section" id="s19">
+<h2 class="section-title"><span class="sec-num">&sect;19</span> Exploration &amp; Survey</h2>
+<p>The early game of Stellaris is almost entirely an exploration and survey race. Your Science Ships, commanded by Scientist leaders, scan every system in your immediate neighbourhood for planets, resources, anomalies, and strategically significant features. Speed of survey directly determines how quickly you can plan expansion, identify threats, and discover the galaxy&apos;s early secrets.</p>
+
+<h2 class="sub-title">Science Ship Functions</h2>
+<ul class="guide-list">
+  <li><strong>Survey missions:</strong> Systematically scan every celestial body in a system to reveal resources, planet habitability values, and anomaly locations. The primary early-game task.</li>
+  <li><strong>Anomaly investigation:</strong> When a survey uncovers an anomaly, the Science Ship can investigate it. Anomalies trigger events that provide resources, technologies, story content, or threats. Higher-level Scientist leaders reduce investigation failure chance.</li>
+  <li><strong>Research Assistance:</strong> Science ships can assist planets with Research bonuses when not surveying. Less valuable than surveying in the early game but useful mid-game gap-filling.</li>
+</ul>
+
+<h2 class="sub-title">Early Exploration Priorities</h2>
+<div class="phase early">
+  <div class="phase-title">Year 2200&ndash;2210: Immediate Neighbours</div>
+  <p>Deploy all Science Ships (start with two if possible) to survey your immediate home system and the three or four systems connected to it by hyperlane. Identify habitable worlds for early colonisation, strategic resource deposits for mining stations, and blockers in your expansion path. The systems within 5 hyperlane jumps of your home system are the most important survey targets in the game.</p>
+</div>
+<div class="phase mid">
+  <div class="phase-title">Year 2210&ndash;2230: Border Contact and Expansion Path</div>
+  <p>Extend survey coverage to your borders with other empires. Understanding your neighbours&apos; territorial extent early allows you to make Influence investment decisions before borders close around unclaimed systems. Every unclaimed habitable system that another empire colonises instead of you is a permanent strategic disadvantage that compounds over decades.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S20 -->
+<section class="section" id="s20">
+<h2 class="section-title"><span class="sec-num">&sect;20</span> Colonisation</h2>
+<p>Colonisation is how you transform surveyed worlds into productive members of your empire. The core decision is not which worlds to colonise but <strong>when and in what order</strong>, given the significant upfront investment each colony requires before it becomes economically productive.</p>
+
+<h2 class="sub-title">Colonisation Economics</h2>
+<p>A new colony is an economic drain for several years after founding. The colony ship itself is expensive; the colony starts with only a few Pops and limited infrastructure; and maintaining it costs resources before its production scales up. The key rule: <strong>never found a colony you cannot sustain</strong>. A new colony that causes Consumer Goods or Energy deficits across your empire does more damage than it provides benefit in the short term.</p>
+
+<h2 class="sub-title">Habitability and Its Importance</h2>
+<p>Every species has a planetary preference type. Pops working on worlds with low habitability produce less output and have lower happiness. In 4.0, habitability now affects <strong>job efficiency</strong> directly: a Pop on a planet at 70% habitability is less efficient than the same Pop at 100% habitability. Prioritise colonising worlds with 70%+ habitability for your founder species, or use Biological Ascension to create sub-species adapted to specific world types.</p>
+
+<h2 class="sub-title">Wide vs. Tall</h2>
+<p>The classic Stellaris strategic tension: colonise widely (many planets, more total output, higher Empire Sprawl) or focus on developing fewer planets deeply (less Sprawl, more efficiency per planet, less administrative overhead). In 4.x, the penalty for excessive Empire Sprawl has been rebalanced to be less punishing than in earlier versions, shifting the meta slightly toward medium-wide builds rather than pure tall. However, true tall play (fewer, heavily developed worlds with high-level buildings and maxed districts) remains viable and is simpler to manage in the mid-game.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S21 -->
+<section class="section" id="s21">
+<h2 class="section-title"><span class="sec-num">&sect;21</span> Empire Sprawl &amp; Influence</h2>
+<p>Empire Sprawl is a measure of administrative complexity. As your empire grows &mdash; more systems, more colonies, more planets &mdash; your Sprawl increases and begins generating a penalty to research speed, tradition adoption cost, and other outputs. Managing Sprawl through Administrative buildings (Bureaucrats who reduce the penalty) is a continuous mid-to-late game task.</p>
+
+<h2 class="sub-title">Sprawl Reduction</h2>
+<ul class="guide-list">
+  <li><strong>Bureaucrat jobs</strong> from Administrative Office buildings directly reduce Empire Sprawl. Every major world should eventually have Administrative Offices to offset their own Sprawl contribution.</li>
+  <li><strong>Sector Governors</strong> with administrative traits reduce Sprawl in their sector.</li>
+  <li><strong>Domination traditions</strong> reduce the Sprawl generated by each colony.</li>
+  <li><strong>Releasing territory as Vassals</strong> removes their Sprawl from your total while potentially keeping their resources accessible through Tribute arrangements.</li>
+</ul>
+
+<h2 class="sub-title">Influence</h2>
+<p>Influence is the resource of political and territorial power. It is generated slowly (typically 3&ndash;5 per month) and spent on everything territorial:</p>
+<ul class="guide-list">
+  <li>Claiming systems before or during war (systems must be claimed to be permanently annexed)</li>
+  <li>Building Starbases (each Starbase beyond your limit costs Influence maintenance)</li>
+  <li>Activating Edicts</li>
+  <li>Faction appeasing</li>
+  <li>Diplomatic actions</li>
+  <li>Subject interactions</li>
+</ul>
+<p>Influence is almost always the binding constraint on early-game expansion. You will frequently have the minerals and energy to colonise but not the Influence to claim the systems. Maximising Influence income through Rulers, the Beacon of Liberty achievement (Egalitarian), Rivals, and specific traditions is one of the highest-value strategic actions in the early-to-mid game.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S22 -->
+<section class="section" id="s22">
+<h2 class="section-title"><span class="sec-num">&sect;22</span> Enclaves &amp; Megastructures</h2>
+<div class="lore-block">
+  <p>The Caravaneers appeared in year 2231. Nobody had built them. They had, as far as anyone could determine, always been there, moving between stars in ships that predated most of the empires they were trading with. They were, they explained pleasantly, in the business of selling things to anyone who could pay. What they wanted in exchange depended on who was asking and what the seller had that the Caravaneers did not. They were unfailingly cheerful about this. They were also impossible to rob. The fleet that tried in 2238 has not been found.</p>
+  <span class="source">// GALACTIC TRADE COMMISSION &middot; ENCLAVE RELATIONS REPORT &middot; YEAR 2245 //</span>
+</div>
+
+<h2 class="sub-title">Enclaves</h2>
+<p>Enclaves are independent organisations that exist in the galaxy and can be interacted with diplomatically. They do not expand or compete for territory &mdash; they simply exist in specific systems and offer unique services:</p>
+<ul class="guide-list">
+  <li><strong>Caravaneers:</strong> Trade posts offering unusual resources, random events, and (if invested in) access to unique ships and items.</li>
+  <li><strong>Salvager Enclaves:</strong> Pay for debris from battles; provide unique ship upgrades.</li>
+  <li><strong>Artisan Troupe:</strong> Provide Amenities bonuses and unique events for a monthly fee.</li>
+  <li><strong>Curators:</strong> Reduce Anomaly research time; can investigate specific anomalies on request.</li>
+  <li><strong>Mercenary Enclaves</strong> (Overlord DLC): Hire temporary fleets; very useful for military emergencies.</li>
+</ul>
+
+<h2 class="sub-title">Megastructures</h2>
+<p>Megastructures are the late-game&apos;s architectural monuments, built by dedicated Construction Ships after researching specific technologies. They take years to complete and require enormous resource investment but provide game-changing output:</p>
+<table class="data-table">
+  <thead><tr><th>Megastructure</th><th>Effect</th><th>Requirements</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Dyson Sphere</strong></td><td>+1000 Energy Credits/month when complete</td><td>Megastructure construction tech; a star to enclose</td></tr>
+    <tr><td><strong>Ring World</strong></td><td>Four massive habitable segments; enormous district capacity</td><td>Advanced Megastructure tech; entire star system dedicated</td></tr>
+    <tr><td><strong>Habitat</strong></td><td>Artificial world in a barren system; extendable with upgrades</td><td>Earlier Megastructure tech; available earlier in game</td></tr>
+    <tr><td><strong>Science Nexus</strong></td><td>+3000 Research output across all categories</td><td>Megastructure construction tech</td></tr>
+    <tr><td><strong>Sentry Array</strong></td><td>Full sensor coverage of entire galaxy</td><td>Advanced Megastructure tech; intelligence superiority</td></tr>
+  </tbody>
+</table>
+
+<div class="callout amber">
+  <div class="callout-title">Priority Megastructure: Dyson Sphere</div>
+  <p>The Dyson Sphere provides a passive +1000 Energy Credits per month. This single structure eliminates every Energy Credit concern for the rest of the game and frees up all Generator Districts on every world for other functions. It typically comes online around year 60&ndash;80 in a normal game if you&apos;ve been prioritising the research path. Build it around a star in a strategic system that you can defend easily. It is the single highest long-term value megastructure in the game.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S23 -->
+<section class="section" id="s23">
+<h2 class="section-title"><span class="sec-num">&sect;23</span> Fleets &amp; Naval Capacity</h2>
+<div class="lore-block">
+  <p>The doctrine was simple: never engage with fewer ships than you have. The obvious flaw was that the enemy had read the same doctrine and was applying it simultaneously. Both fleets spent three months manoeuvring around each other in the Kerenthis nebula, each fleet commander certain that the other commander would make the first mistake. Eventually one of them ran low on fuel. The battle that followed lasted eleven minutes. It was, by the standards of the war, decisive.</p>
+  <span class="source">// FLEET OPERATIONS ARCHIVE &middot; FIRST KERENTHIS ENGAGEMENT &middot; YEAR 2289 //</span>
+</div>
+
+<p>Naval Capacity is the ceiling on how many ships you can maintain without paying the Upkeep penalty for over-capacity fleets. Building beyond your Naval Capacity is possible but expensive &mdash; ships over-cap cost double Energy Credits per ship in upkeep. Managing the tension between military readiness and economic cost is the core of Stellaris military management.</p>
+
+<h2 class="sub-title">Naval Capacity Sources</h2>
+<ul class="guide-list">
+  <li><strong>Technology:</strong> Multiple technologies increase base Naval Capacity (currently up to 20 repeatable increments in 4.3). Prioritising these is important for military-focused builds.</li>
+  <li><strong>Starbases:</strong> Each Starbase tier and its Anchorage modules add Naval Capacity.</li>
+  <li><strong>Traditions (Supremacy tree):</strong> Multiple bonuses to Naval Capacity from the Supremacy tradition.</li>
+  <li><strong>Civics:</strong> Distinguished Admiralty adds +20 Naval Capacity and Admiral skill bonuses.</li>
+  <li><strong>Edicts:</strong> Activation Protocols edict adds temporary Naval Capacity at Unity cost.</li>
+</ul>
+
+<h2 class="sub-title">Fleet Composition Principles</h2>
+<p>Effective fleet composition in 4.x requires understanding the weapon-vs-defense matchup system:</p>
+<ul class="guide-list">
+  <li><strong>Shields vs. Energy Weapons:</strong> Energy weapons (lasers, disruptors) are strong against shields but weaker against armor. Shields are ineffective against sustained energy fire.</li>
+  <li><strong>Armor vs. Kinetic Weapons:</strong> Kinetic weapons (railguns, artillery) penetrate armor more effectively but are weaker against shields.</li>
+  <li><strong>Disruptors:</strong> In 4.3, start with 50% shield and armor bypass at tier 1, increasing to 80% at Psionic tier. Highly effective but lower raw damage.</li>
+  <li><strong>Missile ships:</strong> Ignores point-defense except for specialized PD ships. Strong but require a counter-PD investment.</li>
+  <li>Design your fleet to <strong>counter what your enemies are actually fielding</strong>, not to be theoretically optimal against an imaginary enemy.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S24 -->
+<section class="section" id="s24">
+<h2 class="section-title"><span class="sec-num">&sect;24</span> Ship Design</h2>
+<p>Ship design is where the player directly influences combat outcomes. The Ship Designer allows you to manually configure weapon loadouts, defensive layers, and utility components for each ship class. Understanding this system prevents the most common military mistake: using the Auto-Upgrade feature to let the AI make design decisions that are often suboptimal.</p>
+
+<h2 class="sub-title">Ship Classes and Roles</h2>
+<table class="data-table">
+  <thead><tr><th>Class</th><th>Role</th><th>Key Slots</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Corvette</strong></td><td>Fast; screening; swarming; picket duty</td><td>Small weapons; evasion modules</td><td>Extremely cheap; produced in mass; evasion is high (hard to hit); losses are acceptable</td></tr>
+    <tr><td><strong>Destroyer</strong></td><td>Anti-Corvette screening; Point Defense</td><td>Point Defense; mixed weapons</td><td>Counter to Torpedo corvettes; counter to missile spam; best PD platform per cost</td></tr>
+    <tr><td><strong>Cruiser</strong></td><td>Mid-range fire support; versatile</td><td>Mixed Small/Medium weapons; Kinetic Artillery</td><td>The backbone of mid-game fleets; cost-effective damage output</td></tr>
+    <tr><td><strong>Battleship</strong></td><td>Heavy fire support; artillery; anti-station</td><td>Large weapons; heavy armor/shields</td><td>The game&apos;s most powerful fleet capital; X-slot weapons (Titan Lance, etc.); unlocked later</td></tr>
+    <tr><td><strong>Titan</strong></td><td>Fleet flagship; unique auras</td><td>Titan Lance (X-slot); unique Aura modules</td><td>Provides fleet-wide combat bonuses; one per fleet; morale and engagement bonuses</td></tr>
+    <tr><td><strong>Colossus</strong></td><td>Planet killer; unique weapons</td><td>Colossus weapon slot</td><td>Can destroy, pacify, or convert entire planets; requires Apocalypse DLC; extremely powerful diplomatically</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Design Principles</h2>
+<ul class="guide-list">
+  <li><strong>Match weapons to your expected opponent&apos;s defences.</strong> If the enemy is running Shield-heavy fleets, run Laser/Energy weapons. If they&apos;re running Armor-heavy, run Kinetics.</li>
+  <li><strong>Do not mix incompatible weapons randomly.</strong> A Battleship with one laser, one railgun, and one missile is not flexible &mdash; it&apos;s mediocre at everything simultaneously. Specialise ships or at minimum specialise fleets.</li>
+  <li><strong>The auto-designer is often wrong.</strong> It does not know your enemy&apos;s composition. Check your ship designs manually at each major tech tier and when preparing for a specific war.</li>
+  <li><strong>Reactors and power budget matter.</strong> Better reactor technology allows more power-hungry components. Keep your designs within power budget.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S25 -->
+<section class="section" id="s25">
+<h2 class="section-title"><span class="sec-num">&sect;25</span> Leaders &amp; Admirals (4.x System)</h2>
+<p>In 4.x, Leaders are significantly more impactful than in earlier versions. The Galactic Paragons DLC transformed Leaders from basic stat-carriers into complex individuals with unique backgrounds, growing trait trees, and council positions that provide empire-wide bonuses. Every Leader type has specific roles and optimal deployment contexts.</p>
+
+<h2 class="sub-title">Leader Types and Roles</h2>
+<table class="data-table">
+  <thead><tr><th>Type</th><th>Primary Role</th><th>Council Role Effect</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Admiral</strong></td><td>Fleet command (combat bonuses, XP earned in battle)</td><td>Military Chief provides naval cap and combat bonuses empire-wide</td></tr>
+    <tr><td><strong>General</strong></td><td>Army command (army damage, assault bonuses)</td><td>High-level Generals on council improve army performance empire-wide</td></tr>
+    <tr><td><strong>Governor</strong></td><td>Sector management (output bonuses, stability)</td><td>Varies by position; Interior Minister provides stability</td></tr>
+    <tr><td><strong>Scientist</strong></td><td>Research (tech draw bonuses, anomaly investigation, survey)</td><td>Chief Scientist provides research speed bonuses</td></tr>
+    <tr><td><strong>Ruler</strong></td><td>Empire head; provides unique bonus based on authority type</td><td>Central council position; provides overall imperial bonuses</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">The Council System (Galactic Paragons)</h2>
+<p>The Council is a group of your most important Leaders whose positions provide empire-wide bonuses. Managing your Council &mdash; which Leaders fill which positions, and developing the right traits for each position &mdash; provides a consistent passive bonus system that compounds over the entire game. Key priorities:</p>
+<ul class="guide-list">
+  <li>Always keep your Chief Scientist position filled; the research bonus applies to your entire research output.</li>
+  <li>Your Admiral on the Military Council should be one of your highest-skill Admirals; the naval bonuses affect every fleet.</li>
+  <li>Do not neglect the Interior Minister position in wide empires; stability empire-wide is enormously valuable.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S26 -->
+<section class="section" id="s26">
+<h2 class="section-title"><span class="sec-num">&sect;26</span> Armies &amp; Planetary Warfare</h2>
+<p>Conquering a planet requires two steps: defeating the orbital fleet and bombarding the planet to softness, then landing armies to physically occupy it. Armies are a frequently neglected system that new players discover matters enormously when they&apos;ve defeated every enemy fleet and cannot actually take the planets.</p>
+
+<h2 class="sub-title">Army Types</h2>
+<ul class="guide-list">
+  <li><strong>Assault Armies:</strong> Standard offensive troops; recruited from planets; require time and minerals to produce.</li>
+  <li><strong>Robotic Armies:</strong> Stronger than Assault Armies; available to robot-producing empires.</li>
+  <li><strong>Clone Armies:</strong> Available to Clone Army origin; the strongest standard armies in the game early on.</li>
+  <li><strong>Psionic Armies:</strong> Powerful armies available through Psionic Ascension; Strong trait pops improve Soldier efficiency in 4.3.</li>
+  <li><strong>Battle Thralls:</strong> Slave armies; good cost-effectiveness; receive Soldier efficiency bonuses in 4.3.</li>
+</ul>
+
+<h2 class="sub-title">Orbital Bombardment</h2>
+<p>Before landing armies, you can bombard the planet from orbit. This reduces the defending army&apos;s strength and the planet&apos;s Fortification level (which adds to defender strength). Bombardment stances range from Selective (avoids civilian casualties but slower) to Armageddon (destroys pops permanently; extreme crime against most ethics). Match your bombardment stance to your diplomatic situation &mdash; Armageddon bombardment will cause massive opinion penalties with most of the galaxy.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S27 -->
+<section class="section" id="s27">
+<h2 class="section-title"><span class="sec-num">&sect;27</span> Diplomacy System</h2>
+<div class="lore-block">
+  <p>The Galactic Community did not solve anything. Its advocates said it would: that bringing all spacefaring civilisations into a common forum would produce common solutions to common problems. Its critics said that it would instead produce an institutionalised arena for disagreements that would otherwise have been resolved more quietly and at smaller scale. Both sides were right. The Community did not solve anything. It also prevented several things from being solved in ways that would have involved significantly more destruction. Whether that was worth the effort was a discussion the Community had been having with itself since its founding. The discussion showed no signs of concluding.</p>
+  <span class="source">// GALACTIC COMMUNITY HISTORICAL REVIEW &middot; CENTENNIAL EDITION &middot; YEAR 2350 //</span>
+</div>
+
+<p>The diplomacy system governs all inter-empire relations: from basic Embassies and Trade Agreements to complex Federation structures and the Galactic Community&apos;s legislative process. Effective diplomacy can multiply your military power without building a single additional ship.</p>
+
+<h2 class="sub-title">Diplomatic Actions and Agreements</h2>
+<table class="data-table">
+  <thead><tr><th>Action</th><th>Effect</th><th>Requirements</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Embassy</strong></td><td>Foundation of all bilateral agreements; improves base opinion</td><td>Requires making first contact</td></tr>
+    <tr><td><strong>Non-Aggression Pact</strong></td><td>Both empires cannot declare war on each other for duration</td><td>Neutral to positive opinion</td></tr>
+    <tr><td><strong>Research Agreement</strong></td><td>Mutual +10% Research from all categories</td><td>Positive opinion; Materialist compatible</td></tr>
+    <tr><td><strong>Migration Treaty</strong></td><td>Pops can freely migrate between empires</td><td>Xenophile or Egalitarian tendency</td></tr>
+    <tr><td><strong>Defensive Pact</strong></td><td>Automatic ally if either party is attacked</td><td>Good opinion; significant commitment</td></tr>
+    <tr><td><strong>Rivalry</strong></td><td>Gain monthly Influence against the target; -100 opinion</td><td>Available to any empire; max 3 Rivals</td></tr>
+    <tr><td><strong>Claim Systems</strong></td><td>Formal territorial claim; enables specific war goals</td><td>Influence cost; required to annex in war</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Envoys</h2>
+<p>Envoys are your diplomatic agents. They are limited in number (typically 3&ndash;5 depending on technologies and civics). Each Envoy can be assigned to:</p>
+<ul class="guide-list">
+  <li>Improve Relations with a specific empire (+3 monthly opinion)</li>
+  <li>Harm Relations between two other empires</li>
+  <li>Espionage operations against a target</li>
+  <li>The Federation (to advance your Federation influence)</li>
+  <li>The Galactic Community</li>
+</ul>
+<p>Envoy management is an underutilised system. Continuously improving relations with a specific empire can turn a neutral power into an ally; consistently harming relations between potential allies can prevent alliances that would threaten you. Manage Envoys actively rather than leaving them idle.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S28 -->
+<section class="section" id="s28">
+<h2 class="section-title"><span class="sec-num">&sect;28</span> Federations</h2>
+<p>Federations are multi-empire alliances with a collective governance structure. They share a fleet, they vote on collective actions, and they fight wars together. The Federations DLC (2020) greatly expanded federation types and the Galactic Community mechanics.</p>
+
+<h2 class="sub-title">Federation Types</h2>
+<table class="data-table">
+  <thead><tr><th>Type</th><th>Tradition Required</th><th>Key Benefits</th><th>Best For</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Galactic Union</strong></td><td>Diplomacy tree (The Federation)</td><td>Balanced bonuses; diplomatic weight; default type</td><td>General diplomatic builds</td></tr>
+    <tr><td><strong>Research Cooperative</strong></td><td>Diplomacy tree</td><td>Shared research output bonuses; Technology focus</td><td>Materialist/research empires</td></tr>
+    <tr><td><strong>Trade League</strong></td><td>Diplomacy tree</td><td>Trade value bonuses; Commercial focus</td><td>MegaCorp builds; Xenophile trade builds</td></tr>
+    <tr><td><strong>Military Alliance</strong></td><td>Supremacy tree</td><td>Shared fleet power; Naval cap bonuses; Combat focus</td><td>Militarist builds; aggressive alliances</td></tr>
+    <tr><td><strong>Hegemony</strong></td><td>Domination tree</td><td>The founder has overwhelming authority; subjects-like relationship</td><td>Authoritarian/Imperialist plays; started via Hegemon origin</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Federation Cohesion and Presidency</h2>
+<p>Federations have a Cohesion level that determines how well the federation functions. Low cohesion reduces shared benefits. The Federation President (which rotates or can be held permanently depending on federation laws) gets to set the Federation&apos;s fleet composition and strategy. Getting the Presidency of a strong Federation is a major power multiplier &mdash; you direct the combined fleet of multiple empires against your enemies while they provide the ships and pay the maintenance.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S29 -->
+<section class="section" id="s29">
+<h2 class="section-title"><span class="sec-num">&sect;29</span> The Galactic Community</h2>
+<p>The Galactic Community forms when enough empires have established communications &mdash; typically by year 2230&ndash;2250 in a standard game. It is a galaxy-wide legislative body where resolutions are proposed, debated, and voted upon, affecting all member empires with galaxy-wide policies.</p>
+
+<h2 class="sub-title">How the Galactic Community Works</h2>
+<p>Member empires have <strong>Diplomatic Weight</strong> that determines their voting power. Diplomatic Weight is generated by your economy, technology, military power, and specific bonuses from traditions and civics. The empire with the most Diplomatic Weight has the most influence over which resolutions pass. Key mechanics:</p>
+<ul class="guide-list">
+  <li>Resolutions are proposed by members and require a vote to pass or fail.</li>
+  <li>Some resolutions benefit specific ethics (Pacifist resolutions benefit Pacifist empires; Militarist resolutions benefit Militarist empires).</li>
+  <li>The <strong>Galactic Custodian</strong> role (from Nemesis DLC) grants extraordinary powers to address crisis situations.</li>
+  <li>The <strong>Galactic Emperor</strong> role transforms the Galactic Community into a direct imperial hierarchy under your rule &mdash; the most powerful diplomatic end-state in the game.</li>
+</ul>
+
+<div class="callout purple">
+  <div class="callout-title">The Diplomatic Victory Path</div>
+  <p>Becoming Galactic Emperor through legitimate Galactic Community mechanics is one of Stellaris&apos;s most satisfying victory conditions. The path: accumulate massive Diplomatic Weight (Corporate authority, Trade League federation, Xenophile ethics, high economic output), dominate Community voting, pass the resolutions that increase your Diplomatic Weight further, become Custodian during a Crisis, then convert the Custodianship into Emperor status. This requires Federations and Nemesis DLC and 100+ years of sustained diplomatic work. It is also the most politically interesting path in the game.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S30 -->
+<section class="section" id="s30">
+<h2 class="section-title"><span class="sec-num">&sect;30</span> Subjects &amp; Vassals</h2>
+<p>Subjects are empires that exist in a subordinate relationship to your empire. They have reduced autonomy and provide tribute, military forces, and diplomatic weight to their overlord. Managing a stable network of subjects is one of the most powerful force multipliers in the game.</p>
+
+<h2 class="sub-title">Subject Types</h2>
+<table class="data-table">
+  <thead><tr><th>Type</th><th>Tribute Provided</th><th>Autonomy Level</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Vassal</strong></td><td>Resources; fleet participation; diplomatic weight</td><td>Low; cannot declare war independently</td><td>Standard subject; can eventually be integrated into empire</td></tr>
+    <tr><td><strong>Tributary</strong></td><td>Monthly resource tribute (Energy/Minerals)</td><td>Higher; can conduct diplomacy</td><td>Keeps resource income without full integration; less administrative overhead</td></tr>
+    <tr><td><strong>Protectorate</strong></td><td>Minimal; protected from other empires</td><td>Very high; nearly independent</td><td>For primitive or pre-FTL species being uplifted; minor cost for goodwill</td></tr>
+    <tr><td><strong>Scholarium</strong></td><td>Research sharing</td><td>Moderate</td><td>Overlord DLC; research-focused relationship</td></tr>
+    <tr><td><strong>Satrapy</strong></td><td>Military service and resources</td><td>Low; military-focused</td><td>Overlord DLC; militaristic subject relationship</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Vassal Management</h2>
+<p>A network of vassals that each provide monthly tribute is effectively an economic multiplier without the administrative burden of directly managing their planets. The optimal vassal strategy: conquer medium-sized empires; rather than annexing them (which costs enormous Influence and raises your Sprawl), vassalise them; then extract tribute while their pops develop independently. Over time, integrated vassals become full members of your empire when you choose to integrate them &mdash; a slow but economically efficient path to massive population growth.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S31 -->
+<section class="section" id="s31">
+<h2 class="section-title"><span class="sec-num">&sect;31</span> Espionage</h2>
+<p>The Espionage system (Nemesis DLC) allows empires to conduct covert operations against each other using Spy Networks built up over time. Espionage is an intelligence game layered over the main strategy game, with distinct mechanics for offensive operations and defensive counter-intelligence.</p>
+
+<h2 class="sub-title">Spy Networks</h2>
+<p>You build a Spy Network in a target empire by assigning Envoys to espionage duty against that target. Network strength increases over time (capped at 100). Higher network strength enables more powerful operations and reduces the chance of exposure. Your own Empire&apos;s Encryption level vs. the target&apos;s counter-intelligence determines how quickly your network builds and how likely operations are to be detected.</p>
+
+<h2 class="sub-title">Key Operations</h2>
+<ul class="guide-list">
+  <li><strong>Gather Intelligence:</strong> Reveals the target empire&apos;s fleet composition, research, and economy details.</li>
+  <li><strong>Smear Campaign:</strong> Reduces the target&apos;s Diplomatic Weight and opinion with third parties.</li>
+  <li><strong>Steal Technology:</strong> Chance to acquire a technology the target has but you don&apos;t.</li>
+  <li><strong>Arm Dissidents:</strong> Triggers internal instability and faction unrest in the target.</li>
+  <li><strong>Crisis Beacon:</strong> Causes the target to be designated by the End-Game Crisis as a high-priority target.</li>
+  <li><strong>Become the Crisis:</strong> A unique progression mechanic (Nemesis) allowing your empire to become the End-Game Crisis.</li>
+</ul>
+
+<div class="callout teal">
+  <div class="callout-title">Steal Technology &mdash; The Highest Value Operation</div>
+  <p>Steal Technology is the highest-value Espionage operation for most builds. A successful steal gives you a technology that your opponent spent years researching, for the cost of an operation and the risk of detection. Target an empire that is technologically ahead of you and prioritise stealing their most advanced Physics or Engineering technologies. A single successful Steal Technology can advance your research by 10&ndash;20 years.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S32 -->
+<section class="section" id="s32">
+<h2 class="section-title"><span class="sec-num">&sect;32</span> Fallen &amp; Awakened Empires</h2>
+<div class="lore-block">
+  <p>They had been there before the first hyperlane route was charted. They had been there before the first colonisation ship left the first homeworld. They had been there, in those systems, sleeping &mdash; or something so close to sleeping that the distinction was purely philosophical &mdash; for longer than the young empires had names for. When they woke, the young empires had two choices: negotiate, or regret. Most chose to negotiate. Some, having insufficient resources for regret, also chose to negotiate. The negotiations were, by most accounts, deeply unpleasant.</p>
+  <span class="source">// XENODIPLOMACY MANUAL &middot; FALLEN EMPIRE RELATIONS &middot; CHAPTER 1 //</span>
+</div>
+
+<p>Fallen Empires are ancient civilisations that reached technological heights far beyond current empires and then stagnated into isolation. They are present at game start and dormant &mdash; but they will react to perceived threats and provocations. An Awakened Fallen Empire (which happens in response to specific Crisis events or sufficient provocation) is one of the most militarily powerful entities in the game.</p>
+
+<h2 class="sub-title">Fallen Empire Types</h2>
+<div class="unit-grid">
+  <div class="unit-card purple-card">
+    <div class="unit-name">Enigmatic Observers</div>
+    <span class="unit-type">SPIRITUALIST &middot; MATERIALIST OPPOSITION</span>
+    <p>Oppose materialist development; will intervene against synthetic life. Treat primitive civilisations as sacred. The galaxy&apos;s most pronounced anti-robot Fallen Empire. Avoid uplift events that they oppose if you rely on robotic production.</p>
+  </div>
+  <div class="unit-card teal-card">
+    <div class="unit-name">Militant Isolationists</div>
+    <span class="unit-type">XENOPHOBE &middot; TERRITORY GUARDIAN</span>
+    <p>Will not tolerate other empires colonising or claiming systems near their territory. Have well-defined buffer zones. Cross these and face immediate military response. The easiest Fallen Empire to accidentally provoke by expanding in the wrong direction.</p>
+  </div>
+  <div class="unit-card red-card">
+    <div class="unit-name">Keepers of Knowledge</div>
+    <span class="unit-type">MATERIALIST &middot; RESEARCH ORIENTED</span>
+    <p>Value research and science. Can be negotiated with to unlock unique technologies. Will offer tech rewards for specific actions but also react poorly to certain types of primitive civilisation interaction. The most accessible Fallen Empire for trade relationships.</p>
+  </div>
+  <div class="unit-card amber-card">
+    <div class="unit-name">Fallen Empire (War)</div>
+    <span class="unit-type">MILITARIST &middot; XENOPHOBE &middot; DORMANT CONQUERORS</span>
+    <p>Former conquering empires that stopped expanding. They remember conquest. Awakening these during the War in Heaven makes them extremely aggressive. The most dangerous to be neighbours with because their memories of empire are violent.</p>
+  </div>
+</div>
+
+<h2 class="sub-title">Dealing with Fallen Empires</h2>
+<p>The standard advice for new players: leave Fallen Empires alone. Do not colonise their buffer systems; do not uplift species they consider sacred; do not build megastructures in their claimed territory. The military cost of a Fallen Empire attack is near-insurmountable in the early-to-mid game. However, once you are technologically advanced (typically year 80+), Awakened Fallen Empires are among the best sources of unique technologies and their remnant buildings &mdash; unlocked by the Arcane Deciphering tech &mdash; provide unique bonuses unavailable anywhere else.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S33 -->
+<section class="section" id="s33">
+<h2 class="section-title"><span class="sec-num">&sect;33</span> End-Game Crises</h2>
+<div class="lore-block">
+  <p>The first contact report from the Observation Post at Kerenthis read: &quot;Unknown fleet, estimated 800 vessels, classification Unbidden, purpose: unclear but directional, moving toward inhabited systems at 0.7c. Advisory: prepare.&quot; Fleet Command&apos;s response was two words. The first word was a profanity common to seventeen of the galaxy&apos;s seventeen known languages. The second word was &quot;acknowledged.&quot; The mobilisation began the same hour.</p>
+  <span class="source">// KERENTHIS OBSERVATION POST &middot; CRISIS ALERT TRANSMISSION &middot; YEAR 2377 //</span>
+</div>
+
+<p>End-Game Crises are galaxy-threatening events that occur in the late game (typically year 100&ndash;150 depending on settings). They are designed to unite the galaxy against a common enemy &mdash; or to test whether the galaxy can be united at all. Three Crisis types exist, and additional Crises have been added through updates.</p>
+
+<h2 class="sub-title">The Three Standard Crises</h2>
+<div class="unit-grid">
+  <div class="unit-card red-card">
+    <div class="unit-name">The Unbidden</div>
+    <span class="unit-type">EXTRADIMENSIONAL INVADERS &middot; PORTAL-BASED</span>
+    <p>Arrive through a dimensional portal and spread outward, converting all planets to their own dimension. Pure military challenge: enormous fleet power, hostile to all biological life. The most straightforwardly militarily threatening crisis. Build the largest fleet you can before they arrive. Close the portal if possible; eliminate their bases if you cannot. The Unbidden have been strengthened in 4.3 to better survive their spawn location.</p>
+  </div>
+  <div class="unit-card purple-card">
+    <div class="unit-name">The Prethoryn Scourge</div>
+    <span class="unit-type">BIOLOGICAL INVADERS &middot; ORGANIC FLEET</span>
+    <p>An organic fleet of impossibly large proportions fleeing something from beyond the galaxy&apos;s edge. They consume planets, converting populations to organic matter. The Scourge are harder to eliminate than the Unbidden because their fleet composition favours organic technology. Chemical or missile weapons are most effective against Prethoryn.</p>
+  </div>
+  <div class="unit-card neutral-card">
+    <div class="unit-name">The Contingency</div>
+    <span class="unit-type">MACHINE INTELLIGENCE &middot; STERILIZATION HUBS</span>
+    <p>An ancient machine intelligence that seeks to eliminate all biological and synthetic life as a threat to galactic equilibrium. The Contingency is the most strategic Crisis: it activates Sterilization Hubs on inhabited worlds that must be destroyed before they convert all life. Highly effective against disorganised or isolated empires. The most intellectually interesting Crisis to face.</p>
+  </div>
+</div>
+
+<h2 class="sub-title">Become the Crisis (Nemesis)</h2>
+<p>With the Nemesis DLC, a player empire can choose to pursue the Menace path and become the Crisis. Gaining Menace through conquest and destruction allows unlocking the Galactic Nemesis Ascension Perk, which unlocks Colossus planets-killing options and eventually Menacing Ships. It is an alternative win condition that transforms your own empire into the galaxy-threatening force others must unite against. Challenging to sustain but uniquely powerful if executed correctly.</p>
+
+<h2 class="sub-title">Crisis Preparation</h2>
+<p>Every game of Stellaris should have Crisis preparation as a mid-game planning consideration:</p>
+<ul class="guide-list">
+  <li>Maintain 2&ndash;3 times your normal peacetime fleet in reserve Alloy production capacity. When the Crisis hits, you need to build ships rapidly.</li>
+  <li>Starbases with Anchorages and defensive platforms on your frontiers slow Crisis fleet advances while you build.</li>
+  <li>The Galactic Custodian role (available through the Galactic Community during a Crisis) provides significant bonuses to coordinating a galactic response.</li>
+  <li>Crisis strength in 4.3 scales with difficulty setting. On higher difficulties, prepare earlier and more substantially.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S34 -->
+<section class="section" id="s34">
+<h2 class="section-title"><span class="sec-num">&sect;34</span> Victory Conditions</h2>
+<p>Stellaris does not have a single fixed victory condition. The game ends at a target year (default 2500) with a score-based ranking, but players typically define their own victory narratives. The most commonly pursued &quot;win&quot; conditions are:</p>
+
+<h2 class="sub-title">Victory Paths</h2>
+<div class="unit-grid">
+  <div class="unit-card teal-card">
+    <div class="unit-name">Galactic Domination</div>
+    <span class="unit-type">MILITARY &middot; CONQUEST</span>
+    <p>Control enough of the galaxy through direct ownership and subject empires to dominate the Galactic Community and win on score. The most direct path. Requires sustained military investment and the administrative capacity to manage a large empire or extensive subject network.</p>
+  </div>
+  <div class="unit-card purple-card">
+    <div class="unit-name">Diplomatic Victory</div>
+    <span class="unit-type">POLITICAL &middot; GALACTIC EMPEROR</span>
+    <p>Become Galactic Emperor through legitimate Community mechanics. Requires Federations + Nemesis DLC. The longest and most politically demanding path; also the most rewarding. A Galactic Emperor commands all other empires through institutionalised power rather than military force.</p>
+  </div>
+  <div class="unit-card green-card">
+    <div class="unit-name">Technological Supremacy</div>
+    <span class="unit-type">RESEARCH &middot; ASCENSION</span>
+    <p>Complete an Ascension Path, build Megastructures, achieve the maximum technology level, and end the game with the most advanced civilisation in the galaxy. Not a formal win state but a deeply satisfying completion arc that compounds every other victory condition.</p>
+  </div>
+  <div class="unit-card red-card">
+    <div class="unit-name">Crisis Victory</div>
+    <span class="unit-type">NEMESIS DLC &middot; BECOME THE CRISIS</span>
+    <p>Become the Galactic Nemesis and defeat the galaxy&apos;s combined resistance. The most aggressive and unconventional victory path. Requires sustained Menace accumulation and willingness to be at war with the entire galaxy simultaneously. Extremely challenging on higher difficulties.</p>
+  </div>
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">Survive the Crisis, Then Win</div>
+  <p>In practical terms, the most important &quot;victory condition&quot; in any Stellaris game is surviving the End-Game Crisis. An empire that survives the Crisis &mdash; either alone or as part of a galactic coalition &mdash; and emerges with its economy and military intact is in a position to win whatever the scoring condition demands. The Crisis is the true climax of the game&apos;s mid-to-late arc. Plan for it, survive it, and the endgame score will follow.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S35 -->
+<section class="section" id="s35">
+<h2 class="section-title"><span class="sec-num">&sect;35</span> Glossary</h2>
+<div class="gloss-grid">
+  <div class="gloss-item"><div class="gloss-term">Admiral</div><div class="gloss-def">Leader type that commands fleets; provides combat bonuses based on skill and traits; their Council position provides empire-wide naval bonuses.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Alloys</div><div class="gloss-def">Strategic resource produced by Foundry jobs; required for ship construction, megastructures, and military buildings; the primary constraint on military expansion.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Amenities</div><div class="gloss-def">A happiness resource produced by Entertainer and similar jobs; insufficient Amenities reduce Pop Happiness which reduces Stability and economic output.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Ascension Perk</div><div class="gloss-def">A major empire-defining choice unlocked by completing Tradition Trees; includes Ascension Path gatekeepers, planetary transformations, and powerful passive bonuses.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Authority</div><div class="gloss-def">The government archetype (Democratic, Oligarchic, Dictatorial, Imperial, Corporate, Hive Mind, Machine Intelligence) determining how power is structured and which civics are available.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Awakened Empire</div><div class="gloss-def">A Fallen Empire that has been roused from dormancy, typically by specific Crisis events or a War in Heaven; becomes one of the most militarily powerful entities in the galaxy.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Branch Office</div><div class="gloss-def">MegaCorp DLC facility built on other empires&apos; worlds; generates Trade Value for the Corporate empire without requiring ownership of the planet.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Building Slot</div><div class="gloss-def">The available spaces on a planet for Buildings; generated primarily by City Districts; the binding constraint on advanced specialist production.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Casus Belli</div><div class="gloss-def">A specific justification for declaring war; each Casus Belli enables specific War Goals; some are automatic (Claimed Systems), others require specific circumstances.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Civic</div><div class="gloss-def">A specific institutional principle defining how your empire functions; most empires have two at game start, three after researching Galactic Administration.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Colossus</div><div class="gloss-def">A unique ship type (Apocalypse DLC) capable of destroying, pacifying, or transforming entire planets; requires specific Ascension Perk; diplomatically provocative to use.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Consumer Goods</div><div class="gloss-def">Resource produced by Artisan jobs; consumed by all standard Pops as upkeep; deficit causes Happiness collapse; the most common new-player economic crisis.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Contingency</div><div class="gloss-def">One of three End-Game Crises; an ancient machine intelligence activating Sterilization Hubs on inhabited worlds to eliminate all biological and synthetic life.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Council</div><div class="gloss-def">Galactic Paragons DLC feature; group of Leaders filling key government positions that provide empire-wide passive bonuses based on their skill and traits.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Diplomatic Weight</div><div class="gloss-def">The measure of an empire&apos;s influence in the Galactic Community; generated by economy, military, technology, and specific bonuses; determines voting power.</div></div>
+  <div class="gloss-item"><div class="gloss-term">District</div><div class="gloss-def">The basic economic structure on a planet (City, Industrial, Agricultural, Mining, Generator); provides base jobs; can be specialised in 4.x for additional jobs of a specific type.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Drone</div><div class="gloss-def">The Gestalt equivalent of a Pop job; used by Hive Minds and Machine Intelligences; no Happiness, no Consumer Goods upkeep, unique job types.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Dyson Sphere</div><div class="gloss-def">Megastructure surrounding an entire star; when complete provides +1000 Energy Credits per month; the highest-value single megastructure in the game.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Ecumenopolis</div><div class="gloss-def">An entire planet covered in a single city; Ascension Perk transformation; the premier Alloy production platform; capped at one per empire.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Edict</div><div class="gloss-def">A temporary policy activated for a duration using Influence (or Unity for some types); provides specific production or military bonuses; doubled in duration by the Executive Vigor Ascension Perk.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Enclave</div><div class="gloss-def">An independent non-empire organisation in the galaxy (Caravaneers, Salvagers, Artisan Troupe, Curators, Mercenaries); offers unique services in exchange for resources or fees.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Empire Sprawl</div><div class="gloss-def">Administrative complexity measure that increases with your empire&apos;s size; generates a penalty to research and tradition costs; offset by Bureaucrat jobs and specific traditions.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Energy Credits</div><div class="gloss-def">The universal upkeep currency; powers buildings, ships, and pops; generated by Technician jobs and power stations; deficit takes buildings offline.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Envoy</div><div class="gloss-def">A diplomatic agent with limited availability; assigned to improve or harm relations, operate in the Federation or Galactic Community, or conduct espionage.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Ethics</div><div class="gloss-def">The fundamental political and philosophical positioning of your empire (Egalitarian/Authoritarian, Materialist/Spiritualist, Pacifist/Militarist, Xenophile/Xenophobe); determines available civics and diplomatic compatibility.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Faction</div><div class="gloss-def">An internal political movement representing a subset of your population with aligned ethics; generates Influence when happy; demands policy changes; a political management challenge in standard empires.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Fallen Empire</div><div class="gloss-def">An ancient, technologically superior empire in dormancy at game start; present across multiple systems; reacts to provocation; can Awaken in response to the War in Heaven.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Federation</div><div class="gloss-def">A multi-empire alliance with shared fleet and governance; multiple types available with different strategic focuses; the President controls the Federation fleet.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Food</div><div class="gloss-def">Resource produced by Farmer jobs; consumed by standard organic Pops; deficit causes growth penalty and loyalty reduction; Lithoid species eat Minerals instead.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Galactic Community</div><div class="gloss-def">The galaxy-wide legislative body formed when sufficient empires establish communications; passes resolutions affecting all members; requires Federations DLC for full functionality.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Galactic Custodian</div><div class="gloss-def">Special role granted by the Galactic Community during a Crisis; provides extraordinary powers; can be converted to Galactic Emperor status with Nemesis DLC.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Gestalt Consciousness</div><div class="gloss-def">The special ethic that encompasses both Hive Mind and Machine Intelligence; takes all 3 ethics points; creates a fundamentally different playstyle from standard empires.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Governor</div><div class="gloss-def">Leader type assigned to manage a Sector; provides output and stability bonuses to all planets in the sector; in 4.3, Commander Governors apply Martial Law with direct Stability bonuses.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Habitability</div><div class="gloss-def">The compatibility percentage between a species and a planet type; in 4.0, affects job efficiency directly (not just happiness); low habitability means less productive workers.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Hive Mind</div><div class="gloss-def">Gestalt consciousness type; organic collective; no factions; no happiness; Drone jobs; Food upkeep; unique civics including Devouring Swarm and Terravore.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Hyperlane</div><div class="gloss-def">The only FTL travel method in the standard post-2.0 game; fleets can only travel along established hyperlane connections; creates natural chokepoints and strategic topology.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Influence</div><div class="gloss-def">The resource of territorial and political power; generated slowly; spent on claiming systems, activating edicts, diplomatic actions, and starbases; almost always the binding constraint on early expansion.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Machine Intelligence</div><div class="gloss-def">Gestalt consciousness type; synthetic collective; Pop Assembly instead of growth; no Food or Consumer Goods upkeep; unique civics including Driven Assimilator and Rogue Servitor.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Menace</div><div class="gloss-def">Nemesis DLC resource accumulated by destructive actions when pursuing the Become the Crisis path; unlocks Galactic Nemesis Ascension Perk and Menacing Ships.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Minerals</div><div class="gloss-def">Basic construction resource produced by Miner jobs; spent on building and district construction and alloy production; deficit halts all construction.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Naval Capacity</div><div class="gloss-def">The ceiling on fleet size; exceeding it doubles ship upkeep; increased by technology, starbases, traditions, and civics.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Origin</div><div class="gloss-def">Your empire&apos;s backstory and starting conditions; one of the most impactful empire creation choices; affects starting world, resources, relationships, and sometimes win conditions.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Pop Group</div><div class="gloss-def">The 4.0 replacement for individual Pop tracking; groups pops by species/stratum/job into cohesive units that contribute Workforce to jobs; produces output based on workforce filling job slots.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Prethoryn Scourge</div><div class="gloss-def">One of three End-Game Crises; an organic biological fleet of enormous scale consuming and converting planets; weak to chemical/missile weapons.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Research Agreement</div><div class="gloss-def">Bilateral diplomatic agreement providing +10% research output to both empires; excellent early-game diplomatic investment if relations are positive.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Ring World</div><div(class="gloss-def">Megastructure with four massive habitable segments providing enormous district capacity; requires an entire star system; one of the most powerful endgame production platforms.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Science Ship</div><div class="gloss-def">Non-combat exploration vessel crewed by a Scientist leader; performs surveys, investigates anomalies, and assists with research; essential in the early game exploration phase.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Sector</div><div class="gloss-def">Administrative grouping of systems and colonies; assigned a Governor whose traits and skill level provide bonuses to all worlds within the sector.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Shroud</div><div class="gloss-def">Extradimensional space accessible through Psionic Ascension; contains powerful entities that can grant bonuses or disasters; risk-reward space unique to Psionic empires.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Stability</div><div class="gloss-def">A planet&apos;s political health score; low Stability reduces all output from jobs; maintained by Happiness, Governors, Enforcers, and specific policies.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Starbase</div><div class="gloss-def">The space station controlling a star system; provides Naval Capacity, defensive weapons, and module slots; required to claim systems permanently and project military power.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Subject</div><div class="gloss-def">An empire in a subordinate relationship to your empire; provides tribute, fleet support, and diplomatic weight; can be integrated into the overlord empire over time.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Tradition</div><div class="gloss-def">A Unity-purchased advancement within one of several Tradition Trees; completing a full tree grants an Ascension Perk slot; traditions provide production and political bonuses.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Titan</div><div class="gloss-def">The largest standard warship; provides unique fleet-wide Aura bonuses; equipped with the Titan Lance X-slot weapon; one per fleet; unlocked at high Naval Capacity.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Trade Value</div><div class="gloss-def">Resource produced by Clerk and Merchant jobs; converts to Energy Credits along trade routes; amplified by Xenophile and Pacifist ethics, Megacorp authority, and Trade League federations.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Trait</div><div class="gloss-def">A species characteristic purchased at empire creation (or gained through Biological Ascension); provides permanent statistical modifiers to Pops of that species.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Unbidden</div><div class="gloss-def">One of three End-Game Crises; extradimensional invaders arriving through a dimensional portal; converts all biology to their dimension; purely military threat requiring overwhelming fleet response.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Unity</div><div class="gloss-def">Resource produced by Clergy, Administrator, and Cultural Specialist jobs; spent on Traditions; the speed of your Tradition tree completion and Ascension Perk acquisition.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Vassal</div><div class="gloss-def">Standard subject type; provides resource tribute and military participation; cannot declare independent wars; can eventually be integrated into the overlord empire.</div></div>
+  <div class="gloss-item"><div class="gloss-term">War Exhaustion</div><div class="gloss-def">A meter that increases during wars as fleets are destroyed and planets are bombarded; when both sides reach high exhaustion, peace becomes forced; Pacifist empires have lower War Exhaustion generation.</div></div>
+  <div class="gloss-item"><div class="gloss-term">War in Heaven</div><div class="gloss-def">A late-game event where two Fallen Empires wake and go to war with each other, demanding all other empires choose sides; can trigger both Fallen Empires to Awaken into galaxy-threatening powers.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Workforce</div><div class="gloss-def">4.x mechanic replacing individual Pop assignment; Pop Groups contribute Workforce to available job slots; output is calculated based on total Workforce filling each job type.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Zro</div><div class="gloss-def">Strategic resource required for Psionic Ascension progression; found in Shroud deposits and specific map locations; rare and highly valuable to Spiritualist empires.</div></div>
+</div>
+</section>
+
+</div><!-- /content -->
+<footer id="footer">
+  Stellaris &nbsp;&middot;&nbsp; Paradox Interactive &nbsp;&middot;&nbsp; Nadir Strategy Archive &nbsp;&middot;&nbsp; The Year 2200 &mdash; The Stars Await
+</footer>
+</div><!-- /main -->
+<a id="back-top" href="#hero" title="Back to top">&#8593;</a>
+<script>
+const bar=document.getElementById('progress-bar');
+const bt=document.getElementById('back-top');
+const tog=document.getElementById('sidebar-toggle');
+const sb=document.getElementById('sidebar');
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;
+  bar.style.transform='scaleX('+(s/t)+')';
+  bt.classList.toggle('visible',s>400);
+},{passive:true});
+const secs=document.querySelectorAll('.section[id]');
+const navs=document.querySelectorAll('.nav-item');
+const obs=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){navs.forEach(n=>n.classList.remove('active'));const a=document.querySelector('.nav-item[href="#'+e.target.id+'"]');if(a){a.classList.add('active');a.scrollIntoView({block:'nearest'});}}});
+},{rootMargin:'-20% 0px -70% 0px'});
+secs.forEach(s=>obs.observe(s));
+tog.addEventListener('click',()=>sb.classList.toggle('open'));
+document.querySelectorAll('.nav-item').forEach(i=>i.addEventListener('click',()=>sb.classList.remove('open')));
+document.querySelectorAll('.section').forEach((s,i)=>{s.style.animationDelay=i*0.03+'s';});
+</script>
+</body>
+</html>

@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Astrox Imperium &mdash; The Void Pilot's Codex</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0e0e12;--parchment:#f0ecdf;--gold:#c9943a;--gold-dark:#8b6420;--gold-pale:#f0d9a8;
+  --mid:#3e3830;--light:#f6f2e8;--border:rgba(201,148,58,0.3);--shadow:rgba(14,14,18,0.25);
+  /* Void / space-noir palette */
+  --void:#080812;--void-mid:#12121e;
+  --cyan:#1a8090;--cyan-pale:#d0eaf2;
+  --amber:#9a6010;--amber-pale:#f5ead0;
+  --green:#1a6030;--green-pale:#d0eed8;
+  --red:#8a1818;--red-pale:#f5d5d5;
+  --purple:#4a1a7a;--purple-pale:#e8d5f5;
+  --font-head:'Cinzel','Times New Roman',serif;
+  --font-body:'Crimson Pro','Georgia',serif;
+  --sidebar-w:294px;
+}
+html{scroll-behavior:smooth;font-size:17px}
+body{background:var(--parchment);color:var(--ink);font-family:var(--font-body);line-height:1.75;display:flex;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.5}
+a{color:inherit;text-decoration:none}button{cursor:pointer;font-family:inherit}
+#progress-bar{position:fixed;top:0;left:var(--sidebar-w);right:0;height:3px;background:var(--gold);transform-origin:left;transform:scaleX(0);z-index:500;transition:transform 0.1s linear}
+#sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--void);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;border-right:2px solid var(--gold-dark);display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--gold-dark) var(--void)}
+#sidebar-header{padding:28px 20px 20px;border-bottom:1px solid rgba(201,148,58,0.2);background:linear-gradient(180deg,#030306 0%,var(--void) 100%)}
+#sidebar-title{font-family:var(--font-head);font-size:0.88rem;font-weight:900;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;line-height:1.3}
+#sidebar-sub{font-family:var(--font-body);font-size:0.67rem;color:rgba(255,255,255,0.38);margin-top:6px;letter-spacing:0.04em;font-style:italic}
+#sidebar-nav{padding:8px 0 40px;flex:1}
+.nav-section{padding:10px 20px 3px;font-family:var(--font-head);font-size:0.52rem;letter-spacing:0.2em;color:var(--gold-dark);text-transform:uppercase;margin-top:6px;opacity:0.85}
+.nav-item{display:block;padding:5px 20px 5px 26px;font-family:var(--font-body);font-size:0.77rem;color:rgba(245,239,228,0.6);text-decoration:none;border-left:2px solid transparent;transition:all 0.15s ease;line-height:1.3;position:relative}
+.nav-item::before{content:'&#9658;';position:absolute;left:11px;top:6px;color:var(--gold-dark);opacity:0;transition:opacity 0.12s;font-size:0.42rem}
+.nav-item:hover,.nav-item.active{color:var(--gold-pale);border-left-color:var(--gold);background:rgba(201,148,58,0.07);padding-left:28px}
+.nav-item:hover::before,.nav-item.active::before{opacity:1}
+#sidebar-toggle{display:none;position:fixed;top:10px;left:10px;z-index:200;background:var(--void);border:1px solid var(--gold-dark);color:var(--gold);font-size:1.1rem;padding:5px 9px;border-radius:2px}
+#main{margin-left:var(--sidebar-w);flex:1;min-width:0}
+/* Hero — deep void starfield with distant nebula warmth */
+#hero{background:linear-gradient(160deg,#020206 0%,#06060e 30%,#0c0a04 65%,#020208 100%);min-height:480px;display:flex;flex-direction:column;justify-content:flex-end;padding:0 64px 64px;position:relative;overflow:hidden;border-bottom:3px solid var(--gold-dark)}
+#hero::before{content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(1px 1px at 4% 8%,rgba(200,230,255,0.8) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 11% 3%,rgba(255,255,200,0.7) 0%,transparent 0%),
+    radial-gradient(1px 1px at 20% 15%,rgba(200,220,255,0.6) 0%,transparent 0%),
+    radial-gradient(2px 2px at 28% 7%,rgba(255,220,160,0.55) 0%,transparent 0%),
+    radial-gradient(1px 1px at 37% 19%,rgba(200,230,255,0.65) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 46% 5%,rgba(255,255,200,0.6) 0%,transparent 0%),
+    radial-gradient(1px 1px at 56% 14%,rgba(200,210,255,0.55) 0%,transparent 0%),
+    radial-gradient(1px 1px at 64% 8%,rgba(255,200,160,0.6) 0%,transparent 0%),
+    radial-gradient(2px 2px at 71% 17%,rgba(200,230,255,0.5) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 79% 4%,rgba(255,255,200,0.7) 0%,transparent 0%),
+    radial-gradient(1px 1px at 87% 12%,rgba(200,230,255,0.6) 0%,transparent 0%),
+    radial-gradient(1px 1px at 93% 21%,rgba(255,220,160,0.55) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 14% 27%,rgba(200,230,255,0.45) 0%,transparent 0%),
+    radial-gradient(1px 1px at 42% 31%,rgba(255,255,200,0.4) 0%,transparent 0%),
+    radial-gradient(1px 1px at 69% 25%,rgba(200,210,255,0.5) 0%,transparent 0%),
+    radial-gradient(2px 2px at 89% 29%,rgba(255,220,160,0.4) 0%,transparent 0%),
+    radial-gradient(60px 60px at 75% 40%,rgba(26,40,80,0.15) 0%,transparent 70%),
+    radial-gradient(40px 40px at 20% 50%,rgba(26,60,40,0.12) 0%,transparent 70%)}
+#hero::after{content:'';position:absolute;bottom:0;left:64px;right:64px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.hero-eyebrow{font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.28em;color:var(--gold-dark);text-transform:uppercase;margin-bottom:14px;position:relative}
+.hero-title{font-family:var(--font-head);font-size:clamp(2rem,5vw,3.7rem);font-weight:900;color:var(--parchment);letter-spacing:0.04em;text-transform:uppercase;line-height:1.05;margin-bottom:8px;position:relative;text-shadow:0 2px 20px rgba(0,0,0,0.9)}
+.hero-subtitle{font-family:var(--font-body);font-size:1.05rem;font-style:italic;color:rgba(240,217,168,0.72);font-weight:300;margin-bottom:26px;position:relative}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;position:relative}
+.hero-tag{font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-pale);border:1px solid rgba(201,148,58,0.38);padding:3px 10px;background:rgba(201,148,58,0.07)}
+#content{padding:0 64px 80px;max-width:960px}
+.section{padding:54px 0 6px;animation:fadeUp 0.45s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.sec-num{display:inline-block;font-family:var(--font-head);font-size:0.78rem;font-weight:400;letter-spacing:0.1em;color:var(--gold-dark);margin-right:0.5em;vertical-align:middle}
+.section-title{font-family:var(--font-head);font-size:clamp(1.25rem,2.4vw,1.75rem);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink);padding-bottom:12px;margin-bottom:20px;border-bottom:2px solid var(--border);position:relative}
+.section-title::after{content:'';position:absolute;bottom:-2px;left:0;width:58px;height:2px;background:var(--gold)}
+.sub-title{font-family:var(--font-head);font-size:1rem;font-weight:600;letter-spacing:0.05em;color:var(--mid);margin:26px 0 9px;text-transform:uppercase}
+p{margin-bottom:1rem;font-size:1rem}
+.guide-list{margin:0.5rem 0 1rem 1.2rem}
+.guide-list li{margin-bottom:0.5rem;font-size:1rem}
+.guide-list li::marker{color:var(--gold-dark)}
+.callout{padding:15px 20px;margin:20px 0;border-left:4px solid var(--gold);background:var(--light);border-radius:0 3px 3px 0}
+.callout.cyan{border-left-color:#1a8090;background:var(--cyan-pale)}
+.callout.amber{border-left-color:#9a6010;background:var(--amber-pale)}
+.callout.green{border-left-color:#1a6030;background:var(--green-pale)}
+.callout.red{border-left-color:#8a1818;background:var(--red-pale)}
+.callout.purple{border-left-color:#4a1a7a;background:var(--purple-pale)}
+.callout.tip{border-left-color:#2a5c18;background:#e8f5e0}
+.callout.warning{border-left-color:#7a3010;background:#f5ead0}
+.callout-title{font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;margin-bottom:5px;color:var(--gold-dark)}
+.callout.cyan .callout-title{color:#1a8090}
+.callout.amber .callout-title{color:#9a6010}
+.callout.green .callout-title{color:#1a6030}
+.callout.red .callout-title{color:#8a1818}
+.callout.purple .callout-title{color:#4a1a7a}
+.callout.tip .callout-title{color:#2a5c18}
+.callout.warning .callout-title{color:#7a3010}
+.callout p{font-size:0.94rem;margin-bottom:0.5rem}
+.callout p:last-child{margin-bottom:0}
+/* Transmission / lore blocks — void-noir flavour */
+.lore-block{padding:16px 22px;margin:22px 0;border:1px solid rgba(26,128,144,0.35);background:rgba(10,20,32,0.05);position:relative}
+.lore-block::before{content:'PILOT TRANSMISSION';position:absolute;top:-0.6rem;left:1rem;font-family:var(--font-head);font-size:0.54rem;letter-spacing:0.22em;color:#1a8090;background:var(--parchment);padding:0 0.5rem}
+.lore-block p{font-style:italic;color:#0e1e30;font-size:0.96rem;line-height:1.88}
+.lore-block .source{font-family:var(--font-head);font-size:0.58rem;color:rgba(26,128,144,0.6);text-align:right;display:block;margin-top:0.6rem;letter-spacing:0.1em}
+.data-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.9rem}
+.data-table th{background:var(--void);color:var(--gold-pale);font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;padding:8px 11px;text-align:left;border:1px solid rgba(201,148,58,0.2)}
+.data-table td{padding:7px 11px;border:1px solid var(--border);vertical-align:top;line-height:1.5;color:var(--ink)}
+.data-table tr:nth-child(even) td{background:rgba(201,148,58,0.04)}
+.data-table tr:hover td{background:rgba(201,148,58,0.07)}
+.phase{padding:16px 20px;margin:14px 0;border-left:4px solid var(--gold);background:rgba(201,148,58,0.05)}
+.phase.early{border-left-color:#1a5080;background:rgba(26,80,128,0.07)}
+.phase.mid{border-left-color:var(--gold-dark);background:rgba(201,148,58,0.07)}
+.phase.late{border-left-color:#7a2010;background:rgba(122,32,16,0.07)}
+.phase-title{font-family:var(--font-head);font-size:0.84rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:7px;color:var(--gold-dark)}
+.phase.early .phase-title{color:#1a5080}
+.phase.late .phase-title{color:#7a2010}
+.phase p{font-size:0.94rem;margin-bottom:0.6rem;color:var(--ink)}
+.phase p:last-child{margin-bottom:0}
+.unit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin:16px 0}
+.unit-card{border:1px solid var(--border);background:var(--light);padding:14px 16px;border-top:3px solid var(--gold)}
+.unit-card.cyan-card{border-top-color:#1a8090}
+.unit-card.amber-card{border-top-color:#9a6010}
+.unit-card.green-card{border-top-color:#1a6030}
+.unit-card.red-card{border-top-color:#8a1818}
+.unit-card.purple-card{border-top-color:#4a1a7a}
+.unit-card.neutral-card{border-top-color:#5a4820}
+.unit-name{font-family:var(--font-head);font-size:0.88rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink);margin-bottom:2px}
+.unit-type{font-family:var(--font-head);font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);margin-bottom:7px;display:block}
+.unit-card.cyan-card .unit-type{color:#1a8090}
+.unit-card.amber-card .unit-type{color:#9a6010}
+.unit-card.green-card .unit-type{color:#1a6030}
+.unit-card.red-card .unit-type{color:#8a1818}
+.unit-card.purple-card .unit-type{color:#4a1a7a}
+.unit-card p{font-size:0.88rem;line-height:1.6;color:var(--ink);margin-bottom:0}
+.orn{text-align:center;color:var(--gold-dark);font-size:0.72rem;letter-spacing:0.42em;padding:28px 0 8px;opacity:0.65}
+.gloss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1px;background:var(--border);margin-top:16px;border:1px solid var(--border)}
+.gloss-item{background:var(--light);padding:9px 13px;display:flex;gap:10px;align-items:flex-start}
+.gloss-item:nth-child(even){background:var(--parchment)}
+.gloss-term{font-family:var(--font-head);font-size:0.75rem;font-weight:700;color:var(--ink);white-space:normal;min-width:118px;max-width:148px;word-break:break-word;letter-spacing:0.04em;text-transform:uppercase}
+.gloss-def{font-size:0.86rem;color:var(--mid);line-height:1.55}
+#back-top{position:fixed;bottom:26px;right:26px;width:40px;height:40px;background:var(--void);border:1px solid var(--gold-dark);color:var(--gold);font-size:1rem;display:flex;align-items:center;justify-content:center;text-decoration:none;opacity:0;transform:translateY(8px);transition:opacity 0.3s,transform 0.3s;z-index:90}
+#back-top.visible{opacity:1;transform:none}
+#back-top:hover{background:var(--gold-dark);color:var(--parchment)}
+#footer{margin-top:40px;border-top:1px solid var(--border);padding:20px 64px;font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);text-align:center}
+@media(max-width:880px){
+  :root{--sidebar-w:0px}
+  #sidebar-toggle{display:flex;align-items:center;justify-content:center}
+  #sidebar{transform:translateX(-100%);transition:transform 0.26s ease;width:266px}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  #hero,#content,#footer{padding-left:22px;padding-right:22px}
+  #progress-bar{left:0}
+  .unit-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+<button id="sidebar-toggle" aria-label="Menu">&#9776;</button>
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <div id="sidebar-title">Astrox Imperium</div>
+    <div id="sidebar-sub">The Void Pilot&apos;s Codex &mdash; Jace Brannick Software</div>
+  </div>
+  <div id="sidebar-nav">
+    <div class="nav-section">The Void</div>
+    <a class="nav-item" href="#s01">01 &middot; The Imperium &amp; the Void</a>
+    <a class="nav-item" href="#s02">02 &middot; Game Overview</a>
+    <a class="nav-item" href="#s03">03 &middot; The Six Factions</a>
+    <div class="nav-section">Core Systems</div>
+    <a class="nav-item" href="#s04">04 &middot; Credits &amp; Economy</a>
+    <a class="nav-item" href="#s05">05 &middot; The Skill System</a>
+    <a class="nav-item" href="#s06">06 &middot; Life Support</a>
+    <a class="nav-item" href="#s07">07 &middot; Warp Travel &amp; the Void</a>
+    <div class="nav-section">Ships &amp; Modules</div>
+    <a class="nav-item" href="#s08">08 &middot; Ship Classes</a>
+    <a class="nav-item" href="#s09">09 &middot; Active Modules</a>
+    <a class="nav-item" href="#s10">10 &middot; Passive Modules</a>
+    <a class="nav-item" href="#s11">11 &middot; Weapons</a>
+    <a class="nav-item" href="#s12">12 &middot; Drones</a>
+    <div class="nav-section">Professions</div>
+    <a class="nav-item" href="#s13">13 &middot; Mining</a>
+    <a class="nav-item" href="#s14">14 &middot; Refining &amp; Crafting</a>
+    <a class="nav-item" href="#s15">15 &middot; Trading &amp; Markets</a>
+    <a class="nav-item" href="#s16">16 &middot; Missions &amp; Contracts</a>
+    <a class="nav-item" href="#s17">17 &middot; Combat Doctrine</a>
+    <a class="nav-item" href="#s18">18 &middot; Exploration</a>
+    <div class="nav-section">Progression</div>
+    <a class="nav-item" href="#s19">19 &middot; Mercenaries &amp; Fleets</a>
+    <a class="nav-item" href="#s20">20 &middot; Station Construction</a>
+    <a class="nav-item" href="#s21">21 &middot; Faction Reputation</a>
+    <div class="nav-section">Strategy</div>
+    <a class="nav-item" href="#s22">22 &middot; Early Game Doctrine</a>
+    <a class="nav-item" href="#s23">23 &middot; Mid &amp; Late Game</a>
+    <a class="nav-item" href="#s24">24 &middot; Common Mistakes</a>
+    <div class="nav-section">Reference</div>
+    <a class="nav-item" href="#s25">25 &middot; Glossary</a>
+  </div>
+</nav>
+
+<div id="main">
+<div id="hero">
+  <div class="hero-eyebrow">Nadir Strategy Archive &nbsp;&middot;&nbsp; Jace Brannick Software &nbsp;&middot;&nbsp; Open-World Space Sandbox &nbsp;&middot;&nbsp; The Void Starcross Region</div>
+  <h1 class="hero-title">Astrox Imperium</h1>
+  <p class="hero-subtitle">The Void Pilot&apos;s Codex &mdash; A Complete Guide to Surviving and Thriving in the Astrox Universe</p>
+  <div class="hero-tags">
+    <span class="hero-tag">25 Chapters</span>
+    <span class="hero-tag">6 Factions</span>
+    <span class="hero-tag">Open-World Sandbox</span>
+    <span class="hero-tag">Mining &amp; Crafting</span>
+    <span class="hero-tag">Combat Doctrine</span>
+    <span class="hero-tag">Fleet Command</span>
+    <span class="hero-tag">Station Building</span>
+    <span class="hero-tag">Full Glossary</span>
+  </div>
+</div>
+
+<div id="content">
+
+<!-- S01 -->
+<section class="section" id="s01">
+<h2 class="section-title"><span class="sec-num">&sect;01</span> The Imperium &amp; the Void</h2>
+<div class="lore-block">
+  <p>The last entry in the flight log of the Imperium reads: <em>Quantum drive nominal. Crew nominal. Trajectory nominal. There is nothing ahead of us but the stars and everything behind us worth leaving.</em> There is no second entry. The Imperium vanished from all sensor records thirty seconds after the final log was recorded, and it has not been found in the two hundred and thirty years since. The people who survived its destruction know what happened. The generations who came after them built a universe from the wreckage and tried, with varying degrees of success, to remember why they were out here in the first place.</p>
+  <span class="source">// HISTORICAL ARCHIVE &middot; VOID STARCROSS STATION &middot; YEAR 230 A.I. //</span>
+</div>
+
+<p>Astrox Imperium begins with a premise both grandiose and intimate: mankind&apos;s greatest achievement &mdash; the generation ship <em>Imperium</em>, powered by quantum technology, launched to carry humanity to the stars &mdash; was destroyed catastrophically at the moment of its first jump. The survivors gathered in the wreckage, waited for rescue that never came, and eventually stopped waiting. Two hundred and thirty years later, their descendants have built a sprawling civilisation from that debris field: space stations, faction territories, warp gate networks, mining operations, and a complicated web of political and economic relationships that nobody planned and everyone is trying to navigate.</p>
+
+<p>You are a pilot who has just climbed out of a cryopod. You have a starter ship, a small amount of credits, a fresh set of skills to train, and the entire Void ahead of you. The game does not tell you where to go or what to do with any urgency. The Void will fill up those decisions for you soon enough.</p>
+
+<h2 class="sub-title">What Astrox Imperium Is</h2>
+<p>Astrox Imperium is a <strong>single-player open-world space sandbox</strong> developed by Jace Brannick &mdash; a solo developer whose previous title was Astrox: Hostile Space Excavation, the spiritual predecessor to this game. It is frequently described as &ldquo;offline EVE Online&rdquo; and the comparison is apt in its broadest strokes: there is mining, trading, combat, faction reputation, skill training, ship fitting, and a player-driven economy. But where EVE Online is a multiplayer competitive ecosystem, Astrox Imperium is deliberately solitary and paced to the player&apos;s preference. You can make it a grinding mining simulator or a fast-paced combat game depending entirely on how you configure the sandbox.</p>
+
+<div class="callout cyan">
+  <div class="callout-title">The Lone Developer</div>
+  <p>Astrox Imperium was built by a single developer, Jace Brannick, who managed the entire scope of development including programming, art, game design, and community management. This context matters because the game&apos;s very positive Steam reception reflects something genuine: this is a labour of love, and the community around it reflects that. When you encounter rough edges in the game, remember the scale of what was built. The edges are part of the texture.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S02 -->
+<section class="section" id="s02">
+<h2 class="section-title"><span class="sec-num">&sect;02</span> Game Overview</h2>
+<p>Astrox Imperium is a <strong>top-down space simulation</strong> with real-time flight, automated combat, and a multi-layered economy. The core loop is built around five interlocking activities that can be pursued in any order or combination: mining, trading, crafting, missions, and combat. Each activity feeds into the others &mdash; mining produces ore for crafting; crafting produces equipment for combat; combat produces loot for selling; missions produce credits and faction reputation for accessing better equipment and territories.</p>
+
+<h2 class="sub-title">The Sandbox Settings</h2>
+<p>One of Astrox Imperium&apos;s most important features for new players is its extensive sandbox configuration. Before starting a new game, you can adjust:</p>
+<ul class="guide-list">
+  <li><strong>Starting Credits:</strong> How much money you begin with. New players should consider increasing this to reduce early-game friction while learning systems.</li>
+  <li><strong>Life Support Drain Speed:</strong> How quickly your life support depletes. Slower drain = more exploration range before needing to dock. Also affects passive skill point gain rate.</li>
+  <li><strong>Resource Density:</strong> How abundant ore and resources are in each sector.</li>
+  <li><strong>Raider Aggression:</strong> How frequently and aggressively hostile NPCs appear.</li>
+  <li><strong>Starting Faction:</strong> Which of the six major factions you begin affiliated with. This gives you a starting reputation of 5 with that faction, unlocking basic access to their mercenaries and discounts.</li>
+</ul>
+
+<div class="callout amber">
+  <div class="callout-title">New Player Configuration Recommendation</div>
+  <p>For a first playthrough: set Life Support Drain to its slowest setting. This extends your exploration range, gives you more time to learn sectors, and increases the passive skill points you receive per real-time hour. Do not set Starting Credits above 150,000 &mdash; the process of earning your first ship upgrade through gameplay is an important learning experience. Reduce Raider Aggression slightly. None of these changes disable achievements; Astrox is generous about this.</p>
+</div>
+
+<h2 class="sub-title">What Astrox Is Not</h2>
+<p>The game is explicit about its identity: it is not a fast-paced space shooter (no mouse-aim combat), not an idle game (requires active input to play meaningfully), and not multiplayer (entirely singleplayer). Understanding these boundaries prevents the most common first-session disappointment. If you approach it as a methodical space RPG where you improve your pilot over dozens of hours, you will find an enormously satisfying experience.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S03 -->
+<section class="section" id="s03">
+<h2 class="section-title"><span class="sec-num">&sect;03</span> The Six Factions</h2>
+<div class="lore-block">
+  <p>The survivors of the Imperium split along predictable lines almost immediately. The engineers wanted to rebuild. The merchants wanted to trade. The soldiers wanted to establish order. The faithful wanted to interpret what had happened. The workers wanted to be paid. And the ones who had always lived outside any system looked at the wreckage of the greatest symbol of institutional ambition in human history and felt, in a way they would not have been able to explain to anyone not already nodding along, something like relief.</p>
+  <span class="source">// SOCIAL HISTORY OF THE VOID &middot; CHAPTER 3: THE GREAT DIVERGENCE &middot; YEAR 45 A.I. //</span>
+</div>
+
+<p>The Astrox universe is divided among <strong>six major factions</strong>, each with two sub-factions, for a total of eighteen groups that the player can build reputation with. Each major faction controls territory, operates stations, produces unique ships, and trains faction-specific skills. Your relationship with each faction determines what services are available to you, what prices you pay, and who is willing to shoot you on sight.</p>
+
+<div class="unit-grid">
+  <div class="unit-card cyan-card">
+    <div class="unit-name">Alpha</div>
+    <span class="unit-type">SCIENCE &amp; RESEARCH &middot; TECHNOLOGY FOCUS</span>
+    <p>The intellectual heirs of the Imperium&apos;s engineering corps. Alpha controls universities, research stations, and the most advanced technology in the Void. Their ships tend toward the analytical and technical. Biomart University in Void Starcross is their flagship presence in the starting region. Essential for pilots pursuing Warp Drive and advanced module training. Sub-factions: academic and corporate research groups.</p>
+  </div>
+  <div class="unit-card amber-card">
+    <div class="unit-name">Trade</div>
+    <span class="unit-type">COMMERCE &amp; MARKETS &middot; ECONOMIC POWER</span>
+    <p>The commercial backbone of the Void economy. Lammassu Financial in Void Starcross represents this faction in the starting region. Trade faction controls markets, financial infrastructure, and cargo logistics. High Trade reputation means significantly lower taxes on market transactions &mdash; a compounding economic advantage for any pilot who trades frequently. Sub-factions: commerce and transport groups.</p>
+  </div>
+  <div class="unit-card green-card">
+    <div class="unit-name">Labor</div>
+    <span class="unit-type">MINING &amp; INDUSTRY &middot; PRODUCTION BASE</span>
+    <p>Workers, miners, manufacturers, and artisans. Starbase Corporate Center represents Labor in Void Starcross. Labor faction controls extraction operations and industrial production. The two Labor sub-factions are Contractors (construction and manufacturing) and Extractors (mining). High Labor reputation benefits mining-focused pilots with lower refinery costs and access to specialised industrial equipment. Sub-factions: contractors and extractors.</p>
+  </div>
+  <div class="unit-card red-card">
+    <div class="unit-name">Pirate (Outlaw)</div>
+    <span class="unit-type">INDEPENDENT OPERATORS &middot; CONTRABAND &amp; COMBAT</span>
+    <p>Those who refused all other factions. StarGypsy Warehouse represents this faction in the starting region. Pirates live outside conventional law and run contraband networks. High Pirate reputation unlocks access to unique weapons and equipment unavailable through legitimate channels, and provides access to pirate mercenaries. The tension: high Pirate reputation damages your Law faction standing. Sub-factions: pirate syndicates and smuggling rings.</p>
+  </div>
+  <div class="unit-card purple-card">
+    <div class="unit-name">Temple</div>
+    <span class="unit-type">FAITH &amp; COMMUNITY &middot; SUPPORT SERVICES</span>
+    <p>The spiritual inheritors of the Void&apos;s most existentially challenging questions. StarShepards Headquarters in Void Starcross. Temple faction focuses on care networks, bliss addiction recovery, and community welfare. Their ships and skills tend toward endurance and resilience. Sub-factions include the Grey Pilgrims (humanitarian) and Nophets (theological). Often overlooked but their high-reputation bonuses are meaningful for long-range exploration builds.</p>
+  </div>
+  <div class="unit-card neutral-card">
+    <div class="unit-name">Law</div>
+    <span class="unit-type">ENFORCEMENT &amp; ORDER &middot; SECURITY FORCES</span>
+    <p>The institutional heirs to whatever passed for government in the Void. Proctors Center in Void Starcross. Law faction controls security, justice, and access to high-security sectors. High Law reputation reduces random hostile encounters in Law-controlled sectors and opens access to security-focused equipment and skills. In conflict with Pirate faction &mdash; you cannot maintain high reputation with both simultaneously. Sub-factions: enforcement and judicial branches.</p>
+  </div>
+</div>
+
+<h2 class="sub-title">Faction Balance and Conflict</h2>
+<p>Raising reputation with one faction does not automatically lower reputation with opposing factions &mdash; with one notable exception. <strong>Law and Pirate are directly opposed.</strong> Actions that raise Pirate reputation (completing pirate missions, helping pirate NPCs) lower Law reputation, and vice versa. All other faction relationships are independent: you can simultaneously hold high Alpha, Labor, and Trade reputations without conflict. Choose your Pirate/Law position deliberately before investing heavily in either direction.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S04 -->
+<section class="section" id="s04">
+<h2 class="section-title"><span class="sec-num">&sect;04</span> Credits &amp; Economy</h2>
+<div class="lore-block">
+  <p>The credit emerged as the Void&apos;s universal currency not through any central banking authority but through the simple reality that people needed a way to agree on the value of things. It has no physical form. It exists only as a number in the station network. The first credit was someone agreeing to owe someone else something. Two hundred and thirty years later that agreement is the entire economy.</p>
+  <span class="source">// VOID ECONOMIC HISTORY &middot; LAMMASSU FINANCIAL EDUCATIONAL SERIES //</span>
+</div>
+
+<p>Credits are the lifeblood of Astrox Imperium. Every activity &mdash; buying equipment, docking at stations, passing through warp gates, hiring mercenaries, constructing outposts &mdash; involves credits in some direction. Managing your credit flow is as important as managing your combat capability or mining efficiency.</p>
+
+<h2 class="sub-title">Credit Income Sources</h2>
+<table class="data-table">
+  <thead><tr><th>Source</th><th>Reliability</th><th>Income Rate</th><th>Best For</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Mining &amp; Selling Ore</strong></td><td>Very High</td><td>Steady; scales with ship and skills</td><td>Any playstyle; the most reliable early-game income</td></tr>
+    <tr><td><strong>Mission Contracts</strong></td><td>High</td><td>Variable; missions pay credits + items + skill points</td><td>Fast early-game faction reputation and skill point acquisition</td></tr>
+    <tr><td><strong>Trading (Arbitrage)</strong></td><td>Medium</td><td>High ceiling; requires market knowledge</td><td>Pilots who learn regional price differences</td></tr>
+    <tr><td><strong>Combat Loot</strong></td><td>Medium</td><td>Variable; scales with enemy difficulty</td><td>Combat-focused pilots; yields rare items alongside credits</td></tr>
+    <tr><td><strong>Crafting &amp; Selling</strong></td><td>Medium</td><td>High ceiling; requires refining investment</td><td>Industrial pilots who understand the crafting economy</td></tr>
+    <tr><td><strong>Salvage</strong></td><td>Low to Medium</td><td>Situational; requires salvage drones</td><td>Combat pilots who follow up kills with salvage operations</td></tr>
+    <tr><td><strong>Station Income</strong></td><td>High</td><td>Passive; requires late-game station construction</td><td>Endgame passive income after station building investment</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Credit Sinks</h2>
+<p>Credits drain through several channels that new players frequently underestimate:</p>
+<ul class="guide-list">
+  <li><strong>Warp Gate Tolls:</strong> Every warp gate passage costs credits. Tolls vary by gate and are waived or reduced by faction reputation with the controlling faction. Investing in relevant faction reputation directly reduces this ongoing cost.</li>
+  <li><strong>Station Docking &amp; Repairs:</strong> Damage costs money to repair. Docking fees apply at most stations.</li>
+  <li><strong>Equipment and Ships:</strong> Ship upgrades are the game&apos;s primary credit sink; budget for them rather than spending credits as they arrive.</li>
+  <li><strong>Faction Taxes:</strong> Market transactions carry a faction tax based on your reputation with the station&apos;s controlling faction. Higher reputation = lower tax.</li>
+</ul>
+
+<div class="callout tip">
+  <div class="callout-title">The Belasite Strategy &mdash; Early Game Credit Foundation</div>
+  <p>Belasite ore is the most commonly cited early-game credit source by the community. There is a Belasite asteroid near the warp gate in the Chamo sector (accessible from Void Starcross through the Labor faction territory), which is a level 4 resource in a relatively safe 7.8-security sector. Mining it consistently and selling at nearby stations provides the credit foundation for your first ship upgrade. Clearing 10,000&ndash;15,000 credits per run with the starter ship is achievable from the first session.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S05 -->
+<section class="section" id="s05">
+<h2 class="section-title"><span class="sec-num">&sect;05</span> The Skill System</h2>
+<div class="lore-block">
+  <p>The universities of the Void teach skills the same way the Imperium always intended: methodically, individually, without shortcuts. A warp engineer trained in vacuum conditions over a thousand hours is more reliable than one who read a manual. The universities have found ways to compress that experience somewhat, but they are honest about the limits. A skill point is a skill point. You cannot borrow them and you cannot share them. They are yours, paid for in time.</p>
+  <span class="source">// BIOMART UNIVERSITY PROSPECTUS &middot; VOID STARCROSS &middot; TRAINING DIVISION //</span>
+</div>
+
+<p>The Astrox skill system has over 100 distinct skills organised across multiple categories. Skills are the primary driver of pilot capability: they affect mining efficiency, combat performance, ship handling, drone capacity, fleet management, crafting proficiency, and virtually every other game system. Understanding how skills are acquired and where to invest them is the most consequential long-term decision in the game.</p>
+
+<h2 class="sub-title">How Skill Points Are Earned</h2>
+<ul class="guide-list">
+  <li><strong>Passive accumulation (residual skill points):</strong> The game grants up to 5 skill points per 15 minutes of real-time play, based on your activity level and the Life Support Drain Speed setting. This is the backbone of all skill development and is never turned off.</li>
+  <li><strong>Mission completion:</strong> Missions provide skill points as part of their reward. Importantly, some lower-level missions provide more skill points than higher-level ones &mdash; always check the mission reward details, not just the credit payout.</li>
+  <li><strong>Medal achievements:</strong> Medals (the game&apos;s achievement system) award skill points when completed. Reviewing medal requirements and pursuing them deliberate yields meaningful skill point bonuses.</li>
+  <li><strong>Skill Manuals:</strong> Rare items that provide instant skill points. Most commonly found in Raider loot drops or through Burglary Drones. Not reliable enough to plan around but valuable when obtained.</li>
+  <li><strong>Station training:</strong> Faction-specific skills can be trained at station universities for credits. This is the primary way to access faction-locked skill categories.</li>
+</ul>
+
+<h2 class="sub-title">Skill Redistribution</h2>
+<p>A critical feature that many players discover too late: <strong>skill points can be redistributed at station universities</strong>. The only requirement is that your currently active ship must be a shuttle (not a combat vessel or large ship), and if you maintain a fleet you may need sufficient Fleet Management skill to keep that fleet while in the shuttle. This means early-game skill allocation errors are not permanent. Experiment, learn what works for your playstyle, and respec if needed.</p>
+
+<h2 class="sub-title">Key Skill Categories</h2>
+<div class="unit-grid">
+  <div class="unit-card cyan-card">
+    <div class="unit-name">Piloting &amp; Ship Skills</div>
+    <span class="unit-type">NAVIGATION &middot; MOBILITY &middot; HANDLING</span>
+    <p>Ship Gyroscopic Control improves turn rate. Afterburner skills improve acceleration and fuel efficiency. Fleet Management determines how many mercenary ships you can command simultaneously. Navigation skills reduce warp gate toll costs. These are foundational quality-of-life investments for any pilot.</p>
+  </div>
+  <div class="unit-card green-card">
+    <div class="unit-name">Mining Skills</div>
+    <span class="unit-type">EXTRACTION &middot; REFINING &middot; EFFICIENCY</span>
+    <p>Excavation skills increase mining beam effectiveness and ore yield. Refining skills improve how much usable material you extract from raw ore. Mining range and efficiency skills reduce the time cost of each mining run. High mining skills compound significantly: better yield per time is the foundation of efficient credit generation.</p>
+  </div>
+  <div class="unit-card red-card">
+    <div class="unit-name">Combat Skills</div>
+    <span class="unit-type">WEAPONS &middot; SHIELDS &middot; TACTICAL</span>
+    <p>Weapon proficiency skills for each weapon category (energy, projectile, missile). Shield skills improve recharge and capacity. Focal Range skills extend weapon effective range but can cause misses at the range limit against fast targets &mdash; do not overinvest. ECM resistance reduces the impact of electronic warfare attacks on your propulsion system.</p>
+  </div>
+  <div class="unit-card amber-card">
+    <div class="unit-name">Drone Skills</div>
+    <span class="unit-type">DRONE CAPACITY &middot; EFFICIENCY &middot; SPECIALISATION</span>
+    <p>Drone command capacity determines how many drones you can control simultaneously. Individual drone type skills improve specific drone performance (mining drones, combat drones, salvage drones). Drone skills are one of the highest-value investments in the game &mdash; each additional drone slot is effectively a permanent passive capability multiplier.</p>
+  </div>
+  <div class="unit-card purple-card">
+    <div class="unit-name">Crafting &amp; Industrial</div>
+    <span class="unit-type">MANUFACTURING &middot; BLUEPRINTS &middot; PRODUCTION</span>
+    <p>Blueprint proficiency skills allow access to and efficiency improvements for specific crafting categories. Refinery efficiency skills reduce waste during ore processing. Production skills reduce time and resource costs for manufactured items. Industrial builds that invest heavily here produce self-sufficiency that paid-for-in-credits builds cannot match.</p>
+  </div>
+  <div class="unit-card neutral-card">
+    <div class="unit-name">Social &amp; Trade Skills</div>
+    <span class="unit-type">FACTION RELATIONS &middot; NEGOTIATION &middot; MARKETS</span>
+    <p>Faction-specific negotiation skills that improve reputation gain rate with specific factions. Market skills that affect trading efficiency and tax reduction. These are slow-return investments but compound meaningfully over long sessions. Fleet Management falls in this category as well, determining merc command capacity.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S06 -->
+<section class="section" id="s06">
+<h2 class="section-title"><span class="sec-num">&sect;06</span> Life Support</h2>
+<div class="lore-block">
+  <p>The life support unit in every ship is functionally a portable biosphere. It manages atmosphere, filters particulates, regulates temperature, recycles water, and monitors approximately forty other variables that the pilot mostly does not think about until the number in the lower-right corner of the display starts dropping faster than usual. The ones who thought about it were the explorers. The ones who did not were the ones who did not come back from the outer sectors.</p>
+  <span class="source">// ENGINEERING NOTES ON LIFE SUPPORT SYSTEMS &middot; ALPHA FACTION TECHNICAL LIBRARY //</span>
+</div>
+
+<p>Life Support is the system that determines how far from civilisation you can safely travel. In simple terms: your ship has a Life Support meter that depletes over time when you are away from a station or outpost. When it reaches zero, you are in immediate danger. The rate of depletion and your ability to extend your operational range through better LS equipment and skills is one of the game&apos;s most important progression axes.</p>
+
+<h2 class="sub-title">Life Support Mechanics</h2>
+<ul class="guide-list">
+  <li><strong>LS Drain Rate:</strong> Configured in sandbox settings; slower drain means longer range and more residual skill point gain per real-time hour. This is the single most impactful sandbox setting for new players.</li>
+  <li><strong>Solar Recharging:</strong> Being close to a star recharges your ship&apos;s energy efficiently. Not a Life Support replacement, but dark sectors (no stars) require stocking auxiliary power before entry.</li>
+  <li><strong>LS Passive Modules:</strong> Life Support extension passive modules are among the first upgrade priorities for any pilot planning to explore beyond Void Starcross. The starter ship&apos;s native LS is sufficient for the immediate starting area but quickly becomes a constraint.</li>
+  <li><strong>The Recon Shuttle Advantage:</strong> The Recon Shuttle (available for purchase at the starting station) has an exceptionally long native Life Support duration &mdash; reportedly over 3 hours of game time &mdash; combined with extremely high speed. Many experienced players recommend buying a Recon Shuttle as the second vehicle specifically for exploration and non-combat missions before investing in a combat hull.</li>
+</ul>
+
+<div class="callout warning">
+  <div class="callout-title">Life Support Running Low &mdash; Emergency Procedure</div>
+  <p>The game notifies you when Life Support is running low. When this notification fires in an unfamiliar sector: do not panic; do not charge forward. Turn back toward the nearest known station immediately. Warp Drives bypass propulsion-disabling ECM attacks and can get you home even from deep space &mdash; this is why the Warp Drive is considered mandatory equipment for any pilot exploring outside the starting region. A Basic Warp Drive and required fuel are sold at Biomart University in Void Starcross.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S07 -->
+<section class="section" id="s07">
+<h2 class="section-title"><span class="sec-num">&sect;07</span> Warp Travel &amp; the Void</h2>
+<p>The Void Starcross region is the game&apos;s starting hub, containing over 100 accessible sectors connected by a warp gate network. The warp gates are the primary means of moving between sectors; understanding their topology is essential for navigation, trade route planning, and combat escape planning.</p>
+
+<h2 class="sub-title">Warp Gates</h2>
+<p>Warp gates are permanent structures in space that enable transit between connected sectors. They are not free &mdash; each gate charges a toll that varies based on the gate&apos;s controlling faction and your reputation with that faction. High reputation with the controlling faction reduces tolls significantly; maximum reputation can eliminate them entirely for certain routes.</p>
+<p>Warp gates are one-directional in their connections: Gate A in Sector X may connect to Sector Y, but there may not be a corresponding gate in Sector Y to Sector X. Map your region carefully, especially around the routes you use most frequently.</p>
+
+<h2 class="sub-title">The Warp Drive Module</h2>
+<p>The Warp Drive is a passive module that provides dramatically faster inter-sector travel and &mdash; critically &mdash; allows emergency warp even when your propulsion system has been disabled by ECM attacks. This is the Warp Drive&apos;s most important tactical function: it is your insurance policy against being stranded in a hostile sector with no thrusters. <strong>Every pilot should have a Warp Drive before exploring beyond the starting region.</strong></p>
+
+<h2 class="sub-title">Sector Security Ratings</h2>
+<p>Sectors have security ratings that indicate how frequently Raiders and hostile forces appear and how dangerous they are. Higher security ratings (e.g., 9.0) mean safer travel; lower ratings (e.g., 3.0) mean frequent and dangerous Raider activity. The route Void Starcross &rarr; Hunu &rarr; Ponze &rarr; Veloxi leads through progressively lower-security sectors that become high-value combat and loot grounds at appropriate player levels &mdash; but are lethal to new pilots without adequate combat preparation.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S08 -->
+<section class="section" id="s08">
+<h2 class="section-title"><span class="sec-num">&sect;08</span> Ship Classes</h2>
+<div class="lore-block">
+  <p>Every ship in the Void is a compromise. The mining ship has the cargo hold but not the weapons. The fighter has the weapons but not the hold. The explorer has the life support but not the armor. Nobody has everything they want because the physics of the matter do not allow it. The pilots who understand this spend their careers working within the compromise. The ones who do not spend their careers wishing they had a different ship.</p>
+  <span class="source">// MAZU STARSHIP MANUFACTURER &middot; VOID STARCROSS &middot; SALES DOCUMENTATION //</span>
+</div>
+
+<p>Astrox Imperium has over 70 ships, with more added throughout development. Ships are not locked by character level &mdash; they are limited by credits, faction reputation, and relevant piloting skills. Understanding the broad ship categories before spending credits on a specific hull prevents the common mistake of buying the wrong ship type for your current playstyle.</p>
+
+<h2 class="sub-title">Ship Role Categories</h2>
+<table class="data-table">
+  <thead><tr><th>Category</th><th>Key Characteristics</th><th>Best Suited For</th><th>Trade-offs</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Shuttles</strong></td><td>High speed; excellent Life Support; minimal weapons; small cargo</td><td>Exploration; non-combat missions; quick travel; skill redistribution requirement</td><td>Cannot engage in sustained combat; limited cargo for trading</td></tr>
+    <tr><td><strong>Mining Vessels</strong></td><td>Large cargo holds; multiple excavation module slots; moderate defence</td><td>Dedicated mining operations; refining runs; industrial builds</td><td>Slow; vulnerable in combat without mercenary escort</td></tr>
+    <tr><td><strong>Combat Frigates</strong></td><td>Balanced weapons and defence; moderate cargo; variable turn rate</td><td>Mission-running; combat in moderate-security sectors; versatile general use</td><td>Compromise means they are best at nothing specifically</td></tr>
+    <tr><td><strong>Fighters / Interceptors</strong></td><td>High turn rate; strong weapon mounts; minimal cargo</td><td>Combat-focused builds; Raider elimination; faction war zones</td><td>Poor cargo; limited exploration range</td></tr>
+    <tr><td><strong>Industrial / Haulers</strong></td><td>Maximum cargo; multiple passive module slots; slow</td><td>Trading; transporting crafted goods; moving large quantities of ore</td><td>Extremely slow; requires escort in hostile sectors</td></tr>
+    <tr><td><strong>Faction-Specific</strong></td><td>Bonus stats aligned with faction specialty; unique skill requirements</td><td>Pilots with matching faction reputation and skill investment</td><td>Require specific faction reputation rating; may require niche skills</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Passive Module Slots &mdash; The Hidden Ship Stat</h2>
+<p>The number of passive module slots a ship has is arguably more important than its base stats. Passive modules (Chapter 10) provide permanent improvements to shields, cargo, sensors, mining efficiency, and more. A ship with fewer passive slots relies more on base statistics and pilot skills, while a ship with many slots can be extensively customised. Always check passive slot count when comparing ships of similar price.</p>
+
+<div class="callout tip">
+  <div class="callout-title">The Recon Shuttle &mdash; The Underrated Second Ship</div>
+  <p>After your starter ship, consider the Recon Shuttle as your second vessel rather than immediately buying a combat or mining hull. The Recon Shuttle has native Life Support measured in hours rather than minutes, moves at approximately 180 units per second (fast enough to outrun most Raiders), and has sensors that scan sectors almost instantaneously. Use it to explore the map, complete non-combat missions without risk, and identify the sectors and resources you want to develop before investing credits in a purpose-built hull.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S09 -->
+<section class="section" id="s09">
+<h2 class="section-title"><span class="sec-num">&sect;09</span> Active Modules</h2>
+<p>Active modules are equipment items that can be used during flight &mdash; as opposed to passive modules which provide persistent bonuses. They occupy active module slots on your ship and are activated manually or set to auto-activation. Active modules cover nearly every aspect of gameplay: weapons, mining tools, repair systems, ECM, shields, and support items.</p>
+
+<h2 class="sub-title">Key Active Module Types</h2>
+<ul class="guide-list">
+  <li><strong>Excavation Beams:</strong> Mining tools that extract ore from asteroids. The primary tool of any mining build. Multiple excavation beams can be fitted to multi-slot mining ships for parallel extraction.</li>
+  <li><strong>Salvage Beams:</strong> Extract useful components from destroyed ship wreckage. Essential for combat pilots who want to monetise their kills beyond the basic loot drop. Requires manual activation and proximity to the wreck.</li>
+  <li><strong>Repair Systems:</strong> Active hull and shield repair modules. In-combat repair is critical for solo combat pilots without fleet support.</li>
+  <li><strong>ECM Modules:</strong> Electronic countermeasures that can disable enemy propulsion systems. Also the attack type you are most vulnerable to from Raider ECM ships &mdash; your Warp Drive bypasses the consequence.</li>
+  <li><strong>Shield Boosters:</strong> Rapid shield replenishment for combat situations.</li>
+  <li><strong>Scanners &amp; Sensors:</strong> Active sensor modules that reveal asteroid composition, derelict contents, and hidden objects without requiring proximity.</li>
+</ul>
+
+<div class="callout amber">
+  <div class="callout-title">Module Quality Tiers</div>
+  <p>Active and Passive modules exist in multiple quality tiers: Generic, Improved, Advanced, Prototype (bought from stations), and Rare, Epic, Artifact (looted from Raiders or crafted). Higher-tier modules provide substantially better performance but require appropriate skills to use and credits or rare materials to acquire. Do not equip modules your pilot lacks the skills to operate &mdash; the skill requirement is not optional, it is a hard gate. Check skill requirements before purchasing.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S10 -->
+<section class="section" id="s10">
+<h2 class="section-title"><span class="sec-num">&sect;10</span> Passive Modules</h2>
+<p>Passive modules are installed at station garages and provide permanent bonuses to your ship&apos;s capabilities. Unlike active modules, they cannot be reconfigured during flight &mdash; installation and removal requires a docked station with garage services. Their effects are always active as long as they are installed.</p>
+
+<h2 class="sub-title">Priority Passive Modules</h2>
+<div class="unit-grid">
+  <div class="unit-card cyan-card">
+    <div class="unit-name">Warp Drive</div>
+    <span class="unit-type">MOBILITY &middot; ESSENTIAL UPGRADE</span>
+    <p>Inter-sector warp capability and emergency escape from ECM-disabled propulsion. The single most important passive module purchase for any pilot. Available at Biomart University. Requires Warp Drive fuel. Never leave Void Starcross for extended operations without one.</p>
+  </div>
+  <div class="unit-card green-card">
+    <div class="unit-name">Life Support Extension</div>
+    <span class="unit-type">SURVIVAL &middot; EXPLORATION RANGE</span>
+    <p>Extends the maximum operational time away from stations. Every tier of Life Support module extends your effective exploration range and reduces the urgency of returning to dock. Priority upgrade for exploration and mining pilots operating in outer sectors.</p>
+  </div>
+  <div class="unit-card amber-card">
+    <div class="unit-name">Cargo Bay Extensions</div>
+    <span class="unit-type">ECONOMY &middot; HAULING CAPACITY</span>
+    <p>Increases ship cargo capacity. More cargo means fewer runs back to the station during mining sessions or trading routes. The credit value of eliminating one round-trip per mining session compounds enormously over time. Fit as many as available slots allow on any mining or trading vessel.</p>
+  </div>
+  <div class="unit-card red-card">
+    <div class="unit-name">Turn Thrust Modules</div>
+    <span class="unit-type">COMBAT &middot; MOBILITY</span>
+    <p>Improves turn rate for combat vessels. Combined with the Ship Gyroscopic Control skill, improves targeting by enabling faster orientation toward circling enemies. Essential for combat frigates and fighters where turn rate is the difference between landing hits and watching enemies circle outside your firing arc.</p>
+  </div>
+  <div class="unit-card purple-card">
+    <div class="unit-name">Drone Command Bays</div>
+    <span class="unit-type">DRONES &middot; EXPANSION</span>
+    <p>Adds drone command bay capacity, allowing additional drones to be actively controlled. Drone bays combine with the Drone Command skill to determine your total active drone limit. Each additional drone slot is a permanent multiplier to mining efficiency, combat power, or salvage capability depending on drone type.</p>
+  </div>
+  <div class="unit-card neutral-card">
+    <div class="unit-name">Shield / Armor Upgrades</div>
+    <span class="unit-type">SURVIVAL &middot; COMBAT ENDURANCE</span>
+    <p>Passive defensive improvements. Shield modules improve capacity and recharge rate; armor modules improve hull resistance to specific damage types. Combat pilots should prioritise defensive passives alongside their offensive active module slots. A pilot who dies loses time returning to the sector, repairing, and recovering lost cargo.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S11 -->
+<section class="section" id="s11">
+<h2 class="section-title"><span class="sec-num">&sect;11</span> Weapons</h2>
+<div class="lore-block">
+  <p>The three categories of weaponry in the Void reflect the three engineering compromises available: power at the cost of ammunition, ammunition-free at the cost of energy, and reach at the cost of both. Every pilot has an opinion about which trade-off is most tolerable. Most of those opinions change once they have spent an hour in a dark sector with empty torpedo racks and no way home.</p>
+  <span class="source">// DAEMON AMMUNITIONS &middot; STARFORT RAMOS &middot; PRODUCT CATALOGUE PREAMBLE //</span>
+</div>
+
+<p>Combat in Astrox Imperium uses real-time engagements where ships engage targets automatically while the pilot manages modules, positioning, and tactical decisions. Understanding weapon categories and their trade-offs determines your combat effectiveness and operational costs.</p>
+
+<h2 class="sub-title">Weapon Categories</h2>
+<div class="unit-grid">
+  <div class="unit-card red-card">
+    <div class="unit-name">Energy Weapons</div>
+    <span class="unit-type">LASERS &amp; BEAMS &middot; NO AMMO &middot; HIGH ENERGY DRAIN</span>
+    <p>Lasers, beams, and similar energy-based systems. Require no ammunition &mdash; they fire as long as your ship has power. The trade-off: they draw heavily from ship energy reserves when firing. A power management skill investment is essentially mandatory for energy weapon builds to sustain fire rates. Excellent for pilots who cannot or do not want to manage ammunition logistics.</p>
+  </div>
+  <div class="unit-card amber-card">
+    <div class="unit-name">Projectile Weapons</div>
+    <span class="unit-type">GUNS &amp; CANNONS &middot; REQUIRES AMMO &middot; MINIMAL ENERGY</span>
+    <p>Guns, cannons, railguns, and kinetic weapons. Require ammunition (sold at stations), but draw almost no ship energy. Ammunition is a running operational cost; Daemon Ammunitions at Starfort Ramos is one of the dedicated ammo suppliers. Projectile weapons fire without competing with shields or life support for power allocation. Best for sustained combat where power management is a concern.</p>
+  </div>
+  <div class="unit-card purple-card">
+    <div class="unit-name">Missiles &amp; Torpedoes</div>
+    <span class="unit-type">GUIDED MUNITIONS &middot; HIGH DAMAGE &middot; LIMITED CAPACITY</span>
+    <p>Missile and torpedo launchers. High damage per hit; guided tracking on many types. Limited magazine capacity &mdash; you can run empty in an extended engagement. Best used for high-priority targets or opening volleys in Raider combat rather than sustained-fire roles. Excellent for eliminating specific high-value enemies quickly before transitioning to other weapon systems.</p>
+  </div>
+</div>
+
+<h2 class="sub-title">Focal Range Warning</h2>
+<p>The Focal Range skills extend weapon effective range, which sounds universally beneficial. The critical caveat: <strong>at maximum Focal Range against fast-moving targets, especially with projectile weapons, miss rates increase dramatically.</strong> A projectile or missile aimed at a rapidly circling Raider at maximum range will frequently miss entirely. Invest in Focal Range cautiously and test at each skill level before committing further. Against large, slow targets it is excellent; against agile fighters at extreme range it may reduce your effective damage output below the baseline.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S12 -->
+<section class="section" id="s12">
+<h2 class="section-title"><span class="sec-num">&sect;12</span> Drones</h2>
+<p>Drones are autonomous robotic units launched from your ship that perform tasks independently, freeing your active module slots and extending your operational capability significantly. Astrox Imperium has 10 distinct drone types, each with specialised functions. Learning to use drones effectively is one of the game&apos;s highest-skill-cap mechanics and one of its highest-return investments.</p>
+
+<h2 class="sub-title">Drone Operation Basics</h2>
+<p>Drones are stored in your cargo bay when inactive. To deploy them, activate them from the cargo interface. Deployed drones require drone command bays (passive modules or built-in ship slots) to operate remotely &mdash; one command bay per active drone. When a drone&apos;s energy depletes, it automatically returns to dock with the parent ship and recharges using ship energy. Drones can warp alongside your ship but consume significant energy doing so; it is more efficient to dock them into their command bays before warp jumps.</p>
+
+<h2 class="sub-title">Key Drone Types</h2>
+<table class="data-table">
+  <thead><tr><th>Drone Type</th><th>Function</th><th>Priority For</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Mining Drones</strong></td><td>Extract ore from asteroids automatically alongside or independently of the parent ship</td><td>Mining builds; frees active module slots while maintaining ore extraction rate</td></tr>
+    <tr><td><strong>Combat Drones</strong></td><td>Attack enemies independently; defend the parent ship from Raiders</td><td>Combat builds; effective protection during mining or mission operations</td></tr>
+    <tr><td><strong>Salvage Drones</strong></td><td>Automatically salvage wreckage without requiring parent ship proximity</td><td>Combat builds wanting to monetise kills without manual salvage beam operation</td></tr>
+    <tr><td><strong>Repair Drones</strong></td><td>Provide sustained hull repair to the parent ship or allied fleet ships</td><td>Endurance combat builds; fleet support roles</td></tr>
+    <tr><td><strong>Burglary Drones</strong></td><td>Attempt to steal items from enemy ships or derelicts without destroying them</td><td>Specialised loot acquisition; Skill Manual farming from Raiders</td></tr>
+    <tr><td><strong>ECM Drones</strong></td><td>Apply electronic countermeasures to enemies</td><td>Combat support; disabling Raider ships before engaging</td></tr>
+  </tbody>
+</table>
+
+<div class="callout tip">
+  <div class="callout-title">The Mining Drone Multiplier</div>
+  <p>Mining drones are arguably the highest-return drone investment for most pilots. A ship with three active mining drones effectively has three additional excavation beams operating simultaneously without occupying active module slots. At high mining skill levels, a mining vessel with maximum drone bays and mining drones can harvest an asteroid field in a fraction of the time an equivalent ship without drones requires. Invest in Drone Command capacity and mining drones early if you plan any significant mining focus.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S13 -->
+<section class="section" id="s13">
+<h2 class="section-title"><span class="sec-num">&sect;13</span> Mining</h2>
+<div class="lore-block">
+  <p>Mining is the oldest profession in the Void, predating every faction by about forty years. Before there were laws, before there were markets, before there was any infrastructure at all, there were people with tools breaking rocks into pieces and selling those pieces to other people who had more complex needs. The Extractors sub-faction considers this heritage dignified. The Trade faction considers it a supply chain. Both perspectives are accurate.</p>
+  <span class="source">// GEK MINING CORPORATE HISTORY &middot; ALIAS OUTPOST &middot; INTERNAL PUBLICATION //</span>
+</div>
+
+<p>Mining is the most reliable credit-generation activity in Astrox Imperium and the most accessible to new pilots. It requires no faction reputation, no combat capability, and no advanced skills to begin. It does reward skill investment, equipment upgrades, and drone support with compounding efficiency improvements.</p>
+
+<h2 class="sub-title">The Mining Loop</h2>
+<ol class="guide-list">
+  <li><strong>Find an asteroid field</strong> in your current sector or a nearby sector. Use your scanner to identify asteroid types before committing to a site.</li>
+  <li><strong>Position your ship</strong> next to the target asteroid and activate your Excavation Beam(s).</li>
+  <li><strong>Monitor your cargo hold</strong> as it fills with ore. Multiple beams and mining drones accelerate fill rate.</li>
+  <li><strong>Manage threats:</strong> Raiders may appear and interrupt operations. Have defensive options ready (combat drones, combat modules, or a hired mining escort mercenary).</li>
+  <li><strong>Return to station</strong> when cargo is full or threats escalate. Sell raw ore at the market, or refine it first for crafting materials or higher-value sale.</li>
+</ol>
+
+<h2 class="sub-title">12 Ore Types</h2>
+<p>The game has 12 different ore types with different properties, availabilities, and market values. Resource density in each sector determines what types are available. Higher-security sectors tend to have more common ore types at lower values; outer sectors with lower security ratings frequently have rarer ores that command premium prices. Map the ore types available in your primary operating region before deciding whether to sell raw or refine.</p>
+
+<div class="callout green">
+  <div class="callout-title">Sell Raw vs. Refine vs. Craft</div>
+  <p>The decision to sell ore raw, refine it first, or craft with it is a recurring economic choice. Raw ore is the fastest path to credits. Refined materials sell for more than raw ore but require refining time and skill investment. Crafted items from refined materials can provide the highest value but require blueprints, skills, and time. Early in the game, sell raw ore for speed. As your refining skills develop, transition to selling refined materials. Only invest in the full crafting pipeline once you understand the market values in your region and have the blueprint access to make it profitable.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S14 -->
+<section class="section" id="s14">
+<h2 class="section-title"><span class="sec-num">&sect;14</span> Refining &amp; Crafting</h2>
+<p>Refining converts raw ore into usable materials and components. Crafting uses those materials to produce ships, equipment, weapons, and modules. The crafting system is faction-biased: different factions have access to different blueprints, and faction reputation gates access to advanced crafting recipes. This creates a system where deliberate faction alignment enables specific production capabilities unavailable to pilots with different allegiances.</p>
+
+<h2 class="sub-title">The Refining Process</h2>
+<p>Refining takes place at stations with refinery services. The efficiency of your refining (what percentage of raw ore becomes usable material) is determined by your Refining skill level. Low refining skills waste a significant portion of each ore unit. Investing in Refining skills early is therefore a pure multiplier on your mining income: the same quantity of ore produces more sellable material at higher skill levels. This is one of the highest-return skill investments for mining-focused pilots.</p>
+
+<h2 class="sub-title">Blueprint Access and Crafting</h2>
+<p>Blueprints are the instructions for crafting specific items. They are gated behind:</p>
+<ul class="guide-list">
+  <li>Faction reputation thresholds (certain blueprints require minimum reputation with specific factions)</li>
+  <li>Skill levels (some blueprints require prerequisite manufacturing skills to use)</li>
+  <li>Station access (some blueprints are only available at specific faction stations)</li>
+</ul>
+<p>The most valuable crafted items in the economy are the ones that require the rarest combination of materials, skills, and blueprints. Identifying what those items are in your current region &mdash; and whether the materials to produce them are accessible &mdash; is the fundamental economics exercise of an industrial build.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S15 -->
+<section class="section" id="s15">
+<h2 class="section-title"><span class="sec-num">&sect;15</span> Trading &amp; Markets</h2>
+<div class="lore-block">
+  <p>The market was the second thing the survivors built, after they decided there would be no rescue. The first thing was shelter. Everything after that was, in a sense, a form of trading. The economists who studied the Void&apos;s market development noted that it emerged from barter almost immediately, because barter requires trust between specific people and the Void had too many specific people who did not trust each other. A shared price system was the most efficient form of mutual agreement available. It has worked out reasonably well for two hundred and thirty years.</p>
+  <span class="source">// LAMMASSU FINANCIAL &middot; VOID STARCROSS &middot; MARKET HISTORY EDUCATIONAL SERIES //</span>
+</div>
+
+<p>Trading in Astrox Imperium operates on a simulated economy: prices fluctuate based on supply and demand patterns, regional production specialisation, and NPC purchasing behaviour. The pilot who understands regional price differences and exploits them is the pilot who generates the highest trading income.</p>
+
+<h2 class="sub-title">Market Arbitrage</h2>
+<p>The core trading strategy: buy goods where they are cheap and sell where they are expensive. This requires surveying multiple stations across your operating region, comparing prices, identifying consistent differentials, and running those routes efficiently. The most well-documented example: Mass Market in Dorando Corridor buys Zai ore at approximately 600 credits per unit, while Zai ore can be mined in the adjacent Beadonus sector. This single route is a reliable early-to-mid-game income source for pilots who discover it.</p>
+
+<h2 class="sub-title">Faction Taxes and Their Impact</h2>
+<p>Every market transaction carries a faction tax based on your reputation with the station&apos;s controlling faction. At zero reputation, you pay the maximum tax. At maximum reputation, taxes approach zero. The compounding impact of reputation on trading income is enormous for high-frequency traders: eliminating faction taxes through reputation investment effectively increases every transaction value by the tax percentage. For a pilot making 50 trades per session, even a 5% tax difference is a meaningful income change.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S16 -->
+<section class="section" id="s16">
+<h2 class="section-title"><span class="sec-num">&sect;16</span> Missions &amp; Contracts</h2>
+<p>Contract missions are available at station Mission Centers and provide the game&apos;s primary source of faction reputation gain alongside credits, items, and skill points. Understanding the mission system well unlocks efficient reputation progression and the specific rewards that make faction alignment strategically meaningful.</p>
+
+<h2 class="sub-title">Mission Types</h2>
+<p>Astrox Imperium has 11 mission types with 10 variations each, generating a substantial mission pool. Key types:</p>
+<ul class="guide-list">
+  <li><strong>Combat/Elimination:</strong> Eliminate a specific number or type of enemy ships. Provides faction reputation, credits, and loot from kills.</li>
+  <li><strong>Delivery/Transport:</strong> Move goods between stations. Fast with a mobile ship; does not require combat capability.</li>
+  <li><strong>Mining:</strong> Extract a specified quantity of a specific ore type. Combines with normal mining operations naturally.</li>
+  <li><strong>Exploration/Survey:</strong> Scout specific sectors or locate specific objects. Best suited to Recon Shuttle builds.</li>
+  <li><strong>Retrieval/Salvage:</strong> Recover specific items from space. Can combine with combat missions efficiently.</li>
+  <li><strong>Escort/Protection:</strong> Protect an NPC vessel or installation. Requires combat readiness.</li>
+</ul>
+
+<div class="callout amber">
+  <div class="callout-title">Skill Point Mission Selection</div>
+  <p>Missions provide skill points as part of their reward, but the amount does not always scale with mission difficulty or credit reward. Some lower-level missions provide more skill points than missions three tiers higher. Before accepting or rejecting a mission based solely on the credit payout, check the skill point reward. A mission paying 5,000 credits and 8 skill points is often better value than a mission paying 8,000 credits and 2 skill points, depending on your current skill development priorities. The community consistently emphasises this non-obvious optimisation.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S17 -->
+<section class="section" id="s17">
+<h2 class="section-title"><span class="sec-num">&sect;17</span> Combat Doctrine</h2>
+<div class="lore-block">
+  <p>Combat in the Void is not glorious. It is a series of decisions about when to engage, when to disengage, and whether the loot from any given Raider ship is worth the repair bill that follows. The pilots who win most often are not the best fighters. They are the most patient ones. They are the ones who turned around before they were in danger of losing, and came back better equipped.</p>
+  <span class="source">// VOID COMBAT NOTES &middot; LOW-SECURITY SECTOR VETERANS ASSOCIATION &middot; INFORMAL PUBLICATION //</span>
+</div>
+
+<p>Astrox Imperium&apos;s combat is real-time with automated targeting &mdash; your ship engages enemies based on your targeting selection and active weapon systems fire automatically while in range. Your direct combat input consists of module management, drone deployment, fleet orders, and tactical positioning decisions. Understanding the autopilot&apos;s behaviour and when to override it manually is the skill that separates functional combat pilots from truly effective ones.</p>
+
+<h2 class="sub-title">Combat Fundamentals</h2>
+<ul class="guide-list">
+  <li><strong>The autopilot steers during combat.</strong> Your ship will manoeuvre automatically when engaged. You can override steering temporarily &mdash; for example, manually activating afterburners to gain distance or turning into a circling enemy for better firing position. Use overrides tactically, not reactively.</li>
+  <li><strong>Turn rate is your most important physical combat stat.</strong> Ships that can track fast-moving enemies maintain consistent damage output; ships that cannot spin fast enough to face their targets miss frequently. Invest in Turn Thrust modules and Gyroscopic Control skill.</li>
+  <li><strong>ECM attacks target your propulsion.</strong> Raiders with ECM weapons can disable your thrusters, leaving you stationary and unable to retreat. The Warp Drive module bypasses this entirely &mdash; it is your escape from the ECM trap even without propulsion.</li>
+  <li><strong>Fleet mercenaries change the combat equation.</strong> A lone pilot versus three Raiders is a difficult engagement. The same pilot with two combat mercs is a manageable one. Hiring combat mercenaries before entering lower-security sectors is not optional for most ship types.</li>
+</ul>
+
+<h2 class="sub-title">Raider Level Scaling</h2>
+<p>Raiders in Astrox Imperium scale with player level. As your pilot level increases, so does the quality (and danger) of the Raiders you encounter in the same sectors. This means a sector that was safely farmable at early levels becomes progressively more challenging as you advance. The reward scales accordingly &mdash; higher-level Raiders drop Rare, Epic, and Artifact quality items &mdash; but it also means you cannot permanently consider any sector trivially safe. Check Raider equipment quality regularly as you level.</p>
+
+<div class="callout red">
+  <div class="callout-title">ECM Countermeasures &mdash; Priority Investment</div>
+  <p>ECM attacks from Raiders that disable your propulsion are one of the most dangerous threats in the Void, particularly in low-security sectors where multiple Raiders can surround you simultaneously. The three-layer defence: train ECM Resistance skill to reduce the effectiveness of ECM attacks; carry a Warp Drive module to escape even if ECM succeeds; and always know the nearest warp gate to your current position. An ECM-disabled ship with a Warp Drive is annoying but manageable. An ECM-disabled ship without one is potentially fatal.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S18 -->
+<section class="section" id="s18">
+<h2 class="section-title"><span class="sec-num">&sect;18</span> Exploration</h2>
+<p>Astrox Imperium has over 100 sectors to explore, each with unique resources, structures, derelict objects, hidden locations, and secrets. Exploration is not a separate game mode &mdash; it is woven into every other activity, since accessing new mining regions, better trading routes, and higher-value combat zones all require moving through previously unexplored territory.</p>
+
+<h2 class="sub-title">Exploration Tools</h2>
+<ul class="guide-list">
+  <li><strong>The Scanner:</strong> Your onboard scanner reveals the contents of nearby objects and asteroids without requiring physical contact. More powerful scanners and scanner skills reveal more information at greater range.</li>
+  <li><strong>Sensor Range:</strong> How far your ship can detect objects. The Recon Shuttle has exceptional sensor range, making it the exploration vessel of choice for initial sector reconnaissance.</li>
+  <li><strong>Life Support:</strong> The hard limit on how far from civilisation you can travel without returning to dock. Extended Life Support modules and the slowest possible drain setting in sandbox options determine your effective exploration radius.</li>
+  <li><strong>Outpost Construction:</strong> Building personal outposts in remote sectors creates safe docking points that extend your effective Life Support range to anywhere you can reach before building one (Chapter 20).</li>
+</ul>
+
+<h2 class="sub-title">Derelict Objects</h2>
+<p>The Void is filled with debris from the Imperium&apos;s destruction and the subsequent two centuries of habitation. Derelict ships, abandoned structures, and mysterious artefacts are scattered across the map. Scanning and investigating them provides credits, unique items, lore fragments, and occasionally dangerous encounters. Some derelicts contain items unavailable from any station market. Systematic derelict investigation is one of the most rewarding exploration activities for pilots who invest in scanner capability.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S19 -->
+<section class="section" id="s19">
+<h2 class="section-title"><span class="sec-num">&sect;19</span> Mercenaries &amp; Fleets</h2>
+<div class="lore-block">
+  <p>Nobody who lasted long in the outer sectors went alone. The ones who tried were either very lucky or are still out there somewhere. The mercenaries are expensive, temperamental, and occasionally more trouble than the Raiders they are hired to deter. But they are less expensive than a replacement ship, and considerably less troublesome than dying. The economics favour hiring them. Most pilots figure this out within their first week.</p>
+  <span class="source">// VOID VETERANS GAZETTE &middot; ISSUE 44 &middot; MERCENARY HIRING GUIDE SUPPLEMENT //</span>
+</div>
+
+<p>Mercenaries are NPC pilots available for hire at station lounges. They follow your fleet and can be ordered to perform a variety of tasks including combat, mining support, and escorting your vessel through dangerous sectors. Building a fleet of up to 10 mercenary ships is one of Astrox Imperium&apos;s mid-game progression milestones.</p>
+
+<h2 class="sub-title">Hiring Mercenaries</h2>
+<p>Mercenaries are found in station lounges. Their availability depends on:</p>
+<ul class="guide-list">
+  <li><strong>Faction reputation:</strong> Most mercenaries require minimum reputation with their affiliated faction before they will work for you. High faction reputation unlocks higher-quality mercs and faction-specific specialist types.</li>
+  <li><strong>Fleet Management skill:</strong> The Fleet Management skill determines how many mercenary ships you can simultaneously command. Investing in Fleet Management at the very start of the game (early enough to give you two mercs quickly) is one of the highest-return early investments. The community consistently recommends this.</li>
+  <li><strong>Credits:</strong> Mercs require upfront hiring costs and ongoing maintenance. Budget for both before hiring.</li>
+</ul>
+
+<h2 class="sub-title">Mercenary Types</h2>
+<div class="unit-grid">
+  <div class="unit-card red-card">
+    <div class="unit-name">Combat Mercs</div>
+    <span class="unit-type">PROTECTION &middot; RAIDER DETERRENCE</span>
+    <p>Armed escort for your operations. Engage Raiders alongside you. Essential for mining in low-security sectors where Raider attacks are frequent. A pair of combat mercs with your main vessel turns most Raider encounters from a threat into a manageable engagement. Hire from combat-oriented faction lounges.</p>
+  </div>
+  <div class="unit-card green-card">
+    <div class="unit-name">Mining Mercs</div>
+    <span class="unit-type">EXTRACTION &middot; ORE CAPACITY</span>
+    <p>Mining-equipped mercenaries that operate their own excavation beams alongside your ship. Effectively multiply your mining output by the number of mining mercs in your fleet. Combine with mining drones for maximum extraction rates in ore-rich sectors. Hire from Labor faction lounges at appropriate reputation levels.</p>
+  </div>
+  <div class="unit-card amber-card">
+    <div class="unit-name">Support Mercs</div>
+    <span class="unit-type">REPAIR &middot; UTILITY</span>
+    <p>Specialist support ships that provide repair services, additional cargo capacity, or specific mission capabilities. Repair-equipped support mercs extend your combat endurance significantly by providing sustained hull and shield restoration during engagements. Best for long operations far from station repair facilities.</p>
+  </div>
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">Early Fleet Management Investment</div>
+  <p>The single most impactful early-game skill investment for most playstyles: put your first skill points into Fleet Management to unlock your first mercenary slot as quickly as possible. Two pilots are dramatically safer than one in almost every situation. For mining: hire a mining merc immediately with your starting faction&apos;s aligned merc type. For combat: hire a combat merc. The increased safety and productivity from having even a single mercenary companion dramatically smooths the early-game experience.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S20 -->
+<section class="section" id="s20">
+<h2 class="section-title"><span class="sec-num">&sect;20</span> Station Construction</h2>
+<p>Station construction is the game&apos;s primary end-game milestone: the ability to build your own personal space station in a remote sector of the Void. Stations serve multiple functions that transform your late-game operational capability.</p>
+
+<h2 class="sub-title">What Stations Provide</h2>
+<ul class="guide-list">
+  <li><strong>Safe docking in remote sectors:</strong> A personal station anywhere in the Void becomes a Life Support replenishment point, extending your effective range to anywhere you have built infrastructure. This is the exploration game&apos;s primary progression unlock.</li>
+  <li><strong>Passive income:</strong> Stations can employ your mercenaries to generate passive credit income. A network of stations with employed mercs provides a credit revenue stream that operates even when you are actively engaged in other activities.</li>
+  <li><strong>Station services:</strong> Your stations can be equipped with services including markets, garages, refineries, and mission boards &mdash; the same services available at faction stations, but under your control in locations of your choosing.</li>
+  <li><strong>Strategic positioning:</strong> A station in a high-value ore sector lets you mine without returning to faction stations, dramatically increasing mining efficiency.</li>
+</ul>
+
+<h2 class="sub-title">Station Construction Requirements</h2>
+<p>Station building requires significant resource investment: construction materials (produced through the crafting system), specific skills, and credits. The station building progression is the game&apos;s longest single goal, making it an appropriate late-game objective to work toward over many sessions rather than a near-term project. Plan the location of your first station around your primary operating region &mdash; a station in the middle of your most frequent travel route eliminates all return trips and becomes the economic centre of your personal empire.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S21 -->
+<section class="section" id="s21">
+<h2 class="section-title"><span class="sec-num">&sect;21</span> Faction Reputation</h2>
+<div class="lore-block">
+  <p>Reputation in the Void is the only currency that cannot be converted to credits. A faction&apos;s trust is built transaction by transaction, mission by mission, until the door that was locked is open and the price that was high is reasonable. The pilots who understand this early do not waste time resenting the gates. They work the system with the patient efficiency of someone who knows that the next level of access is worth more than the credits spent getting there.</p>
+  <span class="source">// PROCTORS CENTER &middot; LAW FACTION &middot; NEW CONTRACTOR ORIENTATION //</span>
+</div>
+
+<p>Faction reputation is rated on a scale from negative (hostile) to positive (maximum allied). Where you sit on this scale with each faction determines what services are available, what prices you pay, which mercenaries will hire, and how NPC ships react to you.</p>
+
+<h2 class="sub-title">Reputation Effects Summary</h2>
+<table class="data-table">
+  <thead><tr><th>Reputation Level</th><th>Effects</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Hostile (Negative)</strong></td><td>Faction ships attack on sight; no access to faction services; warp gate denied</td></tr>
+    <tr><td><strong>Neutral (0&ndash;2)</strong></td><td>Basic access; maximum taxes; limited merc availability; no faction shipyard bonuses</td></tr>
+    <tr><td><strong>Friendly (3&ndash;5)</strong></td><td>Reduced taxes; basic mercs available; starting reputation level; faction ships non-hostile</td></tr>
+    <tr><td><strong>Allied (6&ndash;8)</strong></td><td>Significant tax reduction; advanced mercs available; faction shipyard upgrades active</td></tr>
+    <tr><td><strong>Maximum (9&ndash;10)</strong></td><td>Minimal taxes; all mercs available; maximum shipyard bonus; exclusive ship models; some gate fees waived</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Faction Shipyard Bonuses</h2>
+<p>One of faction reputation&apos;s most impactful and least discussed benefits: <strong>faction shipyards offer ship models with improved technology based on your reputation.</strong> A faction ship purchased at Reputation 3 is a different, weaker version of the same hull purchased at Reputation 9. The shipyard applies bonus modules and performance improvements that scale with your standing. If you are planning to purchase a faction-specific vessel, build reputation with that faction first &mdash; the ship you get at maximum reputation is significantly better than the one available to a low-reputation pilot.</p>
+
+<h2 class="sub-title">Building Reputation Efficiently</h2>
+<ul class="guide-list">
+  <li><strong>Mission contracts</strong> are the primary reputation source and should be run consistently for your priority factions.</li>
+  <li><strong>Eliminating Raiders in faction territory</strong> grants reputation with the faction that controls that sector even without completing a formal mission contract.</li>
+  <li><strong>Starting faction advantage:</strong> Your selected starting faction begins at Reputation 5, giving immediate access to their basic services and mercs &mdash; the single most impactful configuration choice for early-game efficiency.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S22 -->
+<section class="section" id="s22">
+<h2 class="section-title"><span class="sec-num">&sect;22</span> Early Game Doctrine</h2>
+<div class="lore-block">
+  <p>The first week in the Void is the same for every pilot who has ever climbed out of a cryopod and looked at the sector map without knowing where to start. You are overwhelmed by options. Every system connects to three others. Every station has a mission board and a market and a lounge and a shipyard and you have no idea which of those you should walk into first. The answer is: all of them, in that order, every time you dock. Check missions. Check market prices. Check the lounge for mercs. Check the shipyard if you have credits. In that order. Every time. It becomes automatic within a session, and once it is automatic, you are no longer overwhelmed. You are a pilot.</p>
+  <span class="source">// VOID STARCROSS NEW ARRIVAL ORIENTATION &middot; YEAR 230 A.I. //</span>
+</div>
+
+<div class="phase early">
+  <div class="phase-title">First Session: Orientation and Foundation</div>
+  <p><strong>Complete the tutorials.</strong> Every one. They are repeatable, they can be stopped and restarted, and they provide meaningful skill point rewards for completion. Do not skip them to &ldquo;get to the real game&rdquo; &mdash; the tutorials are the real game&apos;s introduction layer and they provide resources you will use immediately.</p>
+  <p><strong>Invest immediately in Fleet Management.</strong> Getting your first mercenary slot open early changes the entire difficulty profile of the starting region. Head to your starting faction&apos;s station lounge as soon as you have the skill and hire a matching merc &mdash; combat if you plan any combat, mining if you plan to mine.</p>
+  <p><strong>Buy a Warp Drive at Biomart University.</strong> This is not optional for any pilot who intends to leave Void Starcross. Do this in the first session.</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">Sessions 2&ndash;10: Skill Development and First Upgrade</div>
+  <p>Establish your credit generation method. For most new pilots: mine Belasite in Chamo, sell at nearby stations, accumulate toward your first ship upgrade. Run missions alongside mining &mdash; they do not compete for time since mission boards only take a moment to check at each dock.</p>
+  <p>Prioritise skill investments in order: Fleet Management (first merc), Excavation/Combat (core profession skills), Refining, Navigation (gate toll reduction). Avoid spreading points across everything simultaneously. Concentrated early skill investment produces measurable results faster than shallow investment across a wide skill spread.</p>
+  <p>Consider the Recon Shuttle as your second vehicle acquisition before a combat or mining hull upgrade. It pays for itself in exploration time savings and mission completion efficiency within a few sessions.</p>
+</div>
+
+<div class="callout warning">
+  <div class="callout-title">The Starting Faction Matters More Than It Seems</div>
+  <p>The faction you select at game start gives you Reputation 5 with that faction immediately. This unlocks their basic mercenaries from the first session, which is a significant early-game advantage. The Labor faction is broadly recommended for mining-focused pilots (access to Extractor mercs and Labor shipyard advantages). Alpha is recommended for tech-focused pilots (university access and advanced module training). Choose based on your intended primary activity, not on lore preference.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S23 -->
+<section class="section" id="s23">
+<h2 class="section-title"><span class="sec-num">&sect;23</span> Mid &amp; Late Game</h2>
+<p>The mid-game begins when you have your first dedicated profession ship (mining, combat, or hauler), a functional merc fleet of 2&ndash;3 ships, and consistent faction reputation above 5 with your primary faction. The late game begins when you have station-building capability and are preparing your first personal outpost.</p>
+
+<h2 class="sub-title">Mid-Game Priorities</h2>
+<ul class="guide-list">
+  <li><strong>Expand your operating region.</strong> The Void Starcross area is the starting zone; the game&apos;s most valuable resources and content are in sectors accessible through sustained exploration. Invest in Life Support extensions before attempting the outer sectors.</li>
+  <li><strong>Develop a second faction relationship.</strong> High reputation with a single faction is excellent; high reputation with two complementary factions opens dramatically more options for equipment, ships, and missions. Alpha + Labor or Trade + Law are common effective pairings.</li>
+  <li><strong>Pursue rare item acquisition.</strong> Low-security sector Raider farming (the Veloxi route: Void Starcross &rarr; Hunu &rarr; Ponze &rarr; Veloxi) provides Rare, Epic, and Artifact quality loot at appropriate levels. The loot quality scales with player level &mdash; farm this route at regular intervals as you progress.</li>
+  <li><strong>Build toward a fleet of 5&ndash;6 mercs.</strong> Each additional Fleet Management level and its associated merc slot is a permanent multiplier on your operational capability. A five-ship fleet with the right merc mix &mdash; two combat, two mining, one support &mdash; makes previously dangerous sectors routine.</li>
+</ul>
+
+<h2 class="sub-title">Late Game &mdash; Station Infrastructure</h2>
+<p>The late game in Astrox Imperium is defined by building your personal empire across the Void. Identify the sectors where your primary operations take place, plan station placement to eliminate return-to-dock inefficiencies, and use your merc fleet as the labour force for station income generation. The fully realised late game is a pilot who has transformed the Void from an alien environment to be survived into a managed territory to be administered &mdash; with stations providing safe harbour, passive income, and the infrastructure to sustain operations at any distance from the starting region.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S24 -->
+<section class="section" id="s24">
+<h2 class="section-title"><span class="sec-num">&sect;24</span> Common Mistakes</h2>
+
+<div class="phase late"><div class="phase-title">Mistake 1 &mdash; Not Buying a Warp Drive Early</div>
+<p>The Warp Drive is available from the first session at Biomart University. There is no reason to delay buying it. An ECM-disabled ship without a Warp Drive, alone in a low-security sector, is a death that erases progress and costs repair time. Buy it in the first session. It is not optional.</p></div>
+
+<div class="phase late"><div class="phase-title">Mistake 2 &mdash; Skipping Fleet Management</div>
+<p>New pilots frequently invest their first skill points in weapon or mining skills rather than Fleet Management. The result: they grind alone when a single merc companion would reduce their risk and increase their efficiency by 40&ndash;60%. Fleet Management provides the highest quality-of-life return of any early skill. Put points here before your primary profession skills.</p></div>
+
+<div class="phase late"><div class="phase-title">Mistake 3 &mdash; Ignoring Mission Skill Point Rewards</div>
+<p>Many players accept or reject missions based solely on credit payout. The skill point reward is often more valuable than the credits, especially in the early game where every skill point accelerates your development timeline. Check both rewards before making mission decisions.</p></div>
+
+<div class="phase late"><div class="phase-title">Mistake 4 &mdash; Over-Extending Without Life Support</div>
+<p>Exploring sectors beyond your Life Support range without either adequate LS modules or a mapped route back is how pilots die stranded in the dark. The rule: never go somewhere you can&apos;t get back from before your LS depletes. Know your operational radius and stay within it until you have the infrastructure to extend it.</p></div>
+
+<div class="phase late"><div class="phase-title">Mistake 5 &mdash; Over-Investing in Focal Range</div>
+<p>Focal Range skills sound excellent but cause dramatically increased misses at maximum range against fast-moving targets with projectile weapons. Invest cautiously and test at each level. A small Focal Range investment is valuable; a maxed-out Focal Range build fighting agile Raiders at extreme range frequently deals less effective damage than a baseline-range build would.</p></div>
+
+<div class="phase late"><div class="phase-title">Mistake 6 &mdash; Selling Ore at Starting Station Default Prices</div>
+<p>The starting station buys ore at market rate. Market rate fluctuates and is not always the best available price in the region. Take a few sessions to survey prices at multiple stations &mdash; the difference between the lowest and highest buyer for any given ore type can be 200&ndash;400% on specific market days. Route your returns through the highest buyer you have identified.</p></div>
+
+<div class="phase late"><div class="phase-title">Mistake 7 &mdash; Not Redistributing Skills</div>
+<p>Early skill allocations rarely reflect what the player actually wants to do ten hours into the game. Skills can be fully redistributed at university stations (requiring a shuttle to be your active ship). New players should not agonise over early skill choices because they are reversible. Experiment. Redistribute. Find what your playstyle actually needs before locking into a permanent skill path.</p></div>
+
+<div class="phase late"><div class="phase-title">Mistake 8 &mdash; Ignoring Faction Shipyard Bonuses</div>
+<p>Buying a faction ship at low reputation and then raising reputation later does not retroactively improve the ship you already bought. Build reputation first, buy the faction ship after reaching Allied or Maximum status, and get the fully upgraded version. The difference between a Reputation 3 and Reputation 9 faction ship of the same model can be substantial.</p></div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S25 -->
+<section class="section" id="s25">
+<h2 class="section-title"><span class="sec-num">&sect;25</span> Glossary</h2>
+<div class="gloss-grid">
+  <div class="gloss-item"><div class="gloss-term">Active Module</div><div class="gloss-def">Equipment installed in active module slots; operated during flight; includes weapons, excavation beams, repair systems, ECM, and shields.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Alpha Faction</div><div class="gloss-def">Science and research faction; controls universities and advanced technology; Biomart University in Void Starcross is their starting-region flagship; essential for Warp Drive and advanced module access.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Artifact</div><div class="gloss-def">The highest tier of equipment quality; extremely rare; found only in loot from high-level Raider engagements or through specific crafting with rare materials.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Autopilot</div><div class="gloss-def">The automatic combat steering system; can be overridden temporarily by the player for tactical manoeuvring; normally handles combat positioning without requiring player input.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Belasite</div><div class="gloss-def">A common ore type found near the warp gate in the Chamo sector; the most commonly recommended early-game credit source; a Level 4 resource in a reasonably safe security sector.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Blueprint</div><div class="gloss-def">The instruction set for crafting a specific item; gated behind faction reputation, skill levels, and station access; required to produce ships, weapons, and equipment through the crafting system.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Burglary Drone</div><div class="gloss-def">Specialised drone that attempts to steal items from enemies or derelicts without destroying them; primary source of Skill Manuals from living Raiders.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Cargo Bay Extension</div><div class="gloss-def">Passive module that increases ship cargo capacity; highest priority passive upgrade for mining and trading vessels.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Chamo</div><div class="gloss-def">A sector in the Labor faction region accessible from Void Starcross; contains a high-value Belasite asteroid near the warp gate in a relatively safe environment; the community&apos;s most recommended early credit source.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Combat Drone</div><div class="gloss-def">A drone type that engages enemies independently; supplements or replaces weapon module firepower; provides combat capability without consuming active weapon slots.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Credits</div><div class="gloss-def">The universal currency of the Astrox Void; required for all equipment purchases, station services, warp gate tolls, merc hiring, and ship construction.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Derelict</div><div class="gloss-def">Abandoned ship or structure in space; contains loot and sometimes lore; often unique items unavailable from station markets; requires scanner investigation.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Drone Command Bay</div><div class="gloss-def">Passive module slot that enables remote control of one additional drone; the binding constraint on total active drone count alongside the Drone Command skill.</div></div>
+  <div class="gloss-item"><div class="gloss-term">ECM (Electronic Countermeasures)</div><div class="gloss-def">Electronic warfare attacks that disable the target&apos;s propulsion system; the most dangerous tactical threat in the Void; countered by Warp Drive module and ECM Resistance skill.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Energy Weapons</div><div class="gloss-def">Weapon type including lasers and beams; requires no ammunition but draws heavily from ship energy reserves; fires continuously as long as power is available.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Excavation Beam</div><div class="gloss-def">Active module for mining ore from asteroids; the primary tool of any mining build; multiple beams can be fitted on ships with multiple active module slots.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Faction Reputation</div><div class="gloss-def">A rating from hostile to maximum allied with each of the 18 factions; determines service access, prices, merc availability, warp gate access, and shipyard bonuses.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Faction Shipyard Bonus</div><div class="gloss-def">Enhanced ship versions available from faction shipyards at high reputation; a Reputation 9 faction ship is significantly more capable than the same hull at Reputation 3.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Fleet Management</div><div class="gloss-def">Skill that determines the maximum number of mercenary ships that can be simultaneously commanded; the highest-return early-game skill investment for most playstyles.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Focal Range</div><div class="gloss-def">Skill that extends weapon effective range; beneficial against slow targets at range but causes significant miss rate increases against fast-moving targets at maximum extension; invest cautiously.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Gyroscopic Control</div><div class="gloss-def">Ship skill that improves turn rate; one of the most impactful combat skills for maintaining firing solutions against circling Raiders.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Imperium (Ship)</div><div class="gloss-def">The massive generation ship that attempted humanity&apos;s first quantum-powered interstellar jump; destroyed in the attempt; its wreckage became the foundation of the Void&apos;s civilisation 230 years before the game&apos;s events.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Labor Faction</div><div class="gloss-def">The largest faction; controls mining operations and industrial production; sub-factions are Contractors (manufacturing) and Extractors (mining); recommended starting faction for mining builds.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Law Faction</div><div class="gloss-def">Security and governance faction; controls high-security sectors; high reputation reduces hostile encounters in Law territory; opposed to Pirate faction.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Life Support</div><div class="gloss-def">The ship system that enables survival away from stations; depletes over time; determines effective exploration range; extended by passive modules and configurable via sandbox settings.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Mercenary</div><div class="gloss-def">An NPC pilot available for hire from station lounges; follows the player&apos;s fleet and performs assigned tasks including combat, mining, and escort; availability gated by faction reputation and Fleet Management skill.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Mining Drone</div><div class="gloss-def">A drone type that extracts ore from asteroids independently; effectively adds an additional excavation beam without consuming active module slots.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Missiles &amp; Torpedoes</div><div class="gloss-def">Guided munition weapons; high damage per hit; limited magazine capacity; best used for high-priority targets or opening volleys rather than sustained fire roles.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Outpost / Station</div><div class="gloss-def">Player-constructed space station; provides a docking point in remote sectors extending Life Support range; can generate passive income through stationed mercenaries; the game&apos;s primary end-game progression milestone.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Passive Module</div><div class="gloss-def">Equipment installed at station garages providing permanent bonuses; cannot be reconfigured during flight; includes Warp Drive, Life Support extensions, cargo bays, drone command bays, and defensive upgrades.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Pirate Faction</div><div class="gloss-def">Independent faction living outside conventional law; contraband and combat focus; high reputation provides unique equipment access; directly opposed to Law faction &mdash; cannot maintain both simultaneously.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Projectile Weapons</div><div class="gloss-def">Weapon type including guns and cannons; requires ammunition but draws almost no ship energy; best for sustained fire where power management is a concern.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Raider</div><div class="gloss-def">Generic term for hostile NPC ships encountered in all security sectors; scale in difficulty with player level; primary source of combat income, rare loot, and Skill Manuals.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Recon Shuttle</div><div class="gloss-def">A fast, high-LS exploration vessel; recommended as the second vehicle for new pilots; 3+ hours of native Life Support, extremely high speed, excellent sensors; ideal for mission-running and exploration before combat hull investment.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Refining</div><div class="gloss-def">The process of converting raw ore into usable crafting materials; efficiency scales with Refining skill; one of the highest-return early skill investments for mining pilots.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Residual Skill Points</div><div class="gloss-def">The up to 5 skill points granted every 15 minutes of active play; rate influenced by Life Support Drain Speed setting; the backbone of all skill progression.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Salvage Beam / Drone</div><div class="gloss-def">Active module or drone that extracts usable components from destroyed ship wreckage; essential for combat pilots who want to monetise kills beyond basic loot drops.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Security Rating</div><div class="gloss-def">A sector-level indicator of how dangerous the area is; higher ratings (9.0) mean safer travel; lower ratings (3.0) mean frequent Raider activity and dangerous conditions.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Skill Manual</div><div class="gloss-def">A rare item that provides instant skill points; primarily found in Raider loot drops or stolen via Burglary Drones; not reliable enough to plan around but valuable when obtained.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Temple Faction</div><div class="gloss-def">Faith and community welfare faction; StarShepards Headquarters in Void Starcross; focuses on resilience and endurance; often overlooked but provides meaningful bonuses for exploration builds.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Trade Faction</div><div class="gloss-def">Commerce and financial faction; Lammassu Financial in Void Starcross; high Trade reputation significantly reduces market transaction taxes, compounding for frequent traders.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Turn Thrust Module</div><div class="gloss-def">Passive module improving ship turn rate; essential for combat builds to maintain firing solutions against circling Raiders.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Veloxi</div><div class="gloss-def">A low-security sector accessible via Void Starcross &rarr; Hunu &rarr; Ponze &rarr; Veloxi; contains a station for repair and resupply; excellent for Raider farming yielding rare, epic, and artifact loot at appropriate player levels.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Void Starcross</div><div class="gloss-def">The starting hub region; contains all six major faction station types; the centre of the game&apos;s starting activity; the point from which all exploration radiates outward.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Warp Drive</div><div class="gloss-def">Passive module enabling inter-sector warp travel and emergency escape even when propulsion is ECM-disabled; the single most important module purchase for any pilot; available at Biomart University in Void Starcross.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Warp Gate</div><div class="gloss-def">Permanent structures enabling transit between connected sectors; charge tolls based on controlling faction and pilot reputation; must be mapped carefully as connections are often one-directional.</div></div>
+</div>
+</section>
+
+</div><!-- /content -->
+<footer id="footer">
+  Astrox Imperium &nbsp;&middot;&nbsp; Jace Brannick Software &nbsp;&middot;&nbsp; Nadir Strategy Archive &nbsp;&middot;&nbsp; Void Starcross &mdash; Year 230 A.I.
+</footer>
+</div><!-- /main -->
+<a id="back-top" href="#hero" title="Back to top">&#8593;</a>
+<script>
+const bar=document.getElementById('progress-bar');
+const bt=document.getElementById('back-top');
+const tog=document.getElementById('sidebar-toggle');
+const sb=document.getElementById('sidebar');
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;
+  bar.style.transform='scaleX('+(s/t)+')';
+  bt.classList.toggle('visible',s>400);
+},{passive:true});
+const secs=document.querySelectorAll('.section[id]');
+const navs=document.querySelectorAll('.nav-item');
+const obs=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){navs.forEach(n=>n.classList.remove('active'));const a=document.querySelector('.nav-item[href="#'+e.target.id+'"]');if(a){a.classList.add('active');a.scrollIntoView({block:'nearest'});}}});
+},{rootMargin:'-20% 0px -70% 0px'});
+secs.forEach(s=>obs.observe(s));
+tog.addEventListener('click',()=>sb.classList.toggle('open'));
+document.querySelectorAll('.nav-item').forEach(i=>i.addEventListener('click',()=>sb.classList.remove('open')));
+document.querySelectorAll('.section').forEach((s,i)=>{s.style.animationDelay=i*0.03+'s';});
+</script>
+</body>
+</html>

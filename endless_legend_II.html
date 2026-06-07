@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Endless Legend II &mdash; The Saiadha Codex</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0c0e12;--parchment:#f0ecdf;--gold:#c9943a;--gold-dark:#8b6420;--gold-pale:#f0d9a8;
+  --mid:#3a3828;--light:#f6f2e8;--border:rgba(201,148,58,0.3);
+  /* Saiadha palette: deep ocean teal, tidefall amber, monsoon violet, ancient coral pink, dust bronze */
+  --ocean:#060e18;--ocean-mid:#0c1a28;
+  --teal:#1a7080;--teal-pale:#c8eaf0;
+  --monsoon:#281040;--monsoon-pale:#e0d4f8;
+  --coral:#7a2040;--coral-pale:#f8d4e0;
+  --dust:#8a5010;--dust-pale:#f8e8c8;
+  --kin:#1a3060;--kin-pale:#d0dcf8;
+  --font-head:'Cinzel','Times New Roman',serif;
+  --font-body:'Crimson Pro','Georgia',serif;
+  --sidebar-w:296px;
+}
+html{scroll-behavior:smooth;font-size:17px}
+body{background:var(--parchment);color:var(--ink);font-family:var(--font-body);line-height:1.75;display:flex;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.5}
+a{color:inherit;text-decoration:none}button{cursor:pointer;font-family:inherit}
+#progress-bar{position:fixed;top:0;left:var(--sidebar-w);right:0;height:3px;background:var(--gold);transform-origin:left;transform:scaleX(0);z-index:500;transition:transform 0.1s linear}
+#sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--ocean);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;border-right:2px solid var(--gold-dark);display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--gold-dark) var(--ocean)}
+#sidebar-header{padding:28px 20px 20px;border-bottom:1px solid rgba(201,148,58,0.22);background:linear-gradient(180deg,#020508 0%,var(--ocean) 100%)}
+#sidebar-title{font-family:var(--font-head);font-size:0.86rem;font-weight:900;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;line-height:1.3}
+#sidebar-sub{font-family:var(--font-body);font-size:0.66rem;color:rgba(200,230,240,0.38);margin-top:6px;letter-spacing:0.04em;font-style:italic}
+#sidebar-nav{padding:8px 0 40px;flex:1}
+.nav-section{padding:10px 20px 3px;font-family:var(--font-head);font-size:0.52rem;letter-spacing:0.2em;color:var(--gold-dark);text-transform:uppercase;margin-top:6px;opacity:0.85}
+.nav-item{display:block;padding:5px 20px 5px 26px;font-family:var(--font-body);font-size:0.76rem;color:rgba(200,230,240,0.58);text-decoration:none;border-left:2px solid transparent;transition:all 0.15s ease;line-height:1.3;position:relative}
+.nav-item::before{content:'&#9658;';position:absolute;left:11px;top:6px;color:var(--gold-dark);opacity:0;transition:opacity 0.12s;font-size:0.42rem}
+.nav-item:hover,.nav-item.active{color:var(--gold-pale);border-left-color:var(--gold);background:rgba(201,148,58,0.07);padding-left:28px}
+.nav-item:hover::before,.nav-item.active::before{opacity:1}
+#sidebar-toggle{display:none;position:fixed;top:10px;left:10px;z-index:200;background:var(--ocean);border:1px solid var(--gold-dark);color:var(--gold);font-size:1.1rem;padding:5px 9px;border-radius:2px}
+#main{margin-left:var(--sidebar-w);flex:1;min-width:0}
+/* Hero — Saiadha: deep ocean below, tidefall amber at horizon, monsoon violet above, coral shimmer */
+#hero{background:linear-gradient(170deg,#080410 0%,#100828 30%,#0a1820 60%,#18100a 85%,#060c10 100%);min-height:510px;display:flex;flex-direction:column;justify-content:flex-end;padding:0 64px 64px;position:relative;overflow:hidden;border-bottom:3px solid var(--gold-dark)}
+#hero::before{content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(200px 80px at 30% 95%,rgba(26,112,128,0.16) 0%,transparent 70%),
+    radial-gradient(150px 60px at 70% 92%,rgba(26,112,128,0.12) 0%,transparent 70%),
+    radial-gradient(60px 40px at 50% 80%,rgba(122,32,64,0.10) 0%,transparent 70%),
+    radial-gradient(30px 20px at 15% 85%,rgba(200,120,20,0.08) 0%,transparent 70%),
+    radial-gradient(1.5px 1.5px at 4% 8%,rgba(200,230,255,0.7) 0%,transparent 0%),
+    radial-gradient(1px 1px at 12% 3%,rgba(240,220,180,0.65) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 21% 14%,rgba(200,230,255,0.6) 0%,transparent 0%),
+    radial-gradient(2px 2px at 31% 6%,rgba(240,200,160,0.55) 0%,transparent 0%),
+    radial-gradient(1px 1px at 41% 16%,rgba(200,230,255,0.55) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 52% 4%,rgba(240,220,180,0.62) 0%,transparent 0%),
+    radial-gradient(1px 1px at 62% 13%,rgba(200,220,255,0.5) 0%,transparent 0%),
+    radial-gradient(1px 1px at 73% 7%,rgba(240,200,160,0.55) 0%,transparent 0%),
+    radial-gradient(2px 2px at 83% 15%,rgba(200,230,255,0.5) 0%,transparent 0%),
+    radial-gradient(1px 1px at 93% 5%,rgba(240,220,180,0.6) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 18% 25%,rgba(200,220,255,0.42) 0%,transparent 0%),
+    radial-gradient(1px 1px at 48% 27%,rgba(240,210,160,0.38) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 77% 23%,rgba(200,230,255,0.42) 0%,transparent 0%)}
+#hero::after{content:'';position:absolute;bottom:0;left:64px;right:64px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.hero-eyebrow{font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.28em;color:var(--gold-dark);text-transform:uppercase;margin-bottom:14px;position:relative}
+.hero-title{font-family:var(--font-head);font-size:clamp(1.8rem,4.5vw,3.5rem);font-weight:900;color:var(--parchment);letter-spacing:0.04em;text-transform:uppercase;line-height:1.05;margin-bottom:8px;position:relative;text-shadow:0 2px 24px rgba(0,0,0,0.95)}
+.hero-subtitle{font-family:var(--font-body);font-size:1.05rem;font-style:italic;color:rgba(240,217,168,0.72);font-weight:300;margin-bottom:26px;position:relative}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;position:relative}
+.hero-tag{font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-pale);border:1px solid rgba(201,148,58,0.38);padding:3px 10px;background:rgba(201,148,58,0.07)}
+#content{padding:0 64px 80px;max-width:960px}
+.section{padding:54px 0 6px;animation:fadeUp 0.45s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.sec-num{display:inline-block;font-family:var(--font-head);font-size:0.78rem;font-weight:400;letter-spacing:0.1em;color:var(--gold-dark);margin-right:0.5em;vertical-align:middle}
+.section-title{font-family:var(--font-head);font-size:clamp(1.25rem,2.4vw,1.75rem);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink);padding-bottom:12px;margin-bottom:20px;border-bottom:2px solid var(--border);position:relative}
+.section-title::after{content:'';position:absolute;bottom:-2px;left:0;width:58px;height:2px;background:var(--gold)}
+.sub-title{font-family:var(--font-head);font-size:1rem;font-weight:600;letter-spacing:0.05em;color:var(--mid);margin:26px 0 9px;text-transform:uppercase}
+p{margin-bottom:1rem;font-size:1rem}
+.guide-list{margin:0.5rem 0 1rem 1.2rem}
+.guide-list li{margin-bottom:0.5rem;font-size:1rem}
+.guide-list li::marker{color:var(--gold-dark)}
+.callout{padding:15px 20px;margin:20px 0;border-left:4px solid var(--gold);background:var(--light);border-radius:0 3px 3px 0}
+.callout.teal{border-left-color:#1a7080;background:var(--teal-pale)}
+.callout.monsoon{border-left-color:#5030a0;background:var(--monsoon-pale)}
+.callout.coral{border-left-color:#7a2040;background:var(--coral-pale)}
+.callout.dust{border-left-color:#8a5010;background:var(--dust-pale)}
+.callout.kin{border-left-color:#1a3060;background:var(--kin-pale)}
+.callout.tip{border-left-color:#2a5c18;background:#e8f5e0}
+.callout.warning{border-left-color:#7a2010;background:#f5e8d0}
+.callout-title{font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;margin-bottom:5px;color:var(--gold-dark)}
+.callout.teal .callout-title{color:#1a7080}
+.callout.monsoon .callout-title{color:#5030a0}
+.callout.coral .callout-title{color:#7a2040}
+.callout.dust .callout-title{color:#8a5010}
+.callout.kin .callout-title{color:#1a3060}
+.callout.tip .callout-title{color:#2a5c18}
+.callout.warning .callout-title{color:#7a2010}
+.callout p{font-size:0.94rem;margin-bottom:0.5rem}
+.callout p:last-child{margin-bottom:0}
+.lore-block{padding:16px 22px;margin:22px 0;border:1px solid rgba(26,112,128,0.35);background:rgba(6,14,24,0.05);position:relative}
+.lore-block::before{content:'SAIADHA ARCHIVE';position:absolute;top:-0.6rem;left:1rem;font-family:var(--font-head);font-size:0.54rem;letter-spacing:0.22em;color:#1a7080;background:var(--parchment);padding:0 0.5rem}
+.lore-block p{font-style:italic;color:#06121e;font-size:0.96rem;line-height:1.88}
+.lore-block .source{font-family:var(--font-head);font-size:0.58rem;color:rgba(26,112,128,0.6);text-align:right;display:block;margin-top:0.6rem;letter-spacing:0.1em}
+.data-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.9rem}
+.data-table th{background:var(--ocean);color:var(--gold-pale);font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;padding:8px 11px;text-align:left;border:1px solid rgba(201,148,58,0.2)}
+.data-table td{padding:7px 11px;border:1px solid var(--border);vertical-align:top;line-height:1.5;color:var(--ink)}
+.data-table tr:nth-child(even) td{background:rgba(201,148,58,0.04)}
+.data-table tr:hover td{background:rgba(201,148,58,0.07)}
+.phase{padding:16px 20px;margin:14px 0;border-left:4px solid var(--gold);background:rgba(201,148,58,0.05)}
+.phase.early{border-left-color:#1a5070;background:rgba(26,80,112,0.07)}
+.phase.mid{border-left-color:var(--gold-dark);background:rgba(201,148,58,0.07)}
+.phase.late{border-left-color:#8a1830;background:rgba(138,24,48,0.07)}
+.phase.teal-ph{border-left-color:#1a7080;background:rgba(26,112,128,0.07)}
+.phase-title{font-family:var(--font-head);font-size:0.84rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:7px;color:var(--gold-dark)}
+.phase.early .phase-title{color:#1a5070}
+.phase.late .phase-title{color:#8a1830}
+.phase.teal-ph .phase-title{color:#1a7080}
+.phase p{font-size:0.94rem;margin-bottom:0.6rem;color:var(--ink)}
+.phase p:last-child{margin-bottom:0}
+.unit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin:16px 0}
+.unit-card{border:1px solid var(--border);background:var(--light);padding:14px 16px;border-top:3px solid var(--gold)}
+.unit-card.kin-card{border-top-color:#1a3060}
+.unit-card.aspects-card{border-top-color:#1a7080}
+.unit-card.lords-card{border-top-color:#8a5010}
+.unit-card.tahuk-card{border-top-color:#5030a0}
+.unit-card.necro-card{border-top-color:#7a2040}
+.unit-card.teal-card{border-top-color:#1a7080}
+.unit-card.neutral-card{border-top-color:#5a4820}
+.unit-name{font-family:var(--font-head);font-size:0.88rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink);margin-bottom:2px}
+.unit-type{font-family:var(--font-head);font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);margin-bottom:7px;display:block}
+.unit-card.kin-card .unit-type{color:#1a3060}
+.unit-card.aspects-card .unit-type{color:#1a7080}
+.unit-card.lords-card .unit-type{color:#8a5010}
+.unit-card.tahuk-card .unit-type{color:#5030a0}
+.unit-card.necro-card .unit-type{color:#7a2040}
+.unit-card.teal-card .unit-type{color:#1a7080}
+.unit-card p{font-size:0.88rem;line-height:1.6;color:var(--ink);margin-bottom:0}
+.orn{text-align:center;color:var(--gold-dark);font-size:0.72rem;letter-spacing:0.42em;padding:28px 0 8px;opacity:0.65}
+.gloss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:1px;background:var(--border);margin-top:16px;border:1px solid var(--border)}
+.gloss-item{background:var(--light);padding:9px 13px;display:flex;gap:10px;align-items:flex-start}
+.gloss-item:nth-child(even){background:var(--parchment)}
+.gloss-term{font-family:var(--font-head);font-size:0.75rem;font-weight:700;color:var(--ink);white-space:normal;min-width:118px;max-width:148px;word-break:break-word;letter-spacing:0.04em;text-transform:uppercase}
+.gloss-def{font-size:0.86rem;color:var(--mid);line-height:1.55}
+#back-top{position:fixed;bottom:26px;right:26px;width:40px;height:40px;background:var(--ocean);border:1px solid var(--gold-dark);color:var(--gold);font-size:1rem;display:flex;align-items:center;justify-content:center;text-decoration:none;opacity:0;transform:translateY(8px);transition:opacity 0.3s,transform 0.3s;z-index:90}
+#back-top.visible{opacity:1;transform:none}
+#back-top:hover{background:var(--gold-dark);color:var(--parchment)}
+#footer{margin-top:40px;border-top:1px solid var(--border);padding:20px 64px;font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);text-align:center}
+@media(max-width:900px){
+  :root{--sidebar-w:0px}
+  #sidebar-toggle{display:flex;align-items:center;justify-content:center}
+  #sidebar{transform:translateX(-100%);transition:transform 0.26s ease;width:270px}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  #hero,#content,#footer{padding-left:22px;padding-right:22px}
+  #progress-bar{left:0}
+  .unit-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+<button id="sidebar-toggle" aria-label="Menu">&#9776;</button>
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <div id="sidebar-title">Endless Legend II</div>
+    <div id="sidebar-sub">The Saiadha Codex &mdash; Amplitude Studios / Hooded Horse &mdash; PC (Steam) &mdash; Early Access 2025</div>
+  </div>
+  <div id="sidebar-nav">
+    <div class="nav-section">Saiadha</div>
+    <a class="nav-item" href="#s01">01 &middot; The Dying World</a>
+    <a class="nav-item" href="#s02">02 &middot; Game Overview</a>
+    <a class="nav-item" href="#s03">03 &middot; The Tidefall &amp; Monsoon</a>
+    <div class="nav-section">Core Economy</div>
+    <a class="nav-item" href="#s04">04 &middot; FIDSI &mdash; The Five Resources</a>
+    <a class="nav-item" href="#s05">05 &middot; Cities, Foundations &amp; Districts</a>
+    <a class="nav-item" href="#s06">06 &middot; Population &amp; Vocations</a>
+    <a class="nav-item" href="#s07">07 &middot; Strategic &amp; Luxury Resources</a>
+    <div class="nav-section">Factions</div>
+    <a class="nav-item" href="#s08">08 &middot; Kin of Sheredyn</a>
+    <a class="nav-item" href="#s09">09 &middot; The Aspects</a>
+    <a class="nav-item" href="#s10">10 &middot; The Last Lords</a>
+    <a class="nav-item" href="#s11">11 &middot; The Tahuks</a>
+    <a class="nav-item" href="#s12">12 &middot; The Necrophage</a>
+    <div class="nav-section">Expansion</div>
+    <a class="nav-item" href="#s13">13 &middot; Exploration &amp; the Map</a>
+    <a class="nav-item" href="#s14">14 &middot; Minor Factions</a>
+    <a class="nav-item" href="#s15">15 &middot; Diplomacy</a>
+    <a class="nav-item" href="#s16">16 &middot; Research &amp; Technology</a>
+    <div class="nav-section">Leadership</div>
+    <a class="nav-item" href="#s17">17 &middot; Heroes</a>
+    <a class="nav-item" href="#s18">18 &middot; The Empire Council</a>
+    <a class="nav-item" href="#s19">19 &middot; Empire Plans</a>
+    <div class="nav-section">Military</div>
+    <a class="nav-item" href="#s20">20 &middot; Army Building</a>
+    <a class="nav-item" href="#s21">21 &middot; Tactical Combat</a>
+    <a class="nav-item" href="#s22">22 &middot; Siege &amp; City Defence</a>
+    <div class="nav-section">Victory</div>
+    <a class="nav-item" href="#s23">23 &middot; Victory Conditions</a>
+    <a class="nav-item" href="#s24">24 &middot; Faction Quests</a>
+    <div class="nav-section">Strategy</div>
+    <a class="nav-item" href="#s25">25 &middot; The First 30 Turns</a>
+    <a class="nav-item" href="#s26">26 &middot; Mid &amp; Late Game</a>
+    <a class="nav-item" href="#s27">27 &middot; Faction Counter-Play</a>
+    <div class="nav-section">Reference</div>
+    <a class="nav-item" href="#s28">28 &middot; Glossary</a>
+  </div>
+</nav>
+
+<div id="main">
+<div id="hero">
+  <div class="hero-eyebrow">Nadir Strategy Archive &nbsp;&middot;&nbsp; Amplitude Studios / Hooded Horse &nbsp;&middot;&nbsp; Turn-Based 4X &nbsp;&middot;&nbsp; PC (Steam) &nbsp;&middot;&nbsp; The World of Saiadha</div>
+  <h1 class="hero-title">Endless Legend II</h1>
+  <p class="hero-subtitle">The Saiadha Codex &mdash; A Complete Strategy Guide to the Factions, the Tidefall, and the Race to Master a Dying World</p>
+  <div class="hero-tags">
+    <span class="hero-tag">28 Chapters</span>
+    <span class="hero-tag">5 Factions</span>
+    <span class="hero-tag">Tidefall System</span>
+    <span class="hero-tag">FIDSI Economy</span>
+    <span class="hero-tag">Combat Doctrine</span>
+    <span class="hero-tag">Empire Council</span>
+    <span class="hero-tag">All Victories</span>
+    <span class="hero-tag">Full Glossary</span>
+  </div>
+</div>
+
+<div id="content">
+
+<!-- S01 -->
+<section class="section" id="s01">
+<h2 class="section-title"><span class="sec-num">&sect;01</span> The Dying World</h2>
+<div class="lore-block">
+  <p>The records from Saiadha&apos;s ancient cartographers describe a world of sun-scorched deserts, of endless golden dust baking under twin suns, of a continent so large and so dry that the first settlers from across the void believed they had found what they were looking for: a world with no water to drown in. The records were not wrong. They were simply old. The planet had changed. The desert was retreating. The oceans were everywhere. And in the deep places where the coral grew, something older than any of the arriving factions was breathing, and waiting, and not particularly concerned with the plans being made above.</p>
+  <span class="source">// SAIADHA ARCHIVE &middot; HISTORICAL SURVEY OF THE OCEAN WORLD &middot; ORIGIN UNKNOWN //</span>
+</div>
+
+<p>Endless Legend II is set on <strong>Saiadha</strong>, a world in the process of ending &mdash; or changing, depending on which faction&apos;s scholars you prefer to read. The planet was once the kind of world the ancient records promised: warm, dusty, exploitable. Now it is largely ocean, with islands of navigable land that shift as the seas recede and return. The drama of the setting is geological in scale and immediate in consequence: every empire is building on ground that may not remain ground, and every strategy must account for a world that does not have the courtesy to hold still.</p>
+
+<p>The game is developed by <strong>Amplitude Studios</strong> &mdash; the creators of the original Endless Legend (2014) and Endless Space &mdash; and published by <strong>Hooded Horse</strong>. It entered Steam Early Access on <strong>September 22, 2025</strong>, with a full release planned to include a sixth faction, custom faction creation, expanded endgame content (including the Endless Monsoon scenario), and ongoing balance work shaped by community feedback. The core game is stable, fully playable, and rich enough for hundreds of hours of campaign play.</p>
+
+<h2 class="sub-title">Connection to the Endless Universe</h2>
+<p>Endless Legend II is set in the same fictional universe as Amplitude&apos;s other &ldquo;Endless&rdquo; games, sharing lore, faction DNA, and thematic concerns. The Last Lords, for example, escaped the dying world of Auriga (the setting of the original Endless Legend) to reach Saiadha &mdash; only to find Saiadha dying in its own way. The game rewards familiarity with the Endless universe&apos;s recurring motifs (Dust as the fundamental currency of reality, ancient civilisations whose remnants still echo, worlds that end and the survivors who are still in them when they do) while being fully accessible to players encountering it for the first time.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S02 -->
+<section class="section" id="s02">
+<h2 class="section-title"><span class="sec-num">&sect;02</span> Game Overview</h2>
+<p>Endless Legend II is a <strong>turn-based 4X strategy game</strong> (eXplore, eXpand, eXploit, eXterminate) on a procedurally generated hex grid. Players choose one of five major factions, establish cities on the world of Saiadha, research technologies, manage diplomacy and military forces, and pursue one of nine victory conditions. The game builds on the original Endless Legend&apos;s foundational systems while introducing substantial new mechanics &mdash; particularly the Tidefall and Monsoon cycle that reshapes the map dynamically throughout play.</p>
+
+<h2 class="sub-title">What Makes Endless Legend II Distinctive</h2>
+<ul class="guide-list">
+  <li><strong>The Tidefall mechanic:</strong> Ocean levels fall at specific points in the game, revealing new land for exploration and settlement. The map does not stay fixed; new terrain appears and the strategic map expands.</li>
+  <li><strong>The Monsoon cycle:</strong> Periodic weather events that change combat conditions, spawn temporary resources, and trigger the Empire Council advancement. Monsoons are not merely atmospheric &mdash; they are the game&apos;s primary pacing mechanism.</li>
+  <li><strong>Deep faction asymmetry:</strong> Each faction has fundamentally different win conditions, economy, military doctrine, and unique mechanics. The Last Lords use Dust instead of Food to sustain their population; the Necrophage build a single massive city; the Aspects spread coral across the ocean floor as both an economic and military tool. These are not cosmetic differences.</li>
+  <li><strong>Narrative victory conditions:</strong> Beyond the universal Score and Domination victories, each faction has a unique multi-stage quest line that provides a story-driven alternative path to winning.</li>
+</ul>
+
+<h2 class="sub-title">Five Launch Factions</h2>
+<table class="data-table">
+  <thead><tr><th>Faction</th><th>Archetype</th><th>Unique Feature</th><th>Difficulty</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Kin of Sheredyn</strong></td><td>Military / Defensive</td><td>War constructs (mechs); Commandment range extension</td><td>Beginner-friendly</td></tr>
+    <tr><td><strong>The Aspects</strong></td><td>Diplomatic / Explorer</td><td>Coral spore spreading; mind infest mechanics</td><td>Intermediate</td></tr>
+    <tr><td><strong>The Last Lords</strong></td><td>Economic</td><td>Dust replaces Food; Lord&apos;s States in minor faction villages</td><td>Intermediate</td></tr>
+    <tr><td><strong>The Tahuks</strong></td><td>Research / Zealotry</td><td>Illuminate target marking; Sage lore; desert origins</td><td>Intermediate</td></tr>
+    <tr><td><strong>The Necrophage</strong></td><td>Warmonger / Swarm</td><td>Single-city empire; corpse/larva economy; reduced war penalties</td><td>Advanced</td></tr>
+  </tbody>
+</table>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S03 -->
+<section class="section" id="s03">
+<h2 class="section-title"><span class="sec-num">&sect;03</span> The Tidefall &amp; Monsoon</h2>
+<div class="lore-block">
+  <p>The oceanographers of the Aspects have a theory about why the seas of Saiadha are retreating. It involves the planet&apos;s gravitational relationship with a body the ancient records called the Pulling Moon, and it predicts, with uncomfortable precision, that the retreating will not continue indefinitely. At some point the Pulling Moon will be gone, or changed, or something else will happen that the oceanographers do not have a clean name for yet. The seas will return. The question everyone who is currently building on what used to be seafloor is not asking loudly &mdash; but is certainly asking quietly, in the moments before sleep &mdash; is when.</p>
+  <span class="source">// SAIADHA ARCHIVE &middot; OCEANOGRAPHIC SURVEY &middot; ASPECTS RESEARCH DIVISION //</span>
+</div>
+
+<p>The Tidefall and Monsoon are Endless Legend II&apos;s two defining temporal mechanics. They reshape the game&apos;s geography and pace in ways that no other 4X game replicates, and understanding them is prerequisite to every other strategic decision.</p>
+
+<h2 class="sub-title">The Tidefall</h2>
+<p>At specific points in the game (determined by turn count and game settings), the seas of Saiadha recede. This is the <strong>Tidefall</strong>: a dramatic lowering of ocean levels that reveals new land previously submerged. The Tidefall&apos;s effects:</p>
+<ul class="guide-list">
+  <li><strong>New hexes become accessible:</strong> Previously ocean-covered terrain is revealed as explorable and potentially settleable land. These newly revealed regions often contain unique resources, ruins, and minor faction villages that have been sealed beneath the sea.</li>
+  <li><strong>Strategic repositioning:</strong> An empire that was entirely island-bound may suddenly find a land bridge to a previously unreachable neighbour. Borders that were stable become contested.</li>
+  <li><strong>New Council slots:</strong> Each Tidefall opens additional Empire Council slots, providing new opportunities for adviser assignment.</li>
+  <li><strong>Timing is competitive:</strong> All players know the Tidefall is coming. Positioning armies and exploration units to reach newly revealed land immediately after a Tidefall is a significant competitive advantage. The first faction to settle a newly revealed region&apos;s resources controls them.</li>
+</ul>
+
+<h2 class="sub-title">The Monsoon</h2>
+<p>The Monsoon is a periodic weather event that sweeps across Saiadha. Its mechanical effects:</p>
+<ul class="guide-list">
+  <li><strong>Combat intensity increases:</strong> Battles fought during a Monsoon deal higher damage. This is both a threat and an opportunity depending on your army&apos;s composition and your enemy&apos;s.</li>
+  <li><strong>Temporary resources spawn:</strong> Monsoon weather generates temporary resource nodes on the map. These disappear when the Monsoon ends; harvesting them quickly is the primary Monsoon economic game.</li>
+  <li><strong>Empire Council advancement:</strong> After each Monsoon, the Empire Council system advances and a new Council slot unlocks. The Monsoon is the primary trigger for this progression system.</li>
+  <li><strong>Empire Plans activation:</strong> Empire Plans trigger on 20-turn cycles aligned with the Monsoon pattern, providing powerful empire-wide bonuses.</li>
+</ul>
+
+<div class="callout teal">
+  <div class="callout-title">Plan Around the Tidefall, Not Just After It</div>
+  <p>The Tidefall does not arrive without warning. The game tracks the approaching Tidefall with sufficient notice to allow preparation. Three to five turns before a Tidefall, reposition your exploration units and a military escort toward the coast of your existing territories. When the seas recede, you want your units adjacent to the new coastline immediately &mdash; not three turns of movement away. Factions who react to the Tidefall rather than anticipating it lose the newly revealed land to faster opponents every time.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S04 -->
+<section class="section" id="s04">
+<h2 class="section-title"><span class="sec-num">&sect;04</span> FIDSI &mdash; The Five Resources</h2>
+<div class="lore-block">
+  <p>Every empire runs on the same five things, regardless of who is running it. The Kin call them by their military designations. The Aspects call them by their old ecological names. The Last Lords call them by their Aurigun equivalents, which amuses nobody on Saiadha. The Necrophage call none of them anything, because they have not developed a word for &ldquo;resource management.&rdquo; But every faction needs all five, in sufficient quantity, in sufficient order, or they do not survive. The naming is cosmetic. The necessity is not.</p>
+  <span class="source">// SAIADHA ARCHIVE &middot; ECONOMIC THEORY OF COLONIAL ADMINISTRATION &middot; TAHUKS SAGE WRITINGS //</span>
+</div>
+
+<p>The FIDSI system is the economic backbone of Endless Legend II. Five resources drive every aspect of empire development, and managing their production, consumption, and strategic application determines the ceiling of what an empire can accomplish.</p>
+
+<h2 class="sub-title">The Five Resources</h2>
+<table class="data-table">
+  <thead><tr><th>Resource</th><th>Letter</th><th>Primary Function</th><th>Generates</th><th>Deficit Consequence</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Food</strong></td><td>F</td><td>Population growth</td><td>New citizens when surplus accumulates</td><td>Population stagnation or loss; city decline</td></tr>
+    <tr><td><strong>Industry</strong></td><td>I</td><td>Construction speed</td><td>Progress on buildings, units, and districts per turn</td><td>Construction slows dramatically; Industry does not bank &mdash; excess is lost each turn</td></tr>
+    <tr><td><strong>Dust</strong></td><td>D</td><td>Universal currency</td><td>Nothing; it IS the currency &mdash; spent on upkeep, rush-buying, diplomacy</td><td>Unit upkeep failure; troops disband; diplomatic penalties</td></tr>
+    <tr><td><strong>Science</strong></td><td>S</td><td>Research progression</td><td>Technology advancement per turn</td><td>Research stagnation; falling behind in the technology race</td></tr>
+    <tr><td><strong>Influence</strong></td><td>I</td><td>Diplomatic &amp; territorial power</td><td>Foundation placement, minor faction assimilation, empire plans, diplomatic actions</td><td>Cannot expand cities; diplomatic actions become unavailable</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Priority FIDSI for New Players</h2>
+<p>The experienced 4X player instinct to balance all resources simultaneously should be resisted in early Endless Legend II. The correct early-game priority is explicit:</p>
+<ol class="guide-list">
+  <li><strong>Food first:</strong> Food generates population, and population fills vocations, and vocations generate every other FIDSI resource. A city with more population produces more of everything. Food is the force multiplier on all other production.</li>
+  <li><strong>Industry second:</strong> Industry builds the districts and improvements that improve FIDSI production, unit production, and city capabilities. Industry spent on better infrastructure is Industry that compounds through the entire game. Remember: Industry does not roll over between turns. Maintain a full production queue at all times or it is wasted.</li>
+  <li><strong>Dust third:</strong> Unit upkeep is paid in Dust. Diplomatic investments require Dust. Rushing construction in emergencies costs Dust. Running a Dust deficit means disbanding troops. Never let Dust go negative for more than a single turn.</li>
+  <li><strong>Science fourth:</strong> Technology unlocks better buildings, better units, and better district types. A Science deficit is less immediately catastrophic than a Dust or Food deficit but creates compounding strategic disadvantage.</li>
+  <li><strong>Influence fifth:</strong> Influence is critical at specific moments (Foundation placement, assimilation of a valuable minor faction) but can be saved and spent in bursts rather than maintained as a continuous surplus.</li>
+</ol>
+
+<div class="callout warning">
+  <div class="callout-title">Industry Does Not Bank</div>
+  <p>This is the single most important mechanical rule for new players. Unlike Food, Dust, Science, and Influence, Industry that is not spent in a given turn is lost. It does not carry over. This means an idle production queue wastes every Industry point generated by your entire city in every turn it sits empty. Before ending every turn, verify every city has something in its production queue. The queue does not need to produce an item you urgently need &mdash; but it needs to contain something.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S05 -->
+<section class="section" id="s05">
+<h2 class="section-title"><span class="sec-num">&sect;05</span> Cities, Foundations &amp; Districts</h2>
+<div class="lore-block">
+  <p>The city is not the buildings. The buildings are temporary, and the architects of Saiadha&apos;s various factions have learned to build them that way, because everything on this world is temporary in proportion to how near it is to the ocean. The city is the claim: the assertion that this ground, these hexes, this particular corner of a dying world belongs to us for the foreseeable future. The buildings are the argument for that claim. The Foundations are where the argument is constructed, one hex at a time, with Influence spent as the price of conviction.</p>
+  <span class="source">// SAIADHA ARCHIVE &middot; URBAN PLANNING UNDER UNCERTAIN CONDITIONS &middot; KIN OF SHEREDYN CIVIL RECORDS //</span>
+</div>
+
+<p>Cities are the core engine of every empire. They grow through two parallel mechanisms &mdash; Population and Districts &mdash; that interact to determine the city&apos;s total FIDSI output and military production capability.</p>
+
+<h2 class="sub-title">The Foundation System</h2>
+<p>Cities expand outward from a central hub through <strong>Foundations</strong> placed on adjacent hexes. Placing a Foundation requires spending Influence, and each Foundation tile retains the FIDSI yields of the underlying terrain (including any Anomalies on that tile). Districts are then built on Foundations using Industry. Key principles:</p>
+<ul class="guide-list">
+  <li><strong>Foundation placement is the first territorial decision:</strong> Before building anything, survey the tiles adjacent to your city and identify which ones have the best terrain yields, which contain Anomalies (special high-yield tiles), and which position you best for future expansion. Place Foundations on the highest-yield tiles first.</li>
+  <li><strong>Foundations must be adjacent to existing Districts (or the city centre):</strong> You cannot place Foundations freely in a ring around your city; they must connect to existing built Foundations, creating a network that radiates outward from the centre.</li>
+  <li><strong>Districts specialise the Foundation:</strong> A Foundation without a District is just claimed land with terrain yields. A District on a Foundation adds specialisation bonuses based on the District type and the terrain beneath it.</li>
+</ul>
+
+<h2 class="sub-title">District Types</h2>
+<table class="data-table">
+  <thead><tr><th>District Type</th><th>Primary Yield</th><th>Placement Bonus</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Housing District</strong></td><td>Food / Population capacity</td><td>Bonuses near water and flat terrain</td><td>Core district for population growth; enables more vocations</td></tr>
+    <tr><td><strong>Industrial District</strong></td><td>Industry</td><td>Bonuses near mineral terrain and cliffs</td><td>Accelerates all construction; essential for fast-building strategies</td></tr>
+    <tr><td><strong>Science District</strong></td><td>Science</td><td>Bonuses at elevation and near ruins</td><td>Research acceleration; pair with Science Vocations for maximum output</td></tr>
+    <tr><td><strong>Market District</strong></td><td>Dust</td><td>Bonuses near roads and trade routes</td><td>Economic foundation; trade post enables market interaction</td></tr>
+    <tr><td><strong>Military District</strong></td><td>Defence / Unit capacity</td><td>Bonuses on high ground and borders</td><td>Fortification; enables garrison units; increases city HP</td></tr>
+    <tr><td><strong>Cultural District</strong></td><td>Influence</td><td>Bonuses near other Districts and wonders</td><td>Influence generation for Foundation expansion and diplomacy</td></tr>
+  </tbody>
+</table>
+
+<div class="callout tip">
+  <div class="callout-title">Terrain Matching Is Not Optional</div>
+  <p>Every District type has terrain-based placement bonuses. An Industrial District placed on bare rock receives a mineral bonus. The same Industrial District placed on water or forest receives nothing. The compounding value of correctly terrain-matched Districts across all your cities, over the length of a campaign, is enormous &mdash; the difference between a mid-game science advantage and a mid-game science deficit can frequently be traced to District placement choices made in the first twenty turns. Survey before you build.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S06 -->
+<section class="section" id="s06">
+<h2 class="section-title"><span class="sec-num">&sect;06</span> Population &amp; Vocations</h2>
+<p>Population is generated by Food surplus accumulating in your cities. Each new citizen that arrives must be assigned to one of three <strong>Vocations</strong> &mdash; the role they play in the city&apos;s economy. The Vocation system is the primary mechanism for directing what your city specialises in.</p>
+
+<h2 class="sub-title">The Three Vocations</h2>
+<div class="unit-grid">
+  <div class="unit-card teal-card">
+    <div class="unit-name">Farmer Vocation</div>
+    <span class="unit-type">FOOD &middot; POPULATION GROWTH</span>
+    <p>Citizens assigned as Farmers generate Food for the city, accelerating population growth further. In the early game, assigning enough Farmers to maintain positive Food generation is the primary population management task. As the city grows and Housing Districts increase Food capacity, Farmers can transition to other Vocations.</p>
+  </div>
+  <div class="unit-card teal-card">
+    <div class="unit-name">Producer Vocation</div>
+    <span class="unit-type">INDUSTRY / SCIENCE / DUST</span>
+    <p>Producers contribute to the city&apos;s core economic output, generating Industry, Science, or Dust depending on what Districts are present and what the city is specialised toward. The Vocation type and the available Districts interact &mdash; a Science District with Science-Vocation citizens generates more than either alone. This synergy between District type and citizen Vocation assignment is the engine of city specialisation.</p>
+  </div>
+  <div class="unit-card teal-card">
+    <div class="unit-name">Influence Vocation</div>
+    <span class="unit-type">INFLUENCE &middot; TERRITORIAL EXPANSION</span>
+    <p>Citizens in the Influence Vocation generate Influence for the city, enabling faster Foundation placement and diplomatic actions. In early-game cities, Influence is a limited resource; dedicating citizens to generating it is an investment in territorial expansion speed. In diplomatic strategies (particularly the Aspects), Influence citizens are a core resource investment.</p>
+  </div>
+</div>
+
+<h2 class="sub-title">Population Diversity</h2>
+<p>Cities do not have to contain only your native faction&apos;s population. As you engage with Minor Factions and maintain diplomatic relationships with other Major Factions, you gain access to immigrant populations with <strong>different Vocation bonuses</strong>. A Minor Faction population that generates +20% Science in Producer Vocation is more valuable in your Science city than additional native citizens. When a new citizen is about to be born, you can choose their faction origin if alternatives are available. Choose based on the city&apos;s specialisation, not nationality.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S07 -->
+<section class="section" id="s07">
+<h2 class="section-title"><span class="sec-num">&sect;07</span> Strategic &amp; Luxury Resources</h2>
+<p>Beyond the core FIDSI, Saiadha&apos;s terrain contains two categories of special resources that significantly augment your empire&apos;s capabilities.</p>
+
+<h2 class="sub-title">Strategic Resources</h2>
+<p>Strategic Resources are rare materials found on specific hex tiles. They are harvested by building Mines within your city territory and are used for:</p>
+<ul class="guide-list">
+  <li><strong>Unit upgrades:</strong> Equipping your armies with Strategic Resources improves their combat statistics significantly. A unit equipped with the right Strategic Resource can dramatically outperform an equivalent unit without it.</li>
+  <li><strong>District Improvements:</strong> Higher-tier Improvements (unlocked through research) require Strategic Resources to construct. The improvements that provide the greatest FIDSI bonuses are often gated behind Strategic Resource investment.</li>
+  <li><strong>Quest and diplomacy:</strong> Many quest objectives and diplomatic trades involve Strategic Resources. Access to specific resources provides diplomatic leverage that raw Dust cannot replicate.</li>
+</ul>
+
+<h2 class="sub-title">Luxury Resources</h2>
+<p>Luxury Resources provide temporary but powerful boosts to cities or armies when activated:</p>
+<ul class="guide-list">
+  <li>City Luxury Resource boosters provide multiplied FIDSI production for a set duration</li>
+  <li>Army Luxury Resource boosters provide combat bonuses during the next battle</li>
+  <li>Luxuries can be sold or traded for Dust when not needed for direct use</li>
+  <li>Activating Luxury boosters before a critical battle or before a production push can swing outcomes significantly</li>
+</ul>
+
+<div class="callout dust">
+  <div class="callout-title">The Trading Post &mdash; Enable Market Access</div>
+  <p>Strategic and Luxury Resources can only be bought and sold on the market if your empire has a Trading Post built. The Trading Post is therefore not merely an economic building &mdash; it is the prerequisite for the entire resource trading system. Build it in your capital as early as it becomes available. Without it, excess resources sit unused; the ability to sell strategic surplus and buy specific Luxuries before critical engagements is a consistent economic advantage the Trading Post enables.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S08 -->
+<section class="section" id="s08">
+<h2 class="section-title"><span class="sec-num">&sect;08</span> Kin of Sheredyn</h2>
+<div class="lore-block">
+  <p>Commander Shaparenko came to power twenty winters ago when the previous Kin commander was killed in a Necrophage surge. She was young. She was from a combat unit rather than an administrative one. The Kin leadership did not select her for her qualifications on the economic side of the ledger &mdash; they selected her because the Necrophage surge was still happening when the question of succession was being resolved, and she was the one still standing and giving orders when it ended. Twenty winters of that kind of leadership has produced an empire that believes, deeply and empirically, in the value of still standing when the worst is over.</p>
+  <span class="source">// SAIADHA ARCHIVE &middot; KIN OF SHEREDYN COMMAND HISTORY &middot; GENERAL ARCHIVE //</span>
+</div>
+
+<p>The <strong>Kin of Sheredyn</strong> are the game&apos;s most accessible faction and the recommended starting point for 4X newcomers and returning Endless Legend veterans alike. Their defensive archetype, clear strategic direction, and straightforward mechanics provide the best platform for learning Saiadha&apos;s systems without simultaneously managing a unique faction gimmick.</p>
+
+<h2 class="sub-title">Unique Mechanics</h2>
+<ul class="guide-list">
+  <li><strong>War Constructs (Mechs):</strong> The Kin&apos;s signature military units are giant armoured war constructs &mdash; effectively mechs &mdash; that form the backbone of their heavy combat forces. These units are among the most durable in the game, designed for sustained engagements against numerically superior opponents.</li>
+  <li><strong>The Chosen:</strong> Though outmanned and struggling on a hostile ocean world, the Kin&apos;s unique abilities extend the range of Commandments &mdash; city-based edicts that provide bonuses &mdash; allowing them to apply empire-wide directives more broadly than other factions.</li>
+  <li><strong>Defensive orientation:</strong> Kin cities and military units have above-average defensive statistics. Holding territory is easier for the Kin than for most factions; their strategic emphasis is on establishing a defensible core and expanding carefully from it.</li>
+</ul>
+
+<h2 class="sub-title">Strategic Direction</h2>
+<p>Play the Kin as a defensive empire that consolidates before expanding. Identify your natural geographic chokepoints (coastlines, mountain passes, island perimeters) and build Military Districts and fortifications there. Let your war constructs hold those chokepoints while your cities develop behind the line. Your mech forces are expensive but nearly impossible to dislodge from defended positions; use this to negotiate from a position of military credibility while your economic base develops.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S09 -->
+<section class="section" id="s09">
+<h2 class="section-title"><span class="sec-num">&sect;09</span> The Aspects</h2>
+<div class="lore-block">
+  <p>The Aspects arrived on Saiadha before anyone can reliably say when. The records they keep are biological rather than written, encoded in the coral formations that grow wherever they go. Their historians are the coral itself. Their diplomats are the spores that drift through the water in directions their opponents only notice when something important has already been decided. They have never needed to be the strongest faction on any world they have inhabited. They simply need to be the most present, the most distributed, the most interwoven. By the time someone decides to remove them, the removal is the same as removing the world itself.</p>
+  <span class="source">// SAIADHA ARCHIVE &middot; ASPECTS CULTURAL ASSESSMENT &middot; KIN OF SHEREDYN INTELLIGENCE DIVISION //</span>
+</div>
+
+<p>The <strong>Aspects</strong> are Saiadha&apos;s diplomatic and exploration faction &mdash; a civilisation defined by its oceanic nature, its coral-spreading biological technology, and its ability to project influence across the map in ways that do not require military force. They are the most unconventional faction in the game and one of the most powerful when their unique mechanics are exploited fully.</p>
+
+<h2 class="sub-title">Unique Mechanics</h2>
+<ul class="guide-list">
+  <li><strong>Coral Spore Spreading:</strong> The Aspects&apos; signature ability. They can spread coral formations to hexes controlled by other factions &mdash; including hexes that belong to other players. Coral provides resource yields to the Aspects, even on foreign territory, and contributes to the &ldquo;mind infest&rdquo; mechanic.</li>
+  <li><strong>Mind Infest:</strong> Coral that grows in another faction&apos;s territory can eventually be used to &ldquo;infest&rdquo; the population of that faction &mdash; providing Influence over their cities and reducing their resistance to Aspects diplomacy. This is an unprecedented form of economic and political warfare that does not require a single military unit.</li>
+  <li><strong>Diplomatic Mastery:</strong> The Aspects receive bonuses to diplomatic actions, making them more effective at pacifying minor factions, negotiating with major factions, and building the diplomatic relationships that support their unique victory paths.</li>
+  <li><strong>Exploration Advantage:</strong> Their oceanic origins give them superior early-game exploration capability, particularly relevant in Saiadha&apos;s ocean-dominant terrain.</li>
+</ul>
+
+<h2 class="sub-title">Strategic Direction</h2>
+<p>Expand your coral aggressively in every direction from the first turn. Do not wait for your territory to stabilise before spreading spores; spread as far as the ocean will carry them. Prioritise diplomatic development alongside coral expansion &mdash; your military is not your primary tool, but it must be credible enough that opponents respect your coral as an accepted reality rather than a provocation. The Aspects win by being everywhere at once; the game plan is to make your presence so pervasive that removing it is more expensive than accommodating it.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S10 -->
+<section class="section" id="s10">
+<h2 class="section-title"><span class="sec-num">&sect;10</span> The Last Lords</h2>
+<div class="lore-block">
+  <p>Consul Tyabana arrived on Saiadha expecting deserts. The Last Lords had read the old surveys; Saiadha was supposed to be an endless expanse of sun-baked Dust, the ideal environment for a faction whose entire existence depends on Dust as both metaphor and currency. The ocean that met them was a disappointment that took approximately six months of strategic reassessment to process. By the end of the reassessment, the consensus was that the ocean was merely a temporary inconvenience relative to the geological timescale, and that the Dust was down there somewhere, under the water, and they would simply have to be patient. The Last Lords are, among their many virtues, patient.</p>
+  <span class="source">// SAIADHA ARCHIVE &middot; LAST LORDS ARRIVAL RECORD &middot; CONSUL TYABANA PERSONAL CORRESPONDENCE //</span>
+</div>
+
+<p>The <strong>Last Lords</strong> are spirits inhabiting armoured constructs, survivors of the dying world of Auriga who have relocated to Saiadha seeking a new home with sufficient Dust reserves. Their defining mechanic replaces the normal Food-based population system with a Dust-based one, creating a fundamentally different economic model.</p>
+
+<h2 class="sub-title">Unique Mechanics</h2>
+<ul class="guide-list">
+  <li><strong>Dust is Life:</strong> The Last Lords do not use Food to sustain or grow their population. Instead, Dust powers both the creation of new Lord units (population) and their ongoing existence. This eliminates Food as a concern entirely but makes Dust management existentially critical &mdash; a Dust deficit for the Last Lords is not merely an economic problem; it is a population problem.</li>
+  <li><strong>Lord&apos;s States:</strong> After assimilating a Minor Faction, the Last Lords can build Lord&apos;s States in the assimilated villages. These States allow the Lords to directly enlist minor faction populations as their own citizens, effectively absorbing the Minor Faction&apos;s population into their empire in ways other factions cannot match.</li>
+  <li><strong>Dust-to-heal:</strong> The Last Lords heal their military units using Dust rather than through natural regeneration. This makes post-battle recovery a resource expenditure rather than a time cost, changing the calculus of aggressive military operations.</li>
+</ul>
+
+<h2 class="sub-title">Strategic Direction</h2>
+<p>The Last Lords are fundamentally an economic empire that converts Dust dominance into every other form of power. Your city placement should prioritise Market Districts and Dust-generating terrain above all else. Assimilation of Minor Factions is more valuable to you than to most factions because Lord&apos;s States multiply your minor faction absorption into direct population gains. Maintain a substantial Dust surplus at all times; a Dust deficit is equivalent to a famine for other factions, and your military recovery depends on the same treasury that fuels everything else.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S11 -->
+<section class="section" id="s11">
+<h2 class="section-title"><span class="sec-num">&sect;11</span> The Tahuks</h2>
+<div class="lore-block">
+  <p>The Tahuks evolved from desert scavenging lizards in a geological epoch so distant that the Sages &mdash; the godlike scholars who walked among them in those ancient times and left fragments of their knowledge as gifts &mdash; predate any reliable written record. The Tahuks are obsessed with the Sages not as a religious superstition but as a genuine empirical question: the Sages existed, they were real, they were very powerful, and they left things behind. Finding those things and understanding them is simultaneously the most important scientific project and the most urgent theological mission in Tahuk culture. It does not matter to them that these two categories are identical. They find that satisfying.</p>
+  <span class="source">// SAIADHA ARCHIVE &middot; TAHUK ANTHROPOLOGICAL SURVEY &middot; ASPECTS RESEARCH DIVISION //</span>
+</div>
+
+<p>The <strong>Tahuks</strong> are a research-and-zealotry faction whose ancient lizard civilisation is defined by the search for the Sages &mdash; godlike progenitors who left behind knowledge and artefacts across Saiadha. Their military is technically sophisticated, relying on coordinated illumination mechanics rather than raw numbers.</p>
+
+<h2 class="sub-title">Unique Mechanics</h2>
+<ul class="guide-list">
+  <li><strong>Illuminate:</strong> All Tahuk military units have the Illuminate ability, which marks the target they attack. The next Tahuk unit to attack an Illuminated target receives a damage bonus. This creates a mandatory fire discipline where Tahuk armies must be managed as a coordinated sequence rather than an independent mass &mdash; mobile archers and long-range artillery provide the initial Illuminate; heavier units deliver the empowered follow-up strike.</li>
+  <li><strong>Sage Lore:</strong> The Tahuk faction quest is tied to discovering and recovering ancient Sage artefacts and knowledge. Progress in the Sage Lore system provides technology and ability bonuses outside the normal research tree, giving Tahuks access to capabilities other factions cannot access through standard means.</li>
+  <li><strong>Research bonus:</strong> The Tahuks have an inherent Science generation advantage, making them the fastest researchers of the five factions when properly developed. They can reach Era 2 and Era 3 technologies before most opponents, which translates into military and economic capability leads that compound over the game.</li>
+</ul>
+
+<h2 class="sub-title">Strategic Direction</h2>
+<p>The Tahuks are the faction that rewards learning the Illuminate system. In the early game, push Science development hard &mdash; your inherent research bonus means the Era 1 technology tree should be substantially complete before most opponents are halfway through it. Use that technology lead to develop better districts and better unit upgrades before anyone else. In combat, always have at least one mobile ranged unit available to Illuminate before your heavy hitters engage; without the Illuminate bonus, your army is performing at roughly two-thirds of its potential.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S12 -->
+<section class="section" id="s12">
+<h2 class="section-title"><span class="sec-num">&sect;12</span> The Necrophage</h2>
+<div class="lore-block">
+  <p>The Necrophage did not arrive on Saiadha in ships. They emerged from beneath Saiadha in swarms. This distinction is important to the Necrophage not because they have a philosophical position on arrival narratives &mdash; they do not &mdash; but because they have a biological position on emergence: the ones below create the ones above, the ones above feed the ones below, and the ones that are caught between the two states are either becoming food or becoming hive. There is no third option. The other factions of Saiadha have found this position difficult to negotiate with. The Necrophage have found the other factions&apos; difficulty with it satisfying in the way that confirms a useful observation.</p>
+  <span class="source">// SAIADHA ARCHIVE &middot; NECROPHAGE BIOLOGICAL SURVEY &middot; RESTRICTED DISTRIBUTION //</span>
+</div>
+
+<p>The <strong>Necrophage</strong> are Saiadha&apos;s swarm faction &mdash; an always-hostile, always-ravenous biological collective that operates on an entirely different economic and military model from every other faction. They are the most advanced faction to play effectively and the most rewarding to master.</p>
+
+<h2 class="sub-title">Unique Mechanics</h2>
+<ul class="guide-list">
+  <li><strong>Single city empire:</strong> The Necrophage cannot found additional cities. Their entire empire radiates from one massive central hive city, which can develop to Level 4 (all other factions cap at Level 3). This creates a city that is simultaneously the largest and most productive in the game but also the only one &mdash; losing it ends the campaign.</li>
+  <li><strong>Corpse and Larva economy:</strong> The Necrophage generate Corpses from defeated enemies and Larvae from their own biological processes. Both resources feed the hive, providing population growth and unit production in ways that are completely outside the normal FIDSI system. The game begins with an immediate hunt for Minor Faction armies to start generating Corpses from combat.</li>
+  <li><strong>Ever Fighting passive:</strong> The Necrophage suffer fewer penalties than other factions for prolonged wars. While extended conflict drains other factions through the war exhaustion mechanics that affect public order and Dust income, the Necrophage simply &hellip; continue. Their biological model does not distinguish between war and peace states.</li>
+  <li><strong>Warmonger archetype:</strong> The Necrophage are the most aggressive faction in the game by design. Their entire economy incentivises combat: more kills mean more Corpses, more Corpses mean more hive growth, more hive growth means more military capacity. Passivity starves them.</li>
+</ul>
+
+<h2 class="sub-title">Strategic Direction</h2>
+<p>Play the Necrophage as an aggressive expansion machine from Turn 1. Your first priority is finding Minor Faction villages and engaging their hostile armies to generate the initial Corpse economy that fuels your hive growth. While other factions are building Housing Districts to grow population, you are fighting to grow population. The single-city constraint means you cannot spread your empire geographically in the traditional sense; instead, you project military power across the entire map from a single, almost indestructible base. Your only strategic vulnerability is your city: defend it with everything when threatened and never place it where it can be easily surrounded.</p>
+
+<div class="callout coral">
+  <div class="callout-title">Necrophage Cannot Parley</div>
+  <p>Minor Faction villages are unavailable for standard diplomatic pacification to the Necrophage. They cannot complete the standard Minor Faction pacification quests that other factions use to stop hostile spawning. Instead, Minor Faction villages must be conquered by military force. This changes the entire early-game: while other factions are scouting and doing quest chains, the Necrophage are building an army and taking what they need. Plan your unit production queue for Turn 1 around this requirement.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S13 -->
+<section class="section" id="s13">
+<h2 class="section-title"><span class="sec-num">&sect;13</span> Exploration &amp; the Map</h2>
+<div class="lore-block">
+  <p>The fog of Saiadha is not entirely metaphorical. The ocean mists that roll across the undiscovered coastlines carry something biological in them &mdash; a particulate the Aspects can identify but all factions can observe: the feeling of being watched by things that are not yet visible. The map has not been fully drawn because the map is not finished. This is the condition every explorer on Saiadha eventually accepts: the world is larger than any current survey, will remain larger than any current survey, and will continue to reveal itself in portions calibrated to the tolerance of whoever is doing the revealing.</p>
+  <span class="source">// SAIADHA ARCHIVE &middot; EXPLORATION LOG &middot; ASPECTS SURVEY DIVISION //</span>
+</div>
+
+<p>The map of Saiadha begins largely hidden under the fog of war and is explored by moving units into undiscovered hexes. The procedurally generated map ensures no two playthroughs are identical in geographic layout, but certain features appear consistently that all players should identify early.</p>
+
+<h2 class="sub-title">What to Find First</h2>
+<ul class="guide-list">
+  <li><strong>Your starting region&apos;s boundaries:</strong> Understand whether you are on an island, a peninsula, or an accessible continent. This determines your expansion options and your vulnerability to early aggression.</li>
+  <li><strong>Ruins:</strong> Ancient ruins scattered across the map contain research bonuses, Dust caches, and occasionally unique items. Exploring them with your starting hero is the highest-value early exploration action per turn spent.</li>
+  <li><strong>Minor Faction villages:</strong> Identify every minor faction village in your starting region. These are strategic priorities for pacification (or conquest, in the Necrophage case).</li>
+  <li><strong>Resource deposits:</strong> Strategic and Luxury Resource deposits on unclaimed hexes are your primary expansion motivation. Map them before settling decisions are made.</li>
+  <li><strong>Natural chokepoints:</strong> Mountain passes, coastal narrows, and island bridges are natural defensive positions. Claim them before opponents do.</li>
+</ul>
+
+<h2 class="sub-title">Camps</h2>
+<p>In addition to full cities, factions can establish <strong>Camps</strong> in regions where founding a full city is not immediately viable. Camps are smaller, faster to establish, and provide a territorial claim and basic resource extraction while the infrastructure for a full city is developed. They are particularly useful for securing newly revealed Tidefall terrain before opponents can claim it.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S14 -->
+<section class="section" id="s14">
+<h2 class="section-title"><span class="sec-num">&sect;14</span> Minor Factions</h2>
+<p>Minor Factions are the small, pre-existing civilisations scattered across Saiadha in village clusters. They are initially hostile, spawning armies that threaten early-game expansion. Managing your relationship with Minor Factions &mdash; from initial pacification through eventual assimilation &mdash; is one of the game&apos;s most consistently rewarding strategic systems.</p>
+
+<h2 class="sub-title">The Pacification Process</h2>
+<p>When you discover a Minor Faction village, you have several options to stop it from spawning hostile armies:</p>
+<ul class="guide-list">
+  <li><strong>Bribery:</strong> Pay Dust to pacify the village immediately. Fast and unconditional but expensive; best used when the minor faction is blocking an urgent expansion route.</li>
+  <li><strong>Quest completion:</strong> Complete the minor faction&apos;s associated quest chain. Time-consuming but provides the most comprehensive relationship outcome, including unique rewards and higher reputation with that faction type.</li>
+  <li><strong>Military conquest:</strong> Destroy the village&apos;s defending army and occupy the territory. Applicable to all factions; mandatory for the Necrophage. Removes the immediate threat but requires rebuilding after conquest.</li>
+</ul>
+
+<h2 class="sub-title">Assimilation</h2>
+<p>Once a Minor Faction village in a region has been pacified, you can spend Influence to <strong>assimilate</strong> that faction empire-wide. Assimilation provides:</p>
+<ul class="guide-list">
+  <li><strong>Empire-wide passive bonus:</strong> Each assimilated minor faction provides a scaling bonus based on how many of their villages you have pacified. The more villages, the larger the bonus.</li>
+  <li><strong>Population access:</strong> Their population type becomes available for immigration to your cities (allowing specialised citizen assignments).</li>
+  <li><strong>Protectorate assignment:</strong> Assimilated factions can be assigned to your Empire Council as Protectorates, providing additional management options.</li>
+</ul>
+
+<div class="callout tip">
+  <div class="callout-title">Choose Assimilation Based on Your Faction&apos;s Gaps</div>
+  <p>Different minor factions provide different empire-wide bonuses (Industry, Science, Influence, Dust, Food, or combat bonuses). Before assimilating, read what the bonus provides and compare it to your current empire&apos;s weaknesses. A Kin player who already has strong Industry should prioritise assimilating a Science-bonus minor faction rather than an Industry one. Fill gaps rather than stacking what you already have. The same principle applies to population immigration: bring in citizens with the Vocation bonus that your city&apos;s weakest production category needs most.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S15 -->
+<section class="section" id="s15">
+<h2 class="section-title"><span class="sec-num">&sect;15</span> Diplomacy</h2>
+<p>Diplomacy in Endless Legend II operates through direct interaction with other Major Factions via the Diplomatic interface. Relationships can range from open warfare through uneasy neutrality to formal alliance, and the investments you make in diplomatic relationships have strategic consequences that extend far beyond the immediate turn.</p>
+
+<h2 class="sub-title">Diplomatic Actions</h2>
+<table class="data-table">
+  <thead><tr><th>Action</th><th>Cost</th><th>Effect</th><th>Strategic Use</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Trade Agreement</strong></td><td>Dust / Influence</td><td>Mutual resource trade; establishes economic relationship</td><td>Best early investment; creates goodwill and resource access simultaneously</td></tr>
+    <tr><td><strong>Peace Treaty</strong></td><td>Influence</td><td>Formal end of hostilities</td><td>Use to buy time when militarily overextended</td></tr>
+    <tr><td><strong>Alliance</strong></td><td>High Influence</td><td>Mutual defence; shared war targets; diplomatic benefits</td><td>Only with factions whose interests genuinely align with yours</td></tr>
+    <tr><td><strong>Tribute Demand</strong></td><td>None (diplomatic tension cost)</td><td>Request resources from weaker opponent</td><td>Use sparingly; creates lasting diplomatic damage with the target</td></tr>
+    <tr><td><strong>Declaration of War</strong></td><td>Diplomatic relationship cost</td><td>Opens military hostilities</td><td>Ensure your military is ready and your diplomatic position won&apos;t isolate you</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Diplomatic Victory Paths</h2>
+<p>There are three main diplomatic victory track categories &mdash; Worship, Mastery, and Impress &mdash; each requiring different forms of influence accumulation and diplomatic achievement. The Impress victory, centred on diplomatic relationships and Influence spending, has been noted in community assessment as potentially over-powered in Early Access compared to the other paths; this may be rebalanced in post-Early Access updates.</p>
+
+<div class="callout monsoon">
+  <div class="callout-title">Declare War Carefully</div>
+  <p>War in Endless Legend II has diplomatic consequences beyond the immediate belligerent pair. Other major factions observe your military behaviour and update their opinion of you accordingly. Frequent unprovoked declarations of war push neutral factions toward coalition against you. Before declaring war, assess whether the target has diplomatic allies who might join the conflict, and whether your diplomatic standing is strong enough to absorb the reputation cost. The strongest military is the one that never has to face three opponents simultaneously.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S16 -->
+<section class="section" id="s16">
+<h2 class="section-title"><span class="sec-num">&sect;16</span> Research &amp; Technology</h2>
+<div class="lore-block">
+  <p>The Saiadha research archives record a consistent finding across every civilisation that has inhabited this world: the ones who survived the longest were not the ones with the best armies in the first generation. They were the ones with the best understanding of the second generation&apos;s problems. The difference is approximately forty turns of research investment. In a world that keeps changing its geography, the ability to change your tools faster than the world changes is not merely an advantage. It is the definition of survival.</p>
+  <span class="source">// SAIADHA ARCHIVE &middot; TECHNOLOGICAL HISTORY OF SURVIVING CIVILISATIONS &middot; TAHUK SAGE RECORDS //</span>
+</div>
+
+<p>Research in Endless Legend II progresses through <strong>Eras</strong> (Era 1, Era 2, Era 3, and beyond), with each Era unlocking more powerful technologies. Science income determines how quickly you advance through each Era&apos;s technology tree. Research is not simply passive accumulation &mdash; the order in which you research technologies determines your capabilities at every critical game juncture.</p>
+
+<h2 class="sub-title">Research Priorities by Era</h2>
+<div class="phase early">
+  <div class="phase-title">Era 1 &mdash; Foundation Technologies</div>
+  <p>Era 1 research should prioritise in this order: first, the technology that unlocks your faction&apos;s essential early-game District (Housing for growth, Industrial for production, Science for research momentum). Second, the technology that unlocks Mining to harvest your initial Strategic Resources. Third, the technology that unlocks the Trading Post. Everything else in Era 1 is secondary to these three foundational unlocks. Many players make the mistake of researching broadly across Era 1 when focused sequential research produces faster results for all three critical unlocks simultaneously.</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">Era 2 &mdash; Improvements &amp; Military Upgrades</div>
+  <p>Era 2 is when Improvements first become available &mdash; the more powerful building upgrades that significantly boost FIDSI output beyond base District production. The first Era 2 research session should focus on at least one Improvement directly applicable to your primary production bottleneck. Era 2 also provides the first meaningful military unit upgrades and expansion-enabling technologies. By Era 2, the gap between research-forward factions and research-slow factions is becoming strategically visible.</p>
+</div>
+
+<div class="phase late">
+  <div class="phase-title">Era 3 &mdash; Endgame Systems</div>
+  <p>Era 3 technologies enable the game&apos;s most powerful capabilities: advanced military units, empire-wide productivity multipliers, and technologies that directly support the narrative victory conditions for most factions. Reaching Era 3 technologies before opponents requires sustained Science investment from the beginning of the game. The faction that consistently reaches Era 3 first typically wins, all else being equal.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S17 -->
+<section class="section" id="s17">
+<h2 class="section-title"><span class="sec-num">&sect;17</span> Heroes</h2>
+<div class="lore-block">
+  <p>Heroes are not normal. The Kin field commanders who have survived three Necrophage surges are not normal. The Aspects&apos; coral-singers who have been present since the first spore landed are not normal. The ones who lead armies and cities are the ones who have done things that made them exceptional, and then done them again, and then again, until what they were doing became part of what the empire itself was doing. The hero is not a separate element from the empire. The hero is the empire&apos;s most concentrated expression of everything it decided it needed to be.</p>
+  <span class="source">// SAIADHA ARCHIVE &middot; PHILOSOPHY OF LEADERSHIP &middot; TAHUK SAGE FRAGMENT //</span>
+</div>
+
+<p>Heroes are named leader characters who serve in one of two capacities: as <strong>Generals</strong> commanding armies in the field, or as <strong>Governors</strong> managing city development. Understanding which capacity each Hero should serve in &mdash; and never conflating the two &mdash; is the fundamental Hero management rule.</p>
+
+<h2 class="sub-title">General Heroes vs. Governor Heroes</h2>
+<div class="unit-grid">
+  <div class="unit-card teal-card">
+    <div class="unit-name">General</div>
+    <span class="unit-type">MILITARY COMMAND &middot; FIELD OPERATIONS</span>
+    <p>Generals lead armies, participate directly in combat (as a powerful unit themselves), and provide leadership bonuses to every military unit in their stack. They gain experience through fighting and should invest their skill points exclusively in combat skills &mdash; attack bonuses, unit buffing auras, tactical manoeuvre abilities. Governors should not be generals. The skills required are different and the specialisation advantage is too significant to sacrifice for flexibility.</p>
+  </div>
+  <div class="unit-card teal-card">
+    <div class="unit-name">Governor</div>
+    <span class="unit-type">CITY MANAGEMENT &middot; FIDSI PRODUCTION</span>
+    <p>Governors are assigned to cities and provide massive economic bonuses &mdash; potentially multiplying the city&apos;s FIDSI output significantly at high skill levels. They gain experience through successful construction projects and should invest their skill points exclusively in FIDSI-boosting abilities. A maxed Governor in your capital city is equivalent to several additional Districts in terms of output. Generals should not govern. They are too valuable in the field to waste sitting in a city queue.</p>
+  </div>
+</div>
+
+<h2 class="sub-title">Hero Skill Development</h2>
+<p>Heroes level through experience gained in their capacity (combat for Generals; construction for Governors) and spend skill points in talent trees. The critical rule: <strong>specialise completely, never hybridise</strong>. A General who invests half their points in city skills and half in combat skills is mediocre at both. A General who invests all points in combat skills and a Governor who invests all points in FIDSI production will each outperform the hybrid in their respective roles by the mid-game.</p>
+
+<h2 class="sub-title">Obtaining Heroes</h2>
+<p>Heroes can be hired from the Hero pool (available in cities) or acquired through specific quest rewards. The Hero pool refreshes periodically; check it regularly, especially after each Monsoon cycle, as new and potentially powerful heroes may become available. The first hero should typically be assigned as a Governor in your capital; the second as a General for your primary army.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S18 -->
+<section class="section" id="s18">
+<h2 class="section-title"><span class="sec-num">&sect;18</span> The Empire Council</h2>
+<p>The <strong>Empire Council</strong> unlocks after the first Monsoon and expands after each subsequent Monsoon. It is one of Endless Legend II&apos;s most distinctive systems &mdash; a formal governance body that translates your empire&apos;s Heroes and Notables (exceptional citizens) into empire-wide passive bonuses.</p>
+
+<h2 class="sub-title">Council Members</h2>
+<p>Council members fall into two categories:</p>
+<ul class="guide-list">
+  <li><strong>Heroes as Councillors:</strong> Any Hero can be assigned to a Council position. Their Council bonus differs from their field/governance bonus &mdash; a General assigned to the Council might provide empire-wide combat bonuses rather than their personal fighting contribution. Read each Hero&apos;s Council ability before assigning them; it may not match their in-field specialisation.</li>
+  <li><strong>Notables:</strong> Citizens who have achieved notable status through their city&apos;s development can be assigned to the Council without removing a Hero from active duty. Notables provide smaller bonuses than Heroes but fill Council slots that would otherwise be empty, and their bonuses are permanent as long as they remain assigned.</li>
+</ul>
+
+<h2 class="sub-title">Council Slots and Reassignment</h2>
+<p>Council slots unlock progressively with each Monsoon. The game allows free reassignment of all Council members at the moment of each Monsoon (or for a Dust fee at any other time). This free Monsoon reassignment is valuable: as the game develops and your needs shift (from growth focus to military focus to victory condition focus), the Council composition should shift with it. Reassign aggressively at each Monsoon rather than leaving a Council configuration in place that was optimal three Monsoons ago.</p>
+
+<div class="callout teal">
+  <div class="callout-title">The Tahuk Council Advantage</div>
+  <p>The Tahuks receive their first Council slot not at the first Monsoon (as other factions do) but through their faction quest progression. This means they can potentially get Council bonuses earlier than all other factions if the quest chain is advanced promptly. It is a small but consistent early-game advantage for players who know to prioritise it. Complete the initial Tahuk faction quest steps as quickly as possible in the early turns to accelerate this Council unlock.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S19 -->
+<section class="section" id="s19">
+<h2 class="section-title"><span class="sec-num">&sect;19</span> Empire Plans</h2>
+<p><strong>Empire Plans</strong> are powerful empire-wide policies that activate on 20-turn cycles. They represent the strategic direction of your empire at the macro level, providing bonuses that can dramatically alter your resource generation, military effectiveness, or diplomatic standing for the duration of the plan&apos;s active window.</p>
+
+<h2 class="sub-title">How Empire Plans Work</h2>
+<p>At specific turn intervals (aligned with the Monsoon cycle), you can activate an Empire Plan from the available options. The Plan provides its stated bonus immediately and continues for 20 turns or until the next Plan selection window. Plans are not free &mdash; they typically cost Influence or have prerequisite conditions &mdash; but their empire-wide scale makes them exceptionally cost-effective investments when chosen to match your current strategic phase.</p>
+
+<h2 class="sub-title">Plan Selection Strategy</h2>
+<ul class="guide-list">
+  <li><strong>Growth Plans</strong> are most valuable in your city&apos;s early development phase when Food and Industry bonuses compound through population and production growth.</li>
+  <li><strong>Military Plans</strong> are most valuable when you are about to enter a period of expected combat &mdash; either an offensive campaign or a defensive response to a threat. Activating a military Plan the turn before declaring war (or the turn you become aware war is coming) maximises its window of utility.</li>
+  <li><strong>Science Plans</strong> accelerate research most effectively when you are one or two technologies away from an Era transition. The compounding effect of faster research during an Era breakthrough is worth more than the same bonus in mid-Era advancement.</li>
+  <li><strong>Diplomatic Plans</strong> are valuable when pursuing Influence-heavy victory conditions or before critical diplomatic negotiations.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S20 -->
+<section class="section" id="s20">
+<h2 class="section-title"><span class="sec-num">&sect;20</span> Army Building</h2>
+<div class="lore-block">
+  <p>The military record of Saiadha does not divide cleanly into attackers and defenders. Every army that has existed on this world has done both, in alternating seasons, for reasons that usually come down to the same calculation: the territory adjacent to mine has something I need or something that threatens me, and the determination of which category applies is settled by whether I can reach it first. The ones who were good at building armies when they needed them were the ones who understood that you never know exactly when you will need them. The ones who were not are in the archives as cautionary examples.</p>
+  <span class="source">// SAIADHA ARCHIVE &middot; MILITARY HISTORY OF SAIADHA &middot; KIN OF SHEREDYN WAR COLLEGE //</span>
+</div>
+
+<p>Armies in Endless Legend II are built in cities and consist of units purchased with Industry. Each faction has access to its own unique unit roster alongside some common unit types. The composition of your armies determines your tactical options in battles and your strategic flexibility across the map.</p>
+
+<h2 class="sub-title">Army Composition Principles</h2>
+<ul class="guide-list">
+  <li><strong>Melee-ranged balance:</strong> Pure melee armies are vulnerable to ranged-heavy opponents who can fire freely while your units close distance. Pure ranged armies are overrun by melee units that engage rapidly. The effective standard is melee units providing a screen that absorbs enemy attention while ranged units deal damage from protected positions.</li>
+  <li><strong>Hero inclusion:</strong> A General Hero in your primary army dramatically increases its combat effectiveness. General Heroes attack as powerful independent units and provide passive bonuses to every unit in their stack. Never send a major offensive or defensive action without a General Hero present if one is available.</li>
+  <li><strong>Strategic Resource equipment:</strong> Before any significant battle, check your army&apos;s unit equipment and apply Strategic Resource bonuses where they are available. A Strategic Resource-equipped unit is meaningfully stronger than an identical unequipped one.</li>
+  <li><strong>Specialised faction units:</strong> Each faction has units unique to it. The Kin&apos;s war constructs, the Tahuks&apos; Illuminate archers, the Necrophage&apos;s swarm units &mdash; these faction-specific units are the keystone of that faction&apos;s army. Build them in sufficient numbers to realise the faction&apos;s intended army doctrine.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S21 -->
+<section class="section" id="s21">
+<h2 class="section-title"><span class="sec-num">&sect;21</span> Tactical Combat</h2>
+<p>Combat in Endless Legend II takes place on <strong>tactical hex-grid battlefields</strong> separate from the strategic map. When armies meet, a tactical battle is generated using the terrain of the location where the encounter happens, with each army deploying on their respective sides. Manual combat provides significantly better outcomes than auto-resolve for most meaningful battles.</p>
+
+<h2 class="sub-title">Combat Fundamentals</h2>
+<ul class="guide-list">
+  <li><strong>Initiative and turn order:</strong> Each unit acts on a turn-based sequence within the combat round, with faster units acting before slower ones. Position your units before the round begins &mdash; deployment matters enormously for which units can act first.</li>
+  <li><strong>Terrain effects:</strong> High ground provides a damage bonus to ranged units attacking downward. Forest terrain provides a defensive bonus to units within it. Coastal hexes have unique properties depending on the faction. Understanding terrain interaction is the difference between a battlefield advantage and a disadvantage when the armies are otherwise equivalent.</li>
+  <li><strong>Focus fire:</strong> Spreading damage across multiple enemy units allows all of them to continue acting. Concentrating all your units&apos; fire on a single enemy unit until it is eliminated removes it from the field permanently and reduces the enemy&apos;s total action economy each round. Always focus fire on the highest-priority target (typically the enemy General Hero if present, then their most damaging ranged unit).</li>
+  <li><strong>Illuminate (Tahuk players):</strong> In Tahuk armies, the combat sequence is: mobile archer Illuminates the primary target → heavy unit delivers empowered attack → next archer Illuminates the next target → and so on. Breaking this sequence by letting heavy units attack before the Illuminate buff is applied wastes the faction&apos;s core mechanic.</li>
+</ul>
+
+<h2 class="sub-title">Auto-Resolve vs. Manual</h2>
+<p>Auto-resolve is a quick calculation of expected combat outcome based on unit statistics. It is consistently less favourable than manual play because it does not account for terrain exploitation, focus fire, positioning, or the sequential Illuminate mechanic (for Tahuks). Reserve auto-resolve for lopsided battles where the outcome is not in doubt. For any battle that might be close, fight manually.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S22 -->
+<section class="section" id="s22">
+<h2 class="section-title"><span class="sec-num">&sect;22</span> Siege &amp; City Defence</h2>
+<p>When armies attack a city, a siege begins. The attacking army must overcome the city&apos;s defences &mdash; its HP, its garrison units, and any Military District fortifications &mdash; before capturing it. Understanding siege mechanics from both the attacker&apos;s and defender&apos;s perspectives determines how you invest in military infrastructure and how you prosecute offensive operations.</p>
+
+<h2 class="sub-title">Defending a City</h2>
+<ul class="guide-list">
+  <li><strong>Military Districts increase HP and garrisoned unit capacity:</strong> Cities without Military Districts are soft targets. Build at least one Military District in every city you intend to defend, and upgrade it when resources allow.</li>
+  <li><strong>City Approval affects defence:</strong> City Approval (a 0&ndash;100% rating affecting FIDSI production) also affects defensive resilience. Maintaining high Approval (through careful Vocation management and appropriate Luxury Resource usage) provides a passive defensive buffer.</li>
+  <li><strong>Garrison troops reduce attacker effectiveness:</strong> Even a small number of well-positioned garrison units inside a city forces the attacker to deal with them while also attacking the city walls. Two or three strong garrison units dramatically extend the time it takes to capture a city, often providing enough time for relief forces to arrive.</li>
+</ul>
+
+<h2 class="sub-title">Attacking a City</h2>
+<ul class="guide-list">
+  <li><strong>Bring more forces than you think necessary:</strong> City defence bonuses are substantial. An army that would defeat the same number of field units easily may struggle against the same force in a defended city. Bring a 20&ndash;30% surplus of combat power above what you estimate is needed.</li>
+  <li><strong>Target the General Hero first if present:</strong> The defending General provides passive bonuses to all garrison units. Eliminating them first removes those bonuses and degrades the entire garrison&apos;s effectiveness for the remainder of the siege.</li>
+  <li><strong>Don&apos;t overextend your sieging army:</strong> An army besieging a city that is simultaneously attacked from the flank by a relief force is in a catastrophically vulnerable position. Leave a screening force behind your siege army or don&apos;t begin the siege until you&apos;ve neutralised the relief threat.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S23 -->
+<section class="section" id="s23">
+<h2 class="section-title"><span class="sec-num">&sect;23</span> Victory Conditions</h2>
+<div class="lore-block">
+  <p>The question of what constitutes victory on a dying world is not a simple one. The Kin define it as still standing when the others are not. The Aspects define it as being so present in every system that the question of standing becomes irrelevant. The Last Lords define it as having rebuilt enough of what they lost on Auriga that the loss is bearable. The Tahuks define it as having found the Sages&apos; answer. The Necrophage do not define it at all, which the other factions find either concerning or clarifying depending on their position relative to the swarm. All of them are right about their own definition. None of them is right about the others.</p>
+  <span class="source">// SAIADHA ARCHIVE &middot; POLITICAL PHILOSOPHY SYMPOSIUM &middot; TAHUK SAGE NOTES //</span>
+</div>
+
+<p>Endless Legend II has <strong>nine victory conditions</strong> across three categories: universal victories available to all factions, and faction-specific narrative victories available only to their respective factions.</p>
+
+<h2 class="sub-title">Universal Victories</h2>
+<div class="unit-grid">
+  <div class="unit-card neutral-card">
+    <div class="unit-name">Score Victory</div>
+    <span class="unit-type">UNIVERSAL &middot; TURN LIMIT</span>
+    <p>At the game&apos;s end turn (configurable in game settings), the faction with the highest cumulative score wins. Score accumulates from population, districts, territories, research, and military accomplishments. Score Victory is the default safety net: any empire that develops broadly and consistently is building toward Score Victory even if pursuing another condition.</p>
+  </div>
+  <div class="unit-card neutral-card">
+    <div class="unit-name">Domination Victory</div>
+    <span class="unit-type">UNIVERSAL &middot; MILITARY</span>
+    <p>Eliminate all other major factions through military conquest. Requires capturing or destroying all opposing cities. The hardest universal victory to achieve because it requires defeating everyone simultaneously; the other factions will form coalitions against a dominating military threat. Best pursued through a combination of military pressure and diplomatic isolation of individual targets.</p>
+  </div>
+</div>
+
+<h2 class="sub-title">Narrative Victory Paths</h2>
+<p>Beyond the universal victories, seven <strong>Narrative Victory</strong> types exist. Most are tied to specific faction quest completion and specific empire development milestones. The broad categories:</p>
+<ul class="guide-list">
+  <li><strong>Worship:</strong> Achieve sufficient religious or cultural dominance across Saiadha through a combination of diplomacy, cultural expansion, and specific milestone achievements</li>
+  <li><strong>Mastery:</strong> Demonstrate supreme mastery of specific game systems (scientific mastery, military mastery, economic mastery) through accumulation of defined metrics</li>
+  <li><strong>Impress:</strong> Win through diplomatic and influence-based dominance &mdash; the most accessible narrative victory path for diplomatically-oriented factions and noted as potentially over-powerful in Early Access</li>
+  <li><strong>Faction-specific Narrative Victories:</strong> Each faction&apos;s unique quest line, when completed, provides access to their specific Narrative Victory condition, which reflects their faction&apos;s core story and ambition</li>
+</ul>
+
+<div class="callout tip">
+  <div class="callout-title">Always Track Multiple Victories Simultaneously</div>
+  <p>Do not commit exclusively to one victory condition at the expense of all others. A campaign focused entirely on Domination that suddenly faces a coalition of three other factions has no fallback. A campaign that has been building Score while pursuing a Narrative Victory maintains a viable path if the primary condition becomes temporarily unachievable. Pursue your primary win condition deliberately while ensuring Score progress as a secondary track. The flexibility to shift goals as the political landscape changes is one of the most valuable strategic capabilities in Endless Legend II.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S24 -->
+<section class="section" id="s24">
+<h2 class="section-title"><span class="sec-num">&sect;24</span> Faction Quests</h2>
+<p>Every major faction has a <strong>multi-stage quest line</strong> specific to its lore and strategic goals. Faction quests provide story context for the faction&apos;s presence on Saiadha, deliver unique rewards (including powerful items, abilities, and empire bonuses not available through normal play), and ultimately culminate in the faction&apos;s unique Narrative Victory condition.</p>
+
+<h2 class="sub-title">Quest Priority</h2>
+<p>Faction quest stages should be advanced consistently throughout the game, but the correct pace depends on what the quest requires:</p>
+<ul class="guide-list">
+  <li><strong>Exploration-based quest stages:</strong> Advance automatically as you explore. No additional focus needed beyond normal scouting operations.</li>
+  <li><strong>Build-something quest stages:</strong> Include these in your production planning explicitly. If the quest requires building a specific type of District, add that District to your queue in a city where it will have maximum effect rather than wherever is most convenient.</li>
+  <li><strong>Combat quest stages:</strong> Specifically target the required enemies with your military rather than waiting for opportunistic encounters. Many quest combat requirements have time sensitivity relative to the game&apos;s pacing.</li>
+  <li><strong>Diplomatic quest stages:</strong> Plan the required diplomatic actions to coincide with Monsoon free-reassignment windows when Influence is abundant.</li>
+</ul>
+
+<h2 class="sub-title">Faction-Specific Quest Notes</h2>
+<ul class="guide-list">
+  <li><strong>Tahuks:</strong> Their first quest milestone unlocks an early Empire Council slot. Advance the initial quest steps immediately for this advantage.</li>
+  <li><strong>Last Lords:</strong> Quest stages often require building Lord&apos;s States in assimilated villages; prioritise minor faction assimilation to maintain quest progress availability.</li>
+  <li><strong>Necrophage:</strong> Their quest is fundamentally military &mdash; kill things, harvest corpses, grow the hive. Their normal playstyle advances the quest almost automatically; it rarely requires separate planning attention.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S25 -->
+<section class="section" id="s25">
+<h2 class="section-title"><span class="sec-num">&sect;25</span> The First 30 Turns</h2>
+<div class="lore-block">
+  <p>The first thirty turns of any Saiadhan campaign are the ones that determine whether the last hundred turns are interesting or merely mechanical. Everything that happens in the first thirty turns creates conditions that cannot be fully undone: territory claimed or not claimed, minor factions pacified or left hostile, technology researched or delayed, cities placed with available terrain or placed with whatever seemed reasonable at the time. The first thirty turns are the game. The rest is working out what kind of game the first thirty turns created.</p>
+  <span class="source">// SAIADHA ARCHIVE &middot; STRATEGIC ASSESSMENT &middot; KIN OF SHEREDYN WAR COLLEGE LECTURES //</span>
+</div>
+
+<div class="phase early">
+  <div class="phase-title">Turns 1&ndash;5: Immediate Priorities</div>
+  <p><strong>Move your starting hero immediately:</strong> Do not leave your Hero idle on Turn 1. Move them toward the nearest ruin (for exploration bonuses) or toward any visible Minor Faction village (to begin the pacification assessment). Every turn a Hero spends idle is a turn of exploration foregone.<br><br>
+  <strong>Check your starting terrain:</strong> Before placing a single Foundation, survey all adjacent tiles to your starting city. Identify the best Foundation placement for your first District &mdash; the highest-yield tile for the District type your faction most needs. Place the Foundation on that tile.<br><br>
+  <strong>Start your production queue:</strong> Your starting city must begin producing something immediately. Food-producing districts and the first military unit should both be in the queue, with priority on whichever your faction most needs. Industry does not bank; every turn the queue is empty is lost permanently.</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">Turns 5&ndash;15: Expansion Foundation</div>
+  <p><strong>Identify Minor Faction villages in your region:</strong> By Turn 10 you should know where all the minor faction villages near your capital are and have begun the pacification process on the ones closest to your intended expansion path.<br><br>
+  <strong>Research priority:</strong> Your first Era 1 research should be your faction&apos;s most essential early District unlock. For the Kin: Industrial or Housing. For the Tahuks: Science District unlock (their bonus compounds fastest here). For the Necrophage: the military unit production technology that enables their Corpse economy units.<br><br>
+  <strong>Second city/camp assessment:</strong> By Turn 10, identify where your second settlement should go. Look for a location with good terrain diversity (to enable multiple District types), Strategic Resources nearby, and natural terrain protection on at least one side. If the ideal location is far away, establish a Camp first to claim the territory while your city infrastructure develops.</p>
+</div>
+
+<div class="phase late">
+  <div class="phase-title">Turns 15&ndash;30: Pre-Monsoon Consolidation</div>
+  <p><strong>The first Monsoon is approaching:</strong> The first Monsoon unlocks the Empire Council. Prepare by identifying which Heroes you have and deciding whether they are better suited for General or Governor roles based on their skill trees. Have at least one clear assignment ready for each Council slot that unlocks.<br><br>
+  <strong>Military credibility:</strong> You should have at least one functional military stack by Turn 20 &mdash; not because you necessarily intend to use it, but because other factions will begin military assessment of your empire by this point. An empire with zero visible military capacity is an invitation to aggression from militarist neighbours.<br><br>
+  <strong>First Tidefall assessment:</strong> Begin tracking the first Tidefall&apos;s approach. Position a military escort and your fastest-moving units near your coastal border three to four turns before the projected Tidefall. The race for newly revealed land begins the turn the Tidefall triggers.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S26 -->
+<section class="section" id="s26">
+<h2 class="section-title"><span class="sec-num">&sect;26</span> Mid &amp; Late Game</h2>
+<p>The mid-game begins when your initial empire structure is established, your first Monsoon has occurred, and the first Tidefall has reshaped the map. The late game begins when victory conditions become viable and factions begin positioning for their preferred endgame.</p>
+
+<h2 class="sub-title">Mid-Game Priorities</h2>
+<ul class="guide-list">
+  <li><strong>City specialisation:</strong> By the mid-game, your cities should be deliberately specialised &mdash; one city optimised for Science production, one for military unit production, one for economic Dust generation. Generalist cities that do everything mediocrely are outperformed by specialist cities at this stage. Reassign Vocations and focus District construction to enforce specialisation.</li>
+  <li><strong>Second Tidefall preparation:</strong> Apply the same pre-Tidefall positioning doctrine from the first Tidefall to the second. The newly revealed terrain from the second Tidefall typically reaches deeper into previously unreachable areas of Saiadha, with more significant resources. The competition for it is more intense.</li>
+  <li><strong>Empire Council optimisation:</strong> By the mid-game, enough Council slots have unlocked to make Council composition a major strategic decision. Align your Council with your current primary strategic need: if you are advancing on a victory condition, fill Council with abilities that accelerate that condition; if you are in or anticipating a war, shift to military Council compositions for the duration.</li>
+  <li><strong>Diplomatic positioning:</strong> In the late game, victory conditions become visible to all factions. Rivals who observe you approaching a victory condition will attempt to interfere. Build sufficient diplomatic goodwill that you have allies who benefit from your success rather than uniformly enemies who want to stop it.</li>
+</ul>
+
+<h2 class="sub-title">The Endless Monsoon (Future Content)</h2>
+<p>The <strong>Endless Monsoon</strong> is a major endgame scenario planned for a future update, adding a late-game escalation event that changes the Monsoon cycle into something more dramatic. As of the current Early Access state, the standard Monsoon cycle provides the game&apos;s temporal pacing without this escalation. When it becomes available, it will significantly affect late-game strategy for all factions; check update notes when the feature launches.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S27 -->
+<section class="section" id="s27">
+<h2 class="section-title"><span class="sec-num">&sect;27</span> Faction Counter-Play</h2>
+<div class="lore-block">
+  <p>The most dangerous enemy in any Saiadhan campaign is not the one with the best army. It is the one whose specific faction mechanics you forgot to account for. The coral grows in your territory while you are watching the army. The Dust economy starves your supply lines while you are watching the coral. The Necrophage comes in a direction you did not fortify while you are watching the Dust. Every faction on Saiadha is dangerous in the specific way that another faction was not expecting. The solution is not to be surprised. The solution is never to be surprised.</p>
+  <span class="source">// SAIADHA ARCHIVE &middot; TACTICAL ASSESSMENTS OF RIVAL FACTIONS &middot; KIN OF SHEREDYN INTELLIGENCE //</span>
+</div>
+
+<p>Understanding what each faction is trying to do, and what makes each faction specifically vulnerable, allows you to adapt your strategy based on who you are playing against.</p>
+
+<div class="phase early">
+  <div class="phase-title">Counter the Kin of Sheredyn</div>
+  <p>The Kin are durable in defence and their war constructs are slow. Their weaknesses: their mechs are expensive to maintain and vulnerable to fast flanking manoeuvres that their low mobility cannot respond to. Do not attack them frontally at a fortified position &mdash; use faster cavalry-type units to go around. Target their Dust economy rather than their military; a Kin empire without Dust to maintain its constructs is dramatically weaker. Keep diplomatic pressure on their flanks through alliances with their neighbours.</p>
+</div>
+
+<div class="phase early">
+  <div class="phase-title">Counter the Aspects</div>
+  <p>Coral in your territory must be aggressively removed before the mind infest mechanic reaches actionable thresholds. Use military units to push back the coral boundary whenever it appears in your territory. Do not let the Aspects establish diplomatic dominance by default &mdash; maintain your own diplomatic relationships so they cannot use their Influence advantage to isolate you. Aggressive early military pressure on the Aspects before their coral spreads is significantly more effective than trying to contain an established coral network.</p>
+</div>
+
+<div class="phase early">
+  <div class="phase-title">Counter the Last Lords</div>
+  <p>Target their Dust economy. The Last Lords collapse without Dust in a way no other faction does &mdash; their population literally dies. Military units that can raid their trade routes and disrupt their Market Districts attack their existential resource rather than just their military capacity. Starve the Dust economy and their population crisis does your strategic work for you. Move fast; the Last Lords&apos; Lord&apos;s States give them compounding economic power in the mid-to-late game that makes them increasingly difficult to economically pressure.</p>
+</div>
+
+<div class="phase early">
+  <div class="phase-title">Counter the Tahuks</div>
+  <p>Use early aggression before their research advantage translates into significantly better units and improvements. The Tahuks&apos; Illuminate chain requires mobile archers; disrupting their archer positioning with fast cavalry or flanking attacks breaks the mechanic and dramatically reduces their combat effectiveness. Their Sage quest advancement makes them harder to fight over time; pressure them before the Sage bonuses stack. Their research focus can also leave their early military underdeveloped &mdash; early aggression frequently catches them with insufficient military investment.</p>
+</div>
+
+<div class="phase late">
+  <div class="phase-title">Counter the Necrophage</div>
+  <p>The Necrophage have a single city. That city, while formidable, is the only city they have. Everything &mdash; their entire empire, their victory conditions, their capacity to wage war &mdash; radiates from one location. If you can threaten that city credibly, you threaten everything simultaneously. Build fortified chokepoints to blunt their swarm rushes rather than meeting them in the open where numbers overwhelm positional advantage. Do not let them generate Corpses from your units willingly; fighting pitched open-field battles against the Necrophage feeds their economy. Force them into prepared defensive positions instead.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S28 -->
+<section class="section" id="s28">
+<h2 class="section-title"><span class="sec-num">&sect;28</span> Glossary</h2>
+<div class="gloss-grid">
+  <div class="gloss-item"><div class="gloss-term">Approval</div><div class="gloss-def">A city&apos;s satisfaction rating (0&ndash;100%); affects FIDSI production and defensive resilience. Maintained through Vocation balance, Luxury Resource use, and avoiding excessive war exhaustion.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Army</div><div class="gloss-def">A stack of military units assigned to a single General Hero or operating independently; moves on the strategic map and engages in tactical combat when it encounters hostile forces.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Aspects, The</div><div class="gloss-def">The diplomatic and exploration major faction; spreads coral across the map including foreign territory; uses mind infest mechanics to exert influence over other factions&apos; populations without military force.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Assimilation</div><div class="gloss-def">The process of spending Influence to incorporate a Minor Faction empire-wide, providing scaling empire bonuses based on the number of pacified villages of that faction and opening their population for city immigration.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Auto-Resolve</div><div class="gloss-def">A quick statistical combat resolution without tactical engagement; significantly less favourable than manual combat for most close battles; use only for clearly one-sided engagements.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Bribery</div><div class="gloss-def">A Minor Faction pacification method; pays Dust to immediately stop hostile army spawning from a village; fastest method but most expensive per-village.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Camp</div><div class="gloss-def">A smaller, faster-to-establish settlement that provides territorial claim and basic resource extraction while full city infrastructure develops; useful for claiming Tidefall terrain quickly.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Commandments</div><div class="gloss-def">City-based edicts that provide bonuses; the Kin of Sheredyn can extend their Commandment range further than other factions, applying city bonuses across broader territory.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Coral</div><div class="gloss-def">The Aspects&apos; signature spread mechanic; coral formations grow across the ocean and can extend into other factions&apos; territory, providing the Aspects resource yields and enabling the Mind Infest mechanic on foreign population.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Corpse</div><div class="gloss-def">A Necrophage-specific resource generated from defeating enemies in combat; feeds the Hive economy, enabling population growth and unit production. The core incentive for the Necrophage&apos;s perpetual aggression.</div></div>
+  <div class="gloss-item"><div class="gloss-term">District</div><div class="gloss-def">A building constructed on a Foundation tile that specialises the Foundation in a particular resource category (Housing, Industrial, Science, Market, Military, Cultural) and provides terrain-matching placement bonuses.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Domination Victory</div><div class="gloss-def">Universal victory condition; requires eliminating all other major factions through military conquest. The hardest universal victory to achieve given coalition-building by threatened factions.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Doomwraith</div><div class="gloss-def">A hostile entity encountered during campaign play; not aligned with any major faction; represents one of Saiadha&apos;s endemic dangers beyond the political conflicts of the major factions.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Dust</div><div class="gloss-def">The universal currency; used for unit upkeep, rush-buying, diplomacy, and Last Lords population maintenance. The D in FIDSI. Running a Dust deficit disbands troops and collapses Last Lords population.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Dust is Life</div><div class="gloss-def">The Last Lords&apos; core unique mechanic; Food is replaced entirely by Dust for population creation and maintenance, as well as military unit healing after combat.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Empire Council</div><div class="gloss-def">A governance system unlocking after the first Monsoon; Heroes and Notables are assigned to Council positions providing empire-wide passive bonuses; new slots unlock after each subsequent Monsoon.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Empire Plans</div><div class="gloss-def">Powerful empire-wide policies activated on 20-turn cycles; provide bonuses to growth, military, science, or diplomacy depending on the Plan selected; cost Influence and last until the next plan window.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Era</div><div class="gloss-def">A tier of the research tree (Era 1, Era 2, Era 3); higher Eras unlock more powerful technologies including Improvements and advanced unit upgrades; transitioning Eras faster than opponents creates compounding strategic advantages.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Ever Fighting</div><div class="gloss-def">The Necrophage passive ability; they suffer fewer war penalties than other factions for prolonged conflicts, allowing sustained offensive operations without the Dust and morale costs that limit other militarists.</div></div>
+  <div class="gloss-item"><div class="gloss-term">FIDSI</div><div class="gloss-def">The five core resources: Food, Industry, Dust, Science, Influence. The economic backbone of every empire regardless of faction. All city development, research, diplomacy, and territorial expansion are governed by FIDSI management.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Focus Fire</div><div class="gloss-def">The combat doctrine of concentrating all unit attacks on a single enemy target until it is eliminated; removes it from the action economy permanently rather than spreading damage across multiple partially-damaged enemies.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Food</div><div class="gloss-def">The F in FIDSI; drives population growth through surplus accumulation; the most important early-game resource for most factions because population generates all other FIDSI through Vocations.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Foundation</div><div class="gloss-def">A tile adjacent to an existing city structure claimed by spending Influence; Districts are built on Foundations; Foundations retain the terrain yields of the underlying hex including Anomaly bonuses.</div></div>
+  <div class="gloss-item"><div class="gloss-term">General</div><div class="gloss-def">A Hero role; Generals lead armies in the field, fight as powerful combat units themselves, and provide passive bonuses to their entire army stack. Should specialise exclusively in combat skills.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Governor</div><div class="gloss-def">A Hero role; Governors manage cities, providing massive FIDSI production bonuses. Gain experience through construction projects; should specialise exclusively in FIDSI-boosting skills. Never assign a Governor to field combat.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Hero</div><div class="gloss-def">A named leader character who serves as either a General (leading armies in combat) or a Governor (managing city production). Gains levels through experience in their role; specialisation in a single role dramatically outperforms hybrid development.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Illuminate</div><div class="gloss-def">The Tahuks&apos; core military mechanic; all Tahuk units can mark their target, granting the next Tahuk unit to attack that target a significant damage bonus. Requires coordinated fire discipline to exploit optimally.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Impress Victory</div><div class="gloss-def">A narrative victory path centred on diplomatic and Influence-based dominance; noted in Early Access community assessment as potentially over-powered relative to other victory paths.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Industry</div><div class="gloss-def">The second I in FIDSI; drives construction speed for Districts, Improvements, and units. Does not bank between turns &mdash; unspent Industry is lost at turn end. Always maintain a full production queue.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Influence</div><div class="gloss-def">The second I in FIDSI; used for Foundation placement, Minor Faction assimilation, Empire Plans, and diplomatic actions. Generated by Cultural Districts and Influence Vocation citizens.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Kin of Sheredyn</div><div class="gloss-def">The defensive military major faction; features war construct (mech) armies, extended Commandment range, and above-average defensive capabilities; the recommended starting faction for new players.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Larva</div><div class="gloss-def">A Necrophage biological resource generated from their own processes (as opposed to Corpses from combat); contributes to hive growth and the Necrophage population/unit economy.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Last Lords, The</div><div class="gloss-def">The economic major faction; spirits in armour surviving from Auriga; use Dust instead of Food for population; build Lord&apos;s States in assimilated villages; heal military units with Dust rather than natural regeneration.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Lord&apos;s States</div><div class="gloss-def">A Last Lords unique building placed in assimilated Minor Faction villages; allows directly enlisting minor faction populations into the Last Lords empire as citizens.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Luxury Resources</div><div class="gloss-def">Special map resources that provide temporary powerful boosts to cities or armies when activated; can also be sold for Dust. Activating city Luxury boosts during production pushes or army Luxury boosts before critical battles is high-value timing.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Mind Infest</div><div class="gloss-def">An Aspects mechanic triggered by sufficient coral growth in foreign territory; allows exerting Influence over the affected population of the opposing faction without requiring military force.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Minor Factions</div><div class="gloss-def">Pre-existing small civilisations scattered across Saiadha in village clusters; initially hostile; can be pacified through bribery, quest completion, or military conquest; assimilation provides empire bonuses and population access.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Monsoon</div><div class="gloss-def">A periodic weather event that increases combat damage, spawns temporary resources, unlocks new Empire Council slots, and advances Empire Plans. The primary temporal pacing mechanism of Endless Legend II.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Narrative Victory</div><div class="gloss-def">Story-driven victory conditions tied to faction quest completion and specific empire milestones; seven types exist alongside the universal Score and Domination victories. Each faction has a unique Narrative Victory aligned with their lore.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Necrophage, The</div><div class="gloss-def">The warmonger swarm major faction; single-city empire that can reach City Level 4; Corpse and Larva economy; reduced war penalties; cannot diplomatically pacify Minor Factions; must conquer through military force exclusively.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Notables</div><div class="gloss-def">Exceptional citizens who have reached Notable status through city development; can be assigned to Empire Council positions to provide empire bonuses without removing Heroes from active field/governance duties.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Pacification</div><div class="gloss-def">The process of stopping a Minor Faction village from spawning hostile armies; accomplished through bribery (Dust), quest completion, or military conquest.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Protectorate</div><div class="gloss-def">An assimilated Minor Faction assigned to a management role in the Empire Council, providing additional governance bonuses and management options.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Sage Lore</div><div class="gloss-def">The Tahuks&apos; faction quest system; recovering ancient Sage artefacts and knowledge provides technologies and abilities outside the normal research tree, giving Tahuks capabilities unavailable to other factions.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Saiadha</div><div class="gloss-def">The game&apos;s oceanic world; a planet undergoing the gradual loss of its oceans through the Tidefall phenomenon; procedurally generated each playthrough; the setting for all five major factions&apos; competing civilisations.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Science</div><div class="gloss-def">The S in FIDSI; fuels research progression through Era technology trees; accumulated per turn based on Science-generating Districts and Vocations; faster Science enables earlier access to Improvements and advanced units.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Score Victory</div><div class="gloss-def">Universal victory condition; the faction with the highest score at the game&apos;s end turn wins; accumulates from population, territories, research, and accomplishments; the default fallback for any broadly-developing empire.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Strategic Resources</div><div class="gloss-def">Rare materials found on specific hex tiles; harvested by Mines; used for unit equipment upgrades and District Improvements; tradeable through the Trading Post.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Tahuks, The</div><div class="gloss-def">The research and zealotry major faction; evolved from desert lizards; Illuminate combat mechanic; inherent Science bonus; Sage Lore faction quest provides unique extra-research technology access; early Council slot from faction quest.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Tidefall</div><div class="gloss-def">The defining world mechanic; ocean levels recede at specific game points, revealing new land for exploration and settlement; reshapes the strategic map and unlocks Empire Council slots; requires anticipatory pre-positioning to exploit.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Trading Post</div><div class="gloss-def">An essential early building that enables market access for buying and selling Strategic and Luxury Resources; without it, all resource trade is unavailable; build in the capital as soon as accessible.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Vocation</div><div class="gloss-def">The role a citizen fills in their city economy: Farmer (Food), Producer (Industry/Science/Dust depending on Districts), or Influence. Vocation assignment combined with District type determines FIDSI output per citizen.</div></div>
+  <div class="gloss-item"><div class="gloss-term">War Constructs</div><div class="gloss-def">The Kin of Sheredyn&apos;s unique military units; heavily armoured mechanical war machines (mechs) that form the backbone of Kin heavy military forces; durable in defence, expensive to maintain, limited by mobility.</div></div>
+</div>
+</section>
+
+</div><!-- /content -->
+<footer id="footer">
+  Endless Legend II &nbsp;&middot;&nbsp; Amplitude Studios / Hooded Horse &nbsp;&middot;&nbsp; Nadir Strategy Archive &nbsp;&middot;&nbsp; Saiadha &mdash; The World Is Changing. The Question Is Whether You Are Ready.
+</footer>
+</div><!-- /main -->
+<a id="back-top" href="#hero" title="Back to top">&#8593;</a>
+<script>
+const bar=document.getElementById('progress-bar');
+const bt=document.getElementById('back-top');
+const tog=document.getElementById('sidebar-toggle');
+const sb=document.getElementById('sidebar');
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;
+  bar.style.transform='scaleX('+(s/t)+')';
+  bt.classList.toggle('visible',s>400);
+},{passive:true});
+const secs=document.querySelectorAll('.section[id]');
+const navs=document.querySelectorAll('.nav-item');
+const obs=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){navs.forEach(n=>n.classList.remove('active'));const a=document.querySelector('.nav-item[href="#'+e.target.id+'"]');if(a){a.classList.add('active');a.scrollIntoView({block:'nearest'});}}});
+},{rootMargin:'-20% 0px -70% 0px'});
+secs.forEach(s=>obs.observe(s));
+tog.addEventListener('click',()=>sb.classList.toggle('open'));
+document.querySelectorAll('.nav-item').forEach(i=>i.addEventListener('click',()=>sb.classList.remove('open')));
+document.querySelectorAll('.section').forEach((s,i)=>{s.style.animationDelay=i*0.03+'s';});
+</script>
+</body>
+</html>

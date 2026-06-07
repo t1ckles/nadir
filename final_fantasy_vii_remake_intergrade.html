@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Final Fantasy VII Remake Intergrade &mdash; The Merc&apos;s Codex</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0e0c0a;--parchment:#f0ecdf;--gold:#c9943a;--gold-dark:#8b6420;--gold-pale:#f0d9a8;
+  --mid:#3e3020;--light:#f6f2e8;--border:rgba(201,148,58,0.3);
+  /* Midgar palette: Mako teal-green, Shinra steel, life-stream purple, fire-orange */
+  --mako:#0a1e14;--mako-mid:#0e2218;
+  --mako-bright:#1a8060;--mako-pale:#c8f0e0;
+  --shinra:#1a1e2a;
+  --lifestream:#301040;--lifestream-pale:#e8d0f8;
+  --avalanche:#3a1010;--avalanche-pale:#f8d8d8;
+  --sector:#2a1e08;--sector-pale:#f8ead0;
+  --font-head:'Cinzel','Times New Roman',serif;
+  --font-body:'Crimson Pro','Georgia',serif;
+  --sidebar-w:296px;
+}
+html{scroll-behavior:smooth;font-size:17px}
+body{background:var(--parchment);color:var(--ink);font-family:var(--font-body);line-height:1.75;display:flex;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.5}
+a{color:inherit;text-decoration:none}button{cursor:pointer;font-family:inherit}
+#progress-bar{position:fixed;top:0;left:var(--sidebar-w);right:0;height:3px;background:var(--gold);transform-origin:left;transform:scaleX(0);z-index:500;transition:transform 0.1s linear}
+#sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--shinra);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;border-right:2px solid var(--gold-dark);display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--gold-dark) var(--shinra)}
+#sidebar-header{padding:28px 20px 20px;border-bottom:1px solid rgba(201,148,58,0.22);background:linear-gradient(180deg,#050608 0%,var(--shinra) 100%)}
+#sidebar-title{font-family:var(--font-head);font-size:0.84rem;font-weight:900;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;line-height:1.3}
+#sidebar-sub{font-family:var(--font-body);font-size:0.66rem;color:rgba(255,255,255,0.38);margin-top:6px;letter-spacing:0.04em;font-style:italic}
+#sidebar-nav{padding:8px 0 40px;flex:1}
+.nav-section{padding:10px 20px 3px;font-family:var(--font-head);font-size:0.52rem;letter-spacing:0.2em;color:var(--gold-dark);text-transform:uppercase;margin-top:6px;opacity:0.85}
+.nav-item{display:block;padding:5px 20px 5px 26px;font-family:var(--font-body);font-size:0.76rem;color:rgba(240,225,185,0.58);text-decoration:none;border-left:2px solid transparent;transition:all 0.15s ease;line-height:1.3;position:relative}
+.nav-item::before{content:'&#9658;';position:absolute;left:11px;top:6px;color:var(--gold-dark);opacity:0;transition:opacity 0.12s;font-size:0.42rem}
+.nav-item:hover,.nav-item.active{color:var(--gold-pale);border-left-color:var(--gold);background:rgba(201,148,58,0.07);padding-left:28px}
+.nav-item:hover::before,.nav-item.active::before{opacity:1}
+#sidebar-toggle{display:none;position:fixed;top:10px;left:10px;z-index:200;background:var(--shinra);border:1px solid var(--gold-dark);color:var(--gold);font-size:1.1rem;padding:5px 9px;border-radius:2px}
+#main{margin-left:var(--sidebar-w);flex:1;min-width:0}
+/* Hero — Midgar: Mako reactor glow from below, steel-grey above, embers of sector fire */
+#hero{background:linear-gradient(175deg,#08080c 0%,#0c100e 30%,#0a1208 60%,#180c04 90%,#0a0806 100%);min-height:500px;display:flex;flex-direction:column;justify-content:flex-end;padding:0 64px 64px;position:relative;overflow:hidden;border-bottom:3px solid var(--gold-dark)}
+#hero::before{content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(120px 80px at 20% 85%,rgba(26,160,100,0.12) 0%,transparent 70%),
+    radial-gradient(80px 60px at 75% 80%,rgba(26,160,100,0.10) 0%,transparent 70%),
+    radial-gradient(40px 40px at 50% 70%,rgba(180,80,20,0.07) 0%,transparent 70%),
+    radial-gradient(1.5px 1.5px at 6% 10%,rgba(180,220,180,0.65) 0%,transparent 0%),
+    radial-gradient(1px 1px at 14% 4%,rgba(220,200,140,0.6) 0%,transparent 0%),
+    radial-gradient(1px 1px at 24% 16%,rgba(180,220,200,0.55) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 34% 7%,rgba(220,180,120,0.5) 0%,transparent 0%),
+    radial-gradient(1px 1px at 44% 13%,rgba(180,220,180,0.55) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 55% 5%,rgba(220,200,140,0.6) 0%,transparent 0%),
+    radial-gradient(1px 1px at 65% 14%,rgba(180,210,180,0.5) 0%,transparent 0%),
+    radial-gradient(1px 1px at 75% 8%,rgba(220,180,120,0.55) 0%,transparent 0%),
+    radial-gradient(2px 2px at 85% 17%,rgba(180,220,200,0.5) 0%,transparent 0%),
+    radial-gradient(1px 1px at 92% 6%,rgba(220,200,140,0.58) 0%,transparent 0%),
+    radial-gradient(1px 1px at 18% 26%,rgba(180,220,180,0.4) 0%,transparent 0%),
+    radial-gradient(1px 1px at 48% 29%,rgba(220,200,140,0.38) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 78% 24%,rgba(180,220,200,0.42) 0%,transparent 0%)}
+#hero::after{content:'';position:absolute;bottom:0;left:64px;right:64px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.hero-eyebrow{font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.28em;color:var(--gold-dark);text-transform:uppercase;margin-bottom:14px;position:relative}
+.hero-title{font-family:var(--font-head);font-size:clamp(1.6rem,4.2vw,3.4rem);font-weight:900;color:var(--parchment);letter-spacing:0.04em;text-transform:uppercase;line-height:1.05;margin-bottom:8px;position:relative;text-shadow:0 2px 24px rgba(0,0,0,0.95)}
+.hero-subtitle{font-family:var(--font-body);font-size:1.05rem;font-style:italic;color:rgba(240,217,168,0.72);font-weight:300;margin-bottom:26px;position:relative}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;position:relative}
+.hero-tag{font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-pale);border:1px solid rgba(201,148,58,0.38);padding:3px 10px;background:rgba(201,148,58,0.07)}
+#content{padding:0 64px 80px;max-width:960px}
+.section{padding:54px 0 6px;animation:fadeUp 0.45s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.sec-num{display:inline-block;font-family:var(--font-head);font-size:0.78rem;font-weight:400;letter-spacing:0.1em;color:var(--gold-dark);margin-right:0.5em;vertical-align:middle}
+.section-title{font-family:var(--font-head);font-size:clamp(1.25rem,2.4vw,1.75rem);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink);padding-bottom:12px;margin-bottom:20px;border-bottom:2px solid var(--border);position:relative}
+.section-title::after{content:'';position:absolute;bottom:-2px;left:0;width:58px;height:2px;background:var(--gold)}
+.sub-title{font-family:var(--font-head);font-size:1rem;font-weight:600;letter-spacing:0.05em;color:var(--mid);margin:26px 0 9px;text-transform:uppercase}
+p{margin-bottom:1rem;font-size:1rem}
+.guide-list{margin:0.5rem 0 1rem 1.2rem}
+.guide-list li{margin-bottom:0.5rem;font-size:1rem}
+.guide-list li::marker{color:var(--gold-dark)}
+.callout{padding:15px 20px;margin:20px 0;border-left:4px solid var(--gold);background:var(--light);border-radius:0 3px 3px 0}
+.callout.mako{border-left-color:#1a8060;background:var(--mako-pale)}
+.callout.shinra{border-left-color:#3a4060;background:#dde0f0}
+.callout.life{border-left-color:#7030a0;background:var(--lifestream-pale)}
+.callout.av{border-left-color:#a03020;background:var(--avalanche-pale)}
+.callout.sector{border-left-color:#906020;background:var(--sector-pale)}
+.callout.tip{border-left-color:#2a5c18;background:#e8f5e0}
+.callout.warning{border-left-color:#7a2010;background:#f5e8d0}
+.callout-title{font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;margin-bottom:5px;color:var(--gold-dark)}
+.callout.mako .callout-title{color:#1a8060}
+.callout.shinra .callout-title{color:#3a4080}
+.callout.life .callout-title{color:#7030a0}
+.callout.av .callout-title{color:#a03020}
+.callout.sector .callout-title{color:#906020}
+.callout.tip .callout-title{color:#2a5c18}
+.callout.warning .callout-title{color:#7a2010}
+.callout p{font-size:0.94rem;margin-bottom:0.5rem}
+.callout p:last-child{margin-bottom:0}
+/* Midgar transmission lore blocks */
+.lore-block{padding:16px 22px;margin:22px 0;border:1px solid rgba(26,128,96,0.35);background:rgba(10,20,16,0.05);position:relative}
+.lore-block::before{content:'AVALANCHE SECURE CHANNEL';position:absolute;top:-0.6rem;left:1rem;font-family:var(--font-head);font-size:0.54rem;letter-spacing:0.22em;color:#1a8060;background:var(--parchment);padding:0 0.5rem}
+.lore-block p{font-style:italic;color:#0a1e14;font-size:0.96rem;line-height:1.88}
+.lore-block .source{font-family:var(--font-head);font-size:0.58rem;color:rgba(26,128,96,0.6);text-align:right;display:block;margin-top:0.6rem;letter-spacing:0.1em}
+.data-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.9rem}
+.data-table th{background:var(--shinra);color:var(--gold-pale);font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;padding:8px 11px;text-align:left;border:1px solid rgba(201,148,58,0.2)}
+.data-table td{padding:7px 11px;border:1px solid var(--border);vertical-align:top;line-height:1.5;color:var(--ink)}
+.data-table tr:nth-child(even) td{background:rgba(201,148,58,0.04)}
+.data-table tr:hover td{background:rgba(201,148,58,0.07)}
+.phase{padding:16px 20px;margin:14px 0;border-left:4px solid var(--gold);background:rgba(201,148,58,0.05)}
+.phase.early{border-left-color:#1a6080;background:rgba(26,96,128,0.07)}
+.phase.mid{border-left-color:var(--gold-dark);background:rgba(201,148,58,0.07)}
+.phase.late{border-left-color:#8a2010;background:rgba(138,32,16,0.07)}
+.phase.mako-ph{border-left-color:#1a8060;background:rgba(26,128,96,0.07)}
+.phase-title{font-family:var(--font-head);font-size:0.84rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:7px;color:var(--gold-dark)}
+.phase.early .phase-title{color:#1a6080}
+.phase.late .phase-title{color:#8a2010}
+.phase.mako-ph .phase-title{color:#1a8060}
+.phase p{font-size:0.94rem;margin-bottom:0.6rem;color:var(--ink)}
+.phase p:last-child{margin-bottom:0}
+.unit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin:16px 0}
+.unit-card{border:1px solid var(--border);background:var(--light);padding:14px 16px;border-top:3px solid var(--gold)}
+.unit-card.cloud-card{border-top-color:#3a5080}
+.unit-card.tifa-card{border-top-color:#8a2028}
+.unit-card.barret-card{border-top-color:#4a3010}
+.unit-card.aerith-card{border-top-color:#1a6028}
+.unit-card.yuffie-card{border-top-color:#7030a0}
+.unit-card.mako-card{border-top-color:#1a8060}
+.unit-card.neutral-card{border-top-color:#5a4820}
+.unit-name{font-family:var(--font-head);font-size:0.88rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink);margin-bottom:2px}
+.unit-type{font-family:var(--font-head);font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);margin-bottom:7px;display:block}
+.unit-card.cloud-card .unit-type{color:#3a5080}
+.unit-card.tifa-card .unit-type{color:#8a2028}
+.unit-card.barret-card .unit-type{color:#8a6030}
+.unit-card.aerith-card .unit-type{color:#1a6028}
+.unit-card.yuffie-card .unit-type{color:#7030a0}
+.unit-card.mako-card .unit-type{color:#1a8060}
+.unit-card p{font-size:0.88rem;line-height:1.6;color:var(--ink);margin-bottom:0}
+.orn{text-align:center;color:var(--gold-dark);font-size:0.72rem;letter-spacing:0.42em;padding:28px 0 8px;opacity:0.65}
+.gloss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:1px;background:var(--border);margin-top:16px;border:1px solid var(--border)}
+.gloss-item{background:var(--light);padding:9px 13px;display:flex;gap:10px;align-items:flex-start}
+.gloss-item:nth-child(even){background:var(--parchment)}
+.gloss-term{font-family:var(--font-head);font-size:0.75rem;font-weight:700;color:var(--ink);white-space:normal;min-width:118px;max-width:148px;word-break:break-word;letter-spacing:0.04em;text-transform:uppercase}
+.gloss-def{font-size:0.86rem;color:var(--mid);line-height:1.55}
+#back-top{position:fixed;bottom:26px;right:26px;width:40px;height:40px;background:var(--shinra);border:1px solid var(--gold-dark);color:var(--gold);font-size:1rem;display:flex;align-items:center;justify-content:center;text-decoration:none;opacity:0;transform:translateY(8px);transition:opacity 0.3s,transform 0.3s;z-index:90}
+#back-top.visible{opacity:1;transform:none}
+#back-top:hover{background:var(--gold-dark);color:var(--parchment)}
+#footer{margin-top:40px;border-top:1px solid var(--border);padding:20px 64px;font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);text-align:center}
+@media(max-width:900px){
+  :root{--sidebar-w:0px}
+  #sidebar-toggle{display:flex;align-items:center;justify-content:center}
+  #sidebar{transform:translateX(-100%);transition:transform 0.26s ease;width:270px}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  #hero,#content,#footer{padding-left:22px;padding-right:22px}
+  #progress-bar{left:0}
+  .unit-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+<button id="sidebar-toggle" aria-label="Menu">&#9776;</button>
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <div id="sidebar-title">FF7 Remake Intergrade</div>
+    <div id="sidebar-sub">The Merc&apos;s Codex &mdash; Square Enix / PC (Steam) &mdash; Midgar</div>
+  </div>
+  <div id="sidebar-nav">
+    <div class="nav-section">Midgar</div>
+    <a class="nav-item" href="#s01">01 &middot; The Planet &amp; Midgar</a>
+    <a class="nav-item" href="#s02">02 &middot; Game Overview</a>
+    <a class="nav-item" href="#s03">03 &middot; Story &amp; Structure</a>
+    <div class="nav-section">Combat Systems</div>
+    <a class="nav-item" href="#s04">04 &middot; The ATB System</a>
+    <a class="nav-item" href="#s05">05 &middot; Pressure &amp; Stagger</a>
+    <a class="nav-item" href="#s06">06 &middot; Tactical Mode</a>
+    <a class="nav-item" href="#s07">07 &middot; Limit Breaks</a>
+    <a class="nav-item" href="#s08">08 &middot; Summons</a>
+    <div class="nav-section">Characters</div>
+    <a class="nav-item" href="#s09">09 &middot; Cloud Strife</a>
+    <a class="nav-item" href="#s10">10 &middot; Tifa Lockhart</a>
+    <a class="nav-item" href="#s11">11 &middot; Barret Wallace</a>
+    <a class="nav-item" href="#s12">12 &middot; Aerith Gainsborough</a>
+    <div class="nav-section">Materia</div>
+    <a class="nav-item" href="#s13">13 &middot; Materia Fundamentals</a>
+    <a class="nav-item" href="#s14">14 &middot; Magic Materia</a>
+    <a class="nav-item" href="#s15">15 &middot; Command Materia</a>
+    <a class="nav-item" href="#s16">16 &middot; Support Materia</a>
+    <a class="nav-item" href="#s17">17 &middot; Complete Materia</a>
+    <a class="nav-item" href="#s18">18 &middot; Materia Combinations</a>
+    <div class="nav-section">Equipment</div>
+    <a class="nav-item" href="#s19">19 &middot; Weapons &amp; Proficiency</a>
+    <a class="nav-item" href="#s20">20 &middot; Armor &amp; Accessories</a>
+    <div class="nav-section">Episode INTERmission</div>
+    <a class="nav-item" href="#s21">21 &middot; Yuffie &amp; Sonon</a>
+    <a class="nav-item" href="#s22">22 &middot; Synergy Mechanic</a>
+    <a class="nav-item" href="#s23">23 &middot; Fort Condor</a>
+    <div class="nav-section">Strategy</div>
+    <a class="nav-item" href="#s24">24 &middot; Party &amp; Role Management</a>
+    <a class="nav-item" href="#s25">25 &middot; Hard Mode</a>
+    <a class="nav-item" href="#s26">26 &middot; Boss Strategies</a>
+    <a class="nav-item" href="#s27">27 &middot; Shinra Combat Simulator</a>
+    <div class="nav-section">Reference</div>
+    <a class="nav-item" href="#s28">28 &middot; Glossary</a>
+  </div>
+</nav>
+
+<div id="main">
+<div id="hero">
+  <div class="hero-eyebrow">Nadir Strategy Archive &nbsp;&middot;&nbsp; Square Enix &nbsp;&middot;&nbsp; Action RPG &nbsp;&middot;&nbsp; PC (Steam) &nbsp;&middot;&nbsp; Midgar, Year 200x</div>
+  <h1 class="hero-title">Final Fantasy VII Remake Intergrade</h1>
+  <p class="hero-subtitle">The Merc&apos;s Codex &mdash; A Complete Combat, Materia &amp; Build Guide for Cloud, Tifa, Barret, Aerith, and the INTERmission</p>
+  <div class="hero-tags">
+    <span class="hero-tag">28 Chapters</span>
+    <span class="hero-tag">Full ATB System</span>
+    <span class="hero-tag">All Characters</span>
+    <span class="hero-tag">Materia Builds</span>
+    <span class="hero-tag">Hard Mode</span>
+    <span class="hero-tag">INTERmission</span>
+    <span class="hero-tag">Boss Strategies</span>
+    <span class="hero-tag">Fort Condor</span>
+  </div>
+</div>
+
+<div id="content">
+
+<!-- S01 -->
+<section class="section" id="s01">
+<h2 class="section-title"><span class="sec-num">&sect;01</span> The Planet &amp; Midgar</h2>
+<div class="lore-block">
+  <p>The Planet is alive. This is not a metaphor. The Lifestream &mdash; that luminous green current that flows beneath the surface and through every living thing &mdash; is the Planet&apos;s own circulatory system, its memory and its future simultaneously. When a living thing dies, it returns to the Lifestream. When something new is born, it carries a fragment of everything that came before. The Shinra Electric Power Company has been drilling into this system for decades, extracting Mako energy for profit, bleeding the Planet in portions it calculates are sustainable. They are wrong. The Planet knows they are wrong. AVALANCHE knows they are wrong. Cloud Strife, who does not particularly believe in anything except the job and what he is being paid for it, is beginning to suspect that both of them might be right about that one thing.</p>
+  <span class="source">// AVALANCHE SECURE CHANNEL &middot; BARRET WALLACE &middot; ENCRYPTED TRANSMISSION //</span>
+</div>
+
+<p>Final Fantasy VII Remake Intergrade is set in <strong>Midgar</strong>, a vast industrial city built on the backs of the Planet&apos;s resources. Midgar is a city of plates &mdash; literally. The wealthy live on a series of elevated plates above the city; the poor live beneath them, in the Slums, under permanent artificial night. Shinra&apos;s Mako Reactors ring the city at eight points, draining the Lifestream to power Midgar&apos;s machinery and generate profit for the most powerful corporation in the world.</p>
+
+<p>Into this city, AVALANCHE &mdash; an eco-terrorist cell led by the passionate and uncompromising Barret Wallace &mdash; has recruited a mercenary. Cloud Strife is a former member of Shinra&apos;s elite SOLDIER unit. He doesn&apos;t care about the Planet. He cares about the money. The story of Final Fantasy VII Remake is, in part, the story of how Midgar will not allow him to maintain that position for the length of a single game.</p>
+
+<h2 class="sub-title">Midgar&apos;s Districts</h2>
+<p>The game moves through several distinct areas of Midgar across its 18 chapters:</p>
+<ul class="guide-list">
+  <li><strong>Sector 1:</strong> The first Mako Reactor and the game&apos;s opening. Shinra&apos;s territory at its most institutional.</li>
+  <li><strong>Sector 7 Slums &mdash; Seventh Heaven:</strong> AVALANCHE&apos;s home base. Tifa&apos;s bar. The community that the game builds before what happens next.</li>
+  <li><strong>Sector 5 Slums:</strong> Aerith&apos;s territory. A garden maintained against impossible odds in the dark beneath the plate.</li>
+  <li><strong>Wall Market &mdash; Sector 6:</strong> The chaotic marketplace under Don Corneo&apos;s control. The game&apos;s most operatic sequence.</li>
+  <li><strong>Shinra Headquarters:</strong> The endgame. The tower at the city&apos;s centre where all threads converge.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S02 -->
+<section class="section" id="s02">
+<h2 class="section-title"><span class="sec-num">&sect;02</span> Game Overview</h2>
+<p>Final Fantasy VII Remake Intergrade is a <strong>real-time action RPG with strategic pause mechanics</strong>, developed and published by Square Enix. Originally released for PlayStation 4 in April 2020 and updated to PlayStation 5 in June 2021, it arrived on PC via Epic Games Store in December 2021 and Steam on June 17, 2022. It is the first entry in a planned trilogy remaking the original 1997 Final Fantasy VII.</p>
+
+<p>The game covers Midgar exclusively &mdash; an amount of content that occupied perhaps three hours of the original game, here expanded into a full 35&ndash;40 hour experience. The second game in the trilogy, Final Fantasy VII Rebirth, continues the story from where Remake ends.</p>
+
+<h2 class="sub-title">What Intergrade Adds</h2>
+<p><strong>Intergrade</strong> is the enhanced version of Remake that includes:</p>
+<ul class="guide-list">
+  <li>Visual and performance improvements (higher resolution, frame rate improvements, faster loading on compatible hardware)</li>
+  <li><strong>Episode INTERmission:</strong> A new two-chapter story episode featuring Yuffie Kisaragi and Sonon Kusakabe as a parallel story set during the main game&apos;s events</li>
+  <li>The <strong>Fort Condor minigame</strong> exclusive to INTERmission</li>
+  <li>New weapons, materia, and accessories available in INTERmission</li>
+  <li>New bosses and the <strong>Pride and Joy Mk. 0.5</strong> secret fight in the Combat Simulator</li>
+</ul>
+
+<h2 class="sub-title">Difficulty Modes</h2>
+<table class="data-table">
+  <thead><tr><th>Mode</th><th>Description</th><th>Key Differences</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Easy</strong></td><td>Reduced enemy damage and aggression</td><td>ATB fills faster; Action Assist optional; recommended for story-focused players</td></tr>
+    <tr><td><strong>Normal</strong></td><td>The intended experience</td><td>Standard enemy scaling; full combat system engagement required</td></tr>
+    <tr><td><strong>Classic</strong></td><td>Basic attacks handled by AI</td><td>Computer automates normal attacks for ATB building; player manages ATB spending; closest to the original turn-based feel</td></tr>
+    <tr><td><strong>Hard</strong></td><td>Unlocked after first playthrough completion</td><td>No items usable in battle; MP only restores at benches; Enemies stronger and repositioned; requires mastery of all systems</td></tr>
+  </tbody>
+</table>
+
+<div class="callout av">
+  <div class="callout-title">Classic Mode &mdash; Not a Crutch</div>
+  <p>Classic Mode is not a difficulty reduction but a control redistribution. Choosing Classic Mode and managing ATB spending manually while the AI handles normal attacks produces a gameplay experience remarkably close to the original Final Fantasy VII&apos;s command-menu combat. It is a completely legitimate way to play and is specifically designed to welcome veterans of the original who prefer their action managed differently.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S03 -->
+<section class="section" id="s03">
+<h2 class="section-title"><span class="sec-num">&sect;03</span> Story &amp; Structure</h2>
+<p>Final Fantasy VII Remake is structured across <strong>18 chapters</strong> that move through Midgar&apos;s districts in a semi-linear progression. Between chapters, the game opens into the Slums and Wall Market for side quests, mini-games, and the development of the community that gives the story its emotional grounding.</p>
+
+<h2 class="sub-title">Core Cast</h2>
+<table class="data-table">
+  <thead><tr><th>Character</th><th>Role</th><th>Combat Position</th><th>Narrative Function</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Cloud Strife</strong></td><td>Protagonist; mercenary</td><td>Primary melee vanguard; most versatile character</td><td>The hired gun whose emotional walls are slowly, methodically dismantled by everyone he meets</td></tr>
+    <tr><td><strong>Barret Wallace</strong></td><td>AVALANCHE leader; father</td><td>Ranged fire support; party tank</td><td>The idealist whose convictions are the moral engine of AVALANCHE and of the game itself</td></tr>
+    <tr><td><strong>Tifa Lockhart</strong></td><td>Martial artist; bar owner</td><td>Melee DPS; stagger specialist</td><td>Cloud&apos;s oldest connection to anything real; the bridge between who he was and who he might become</td></tr>
+    <tr><td><strong>Aerith Gainsborough</strong></td><td>Flower seller; last Ancient</td><td>Magical artillery; party support</td><td>The one who knows more than she says, about the Planet, about the Lifestream, about what is coming</td></tr>
+    <tr><td><strong>Red XIII</strong></td><td>Research subject; guardian</td><td>Guest party member; cannot be controlled</td><td>Present in the final chapters; represents the non-human perspective on what Shinra&apos;s world has cost</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">The Whispers</h2>
+<p>The Whispers are entities that appear throughout the game &mdash; black-robed figures that intervene at narrative junctions, seemingly to enforce a specific version of events. They are one of Remake&apos;s most significant additions to the original story. Their nature and purpose becomes the climax of the game in ways that will reward players who pay attention to their interventions throughout.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S04 -->
+<section class="section" id="s04">
+<h2 class="section-title"><span class="sec-num">&sect;04</span> The ATB System</h2>
+<div class="lore-block">
+  <p>The Materia is not magic. Not exactly. Magic is what people call things they cannot explain using the vocabulary they have. The Materia is a crystallisation of the Lifestream, compressed into something a person can hold and attune to and, eventually, use. It requires the same thing every meaningful skill requires: practice, patience, and a sufficient number of situations in which not using it would have been significantly worse. Cloud has made a career out of those situations.</p>
+  <span class="source">// AVALANCHE SECURE CHANNEL &middot; TECHNICAL NOTES ON MATERIA USE IN COMBAT &middot; [AUTHOR UNATTRIBUTED] //</span>
+</div>
+
+<p>The <strong>Active Time Battle (ATB) system</strong> is the beating heart of Final Fantasy VII Remake&apos;s combat. It blends real-time action with strategic menu-based ability use in a way that rewards both physical execution and planning. Understanding its three layers &mdash; how it fills, how it&apos;s spent, and how to maximise both &mdash; is the foundational skill of the game.</p>
+
+<h2 class="sub-title">How the ATB Gauge Fills</h2>
+<p>Each character has two ATB gauge segments. The gauge fills through:</p>
+<ul class="guide-list">
+  <li><strong>Normal attacks:</strong> The fastest method. Every hit lands a portion of ATB. Attack-speed differences between characters directly translate to ATB generation differences: Tifa generates ATB faster than Cloud who generates faster than Aerith.</li>
+  <li><strong>Taking hits:</strong> A small amount of ATB fills when your character receives damage. This creates the important tactical note that aggressive, in-danger playstyles generate ATB faster than passive, defensive ones.</li>
+  <li><strong>Guarding:</strong> Holding R1 to block enemy attacks fills a modest amount of ATB while mitigating damage. Less than attacking but safer.</li>
+  <li><strong>Passive accumulation:</strong> ATB fills very slowly over time regardless of action. Never rely on this as a primary source.</li>
+  <li><strong>First Strike Materia:</strong> Grants ATB on battle start. Excellent for opening burst strategies.</li>
+</ul>
+
+<h2 class="sub-title">ATB Spending</h2>
+<p>One full ATB segment (1 bar) is required for most Abilities, Spells, and Items. Some abilities cost 2 bars. You can queue ATB spending from any character in the party during Tactical Mode. The key spending categories:</p>
+<ul class="guide-list">
+  <li><strong>Abilities:</strong> Unique to each weapon or unlocked through proficiency; consume ATB; no MP cost</li>
+  <li><strong>Spells:</strong> Require both ATB and MP; scale with Magic Attack stat; essential for exploiting elemental weaknesses</li>
+  <li><strong>Items:</strong> Require ATB but no MP; blocked entirely in Hard Mode; include restorative, offensive, and status-effect options</li>
+  <li><strong>Summon commands:</strong> Once a Summon is active, ATB can be spent to command specific Summon attacks</li>
+</ul>
+
+<div class="callout mako">
+  <div class="callout-title">ATB Is Shared Across the Party Perspective</div>
+  <p>While each character has their own ATB gauge, your ability to spend ATB for the entire party from the active character&apos;s perspective (while controlling that character) is one of the game&apos;s most powerful mechanics. You can switch to Aerith, queue a Cure cast, switch back to Cloud, and continue attacking &mdash; Aerith will execute the Cure from her position while you control Cloud. This makes party management an active real-time skill rather than a sequential turn-based decision.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S05 -->
+<section class="section" id="s05">
+<h2 class="section-title"><span class="sec-num">&sect;05</span> Pressure &amp; Stagger</h2>
+<div class="lore-block">
+  <p>There is a gap in every enemy&apos;s attention. Between the attack committed to and the recovery from committing, there is a window that a sufficient number of precise actions can widen into something decisive. The military would have called this a tactical vulnerability. AVALANCHE calls it an opportunity. Cloud calls it the job. Whatever name it goes by, the principle is universal: find the gap, fill it, and don&apos;t stop until the gap becomes the entire engagement.</p>
+  <span class="source">// AVALANCHE SECURE CHANNEL &middot; CLOUD STRIFE &middot; INFORMAL TACTICAL NOTES //</span>
+</div>
+
+<p>The Pressure and Stagger system is the combat architecture that every fight in the game is built around. It is drawn directly from Final Fantasy XIII and represents the deepest strategic layer of Remake&apos;s combat. Mastery of this system is the difference between competent play and surgical efficiency.</p>
+
+<h2 class="sub-title">Pressure</h2>
+<p><strong>Pressuring</strong> an enemy interrupts them, briefly prevents them from acting, and accelerates the fill rate of their Stagger bar. An enemy can be Pressured by:</p>
+<ul class="guide-list">
+  <li>Exploiting their <strong>elemental weakness</strong> with magic (Fire on ice enemies, Ice on fire enemies, Thunder on mechanical enemies)</li>
+  <li>Using abilities or attacks specifically noted to Pressure enemies (Assess Materia reveals enemy-specific Pressure triggers)</li>
+  <li>Attacking from behind or after a dodge through an enemy</li>
+  <li>Interrupting specific enemy abilities mid-animation with sufficiently powerful strikes</li>
+</ul>
+
+<h2 class="sub-title">Stagger</h2>
+<p>The Stagger bar (displayed below the enemy health bar) fills as you deal damage and Pressure enemies. When it reaches 100%, the enemy is <strong>Staggered</strong>:</p>
+<ul class="guide-list">
+  <li>The enemy is immobilised for a duration proportional to their Stagger tolerance</li>
+  <li>All damage dealt to a Staggered enemy is multiplied &mdash; the base multiplier is approximately 160% but certain abilities and Tifa&apos;s mechanics can push this significantly higher</li>
+  <li>The Stagger period is the primary window for spending accumulated ATB and abilities on maximum-damage outputs</li>
+</ul>
+
+<h2 class="sub-title">The Stagger Damage Multiplier</h2>
+<p>The Stagger multiplier is not fixed. It can be increased <em>during</em> the Stagger period:</p>
+<ul class="guide-list">
+  <li><strong>Tifa&apos;s True Strike ability:</strong> Significantly increases the Stagger multiplier. Use True Strike immediately when Stagger begins before any other attacks.</li>
+  <li><strong>Launch (Punisher Mode R2+Attack):</strong> Cloud launching a Staggered enemy into the air increases the multiplier.</li>
+  <li><strong>ATB Stagger Materia:</strong> Provides an ATB boost when Stagger is triggered, enabling faster ability spending during the window.</li>
+</ul>
+
+<div class="callout mako">
+  <div class="callout-title">Assess Is Mandatory</div>
+  <p>The Assess Materia (Command type, slotted in any character&apos;s equipment) reveals every enemy&apos;s elemental weaknesses, HP, Pressure conditions, and Stagger triggers. On Normal Mode this is highly valuable; on Hard Mode it is essential. Without Assess data, you are guessing at Pressure and Stagger triggers for every enemy type. Every character who has a free Command slot should have Assess early in the game until you have memorised the key enemy data.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S06 -->
+<section class="section" id="s06">
+<h2 class="section-title"><span class="sec-num">&sect;06</span> Tactical Mode</h2>
+<p><strong>Tactical Mode</strong> is activated by holding L2 (or the equivalent PC keyboard binding). It slows time dramatically, allowing the player to navigate the ATB command menu, select abilities, target enemies, and make decisions that would be impossible at full combat speed. Tactical Mode does not freeze time &mdash; enemies and effects continue at reduced speed &mdash; but the slowdown is sufficient to allow strategic thought in the middle of real-time combat.</p>
+
+<h2 class="sub-title">Using Tactical Mode Effectively</h2>
+<ul class="guide-list">
+  <li><strong>Spell tier selection:</strong> When you have both Fire and Fira (or any multi-tier spell), enter Tactical Mode and use Left/Right to select which potency to cast. Higher-tier spells cost more MP; select based on current need and MP budget.</li>
+  <li><strong>Party command queuing:</strong> Use Tactical Mode to issue commands to non-active party members before switching control. Issue Barret a Focused Shot command while in Cloud&apos;s perspective, switch to Aerith, queue a Cure, switch back &mdash; all while the enemy moves in slow motion.</li>
+  <li><strong>Emergency assessment:</strong> If an unexpected ability appears, Tactical Mode gives you time to read enemy animations and select an appropriate response before resuming full-speed action.</li>
+</ul>
+
+<div class="callout tip">
+  <div class="callout-title">Tactical Mode and Hard Mode</div>
+  <p>On Hard Mode, where MP is precious and mistakes are costly, Tactical Mode becomes even more critical. The ability to carefully select the correct spell tier (using Fira instead of Firaga to conserve MP while still exploiting a weakness) and to precisely time ability queuing for maximum Stagger efficiency requires the thinking space Tactical Mode provides. Players who rarely use Tactical Mode on Normal will find Hard Mode significantly harder than the stat increase alone would suggest.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S07 -->
+<section class="section" id="s07">
+<h2 class="section-title"><span class="sec-num">&sect;07</span> Limit Breaks</h2>
+<p>Limit Breaks are devastating attacks that become available once the yellow Limit gauge fills to maximum. The Limit gauge fills when characters take damage &mdash; the gauge is, mechanically, a measure of punishment absorbed. Taking hits without dying is the primary Limit generation method, which means the characters who take the most damage (frontliners like Cloud and Tifa) generate Limits fastest, while backliners like Barret and Aerith accumulate them more slowly.</p>
+
+<h2 class="sub-title">Limit Break by Character</h2>
+<div class="unit-grid">
+  <div class="unit-card cloud-card">
+    <div class="unit-name">Braver</div>
+    <span class="unit-type">CLOUD &middot; SINGLE-TARGET &middot; HIGH DAMAGE</span>
+    <p>Cloud&apos;s first Limit Break. A devastating single-target slash that deals massive physical damage. Most effective against Staggered enemies where the base damage is multiplied. The Götterdämmerung accessory starts every battle with a full Limit gauge, making Braver available from the first ATB action in every fight that has one equipped.</p>
+  </div>
+  <div class="unit-card cloud-card">
+    <div class="unit-name">Ascension</div>
+    <span class="unit-type">CLOUD &middot; MULTI-HIT &middot; AREA &middot; LATE GAME</span>
+    <p>Cloud&apos;s second Limit Break, unlocked later in the game. A multi-hit aerial slash sequence that ends in a massive area-of-effect slam. More damage potential than Braver against groups; requires unlocking through weapon proficiency advancement.</p>
+  </div>
+  <div class="unit-card tifa-card">
+    <div class="unit-name">Somersault</div>
+    <span class="unit-type">TIFA &middot; AREA &middot; STAGGER SYNERGY</span>
+    <p>Tifa&apos;s Limit Break sends enemies flying with a kick sequence. Most valuable when used immediately after Stagger is triggered and True Strike has been applied to maximise the Stagger damage multiplier window. Tifa&apos;s high attack speed means she generates Limit relatively quickly for a frontline character.</p>
+  </div>
+  <div class="unit-card barret-card">
+    <div class="unit-name">Big Shot</div>
+    <span class="unit-type">BARRET &middot; HIGH SINGLE-TARGET DAMAGE &middot; RANGED</span>
+    <p>Barret&apos;s Limit Break. A massive ranged energy blast that deals exceptional single-target damage. Since Barret is frequently not the primary target of enemy attacks, his Limit gauge fills more slowly, making Big Shot a valuable resource to bank for critical moments rather than use opportunistically.</p>
+  </div>
+  <div class="unit-card aerith-card">
+    <div class="unit-name">Planet&apos;s Protection</div>
+    <span class="unit-type">AERITH &middot; PARTY BUFF &middot; SUPPORT</span>
+    <p>Aerith&apos;s first Limit Break. Creates a barrier around each party member that negates one instance of damage entirely. The situational value of this is enormous &mdash; negating what would otherwise be lethal hits in boss fights can be game-saving. Unlike all other Limit Breaks, this one&apos;s value is protective rather than offensive.</p>
+  </div>
+  <div class="unit-card aerith-card">
+    <div class="unit-name">Healing Wind</div>
+    <span class="unit-type">AERITH &middot; FULL PARTY HEAL</span>
+    <p>Aerith&apos;s second Limit Break (unlocked later). Heals the entire party for a substantial amount. In Hard Mode where healing MP is precious, Healing Wind&apos;s zero-MP cost makes it exceptional &mdash; use Prayer or Healing Wind rather than Cure spells wherever possible to preserve MP.</p>
+  </div>
+</div>
+
+<div class="callout sector">
+  <div class="callout-title">Götterdämmerung &mdash; The Premier Accessory</div>
+  <p>The Götterdämmerung accessory starts every battle with a full Limit Break gauge and regenerates the gauge after each use. Obtained from the Shinra Combat Simulator (Vs. Top Secrets challenge) and the INTERmission equivalent. Having even one Götterdämmerung on Cloud transforms every fight: Braver or Ascension is available from the first ATB action of every battle, providing an immediate massive damage window that changes the tempo of all subsequent encounters. Earning it requires defeating the hardest optional content in the game, but the reward defines Hard Mode play.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S08 -->
+<section class="section" id="s08">
+<h2 class="section-title"><span class="sec-num">&sect;08</span> Summons</h2>
+<p>Summons are powerful entities that can be called into battle during prolonged fights (primarily boss encounters). A Summon gauge appears when conditions allow a Summon &mdash; typically in boss fights with large HP pools. Once summoned, the entity fights alongside the party for a limited time, can be commanded to use special attacks via ATB spending, and executes a powerful final attack when their presence timer expires.</p>
+
+<h2 class="sub-title">Summon Acquisition</h2>
+<p>Summons are acquired by defeating their simulation versions in Chadley&apos;s Combat Simulations, which unlock as you complete Chadley&apos;s Battle Intel research tasks. Chadley is found in various locations throughout Midgar and provides research assignments that require using specific materia, defeating specific enemy types, or achieving specific combat conditions.</p>
+
+<h2 class="sub-title">Key Summons</h2>
+<table class="data-table">
+  <thead><tr><th>Summon</th><th>Element</th><th>Strengths</th><th>Best Used Against</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Ifrit</strong></td><td>Fire</td><td>High physical damage; persistent aggressive presence</td><td>Ice-weak and non-elemental enemies; extended boss encounters</td></tr>
+    <tr><td><strong>Shiva</strong></td><td>Ice</td><td>Area attacks; Diamond Dust finisher; high magical damage</td><td>Fire-weak enemies; humanoid bosses; multiple smaller targets</td></tr>
+    <tr><td><strong>Bahamut</strong></td><td>Non-elemental</td><td>Highest damage potential; Mega Flare finisher</td><td>Any enemy; the most generally powerful Summon available</td></tr>
+    <tr><td><strong>Fat Chocobo</strong></td><td>Non-elemental</td><td>Comedic but effective area damage; easier battle intel to unlock</td><td>Tifa in particular has affinity noted in story; general use</td></tr>
+    <tr><td><strong>Leviathan</strong></td><td>Water</td><td>Persistent damage and status effect</td><td>Fire-weak enemies; strong against specific chapter bosses</td></tr>
+    <tr><td><strong>Ramuh</strong></td><td>Lightning</td><td>Thunder-based; powerful physical damage mixed with lightning strikes</td><td>Mechanically and armoured enemies; strong against Shinra forces</td></tr>
+  </tbody>
+</table>
+
+<div class="callout mako">
+  <div class="callout-title">Using Summons Offensively</div>
+  <p>Do not summon and then ignore the Summon. Each ATB bar you spend commanding specific Summon abilities provides additional damage beyond their passive attack rate. Prioritise commanding their signature abilities (Bahamut&apos;s Flare, Shiva&apos;s Blizzard spells) at least once before the countdown expires. The final attack (Mega Flare, Diamond Dust, etc.) is fixed regardless of how you manage the summon &mdash; the variable is how much bonus damage you extract through commanded actions before it fires.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S09 -->
+<section class="section" id="s09">
+<h2 class="section-title"><span class="sec-num">&sect;09</span> Cloud Strife</h2>
+<div class="lore-block">
+  <p>He does not want to care about any of this. He has made that very clear, to everyone who has asked and to several people who did not ask but looked like they might be about to. The money is adequate, the job is uncomplicated in its stated terms, and the complications that keep attaching themselves to both are not something he agreed to when he accepted the contract. This is also very clear. None of this prevents him from being exactly where he is, doing exactly what he is doing, for exactly the people he is doing it for. The Planet, apparently, does not particularly care what Cloud agreed to.</p>
+  <span class="source">// AVALANCHE SECURE CHANNEL &middot; OBSERVATION LOG &middot; [OBSERVER REDACTED] //</span>
+</div>
+
+<p>Cloud is the game&apos;s protagonist and its most versatile fighter. He wields the enormous Buster Sword with a single hand in standard form and has a unique two-mode combat system that no other character possesses. He is present in every battle the main game puts the player through and should be treated as the foundational investment of every build decision.</p>
+
+<h2 class="sub-title">Operator Mode vs. Punisher Mode</h2>
+<p>Cloud&apos;s Triangle button toggles between two combat stances:</p>
+<div class="unit-grid">
+  <div class="unit-card cloud-card">
+    <div class="unit-name">Operator Mode</div>
+    <span class="unit-type">STANDARD STANCE &middot; MOBILITY &middot; ATB GENERATION</span>
+    <p>Cloud&apos;s default stance. Faster movement, normal dodge capability, standard attack damage. The correct stance for closing gaps, repositioning, generating ATB through rapid normal attack strings, and general mobility. Operator Mode is where Cloud spends most of his time when not executing a specific punish window.</p>
+  </div>
+  <div class="unit-card cloud-card">
+    <div class="unit-name">Punisher Mode</div>
+    <span class="unit-type">POWER STANCE &middot; HIGH DAMAGE &middot; AUTOMATIC COUNTER</span>
+    <p>Slower movement; cannot dodge normally (can Punisher block with R1). Attacks deal approximately 10% more damage. The critical feature: when Cloud guards in Punisher Mode and an enemy strikes the guard, he <em>automatically counterattacks</em> with a slash that deals significant damage and generates Stagger. This automatic counter works against any attack that can be blocked &mdash; making Punisher Mode the correct stance when an enemy enters a heavy attack string.</p>
+  </div>
+</div>
+
+<h2 class="sub-title">Cloud&apos;s Key Abilities</h2>
+<ul class="guide-list">
+  <li><strong>Braver:</strong> Single-target overhead slash; high damage; core ATB ability; best against Staggered enemies</li>
+  <li><strong>Triple Slash:</strong> Three rapid slashes; moderate damage each; excellent ATB-to-Stagger conversion rate; best ability for building Stagger bars quickly</li>
+  <li><strong>Focused Thrust:</strong> A thrusting stab specifically designed to increase the Stagger gauge significantly more than normal attacks; ideal for accelerating Stagger buildup against tough enemies</li>
+  <li><strong>Blade Burst:</strong> Ranged projectile ability; useful when enemies are temporarily out of melee range</li>
+</ul>
+
+<h2 class="sub-title">Cloud&apos;s Role in the Party</h2>
+<p>Cloud functions as the party&apos;s primary frontline damage dealer and the player&apos;s most direct combat expression. He generates ATB quickly, deals reliable damage in both physical and magical configurations, and his Punisher Mode counter makes him uniquely effective at punishing aggressive enemy attack strings. Build him as a <strong>balanced physical attacker</strong> with emergency elemental magic coverage through Materia, not as a pure physical build that sacrifices spell options entirely.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S10 -->
+<section class="section" id="s10">
+<h2 class="section-title"><span class="sec-num">&sect;10</span> Tifa Lockhart</h2>
+<div class="lore-block">
+  <p>She fights the way she lives: forward, precise, and without wasted motion. Every combination is a conversation with the physics of impact, conducted at a speed that the physics of most opponents cannot adequately respond to. The people of Seventh Heaven know her as the person who pours the drinks and listens when it matters. The Shinra infantry has started to know her as something else. Both descriptions are accurate. Neither is complete.</p>
+  <span class="source">// AVALANCHE SECURE CHANNEL &middot; COMBAT ASSESSMENT &middot; TIFA LOCKHART &middot; CLASSIFIED //</span>
+</div>
+
+<p>Tifa is the game&apos;s primary DPS character and the undisputed queen of the Stagger system. Her unique mechanic &mdash; the <strong>Unbridled Strength</strong> system &mdash; requires managing a stacking power state through careful ability sequencing that rewards mastery with the highest single-window damage output in the game.</p>
+
+<h2 class="sub-title">Unbridled Strength &mdash; Tifa&apos;s Core Mechanic</h2>
+<p>Tifa&apos;s Triangle button ability is Unbridled Strength, which does two things:</p>
+<ol class="guide-list">
+  <li>Charges her Whirlwind Kick attack to its next power level (from base to Whirlwind Kick to Rise and Fall to Dolphin Flurry at maximum charge)</li>
+  <li>Each charged level increases the Stagger damage multiplier when Tifa attacks a Staggered enemy</li>
+</ol>
+<p>The optimal Tifa combat loop: use Unbridled Strength as often as ATB allows during the Pressure phase to stack charges, then when Stagger triggers, immediately use <strong>True Strike</strong> (an ability that specifically and massively increases the Stagger damage multiplier), and follow with her fully-charged Whirlwind combo for maximum multiplied damage output.</p>
+
+<h2 class="sub-title">Tifa&apos;s Role in the Party</h2>
+<p>Tifa is the party&apos;s highest burst damage dealer. Her high attack speed also means she generates ATB faster than any other character, making her excellent for both offensive ATB use and as a source of ATB sharing when you need to fund another character&apos;s spell cast. She is weakest as a ranged attacker (she has almost no range) and as a healer (limited magic attack means healing spells are less efficient from her). Build her to do one thing superlatively: destroy Staggered enemies faster than anything else in the game.</p>
+
+<h2 class="sub-title">Key Abilities</h2>
+<ul class="guide-list">
+  <li><strong>True Strike:</strong> THE most important Tifa ability. Apply immediately at Stagger to increase the multiplier before any other attacks land on the Staggered enemy.</li>
+  <li><strong>Unbridled Strength:</strong> Stack to maximum charge before Stagger. Each use while charging adds to the eventual Stagger multiplier.</li>
+  <li><strong>Whirlwind Kick / Rise and Fall / Dolphin Flurry:</strong> The charged Unbridled Strength attacks at their various power levels. At maximum charge, devastating.</li>
+  <li><strong>Focused Strike:</strong> Applies significant Stagger bar pressure; use during the Pressure phase to accelerate Stagger timing.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S11 -->
+<section class="section" id="s11">
+<h2 class="section-title"><span class="sec-num">&sect;11</span> Barret Wallace</h2>
+<div class="lore-block">
+  <p>AVALANCHE is not a military organisation. Barret is very clear about this to anyone who implies otherwise. AVALANCHE is a response to a crisis that conventional political and economic structures have failed to address. The machine gun arm is a practical necessity rather than a statement of intent. The statement of intent is the mission. The machine gun arm is, however, the part of the statement that enemies tend to process first, which Barret has found to be useful.</p>
+  <span class="source">// AVALANCHE SECURE CHANNEL &middot; MISSION BRIEF &middot; BARRET WALLACE &middot; OPEN CHANNEL //</span>
+</div>
+
+<p>Barret is the party&apos;s ranged fire support and the closest thing it has to a dedicated tank. He attacks from distance with his gun-arm, does not need to close to melee range, and possesses the party&apos;s highest HP pool. His mechanical uniqueness comes from several abilities that spend <em>all available ATB at once</em> for correspondingly powerful effects.</p>
+
+<h2 class="sub-title">Barret&apos;s Core Mechanics</h2>
+<ul class="guide-list">
+  <li><strong>Overcharge (Triangle):</strong> A charged ranged shot with increased damage and Stagger buildup. Longer charge = more powerful shot. The key to Barret&apos;s ranged Stagger contribution.</li>
+  <li><strong>Lifesaver (Passive Ability):</strong> Barret absorbs a percentage of damage that would otherwise hit other party members. This passive makes Barret a genuine protector, especially useful when equipping it on a Barret who is hanging back at range &mdash; he soaks damage from the front without needing to be adjacent to it.</li>
+  <li><strong>Focused Shot:</strong> Spends all available ATB for a massively powerful single ranged blast. Proportional to ATB spent &mdash; at two full bars this is one of the highest single-ability damage outputs in the game against Staggered enemies.</li>
+</ul>
+
+<h2 class="sub-title">Barret&apos;s Role in the Party</h2>
+<p>Barret excels as a <strong>back-line fire support and party anchor</strong>. Keep him at range, let his normal attacks generate ATB from safety, and spend his ATB on high-value magical attacks and Focused Shot during Stagger windows. Equip him with Magic-focused Materia (especially in configurations that share with Aerith) and support Materia that buffs the frontline party members. His Lifesaver passive provides passive protection without requiring any action, making him the party member who contributes defensively even when you are not actively controlling him.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S12 -->
+<section class="section" id="s12">
+<h2 class="section-title"><span class="sec-num">&sect;12</span> Aerith Gainsborough</h2>
+<div class="lore-block">
+  <p>She knows things she does not say. This would be more unsettling if what she said was not itself so consistently precise and quietly correct about the things she chose to say. She sells flowers. She maintains a garden under a plate that should by rights receive no light at all. She has a staff she uses in combat with a cheerfulness that does not quite match the efficiency with which she uses it. The Cetra did not leave many inheritors. They left one. She is managing.</p>
+  <span class="source">// AVALANCHE SECURE CHANNEL &middot; PERSONAL PROFILE &middot; AERITH GAINSBOROUGH &middot; [RESTRICTED ACCESS] //</span>
+</div>
+
+<p>Aerith is the party&apos;s magical specialist and primary support character. She has the highest Magic Attack stat of any party member, a ranged normal attack that damages through magic rather than physical force, and several unique mechanics including <strong>Arcane Ward</strong> that transform her role in combat from simple spellcaster to reality-bending magical artillery.</p>
+
+<h2 class="sub-title">Arcane Ward &mdash; Aerith&apos;s Signature Ability</h2>
+<p>Aerith&apos;s Triangle button ability creates an <strong>Arcane Ward</strong> at her current location &mdash; a magical circle on the ground that has one transformative effect: any character standing inside the Ward who casts a spell casts it <strong>twice for the cost of one</strong>. The second cast is free. The Ward persists for a duration and can be positioned to benefit any character in the party.</p>
+<p>The implications are enormous: a character standing in an Arcane Ward who casts Firaga at an enemy casts Firaga twice, expending only one cast&apos;s worth of MP and ATB. This doubles effective magical output for the Ward&apos;s duration and doubles the elemental pressure applied for Stagger. Positioning Aerith&apos;s Ward and keeping party members in it during spell-intensive boss phases is one of the game&apos;s highest-ceiling tactical plays.</p>
+
+<h2 class="sub-title">Aerith&apos;s Role in the Party</h2>
+<p>Aerith operates as <strong>magical artillery and party healer</strong>. Her magic attack advantage over every other character means Cure cast from Aerith heals more, Fire deals more, and support spell effectiveness scales better. She is slowest in normal attack ATB generation, which is the primary reason to occasionally take direct control of her and use her ranged attack to accelerate her gauge. Her limited materia slots require careful prioritisation &mdash; balance offensive elemental coverage with essential support (Healing at minimum; Revive for Hard Mode).</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S13 -->
+<section class="section" id="s13">
+<h2 class="section-title"><span class="sec-num">&sect;13</span> Materia Fundamentals</h2>
+<div class="lore-block">
+  <p>The old Cetra understood the Materia as a conversation with the Planet. You hold a crystallised fragment of the Lifestream and you learn the part of it that has been crystallised there. The Lifestream remembers everything. The Materia is a way of asking it to share. The Shinra Corporation understands Materia as a product. Neither understanding is wrong, exactly. They are simply looking at different parts of the same thing, with very different intentions, and the difference in what they do with that understanding is everything.</p>
+  <span class="source">// AVALANCHE SECURE CHANNEL &middot; EDUCATIONAL MATERIALS &middot; MATERIA FUNDAMENTALS //</span>
+</div>
+
+<p>Materia is the cornerstone of Final Fantasy VII Remake&apos;s customisation system. It is the crystallised Lifestream, slotted into weapons and armor to grant characters magical abilities, passive bonuses, and command options. Understanding the five Materia categories and how they interact determines the ceiling of what your party can accomplish.</p>
+
+<h2 class="sub-title">The Five Materia Categories</h2>
+<div class="unit-grid">
+  <div class="unit-card mako-card">
+    <div class="unit-name">Green &mdash; Magic</div>
+    <span class="unit-type">SPELLS &middot; ELEMENTAL &amp; STATUS</span>
+    <p>The most common category. Provides active spell commands requiring both ATB and MP. Gains AP with use and unlocks higher spell tiers (Fire → Fira → Firaga) as it levels. Higher tiers cost more MP; managing which tier to cast based on MP budget and target vulnerability is a key skill, especially in Hard Mode.</p>
+  </div>
+  <div class="unit-card mako-card">
+    <div class="unit-name">Yellow &mdash; Command</div>
+    <span class="unit-type">ABILITIES &middot; NO MP COST</span>
+    <p>Adds active commands to the ATB menu that cost ATB but not MP. The most important examples: Assess (enemy intelligence), Steal, Chakra (self-healing without MP), and Prayer (party healing without MP). Yellow Materia is the MP-free answer to hard-mode resource constraints.</p>
+  </div>
+  <div class="unit-card mako-card">
+    <div class="unit-name">Blue &mdash; Support</div>
+    <span class="unit-type">MODIFIER &middot; PAIRED WITH OTHER MATERIA</span>
+    <p>Slotted into linked slots (paired slots connected by a line on the equipment screen) alongside another Materia to modify its behaviour. Magnify (affects all party members instead of one), Elemental (infuses attacks/defence with an element), HP Absorption (restores HP on hit), MP Absorption (restores MP on hit). Support Materia has no independent effect &mdash; it only functions when paired.</p>
+  </div>
+  <div class="unit-card mako-card">
+    <div class="unit-name">Purple &mdash; Independent</div>
+    <span class="unit-type">PASSIVE BONUSES &middot; STAT MODIFIERS</span>
+    <p>Provides passive benefits without requiring linked slots or ATB activation. HP Up, MP Up, Magic Up, ATK Up, Luck Up, First Strike, AP Up. Essential for characters who need stat padding or who benefit from specific passive trigger conditions. Equip these last, filling remaining slots with actives first.</p>
+  </div>
+  <div class="unit-card mako-card">
+    <div class="unit-name">Red &mdash; Summon</div>
+    <span class="unit-type">SUMMON ENTITIES &middot; BOSS ENCOUNTERS</span>
+    <p>Occupies a dedicated Summon slot on weapons. Allows summoning during eligible battles (primarily boss encounters where the Summon gauge appears). Only one Summon can be active at a time; which Summon to bring depends on the encounter&apos;s elemental vulnerabilities and phase structure.</p>
+  </div>
+</div>
+
+<h2 class="sub-title">AP and Materia Levelling</h2>
+<p>Materia gains <strong>Ability Points (AP)</strong> through battle and levels up over time, unlocking higher tiers and improved passive bonuses. AP Up Materia (Purple) doubles the AP gain rate of any Materia in a linked slot &mdash; pairing AP Up with Materia you want to level quickly is the most efficient way to accelerate the process. When Materia reaches maximum level, it &ldquo;masters&rdquo; and produces a copy of itself at level 1 while the master copy retains full stats &mdash; the most efficient Materia multiplication method available.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S14 -->
+<section class="section" id="s14">
+<h2 class="section-title"><span class="sec-num">&sect;14</span> Magic Materia</h2>
+<p>Magic Materia (Green) provides the game&apos;s offensive, restorative, and status-effect spellcasting. Managing which tiers to cast and which characters carry which elements is the core of efficient Materia distribution across the party.</p>
+
+<h2 class="sub-title">Essential Magic Materia</h2>
+<table class="data-table">
+  <thead><tr><th>Materia</th><th>Spell Tiers</th><th>Primary Use</th><th>Priority</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Fire</strong></td><td>Fire / Fira / Firaga</td><td>Offensive; exploits Fire weakness; Stagger acceleration on susceptible enemies</td><td>High; most commonly exploitable elemental weakness in the game</td></tr>
+    <tr><td><strong>Ice</strong></td><td>Blizzard / Blizzara / Blizzaga</td><td>Offensive; effective against biological enemies, fiery creatures</td><td>High; pairs exceptionally with Shiva Summon</td></tr>
+    <tr><td><strong>Thunder</strong></td><td>Thunder / Thundara / Thundaga</td><td>Offensive; excellent against mechanical and Shinra enemies</td><td>High; most frequently useful against chapter-specific enemies</td></tr>
+    <tr><td><strong>Wind</strong></td><td>Aero / Aeroa / Aeroga</td><td>Offensive; flying enemies; aerial targets</td><td>Medium; situational but essential for winged boss encounters</td></tr>
+    <tr><td><strong>Healing</strong></td><td>Cure / Cura / Curaga</td><td>HP restoration; single-target by default but Magnify-pairs for party-wide</td><td>Mandatory; every party configuration needs healing access</td></tr>
+    <tr><td><strong>Barrier</strong></td><td>Barrier / Manawall / Wall</td><td>Defensive buffs; reduces physical or magical damage</td><td>High on Hard Mode; essential for surviving high-damage phases</td></tr>
+    <tr><td><strong>Revive</strong></td><td>Raise / Arise</td><td>Resurrects KO&apos;d party members</td><td>Mandatory on Hard Mode where Phoenix Down items cannot be used</td></tr>
+    <tr><td><strong>Poison</strong></td><td>Bio / Biora / Bioga</td><td>Persistent damage-over-time; very effective against large HP-pool enemies</td><td>Medium; excellent against bosses that resist normal Stagger approaches</td></tr>
+  </tbody>
+</table>
+
+<div class="callout warning">
+  <div class="callout-title">Hard Mode: MP Is Sacred</div>
+  <p>On Hard Mode, the inability to use Items in battle and the restriction that MP only restores at benches (not with Ethers, which cannot be used) transforms MP from a renewable resource into a finite strategic asset per dungeon segment. The implications: only cast high-tier spells when the target is genuinely weak to them and the investment is efficient. Use Prayer, Chakra, and Healing Wind as primary healing rather than Cure spells. Reserve Curaga for genuine emergencies. An Aerith who runs out of MP before a boss fight begins is one of the most damaging situations Hard Mode can create.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S15 -->
+<section class="section" id="s15">
+<h2 class="section-title"><span class="sec-num">&sect;15</span> Command Materia</h2>
+<p>Command Materia (Yellow) adds active options to the ATB command menu that cost ATB but no MP. This makes them exceptional in Hard Mode where MP conservation is paramount, and valuable throughout Normal Mode as reliable zero-MP damage and utility options.</p>
+
+<h2 class="sub-title">Priority Command Materia</h2>
+<div class="unit-grid">
+  <div class="unit-card neutral-card">
+    <div class="unit-name">Assess</div>
+    <span class="unit-type">INTELLIGENCE &middot; ESSENTIAL EARLY GAME</span>
+    <p>Reveals enemy data: HP total, elemental weaknesses, Pressure conditions, Stagger triggers, and dropped items. The single most valuable early-game Command Materia. Without Assess data, you are guessing at every enemy&apos;s tactical response. Assess once, store the knowledge, retire the Materia to a free slot thereafter.</p>
+  </div>
+  <div class="unit-card neutral-card">
+    <div class="unit-name">Chakra</div>
+    <span class="unit-type">SELF-HEALING &middot; MP-FREE &middot; HARD MODE KEY</span>
+    <p>Restores the user&apos;s own HP proportional to their Max HP at the cost of 1 ATB. No MP required. The primary Hard Mode healing tool for Cloud and Tifa who need to sustain without draining Aerith&apos;s MP reserves. Restores approximately 25-30% HP at base level &mdash; sufficient to recover from most non-lethal hits.</p>
+  </div>
+  <div class="unit-card neutral-card">
+    <div class="unit-name">Prayer</div>
+    <span class="unit-type">PARTY HEALING &middot; MP-FREE &middot; HARD MODE ESSENTIAL</span>
+    <p>Restores HP for the entire party at the cost of 1 ATB and no MP. A weaker heal than Cura but applicable to all party members simultaneously and completely free of MP. In Hard Mode, Prayer on Aerith (or Tifa as backup) replaces Cure as the primary sustained party healing method and preserves Aerith&apos;s MP for offensive magic and barrier casting.</p>
+  </div>
+  <div class="unit-card neutral-card">
+    <div class="unit-name">Steal</div>
+    <span class="unit-type">ITEM ACQUISITION &middot; UNIQUE DROPS</span>
+    <p>Steals an item from the target enemy. Many enemies hold unique items not available from shops that are exclusively accessible through Steal. The consumable rewards from Stealing in early chapters provide resources that would otherwise require significant Gil expenditure. Equip on a fast-ATB character (Tifa) for efficient steal cycling.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S16 -->
+<section class="section" id="s16">
+<h2 class="section-title"><span class="sec-num">&sect;16</span> Support Materia</h2>
+<p>Support Materia (Blue) is the multiplier system. Each piece must be slotted alongside another Materia in a <strong>linked slot pair</strong> (indicated by brackets connecting two slots on the equipment screen). A Support Materia without a linked companion has no effect. Understanding what pairs with what unlocks the game&apos;s most powerful configurations.</p>
+
+<h2 class="sub-title">Essential Support Materia</h2>
+<div class="unit-grid">
+  <div class="unit-card neutral-card">
+    <div class="unit-name">Magnify</div>
+    <span class="unit-type">AREA EFFECT &middot; LINKED: ANY MAGIC</span>
+    <p>The single most powerful Support Materia in the game. Converts any single-target spell in the linked slot into a party-wide or enemy-wide area-of-effect spell at reduced potency per target. Magnify + Healing makes Cure heal the entire party. Magnify + Haste applies Haste to all party members. Magnify + Barrier protects the whole party at once. Priority first obtain and upgrade.</p>
+  </div>
+  <div class="unit-card neutral-card">
+    <div class="unit-name">Elemental</div>
+    <span class="unit-type">ELEMENT INFUSION &middot; LINKED: ELEMENT MAGIC</span>
+    <p>When slotted in a weapon alongside an elemental Magic Materia (Fire, Ice, Thunder), infuses Cloud&apos;s normal physical attacks with that element. Every normal attack becomes elemental &mdash; against enemies weak to Fire, every Cloud swing deals Fire-damage bonus. When slotted in armor instead of a weapon, provides resistance to the linked element. Both applications are excellent in different contexts.</p>
+  </div>
+  <div class="unit-card neutral-card">
+    <div class="unit-name">HP Absorption</div>
+    <span class="unit-type">LIFESTEAL &middot; LINKED: ANY DAMAGE MATERIA</span>
+    <p>Restores HP equal to a percentage of damage dealt by the linked Materia&apos;s attacks. Pair with Thunder on Aerith: every Thundaga cast against enemies (mechanicals are everywhere in Midgar) restores a fraction of the damage dealt as HP. This creates a self-sustaining combat loop that reduces healing burden during extended encounters.</p>
+  </div>
+  <div class="unit-card neutral-card">
+    <div class="unit-name">MP Absorption</div>
+    <span class="unit-type">MP RECOVERY &middot; LINKED: ANY DAMAGE MATERIA</span>
+    <p>Like HP Absorption but restores MP instead. On Hard Mode, pairing MP Absorption with your most-used offensive spell creates a feedback loop that partially counteracts the no-item MP restriction. The recovery percentage is modest but accumulates meaningfully across a long boss fight with consistent spell use.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S17 -->
+<section class="section" id="s17">
+<h2 class="section-title"><span class="sec-num">&sect;17</span> Complete Materia</h2>
+<p>Complete Materia (Purple) provides passive effects without requiring linked slots or active use. They are the tuning layer of Materia builds, addressing stat deficiencies and enabling specific tactical features.</p>
+
+<h2 class="sub-title">Priority Independent Materia</h2>
+<table class="data-table">
+  <thead><tr><th>Materia</th><th>Effect</th><th>Best On</th><th>Priority</th></tr></thead>
+  <tbody>
+    <tr><td><strong>HP Up</strong></td><td>Increases Max HP by up to 100%</td><td>All characters but especially frontline (Cloud, Tifa)</td><td>High; more HP = more margin for learning enemy patterns</td></tr>
+    <tr><td><strong>MP Up</strong></td><td>Increases Max MP by up to 100%</td><td>Aerith primarily; Barret as secondary caster</td><td>High on Hard Mode; directly extends spell budget per dungeon</td></tr>
+    <tr><td><strong>Magic Up</strong></td><td>Increases Magic Attack stat</td><td>Aerith; Barret when used as caster</td><td>High; directly amplifies all spell damage and healing output</td></tr>
+    <tr><td><strong>First Strike</strong></td><td>Grants partial ATB at battle start</td><td>Cloud; any character who opens with an ability</td><td>Medium-High; allows immediate ability use in the first battle action</td></tr>
+    <tr><td><strong>AP Up</strong></td><td>Doubles AP gain for linked Materia</td><td>Any character; linked to Materia you want levelled quickly</td><td>High utility; accelerates the mastering of valuable Materia significantly</td></tr>
+    <tr><td><strong>ATB Stagger</strong></td><td>Grants an ATB charge when enemy is Staggered</td><td>Tifa; Cloud</td><td>High; the extra ATB at Stagger onset funds True Strike or immediate follow-up abilities</td></tr>
+    <tr><td><strong>Parry</strong></td><td>Turns dodge into a counter-attack</td><td>Cloud; Tifa</td><td>Medium-High; particularly strong with Deadly Dodge (see below)</td></tr>
+    <tr><td><strong>Deadly Dodge</strong></td><td>Deals damage to enemies in the dodge path</td><td>Cloud; Tifa</td><td>Medium; pair with Parry for dodge-cancel damage loops; good for frame-cancel optimisation</td></tr>
+  </tbody>
+</table>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S18 -->
+<section class="section" id="s18">
+<h2 class="section-title"><span class="sec-num">&sect;18</span> Materia Combinations</h2>
+<div class="lore-block">
+  <p>The Materia slots on a piece of equipment are not just holes in the handle. They are the interface through which a person&apos;s intentions become the Lifestream&apos;s expressions. The combinations that a skilled operator can build out of the right pieces, in the right configuration, can transform the same weapon from a blunt instrument into something considerably more articulate. The original Cetra did this without the hardware. Cloud needs the slots. The outcome, at sufficient investment, is comparable.</p>
+  <span class="source">// AVALANCHE SECURE CHANNEL &middot; MATERIA CONFIGURATION NOTES &middot; [AUTHOR: AERITH GAINSBOROUGH] //</span>
+</div>
+
+<p>Individual Materia pieces are powerful. The right combinations of Materia in linked slots produce effects that exceed the sum of their parts by a significant margin. Understanding the game&apos;s best pairings unlocks its highest-performance configurations.</p>
+
+<h2 class="sub-title">The Essential Combinations</h2>
+<div class="phase mako-ph">
+  <div class="phase-title">Magnify + Healing (Aerith &mdash; Core Hard Mode Setup)</div>
+  <p>Magnify in a linked slot alongside Healing Materia converts every Cure/Cura/Curaga cast into a party-wide heal. The potency per character is reduced (each character receives approximately 75% of a single-target heal) but the coverage makes it the most efficient single-cast healing action available. This is the highest-priority Materia configuration to achieve. Slot it on Aerith and never remove it.</p>
+</div>
+
+<div class="phase mako-ph">
+  <div class="phase-title">Elemental + Fire/Thunder/Ice (Cloud weapon &mdash; Physical Attacker)</div>
+  <p>Pairing Elemental with an elemental Magic Materia in a linked weapon slot infuses all of Cloud&apos;s normal physical attacks with the chosen element. Against enemies weak to Fire, every Cloud swing becomes Fire-elemental. This converts physical damage into exploited-weakness damage without spending any ATB or MP &mdash; the elemental infusion is free on every normal attack. Match the element to the dungeon&apos;s primary enemy type for maximum efficiency.</p>
+</div>
+
+<div class="phase mako-ph">
+  <div class="phase-title">MP Absorption + Thunder (Aerith &mdash; Hard Mode MP Sustainability)</div>
+  <p>Shinra&apos;s forces are full of mechanical enemies. Thunder is frequently the correct element throughout the mid-to-late game. MP Absorption alongside Thunder on Aerith means that every Thundaga cast against mechanical enemies returns a portion of the MP spent. Against large groups of Shinra infantry (which the game provides in abundance from Chapter 9 onward), this combination creates genuine MP sustainability during the encounter even without any items.</p>
+</div>
+
+<div class="phase mako-ph">
+  <div class="phase-title">ATB Stagger + True Strike (Tifa &mdash; Maximum Stagger Window Damage)</div>
+  <p>ATB Stagger grants an ATB charge the moment an enemy is Staggered. Immediately spending that ATB charge on True Strike (which massively increases the Stagger damage multiplier) before landing any normal attacks on the Staggered enemy creates Tifa&apos;s highest single-window damage output. The ATB Stagger Materia effectively funds True Strike for free at Stagger onset, then Tifa&apos;s high attack speed generates more ATB during the Stagger window for follow-up charged Unbridled Strength attacks.</p>
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">Synergy Materia (INTERmission Exclusive)</div>
+  <p>The Synergy Materia, introduced in INTERmission, automatically triggers a non-active party member to cast a corresponding spell when the active character uses an ATB command. In the main game, this means an idle Barret might auto-cast Fire when Cloud uses a fire-type ability. In INTERmission, it powers the Synergy system between Yuffie and Sonon at a fundamental level. In the main game, Synergy Materia is a useful passive damage addition but not as central as it is in INTERmission. It is most effective when the auto-triggered character has a high Magic Attack stat (Aerith) and is equipped with a spell the active character&apos;s ability will naturally synergise with.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S19 -->
+<section class="section" id="s19">
+<h2 class="section-title"><span class="sec-num">&sect;19</span> Weapons &amp; Proficiency</h2>
+<p>Each character has six weapons in the main game. Weapons provide different stat spreads, different numbers and configurations of Materia slots (including how many paired/linked slots they have), and a unique Ability that the character can learn permanently by using the weapon in battle a sufficient number of times. Once learned, an Ability is available on any weapon.</p>
+
+<h2 class="sub-title">Weapon Upgrade System</h2>
+<p>Weapons are upgraded using <strong>SP (Skill Points)</strong>, earned from battles. Each weapon has a branching upgrade tree that provides stat increases, new passive bonuses, and additional Materia slots. Manuscripts, found throughout the game, provide large SP bonuses that allow accelerated upgrade investment. Key principles:</p>
+<ul class="guide-list">
+  <li><strong>Prioritise Materia slots:</strong> When choosing upgrade paths, prefer those that add Materia slots over raw stat increases. More slots mean more build options, and optimal Materia configurations typically outperform raw stat boosts.</li>
+  <li><strong>Learn every weapon&apos;s ability before switching:</strong> Use each new weapon until its unique Ability is learned (the Ability appears locked with a progress bar &mdash; use the ability in battle repeatedly until the bar fills). The ability becomes permanently available on all subsequent weapons.</li>
+  <li><strong>Cloud&apos;s optimal weapons:</strong> The Buster Sword provides early versatility; the Twin Stinger (found later) has an exceptional Materia slot configuration for balanced builds including multiple paired slots.</li>
+  <li><strong>Tifa&apos;s optimal weapons:</strong> Purple Pain offers the best physical/magic balance and teaches True Strike. Maxing Purple Pain&apos;s upgrade tree provides superior performance to most alternatives.</li>
+  <li><strong>Aerith&apos;s optimal weapons:</strong> The Mythril Rod has high Magic Attack; the Reinforced Staff balances slots; the White Staff is the strongest option for spell-focused builds.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S20 -->
+<section class="section" id="s20">
+<h2 class="section-title"><span class="sec-num">&sect;20</span> Armor &amp; Accessories</h2>
+<p>Armor provides defensive stats and Materia slots, similar to weapons. The key armor consideration is the number of linked (paired) slot pairs it provides &mdash; linked slots enable Support Materia pairings, and the number of linked pairs determines how many Support combinations a character can run simultaneously.</p>
+
+<h2 class="sub-title">Key Armor Pieces</h2>
+<ul class="guide-list">
+  <li><strong>Chain Bangle:</strong> Found in Chapter 6. The best mid-game armor for most characters due to its six Materia slots with multiple paired configurations. There is only one Chain Bangle in the game &mdash; assign it to Aerith for maximum Support Materia pairing value.</li>
+  <li><strong>Midgarian Steel:</strong> High physical defense; fewer slots; better for Cloud as a frontline absorber</li>
+  <li><strong>Astral Cuff:</strong> Good Magic Defense; recommended for Aerith in high-magic-damage boss encounters</li>
+  <li><strong>Iron Maiden:</strong> High overall defense with reasonable slot count; versatile for Tifa</li>
+</ul>
+
+<h2 class="sub-title">Key Accessories</h2>
+<table class="data-table">
+  <thead><tr><th>Accessory</th><th>Effect</th><th>Acquisition</th><th>Priority</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Götterdämmerung</strong></td><td>Start battle with full Limit Break gauge; gauge regenerates after use</td><td>Defeat Vs. Top Secrets in Shinra Combat Simulator (Cloud)</td><td>Game-changing; the most powerful accessory in the game</td></tr>
+    <tr><td><strong>Ribbon</strong></td><td>Immunity to all status ailments</td><td>Shinra Combat Simulator (Hard Mode challenges)</td><td>High; status ailments can be instantly fight-ruining; Ribbon eliminates all of them</td></tr>
+    <tr><td><strong>Supernatural Wristguards</strong></td><td>Increases Luck stat; improves steal and critical rates</td><td>Chapter side quests</td><td>Medium; valuable for Tifa to improve critical hit frequency</td></tr>
+    <tr><td><strong>Circlet</strong></td><td>Significant Magic Attack increase</td><td>Found and purchased in later chapters</td><td>High on Aerith; maximises healing and damage spell output</td></tr>
+    <tr><td><strong>Champion Belt</strong></td><td>Increases HP and Attack; physical build bonus</td><td>Wall Market combat challenges</td><td>High on Cloud and Tifa for frontline survivability and damage</td></tr>
+  </tbody>
+</table>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S21 -->
+<section class="section" id="s21">
+<h2 class="section-title"><span class="sec-num">&sect;21</span> Yuffie &amp; Sonon</h2>
+<div class="lore-block">
+  <p>Yuffie Kisaragi is seventeen years old and she has been a spy since before she understood the word with any precision. She is infiltrating Midgar on a mission of national importance for the people of Wutai. She is also delighted to be here. Both of these things are completely, consistently true at the same time. The materia she is here to steal belongs to Shinra, which means it doesn&apos;t really belong to anyone at all. She finds this moral logic entirely satisfying. Sonon Kusakabe has been asked to keep her alive. He is already beginning to revise his assumptions about what that will require.</p>
+  <span class="source">// AVALANCHE SECURE CHANNEL &middot; EPISODE INTERMISSION &middot; MISSION BRIEF &middot; YUFFIE KISARAGI &middot; [ENCRYPTED] //</span>
+</div>
+
+<p>Episode INTERmission introduces Yuffie Kisaragi and Sonon Kusakabe as playable characters in a two-chapter story running parallel to the main game. Yuffie&apos;s combat system is built around her throwing shuriken rather than a traditional melee weapon, and around managing her elemental Ninjutsu attacks. Sonon is her partner &mdash; a character she cannot directly control but whose actions she can direct through the Synergy system.</p>
+
+<h2 class="sub-title">Yuffie&apos;s Core Mechanics</h2>
+<ul class="guide-list">
+  <li><strong>Thrown Shuriken (normal attack):</strong> Yuffie throws her 4-Point Shuriken at enemies. When the shuriken is airborne, her normal attack becomes a rapid series of hand-to-hand strikes. This creates a dual-mode combat rhythm unlike any main game character.</li>
+  <li><strong>Windstorm (Triangle):</strong> A rushing wind-element attack that delivers rapid hits. Primary gap closer and Stagger builder. Charged Windstorm deals more hits and more Stagger damage.</li>
+  <li><strong>Ninjutsu (L1 + Ability):</strong> Yuffie&apos;s signature mechanic. She can set a Ninjutsu element (Fire, Ice, Thunder, or Wind) and her Ninjutsu attacks, including Windstorm, deal that element&apos;s damage. Switching elements mid-battle based on enemy weaknesses is central to advanced Yuffie play.</li>
+  <li><strong>Art of War (Ability):</strong> A powerful physical strike with additional ATB charging. The core ATB-building Ability during non-Synergy phases.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S22 -->
+<section class="section" id="s22">
+<h2 class="section-title"><span class="sec-num">&sect;22</span> Synergy Mechanic</h2>
+<p>The <strong>Synergy</strong> mechanic is INTERmission&apos;s defining combat innovation. When Yuffie activates Synergy mode (by spending ATB with Sonon in her party), she and Sonon perform coordinated attacks simultaneously. While Synergy is active:</p>
+<ul class="guide-list">
+  <li>Yuffie and Sonon perform matching attacks in parallel, effectively doubling damage output</li>
+  <li>Both Synergized Windstorm and Synergized Art of War deal substantially more damage than their solo equivalents</li>
+  <li>Sonon contributes his own Stagger damage and elemental follow-up without requiring direct player control</li>
+  <li>ATB refill speed is reduced while Synergy is active &mdash; the damage trade-off for slower resource generation</li>
+</ul>
+
+<h2 class="sub-title">Synergized Abilities</h2>
+<div class="unit-grid">
+  <div class="unit-card yuffie-card">
+    <div class="unit-name">Synergized Windstorm</div>
+    <span class="unit-type">PAIRED ATTACK &middot; HIGH STAGGER &middot; AREA</span>
+    <p>Yuffie&apos;s Windstorm performed simultaneously with Sonon&apos;s matching attack. Significantly more hits and Stagger damage than solo Windstorm. The primary Stagger engine in INTERmission, especially effective after the Ninjutsu element has been matched to a target weakness for maximum Pressure acceleration.</p>
+  </div>
+  <div class="unit-card yuffie-card">
+    <div class="unit-name">Synergized Art of War</div>
+    <span class="unit-type">PAIRED ATTACK &middot; HIGH DAMAGE &middot; SINGLE TARGET</span>
+    <p>Yuffie and Sonon&apos;s combined heavy strike. Deals heavy single-target damage against Staggered enemies. The Synergy Limit Break &mdash; available when both characters have full Limit gauges &mdash; executes Synergized Art of War at devastating potency.</p>
+  </div>
+</div>
+
+<div class="callout life">
+  <div class="callout-title">Sonon Cannot Be Controlled, But Can Be Protected</div>
+  <p>Sonon is not a directly playable character &mdash; he operates autonomously, following Yuffie&apos;s commands through the Synergy system. He cannot be controlled to dodge or guard. This creates a tactical consideration: Sonon will take damage from attacks that he walks into, and if he goes down, Yuffie loses her Synergy partner. Equip him with Provoke Materia to redirect enemy attention toward him (his higher HP pool can absorb it), but also equip the Firebird Armlet (provides automatic resurrection once per battle) to mitigate the worst-case Sonon death scenario in difficult fights.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S23 -->
+<section class="section" id="s23">
+<h2 class="section-title"><span class="sec-num">&sect;23</span> Fort Condor</h2>
+<p>Fort Condor is INTERmission&apos;s exclusive minigame &mdash; a collectible board game played against various NPC opponents in the Sector 7 Slums. It is also one of the primary sources of <strong>Manuscripts</strong> (weapon SP upgrade books) for Yuffie and Sonon in INTERmission, making it mechanically significant beyond entertainment value.</p>
+
+<h2 class="sub-title">Fort Condor Rules</h2>
+<p>Fort Condor is a real-time unit placement game played on a hexagonal grid. Each player has a Headquarters and the goal is either destroying the opponent&apos;s Headquarters or having more units adjacent to it when time expires. Unit placement costs ATB (a Fort Condor-specific resource that regenerates over time). The unit type triangle determines matchups:</p>
+<ul class="guide-list">
+  <li><strong>Ranged units</strong> beat Defense units</li>
+  <li><strong>Defense units</strong> beat Vanguard units</li>
+  <li><strong>Vanguard units</strong> beat Ranged units</li>
+</ul>
+
+<h2 class="sub-title">The Grandmaster Board</h2>
+<p>The Grandmaster Board is the best Fort Condor board in the game, providing excellent range, strong units, and competitive speed. Acquire it early by purchasing from the Fort Condor board vendor in the Sector 7 Slums. Use it for all subsequent matches. For unit placement strategy:</p>
+<ul class="guide-list">
+  <li><strong>Identify the opponent&apos;s primary unit type</strong> and place your counter type in response.</li>
+  <li><strong>Guard Dog</strong> (Defense type) as a mainstay provides an anchor that protects Vanguard placements from direct Ranged harassment.</li>
+  <li><strong>Focus on destroying the Headquarters</strong> rather than winning a war of attrition &mdash; overwhelming a direct path to their HQ is faster than maintaining full board control.</li>
+  <li>The Hard Mode Chadley match (the most difficult Fort Condor opponent) requires carefully adapting unit placement to his counter strategy in real time.</li>
+</ul>
+
+<div class="callout sector">
+  <div class="callout-title">Fort Condor Manuscripts Are Essential</div>
+  <p>Winning Fort Condor matches (particularly on Hard Mode) provides Manuscripts for Yuffie and Sonon that are the only way to access Weapon Level 6 &mdash; the final weapon upgrade tier. Weapon Level 6 unlocks the Reprieve ability on their weapons, which prevents death from lethal damage once per battle (leaving HP at 1 instead of 0). Reprieve is essentially mandatory for the Pride and Joy Mk. 0.5 superboss fight. Win all Fort Condor matches; collect all Manuscripts.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S24 -->
+<section class="section" id="s24">
+<h2 class="section-title"><span class="sec-num">&sect;24</span> Party &amp; Role Management</h2>
+<p>The game provides three-person parties with active party member switching. Managing which character you are controlling at any given moment &mdash; and which of the non-active characters you are commanding through the ATB menu &mdash; is the core skill of high-level Remake play. The most efficient parties are those where every character has a clearly defined role, a role that does not duplicate another character&apos;s contribution unnecessarily.</p>
+
+<h2 class="sub-title">The Role Matrix</h2>
+<div class="phase early">
+  <div class="phase-title">The Standard Party Configuration</div>
+  <p><strong>Cloud:</strong> Frontline physical attacker and versatile ATB generator. Your primary controlled character for most combat. Punisher Mode counter provides passive Stagger contribution. Carries elemental coverage via Elemental+Magic paired Materia and emergency healing access.<br><br>
+  <strong>Tifa:</strong> Stagger burst specialist. Primarily managed through brief control switches to use Unbridled Strength charges and True Strike at the moment of Stagger. When not Staggering enemies, generates ATB rapidly for party-wide spending.<br><br>
+  <strong>Aerith:</strong> Magical support and healing. Largely managed through non-control ATB queuing from Cloud&apos;s perspective. Issue Cure commands from Cloud, switch briefly to position her in an Arcane Ward during sustained magical phases, then return to Cloud. Her MP is the party&apos;s most precious resource; spend it with deliberate intent.</p>
+</div>
+
+<h2 class="sub-title">Switching Characters in Battle</h2>
+<p>Pressing the D-pad switches active party member. Switching is instant; there is no delay or penalty. Use switches for:</p>
+<ul class="guide-list">
+  <li>Positioning a character in Aerith&apos;s Arcane Ward before a high-value spell cast</li>
+  <li>Taking direct control of Tifa to execute True Strike at the exact moment of Stagger</li>
+  <li>Moving a character out of danger using their dodge when the AI&apos;s pathfinding is placing them in an attack&apos;s path</li>
+  <li>Generating ATB faster on a character who needs to cast but has a low gauge (switch to Tifa, use a few normal attacks, switch back)</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S25 -->
+<section class="section" id="s25">
+<h2 class="section-title"><span class="sec-num">&sect;25</span> Hard Mode</h2>
+<div class="lore-block">
+  <p>The second time through Midgar is different. The city is the same. The enemies are the same, in location if not in power. The party is the same. What is different is that the mercenary has now seen the ending once and knows what it cost. The second time through the same set of choices, knowing more about the weight of those choices, is a different kind of challenge than the first. The Shinra are stronger. The resources are tighter. The cost of mistakes has increased. This is, in the circumstances, appropriate.</p>
+  <span class="source">// AVALANCHE SECURE CHANNEL &middot; SECOND OPERATION ASSESSMENT &middot; CLOUD STRIFE //</span>
+</div>
+
+<p>Hard Mode is unlocked after completing the first playthrough. It represents a substantial step up in both enemy difficulty and resource management constraints. Understanding its specific rules is essential for approaching it effectively.</p>
+
+<h2 class="sub-title">Hard Mode Rules</h2>
+<ul class="guide-list">
+  <li><strong>No Items in battle:</strong> Phoenix Downs, Potions, Ethers, and all consumable items cannot be used during battles. The party must sustain entirely through spells, abilities, and Limit Breaks.</li>
+  <li><strong>MP only restores at benches:</strong> The benches (rest points) in the game restore both HP and MP when used. No in-battle MP restoration means every spell cast must be considered against the total MP budget between benches.</li>
+  <li><strong>Enemies are significantly stronger:</strong> Higher HP, higher damage output, faster attack patterns. Several enemies have modified attack patterns and abilities not present in Normal Mode.</li>
+  <li><strong>Enemy repositioning:</strong> Some enemies appear in different locations or in different groupings than in Normal Mode.</li>
+  <li><strong>Manuscripts available exclusively on Hard Mode:</strong> Certain Manuscripts (especially late-game weapon SP books) are only obtainable in Hard Mode, incentivising Hard Mode completion for players who want fully upgraded weapons.</li>
+</ul>
+
+<h2 class="sub-title">Hard Mode Priority Materia Setup</h2>
+<div class="phase late">
+  <div class="phase-title">Cloud Hard Mode Priority</div>
+  <p>Elemental + Fire (weapon) for free elemental damage on every attack. First Strike for immediate ATB at battle start. Chakra for self-healing without touching MP. Parry + Deadly Dodge for sustained damage and dodge-cancel loops. HP Up for survivability. Any remaining slots: ATB Stagger, Steadfast Block (reduces guarded damage).</p>
+</div>
+<div class="phase late">
+  <div class="phase-title">Aerith Hard Mode Priority</div>
+  <p>Magnify + Healing as the non-negotiable foundation. MP Up (maximum level) to extend her spell budget as far as possible. MP Absorption + Thunder for MP sustainability against mechanical enemies. Prayer (Command) as primary free-MP healing. Revive for emergency resurrection. Magic Up for spell effectiveness. Barrier for boss phases where physical or magical damage reduction is essential.</p>
+</div>
+<div class="phase late">
+  <div class="phase-title">Tifa Hard Mode Priority</div>
+  <p>ATB Stagger for True Strike funding at Stagger onset. HP Up for frontline survivability. Chakra for self-healing. Parry for counter-attack loops. Steal if unique items are targeted. Remaining slots: elemental Magic for exploitable weaknesses when physical attacks are insufficient.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S26 -->
+<section class="section" id="s26">
+<h2 class="section-title"><span class="sec-num">&sect;26</span> Boss Strategies</h2>
+<div class="lore-block">
+  <p>Every Shinra weapon, every SOLDIER experiment, every mechanical guardian deployed against AVALANCHE represents a resource decision made by an accountant who believes the cost of building it was justified by the threat being contained. They are not wrong, in purely practical terms. They are also not complete in their assessment of what happens when the thing they deployed against a threat meets an opponent who has more motivation than budget planning can adequately model.</p>
+  <span class="source">// AVALANCHE SECURE CHANNEL &middot; ENEMY ASSESSMENT REPORT &middot; [AUTHOR: CLOUD STRIFE] //</span>
+</div>
+
+<p>Every boss in Final Fantasy VII Remake has a specific Pressure/Stagger sequence and one or more elemental vulnerabilities. The following covers the game&apos;s major boss encounters with the key tactical information.</p>
+
+<h2 class="sub-title">Boss Strategies by Chapter</h2>
+<div class="phase early">
+  <div class="phase-title">Guard Scorpion &mdash; Chapter 1 (Mako Reactor 1)</div>
+  <p>The tutorial boss. Its raised tail state reflects magic attacks as partial damage to the party; do not cast spells when the tail is raised (the Assess tooltip specifically warns against this). During normal phases, Thunder-element attacks (from Assess and weapon-equipped Elemental) deal bonus damage. Focus physical attacks on its central body and avoid casting during the tail-raised animation. Cloud&apos;s Punisher Mode counter is introduced here; practice the timing against its slower attack strings.</p>
+</div>
+<div class="phase mid">
+  <div class="phase-title">Airbuster &mdash; Chapter 7 (Mako Reactor 5)</div>
+  <p>A large mechanical boss split across two halves of a bridge. Both front (Cloud) and back (Barret) can be attacked simultaneously by positioning the party on opposite sides. Thunder is its primary weakness. The party can pre-disable some of its components during dungeon traversal by finding keystones beforehand &mdash; removing its finger guns reduces damage output significantly. Use Barret&apos;s ranged attacks from behind to consistently exploit its back weak point.</p>
+</div>
+<div class="phase mid">
+  <div class="phase-title">Reno &amp; Rude (Turks) &mdash; Multiple Encounters</div>
+  <p>The Turks are recurring boss encounters rather than single fights. Both are Pressured by specific approach conditions (Reno by staggering through his attacks; Rude by targeting specific body parts revealed by Assess). They are human enemies, meaning they resist extreme elemental damage but are vulnerable to Stagger. Cloud&apos;s Punisher Mode counter is exceptionally effective against Reno&apos;s frequent light attack strings. Rude&apos;s barrier ability requires breaking it with a correctly-elemented attack before normal damage applies efficiently.</p>
+</div>
+<div class="phase late">
+  <div class="phase-title">Jenova Dreamweaver &mdash; Chapter 17</div>
+  <p>A magical boss using primarily aerial attacks and tentacle slams. Wind-element attacks (Aero Materia) are effective against its flying phases. When it launches into the air, switch to Barret for reliable ranged damage. The tentacle slams have a clear wind-up that can be Punisher Mode countered for Stagger contribution; do not try to dodge through &mdash; the hitbox extends further than the animation suggests. Its final phase has a substantial damage output increase; deploy Barrier or Planet&apos;s Protection before it transitions.</p>
+</div>
+<div class="phase late">
+  <div class="phase-title">Whisper Harbinger &mdash; Chapter 18 (Final Boss Sequence)</div>
+  <p>A multi-phase final boss encounter. Each phase has a specific Pressure condition revealed by Assess. The sub-bosses (Whisper Rubrum, Bahamut, etc.) each require the elemental or mechanical response appropriate to their type. Keep Aerith&apos;s MP reserved specifically for this sequence &mdash; deploy Magnify+Barrier before each phase transition to maintain party-wide damage reduction. Deploy Götterdämmerung on Cloud to ensure Limit Breaks are available throughout the fight.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S27 -->
+<section class="section" id="s27">
+<h2 class="section-title"><span class="sec-num">&sect;27</span> Shinra Combat Simulator</h2>
+<p>The Shinra Combat Simulator is the game&apos;s optional challenge arena, available at Shinra Headquarters during Chapter 16. It provides increasingly difficult combat challenges against waves of enemies and bosses, with the rewards escalating to some of the game&apos;s most powerful items. Completing the Simulator is the primary path to Götterdämmerung and the Ribbon.</p>
+
+<h2 class="sub-title">Challenge Structure</h2>
+<p>The Simulator is accessed from a specific terminal in Shinra HQ Chapter 16. Challenges unlock progressively as you complete lower tiers. Each challenge specifies the party composition allowed (sometimes restricting you to specific characters or party sizes) and the enemy wave sequence.</p>
+
+<h2 class="sub-title">The Top Secrets Challenge</h2>
+<p>The hardest challenge in the main game. Requires defeating the Pride and Joy Prototype. This fight:</p>
+<ul class="guide-list">
+  <li>Is unlocked after completing all other Simulator challenges</li>
+  <li>Features the Pride and Joy Prototype, which has multiple attack phases and extremely high HP</li>
+  <li>Rewards two Götterdämmerung accessories upon completion</li>
+  <li>Requires maximum weapon levels, optimally configured Materia, and proficiency with all combat systems simultaneously</li>
+</ul>
+
+<h2 class="sub-title">INTERmission Combat Simulator &mdash; Pride and Joy Mk. 0.5</h2>
+<p>The INTERmission equivalent challenge, fought with Yuffie and Sonon instead of the main game party. Requires:</p>
+<ul class="guide-list">
+  <li>Level 50 (maximum character level)</li>
+  <li>Weapon Level 6 on both Yuffie&apos;s Boomerang and Sonon&apos;s Martialist&apos;s Staff</li>
+  <li>Reprieve ability unlocked on weapons (prevents one instance of lethal damage per battle)</li>
+  <li>Ribbon accessory on Yuffie (from earlier Simulator challenges) for status immunity</li>
+  <li>Firebird Armlet on Sonon for automatic resurrection</li>
+  <li>Kindred Cord on Sonon for Synergy efficiency</li>
+</ul>
+<p>Rewards upon completion: two additional Götterdämmerung accessories for Yuffie and Sonon. The total potential Götterdämmerung count across both games is five: three from the main game Simulator and two from INTERmission.</p>
+
+<div class="callout life">
+  <div class="callout-title">Hard Mode Exclusive Simulator Challenges</div>
+  <p>Both the main game and INTERmission unlock Hard Mode exclusive Combat Simulator challenges. These provide unique Manuscripts and demonstrate the game&apos;s highest-end combat design against enemies tuned for fully developed party configurations. They are the ultimate test of mastery of every system covered in this guide simultaneously. Complete the story and standard Simulator challenges first; return to Hard Mode exclusives when every system is fully developed and the underlying combat architecture feels natural.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S28 -->
+<section class="section" id="s28">
+<h2 class="section-title"><span class="sec-num">&sect;28</span> Glossary</h2>
+<div class="gloss-grid">
+  <div class="gloss-item"><div class="gloss-term">AP (Ability Points)</div><div class="gloss-def">Experience points for Materia; accumulated through battle; causes Materia to level up, unlocking higher spell tiers and stronger passive bonuses.</div></div>
+  <div class="gloss-item"><div class="gloss-term">AP Up</div><div class="gloss-def">Purple Independent Materia; doubles AP gain for any Materia slotted in the same linked pair; the fastest way to accelerate Materia levelling.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Arcane Ward</div><div class="gloss-def">Aerith&apos;s Triangle ability; places a magical circle on the ground; any character standing inside casts linked spells twice for the cost of one.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Art of War</div><div class="gloss-def">Yuffie&apos;s core ATB-generating ability; powerful physical strike that charges her ATB significantly; becomes Synergized Art of War when used in Synergy mode.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Assess</div><div class="gloss-def">Yellow Command Materia; reveals enemy HP, elemental weaknesses, Pressure conditions, Stagger triggers, and drop items; mandatory first-run investment.</div></div>
+  <div class="gloss-item"><div class="gloss-term">ATB (Active Time Battle)</div><div class="gloss-def">The resource gauge (two segments per character) filled through attacking, taking damage, and guarding; spent on Abilities, Spells, Items, and Summon commands.</div></div>
+  <div class="gloss-item"><div class="gloss-term">ATB Stagger</div><div class="gloss-def">Purple Independent Materia; grants an ATB charge when an enemy is Staggered; essential for funding True Strike at Stagger onset on Tifa.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Barrier</div><div class="gloss-def">Green Magic Materia providing Barrier (physical reduction), Manawall (magic reduction), and Wall (both) buffs; essential for boss phases with extreme damage output.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Barret Wallace</div><div class="gloss-def">AVALANCHE leader; ranged fire support and party tank; highest HP pool; Lifesaver passive absorbs party damage; Focused Shot spends all ATB for massive ranged damage.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Braver</div><div class="gloss-def">Cloud&apos;s first Limit Break; a devastating single-target overhead slash; highest value against Staggered enemies; effectively available every battle with Götterdämmerung equipped.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Buster Sword</div><div class="gloss-def">Cloud&apos;s iconic starting weapon; versatile stat spread; upgrades to remain competitive; the sentimental and mechanical foundation of Cloud&apos;s combat identity.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Chadley</div><div class="gloss-def">Shinra research intern; provides Battle Intel assignments; rewards Summon Materia upon task completion; found in various Slum and Wall Market locations.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Chakra</div><div class="gloss-def">Yellow Command Materia; restores the user&apos;s HP proportional to Max HP with ATB but no MP cost; the primary Hard Mode self-healing tool for Cloud and Tifa.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Chain Bangle</div><div class="gloss-def">Best mid-game armor piece; six Materia slots with multiple linked pairs; only one exists in the game &mdash; assign to Aerith for maximum Support Materia value.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Classic Mode</div><div class="gloss-def">A difficulty/control mode where AI handles normal attacks for ATB building while the player manages ATB spending; designed for veterans of the original turn-based Final Fantasy VII.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Deadly Dodge</div><div class="gloss-def">Purple Independent Materia; deals AoE damage to enemies in the dodge path; combine with Parry Materia for sustained dodge-cancel damage loops on Cloud and Tifa.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Elemental</div><div class="gloss-def">Blue Support Materia; when paired with elemental Magic in a weapon, infuses normal physical attacks with that element; when paired in armor, provides elemental resistance.</div></div>
+  <div class="gloss-item"><div class="gloss-term">First Strike</div><div class="gloss-def">Purple Independent Materia; grants partial ATB at battle start; enables immediate ability use before the enemy takes any action; excellent on Cloud for opening burst.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Focused Shot</div><div class="gloss-def">Barret&apos;s Ability; spends all available ATB in a single massive ranged blast; at two full ATB bars against a Staggered enemy, one of the highest damage outputs in the game.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Focused Thrust</div><div class="gloss-def">Cloud&apos;s Ability; a thrusting stab specifically designed to fill the Stagger bar significantly faster than normal attacks; ideal for accelerating Stagger on tough enemies.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Fort Condor</div><div class="gloss-def">INTERmission&apos;s exclusive board strategy minigame; primary Manuscript source for Yuffie and Sonon; uses a unit type triangle (Ranged beats Defense, Defense beats Vanguard, Vanguard beats Ranged).</div></div>
+  <div class="gloss-item"><div class="gloss-term">Götterdämmerung</div><div class="gloss-def">The game&apos;s most powerful accessory; starts every battle with a full Limit Break gauge that regenerates after use; obtained from Top Secrets in the Combat Simulator (main game) and Pride and Joy Mk. 0.5 (INTERmission).</div></div>
+  <div class="gloss-item"><div class="gloss-term">Healing Wind</div><div class="gloss-def">Aerith&apos;s second Limit Break; heals the entire party for substantial HP at no MP cost; exceptional in Hard Mode as a primary party-wide healing source that preserves spell MP.</div></div>
+  <div class="gloss-item"><div class="gloss-term">HP Absorption</div><div class="gloss-def">Blue Support Materia; restores HP proportional to damage dealt by the linked Materia; creates self-sustaining combat loops when paired with frequently used offensive spells.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Limit Break</div><div class="gloss-def">A devastating character-specific ability triggered when the yellow Limit gauge fills (by taking damage); each character has at least two Limit Breaks with different tactical applications.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Lifestream</div><div class="gloss-def">The Planet&apos;s own circulatory system; a luminous green energy current that flows through all living things; crystallised into Materia; extracted by Shinra as Mako energy.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Magnify</div><div class="gloss-def">The most powerful Blue Support Materia; converts any single-target spell in its linked slot into a party-wide or enemy-wide area effect at reduced per-target potency; pairs with Healing for full-party Cure on one cast.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Mako</div><div class="gloss-def">The refined form of Lifestream energy used by Shinra to power Midgar&apos;s infrastructure; the extraction of Mako is slowly killing the Planet; the act that AVALANCHE exists to stop.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Manuscript</div><div class="gloss-def">A weapon skill book that provides a large SP bonus; used to accelerate weapon upgrade trees; several are Hard Mode exclusive or Fort Condor Manuscript rewards; essential for Weapon Level 6.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Materia</div><div class="gloss-def">Crystallised Lifestream; slotted into weapon and armor slots to grant characters magical abilities, passive bonuses, and command options; the foundation of all customisation in Final Fantasy VII Remake.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Midgar</div><div class="gloss-def">The game&apos;s primary setting; a vast industrial city powered by eight Mako Reactors; divided between an elevated plate (wealthy) and slums beneath (everyone else); the entire scope of Remake is contained within it.</div></div>
+  <div class="gloss-item"><div class="gloss-term">MP Absorption</div><div class="gloss-def">Blue Support Materia; restores MP proportional to damage dealt by the linked Materia; partial MP sustainability in Hard Mode when paired with the most frequently used offensive spell.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Ninjutsu</div><div class="gloss-def">Yuffie&apos;s signature elemental attack system; sets an active element (Fire/Ice/Thunder/Wind) that infuses her Windstorm and other abilities; switch element mid-battle to match enemy weaknesses.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Operator Mode</div><div class="gloss-def">Cloud&apos;s default combat stance; normal movement speed; standard dodge; faster ATB generation; used for mobility, gap closing, and general attack sequences.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Parry</div><div class="gloss-def">Purple Independent Materia; converts Cloud&apos;s dodge roll into a counter-attack; pairs with Deadly Dodge for sustained damage loops during dodge animations.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Planet&apos;s Protection</div><div class="gloss-def">Aerith&apos;s first Limit Break; creates a single-damage-absorbing barrier around each party member; the most situationally game-saving Limit Break in the game when deployed before lethal hits.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Prayer</div><div class="gloss-def">Yellow Command Materia; heals the entire party for ATB cost with no MP expenditure; the primary Hard Mode party healing tool replacing Magnify+Cure for MP-conservation builds.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Pressure</div><div class="gloss-def">Interrupting an enemy&apos;s actions and accelerating Stagger fill rate; triggered by exploiting elemental weaknesses, specific ability conditions, or attacking from advantageous angles revealed by Assess.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Punisher Mode</div><div class="gloss-def">Cloud&apos;s power stance; slower movement; no standard dodge; approximately 10% attack damage increase; automatic counterattack when Cloud blocks in this mode &mdash; the most powerful defensive-offensive mechanic in the main game.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Reprieve</div><div class="gloss-def">A weapon passive ability available at Weapon Level 6 (unlocked via Manuscripts); prevents death from a lethal hit once per battle, leaving HP at 1 instead of 0; mandatory for the Pride and Joy Mk. 0.5 fight.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Ribbon</div><div class="gloss-def">Accessory providing complete immunity to all status ailments; obtained from the Shinra Combat Simulator; equip on the character most frequently targeted by status-applying attacks.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Revive</div><div class="gloss-def">Green Magic Materia providing Raise (resurrect KO&apos;d party member) and Arise (resurrect with more HP); mandatory on Hard Mode where Phoenix Down items cannot be used in battle.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Shinra Combat Simulator</div><div class="gloss-def">The optional challenge arena accessible in Chapter 16 at Shinra HQ; provides escalating difficulty challenges; rewards include Götterdämmerung and Ribbon; Hard Mode exclusive challenges available after story completion.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Sonon Kusakabe</div><div class="gloss-def">Yuffie&apos;s AI partner in INTERmission; cannot be directly controlled; managed through the Synergy system; equip with Provoke and Firebird Armlet for maximum utility and survival.</div></div>
+  <div class="gloss-item"><div class="gloss-term">SP (Skill Points)</div><div class="gloss-def">Weapon upgrade currency earned through battle; spent in each weapon&apos;s upgrade tree to improve stats, unlock passive bonuses, and add Materia slots; supplemented by Manuscripts for large bonuses.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Stagger</div><div class="gloss-def">The state triggered when an enemy&apos;s Stagger bar reaches 100%; immobilises the enemy briefly; all damage during Stagger is multiplied; the primary window for high-damage ability expenditure.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Stagger Bar</div><div class="gloss-def">Displayed below enemy health; fills through attacks, Pressure, and specific abilities; drains passively over time; when full, triggers Stagger; the combat system&apos;s primary progress indicator.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Summon</div><div class="gloss-def">Red Materia providing access to powerful entities called into extended battles; commanded via ATB spending during their presence; execute a powerful final attack when the Summon timer expires.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Synergy</div><div class="gloss-def">INTERmission&apos;s cooperative combat mechanic; activating Synergy mode allows Yuffie and Sonon to perform coordinated paired attacks simultaneously for significantly increased damage output.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Tactical Mode</div><div class="gloss-def">Activated by holding L2; dramatically slows time while preserving combat; allows ATB menu navigation, spell tier selection, party command queuing, and strategic decision-making in real-time combat.</div></div>
+  <div class="gloss-item"><div class="gloss-term">True Strike</div><div class="gloss-def">Tifa&apos;s most important Ability; significantly increases the Stagger damage multiplier when used on a Staggered enemy; must be the first action taken on a freshly Staggered target before other attacks.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Unbridled Strength</div><div class="gloss-def">Tifa&apos;s Triangle ability; charges her physical combo tier to the next level (Whirlwind → Rise and Fall → Dolphin Flurry); each charge level also increases the Stagger damage multiplier when attacking Staggered enemies.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Whispers</div><div class="gloss-def">Black-robed entities that appear throughout the game at narrative junctions; seem to enforce specific story outcomes; their nature and the game&apos;s ultimate decision about them constitute Remake&apos;s most significant departure from the original.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Windstorm</div><div class="gloss-def">Yuffie&apos;s Triangle ability; a rushing wind-element attack delivering rapid hits for Stagger buildup; becomes Synergized Windstorm during Synergy mode with significantly more hits and Stagger damage.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Yuffie Kisaragi</div><div class="gloss-def">INTERmission protagonist; Wutai ninja infiltrating Midgar on a Materia-theft mission; uses a thrown shuriken as her normal attack with hand-to-hand in shuriken-flight; elemental Ninjutsu system for elemental damage matching.</div></div>
+</div>
+</section>
+
+</div><!-- /content -->
+<footer id="footer">
+  Final Fantasy VII Remake Intergrade &nbsp;&middot;&nbsp; Square Enix &nbsp;&middot;&nbsp; Nadir Strategy Archive &nbsp;&middot;&nbsp; Midgar &mdash; The Planet Is Alive. The Job Is Not Done.
+</footer>
+</div><!-- /main -->
+<a id="back-top" href="#hero" title="Back to top">&#8593;</a>
+<script>
+const bar=document.getElementById('progress-bar');
+const bt=document.getElementById('back-top');
+const tog=document.getElementById('sidebar-toggle');
+const sb=document.getElementById('sidebar');
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;
+  bar.style.transform='scaleX('+(s/t)+')';
+  bt.classList.toggle('visible',s>400);
+},{passive:true});
+const secs=document.querySelectorAll('.section[id]');
+const navs=document.querySelectorAll('.nav-item');
+const obs=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){navs.forEach(n=>n.classList.remove('active'));const a=document.querySelector('.nav-item[href="#'+e.target.id+'"]');if(a){a.classList.add('active');a.scrollIntoView({block:'nearest'});}}});
+},{rootMargin:'-20% 0px -70% 0px'});
+secs.forEach(s=>obs.observe(s));
+tog.addEventListener('click',()=>sb.classList.toggle('open'));
+document.querySelectorAll('.nav-item').forEach(i=>i.addEventListener('click',()=>sb.classList.remove('open')));
+document.querySelectorAll('.section').forEach((s,i)=>{s.style.animationDelay=i*0.03+'s';});
+</script>
+</body>
+</html>

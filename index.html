@@ -3,251 +3,364 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Strategy Guide Library</title>
-<meta name="description" content="Comprehensive community strategy guides for historical wargames and grand strategy titles. Covering both sides, all scenarios, and all systems.">
+<title>Nadir &mdash; Strategy Guide Library</title>
+<meta name="description" content="Nadir: Comprehensive strategy guides for historical wargames, grand strategy, action RPGs, and more. In-depth coverage, both sides, all systems.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --ink:         #1a1410;
-  --parchment:   #f5efe4;
-  --gold:        #c9943a;
-  --gold-dark:   #8b6420;
-  --gold-pale:   #f0d9a8;
-  --mid:         #4a3f32;
-  --light:       #f9f4ec;
-  --navy:        #1b2f4a;
-  --border:      rgba(201,148,58,0.3);
-  --shadow:      rgba(26,20,16,0.14);
-  --font-head:   'Cinzel', 'Times New Roman', serif;
-  --font-body:   'Crimson Pro', 'Georgia', serif;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1410;--parchment:#f5efe4;--gold:#c9943a;--gold-dark:#8b6420;--gold-pale:#f0d9a8;
+  --mid:#4a3f32;--light:#f9f4ec;--navy:#0f1e30;--border:rgba(201,148,58,0.28);
+  --shadow:rgba(26,20,16,0.13);--font-head:'Cinzel','Times New Roman',serif;
+  --font-body:'Crimson Pro','Georgia',serif;
+  /* Genre accent colours */
+  --g-strategy:#8b3a1a;   /* deep terracotta */
+  --g-4x:#1a3d6b;         /* navy */
+  --g-action:#1a5c3a;     /* forest */
+  --g-rpg:#4a1870;        /* purple */
+  --g-simulation:#1a5060; /* dark teal */
+  --g-survival:#6b3d0a;   /* ember */
+  --g-adventure:#2a5c1a;  /* pine */
+  /* Era accent colours */
+  --e-pre:#7a3c1a;--e-ww2:#1b3d5a;--e-scifi:#0d1a30;
 }
+html{scroll-behavior:smooth;font-size:17px}
+body{background:var(--parchment);color:var(--ink);font-family:var(--font-body);line-height:1.75;min-height:100vh;overflow-x:hidden}
 
-html { scroll-behavior: smooth; font-size: 17px; }
-body { background: var(--parchment); color: var(--ink); font-family: var(--font-body); line-height: 1.75; min-height: 100vh; }
-body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 999; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); opacity: 0.5; }
+/* noise overlay */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.038'/%3E%3C/svg%3E");opacity:0.5}
+
+/* ─── SCROLL PROGRESS ─── */
+#scroll-bar{position:fixed;top:0;left:0;right:0;height:2px;background:var(--gold);transform-origin:left;transform:scaleX(0);z-index:1000;transition:transform .08s linear}
 
 /* ─── HERO ─── */
-.site-hero { background: linear-gradient(160deg, #0f1e30 0%, #1b2f4a 50%, #2a1a0a 100%); padding: 80px 64px 70px; position: relative; overflow: hidden; border-bottom: 3px solid var(--gold-dark); }
-.site-hero::before { content: ''; position: absolute; inset: 0; background-image: repeating-linear-gradient(-55deg, transparent, transparent 40px, rgba(201,148,58,0.04) 40px, rgba(201,148,58,0.04) 41px); }
-.site-hero::after { content: ''; position: absolute; bottom: 0; left: 64px; right: 64px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
-.hero-inner { max-width: 900px; margin: 0 auto; position: relative; text-align: center; }
-.hero-eyebrow { font-family: var(--font-head); font-size: 0.68rem; letter-spacing: 0.28em; color: var(--gold-dark); text-transform: uppercase; margin-bottom: 18px; }
-.hero-title { font-family: var(--font-head); font-size: clamp(1.8rem, 4.5vw, 3rem); font-weight: 900; color: var(--parchment); letter-spacing: 0.04em; text-transform: uppercase; line-height: 1.1; margin-bottom: 16px; }
-.hero-rule { width: 80px; height: 2px; background: var(--gold); margin: 0 auto 20px; opacity: 0.6; }
-.hero-desc { font-family: var(--font-body); font-size: 1rem; font-style: italic; color: rgba(240,217,168,0.7); font-weight: 300; max-width: 560px; margin: 0 auto; line-height: 1.7; }
-.hero-stats { display: flex; justify-content: center; gap: 32px; margin-top: 28px; flex-wrap: wrap; }
-.hero-stat { text-align: center; }
-.hero-stat-num { font-family: var(--font-head); font-size: 1.6rem; font-weight: 900; color: var(--gold); display: block; line-height: 1; }
-.hero-stat-label { font-family: var(--font-head); font-size: 0.58rem; letter-spacing: 0.18em; color: rgba(240,217,168,0.5); text-transform: uppercase; display: block; margin-top: 4px; }
+.site-hero{
+  background:linear-gradient(168deg,#06101c 0%,#0f1e30 30%,#1a2a14 60%,#2a1a06 85%,#0a0c12 100%);
+  padding:96px 64px 80px;position:relative;overflow:hidden;border-bottom:2px solid var(--gold-dark);
+}
+/* animated diagonal rule lines */
+.site-hero::before{
+  content:'';position:absolute;inset:0;
+  background-image:repeating-linear-gradient(-52deg,transparent,transparent 48px,rgba(201,148,58,0.035) 48px,rgba(201,148,58,0.035) 49px);
+  animation:rulesSlide 28s linear infinite;
+}
+@keyframes rulesSlide{from{background-position:0 0}to{background-position:98px 0}}
+.site-hero::after{content:'';position:absolute;bottom:0;left:64px;right:64px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
 
-/* ─── LAYOUT ─── */
-.main-wrap { max-width: 1100px; margin: 0 auto; padding: 48px 40px 100px; }
+/* ambient glow orbs */
+.hero-orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(80px);animation:orbPulse 8s ease-in-out infinite}
+.hero-orb-1{width:400px;height:400px;left:-80px;top:-80px;background:radial-gradient(circle,rgba(201,148,58,0.06) 0%,transparent 70%);animation-delay:0s}
+.hero-orb-2{width:350px;height:350px;right:-60px;bottom:0;background:radial-gradient(circle,rgba(26,90,60,0.07) 0%,transparent 70%);animation-delay:-3s}
+.hero-orb-3{width:300px;height:300px;left:40%;top:0;background:radial-gradient(circle,rgba(15,30,60,0.12) 0%,transparent 70%);animation-delay:-5.5s}
+@keyframes orbPulse{0%,100%{opacity:0.6}50%{opacity:1}}
 
-/* ─── INFO STRIP ─── */
-.info-strip { border: 1px solid var(--border); background: var(--light); padding: 20px 28px; margin-bottom: 40px; display: flex; align-items: flex-start; gap: 20px; }
-.info-strip-icon { font-size: 1.4rem; color: var(--gold); flex-shrink: 0; margin-top: 2px; font-family: serif; }
-.info-strip-body { font-family: var(--font-body); font-size: 0.92rem; line-height: 1.65; color: var(--mid); }
-.info-strip-body strong { font-family: var(--font-head); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); display: block; margin-bottom: 4px; }
+.hero-inner{max-width:920px;margin:0 auto;position:relative;text-align:center}
+.hero-eyebrow{font-family:var(--font-head);font-size:0.65rem;letter-spacing:0.34em;color:var(--gold-dark);text-transform:uppercase;margin-bottom:22px;opacity:0;animation:fadeUp .7s .1s forwards}
+.hero-wordmark{font-family:var(--font-head);font-size:clamp(3rem,9vw,6.5rem);font-weight:900;color:var(--parchment);letter-spacing:0.14em;text-transform:uppercase;line-height:1;margin-bottom:6px;text-shadow:0 0 60px rgba(201,148,58,0.18),0 2px 40px rgba(0,0,0,0.8);opacity:0;animation:fadeUp .7s .22s forwards}
+.hero-tagline{font-family:var(--font-head);font-size:clamp(0.62rem,1.4vw,0.8rem);letter-spacing:0.26em;text-transform:uppercase;color:rgba(240,217,168,0.45);margin-bottom:24px;opacity:0;animation:fadeUp .7s .34s forwards}
+.hero-rule{display:flex;align-items:center;gap:18px;justify-content:center;margin-bottom:24px;opacity:0;animation:fadeUp .7s .44s forwards}
+.hero-rule-line{flex:1;max-width:120px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-dark))}
+.hero-rule-line:last-child{background:linear-gradient(90deg,var(--gold-dark),transparent)}
+.hero-rule-icon{color:var(--gold);font-size:0.8rem}
+.hero-desc{font-family:var(--font-body);font-size:1rem;font-style:italic;color:rgba(240,217,168,0.62);font-weight:300;max-width:560px;margin:0 auto 32px;line-height:1.72;opacity:0;animation:fadeUp .7s .54s forwards}
+.hero-stats{display:flex;justify-content:center;gap:0;opacity:0;animation:fadeUp .7s .64s forwards}
+.hero-stat{text-align:center;padding:14px 36px;position:relative}
+.hero-stat+.hero-stat::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:1px;height:28px;background:var(--border)}
+.hero-stat-num{font-family:var(--font-head);font-size:2rem;font-weight:900;color:var(--gold);display:block;line-height:1}
+.hero-stat-label{font-family:var(--font-head);font-size:0.54rem;letter-spacing:0.2em;color:rgba(240,217,168,0.44);text-transform:uppercase;display:block;margin-top:5px}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── MAIN LAYOUT ─── */
+.main-wrap{max-width:1180px;margin:0 auto;padding:52px 44px 120px}
+
+/* ─── GENRE RAIL ─── */
+.genre-rail{margin-bottom:44px;opacity:0;animation:fadeUp .6s .15s both}
+.genre-rail-label{font-family:var(--font-head);font-size:0.58rem;letter-spacing:0.26em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.genre-rail-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.genre-chips{display:flex;gap:8px;flex-wrap:wrap}
+.genre-chip{font-family:var(--font-head);font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;padding:7px 15px;border:1px solid var(--border);background:var(--light);color:var(--mid);cursor:pointer;transition:all .2s ease;position:relative;overflow:hidden;white-space:nowrap}
+.genre-chip::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .2s;background:currentColor}
+.genre-chip:hover{border-color:var(--gold);color:var(--gold-dark)}
+.genre-chip.active{color:var(--parchment);border-color:transparent}
+.genre-chip[data-genre="all"].active{background:var(--navy)}
+.genre-chip[data-genre="strategy"].active{background:var(--g-strategy)}
+.genre-chip[data-genre="4x"].active{background:var(--g-4x)}
+.genre-chip[data-genre="action"].active{background:var(--g-action)}
+.genre-chip[data-genre="rpg"].active{background:var(--g-rpg)}
+.genre-chip[data-genre="simulation"].active{background:var(--g-simulation)}
+.genre-chip[data-genre="survival"].active{background:var(--g-survival)}
+.genre-chip[data-genre="adventure"].active{background:var(--g-adventure)}
+.genre-chip[data-era="pre-ww2"].active{background:var(--e-pre)}
+.genre-chip[data-era="ww2"].active{background:var(--e-ww2)}
+.genre-chip[data-era="scifi"].active{background:var(--e-scifi)}
 
 /* ─── TOOLBAR ─── */
-.toolbar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 28px; padding: 16px 20px; background: var(--light); border: 1px solid var(--border); }
-.toolbar-search-wrap { position: relative; flex: 1; min-width: 200px; max-width: 340px; }
-.toolbar-search-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--mid); opacity: 0.55; pointer-events: none; }
-#search-input { width: 100%; padding: 8px 12px 8px 34px; border: 1px solid var(--border); background: var(--parchment); font-family: var(--font-body); font-size: 0.88rem; color: var(--ink); outline: none; transition: border-color 0.15s; }
-#search-input::placeholder { color: var(--mid); opacity: 0.6; font-style: italic; }
-#search-input:focus { border-color: var(--gold); }
-.filter-group { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; }
-.filter-btn { font-family: var(--font-head); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 6px 13px; border: 1px solid var(--border); background: var(--parchment); color: var(--mid); cursor: pointer; transition: all 0.15s; white-space: nowrap; }
-.filter-btn:hover { border-color: var(--gold); color: var(--gold-dark); background: var(--light); }
-.filter-btn.active { background: var(--navy); color: var(--gold-pale); border-color: var(--navy); }
-.toolbar-right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
-.results-count { font-family: var(--font-head); font-size: 0.6rem; letter-spacing: 0.12em; color: var(--mid); text-transform: uppercase; white-space: nowrap; }
-#sort-select { font-family: var(--font-head); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 10px; border: 1px solid var(--border); background: var(--parchment); color: var(--mid); cursor: pointer; outline: none; }
-#sort-select:focus { border-color: var(--gold); }
+.toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:36px;padding:16px 20px;background:var(--light);border:1px solid var(--border);opacity:0;animation:fadeUp .6s .25s both}
+.toolbar-search-wrap{position:relative;flex:1;min-width:200px;max-width:340px}
+.toolbar-search-wrap svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--mid);opacity:0.5;pointer-events:none}
+#search-input{width:100%;padding:9px 12px 9px 35px;border:1px solid var(--border);background:var(--parchment);font-family:var(--font-body);font-size:0.9rem;color:var(--ink);outline:none;transition:border-color .15s}
+#search-input::placeholder{color:var(--mid);opacity:0.55;font-style:italic}
+#search-input:focus{border-color:var(--gold)}
+.toolbar-right{display:flex;align-items:center;gap:12px;margin-left:auto}
+.results-count{font-family:var(--font-head);font-size:0.58rem;letter-spacing:0.12em;color:var(--mid);text-transform:uppercase;white-space:nowrap}
+#sort-select{font-family:var(--font-head);font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;padding:7px 10px;border:1px solid var(--border);background:var(--parchment);color:var(--mid);cursor:pointer;outline:none}
+#sort-select:focus{border-color:var(--gold)}
 
-/* ─── SECTION HEADERS ─── */
-.section-label { font-family: var(--font-head); font-size: 0.65rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 10px; display: flex; align-items: center; gap: 14px; }
-.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-.section-title { font-family: var(--font-head); font-size: clamp(1.1rem, 2vw, 1.4rem); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink); margin-bottom: 8px; }
-.section-intro { font-family: var(--font-body); font-size: 0.95rem; color: var(--mid); font-style: italic; margin-bottom: 28px; max-width: 640px; }
+/* ─── SECTION HEADER ─── */
+.section-header{margin-bottom:28px}
+.section-label{font-family:var(--font-head);font-size:0.6rem;letter-spacing:0.26em;text-transform:uppercase;color:var(--gold-dark);display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.section-title{font-family:var(--font-head);font-size:clamp(1.1rem,2.2vw,1.45rem);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink);margin-bottom:6px}
+.section-intro{font-family:var(--font-body);font-size:0.95rem;color:var(--mid);font-style:italic;max-width:620px}
+
+/* ─── CARD GRID ─── */
+.games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:26px;margin-bottom:80px}
+
+/* ─── GAME CARD ─── */
+.game-card{
+  background:var(--light);border:1px solid var(--border);cursor:pointer;
+  transition:transform .22s cubic-bezier(0.16,1,0.3,1),box-shadow .22s ease,border-color .22s ease;
+  position:relative;overflow:hidden;display:flex;flex-direction:column;
+  opacity:0;animation:cardIn .4s ease both;
+}
+@keyframes cardIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.game-card:hover{transform:translateY(-5px) scale(1.005);box-shadow:0 12px 40px var(--shadow);border-color:var(--gold)}
+.game-card:hover .card-shine{opacity:1}
+
+/* shine sweep on hover */
+.card-shine{position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.05) 50%,transparent 60%);pointer-events:none;transition:left .55s ease,opacity .3s;opacity:0}
+.game-card:hover .card-shine{left:160%;opacity:1}
+
+/* colour bar — genre-aware */
+.game-card-bar{height:3px;flex-shrink:0}
+.game-card[data-genre="strategy"] .game-card-bar{background:linear-gradient(90deg,var(--g-strategy),#c9943a)}
+.game-card[data-genre="4x"]       .game-card-bar{background:linear-gradient(90deg,var(--g-4x),#2a6b9a)}
+.game-card[data-genre="action"]    .game-card-bar{background:linear-gradient(90deg,var(--g-action),#4ab07a)}
+.game-card[data-genre="rpg"]       .game-card-bar{background:linear-gradient(90deg,var(--g-rpg),#8a50c0)}
+.game-card[data-genre="simulation"].game-card-bar{background:linear-gradient(90deg,var(--g-simulation),#2a9aaa)}
+.game-card[data-genre="survival"]  .game-card-bar{background:linear-gradient(90deg,var(--g-survival),#c07830)}
+.game-card[data-genre="adventure"] .game-card-bar{background:linear-gradient(90deg,var(--g-adventure),#5aaa3a)}
+
+/* image slot */
+.card-img{width:100%;aspect-ratio:16/7;object-fit:cover;display:block;flex-shrink:0;background:linear-gradient(135deg,#0f1820 0%,#1a2a0e 50%,#1a0e08 100%);position:relative;overflow:hidden}
+.card-img-inner{width:100%;height:100%;position:relative}
+/* decorative placeholder art using CSS when no real image */
+.card-img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.card-img-placeholder-text{font-family:var(--font-head);font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;opacity:0.18;color:var(--gold-pale)}
+
+.game-card-inner{padding:18px 22px 20px;flex:1;display:flex;flex-direction:column}
+.card-meta-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.game-card-genre-badge{font-family:var(--font-head);font-size:0.52rem;letter-spacing:0.16em;text-transform:uppercase;padding:2px 8px;border:1px solid;border-radius:0}
+.game-card[data-genre="strategy"] .game-card-genre-badge{color:var(--g-strategy);border-color:var(--g-strategy);background:rgba(139,58,26,0.07)}
+.game-card[data-genre="4x"]       .game-card-genre-badge{color:var(--g-4x);border-color:var(--g-4x);background:rgba(26,61,107,0.07)}
+.game-card[data-genre="action"]    .game-card-genre-badge{color:var(--g-action);border-color:var(--g-action);background:rgba(26,92,58,0.07)}
+.game-card[data-genre="rpg"]       .game-card-genre-badge{color:var(--g-rpg);border-color:var(--g-rpg);background:rgba(74,24,112,0.07)}
+.game-card[data-genre="simulation"].game-card-genre-badge{color:var(--g-simulation);border-color:var(--g-simulation);background:rgba(26,80,96,0.07)}
+.game-card[data-genre="survival"]  .game-card-genre-badge{color:var(--g-survival);border-color:var(--g-survival);background:rgba(107,61,10,0.07)}
+.game-card[data-genre="adventure"] .game-card-genre-badge{color:var(--g-adventure);border-color:var(--g-adventure);background:rgba(42,92,26,0.07)}
+.game-card-era-label{font-family:var(--font-head);font-size:0.52rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(74,63,50,0.5)}
+
+.game-card-title{font-family:var(--font-head);font-size:1.08rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink);margin-bottom:2px;line-height:1.2}
+.game-card-subtitle{font-family:var(--font-body);font-size:0.84rem;font-style:italic;color:var(--mid);margin-bottom:12px}
+.game-card-divider{height:1px;background:var(--border);margin-bottom:12px}
+.game-card-desc{font-family:var(--font-body);font-size:0.9rem;line-height:1.62;color:var(--ink);margin-bottom:14px;flex:1}
+.game-card-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px}
+.game-card-tag{font-family:var(--font-head);font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);border:1px solid var(--border);padding:2px 7px;background:var(--parchment);transition:border-color .15s,color .15s}
+.game-card:hover .game-card-tag{border-color:rgba(201,148,58,0.42)}
+.game-card-footer{display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border)}
+.game-card-cta{font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-dark);display:flex;align-items:center;gap:5px;transition:gap .18s,color .15s}
+.game-card:hover .game-card-cta{gap:10px;color:var(--gold)}
+.game-card-sections{font-family:var(--font-body);font-size:0.78rem;color:var(--mid);font-style:italic}
+.game-card.coming-soon{opacity:0.5;cursor:default;pointer-events:none}
+.game-card.coming-soon .game-card-bar{background:repeating-linear-gradient(90deg,rgba(201,148,58,0.25) 0,rgba(201,148,58,0.25) 8px,transparent 8px,transparent 16px)}
+.coming-soon-badge{font-family:var(--font-head);font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--mid);border:1px solid var(--border);padding:2px 8px}
 
 /* ─── EMPTY STATE ─── */
-.empty-state { text-align: center; padding: 60px 20px; color: var(--mid); }
-.empty-state-icon { font-size: 2rem; color: var(--border); display: block; margin-bottom: 12px; font-family: serif; }
-.empty-state-title { font-family: var(--font-head); font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mid); margin-bottom: 6px; }
-.empty-state-body { font-family: var(--font-body); font-size: 0.9rem; font-style: italic; }
-.empty-state-reset { margin-top: 16px; font-family: var(--font-head); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-dark); cursor: pointer; border: none; background: none; padding: 6px 14px; border: 1px solid var(--border); }
-.empty-state-reset:hover { border-color: var(--gold); color: var(--gold-dark); background: var(--light); }
-
-/* ─── GAME CARDS ─── */
-.games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; margin-bottom: 72px; }
-.game-card { background: var(--light); border: 1px solid var(--border); cursor: pointer; transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease; position: relative; overflow: hidden; }
-.game-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px var(--shadow); border-color: var(--gold); }
-.game-card-bar { height: 4px; background: var(--gold); }
-.game-card[data-era="pre-ww2"] .game-card-bar { background: linear-gradient(90deg, #7a3c1a, #c9943a); }
-.game-card[data-era="ww2"]     .game-card-bar { background: linear-gradient(90deg, #1b3d5a, #4a8ab0); }
-.game-card[data-era="post-ww2"].game-card-bar { background: linear-gradient(90deg, #1a5c3a, #4ab07a); }
-.game-card[data-era="scifi"]   .game-card-bar { background: linear-gradient(90deg, #0d1a30, #2a6b8a); }
-.game-card-inner { padding: 20px 22px 22px; }
-.game-card-era { font-family: var(--font-head); font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 5px; }
-.game-card[data-era="ww2"]     .game-card-era { color: #2a6080; }
-.game-card[data-era="post-ww2"].game-card-era { color: #1a6040; }
-.game-card[data-era="scifi"]   .game-card-era { color: #1a5c6b; }
-.game-card-title { font-family: var(--font-head); font-size: 1.12rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink); margin-bottom: 3px; line-height: 1.2; }
-.game-card-subtitle { font-family: var(--font-body); font-size: 0.85rem; font-style: italic; color: var(--mid); margin-bottom: 12px; }
-.game-card-divider { height: 1px; background: var(--border); margin-bottom: 12px; }
-.game-card-desc { font-family: var(--font-body); font-size: 0.9rem; line-height: 1.6; color: var(--ink); margin-bottom: 14px; }
-.game-card-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 16px; }
-.game-card-tag { font-family: var(--font-head); font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mid); border: 1px solid var(--border); padding: 2px 7px; background: var(--parchment); }
-.game-card-footer { display: flex; align-items: center; justify-content: space-between; }
-.game-card-cta { font-family: var(--font-head); font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-dark); display: flex; align-items: center; gap: 6px; transition: gap 0.15s; }
-.game-card:hover .game-card-cta { gap: 10px; }
-.game-card-sections { font-family: var(--font-body); font-size: 0.8rem; color: var(--mid); font-style: italic; }
-.game-card.coming-soon { opacity: 0.55; cursor: default; pointer-events: none; }
-.game-card.coming-soon .game-card-bar { background: repeating-linear-gradient(90deg, rgba(201,148,58,0.3) 0px, rgba(201,148,58,0.3) 8px, transparent 8px, transparent 16px); }
-.coming-soon-badge { font-family: var(--font-head); font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mid); border: 1px solid var(--border); padding: 2px 7px; }
+.empty-state{text-align:center;padding:80px 20px;color:var(--mid)}
+.empty-state-icon{font-size:1.8rem;color:var(--border);display:block;margin-bottom:14px}
+.empty-state-title{font-family:var(--font-head);font-size:0.9rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);margin-bottom:6px}
+.empty-state-body{font-family:var(--font-body);font-size:0.9rem;font-style:italic;margin-bottom:16px}
+.empty-state-reset{font-family:var(--font-head);font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-dark);cursor:pointer;border:1px solid var(--border);background:none;padding:7px 16px;transition:all .15s}
+.empty-state-reset:hover{border-color:var(--gold);background:var(--light)}
 
 /* ─── MODAL ─── */
-.modal-overlay { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(15,22,32,0.82); backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
-.modal-overlay.open { opacity: 1; pointer-events: all; }
-.modal { background: var(--parchment); border: 1px solid var(--gold); max-width: 620px; width: 100%; max-height: 88vh; overflow-y: auto; position: relative; transform: translateY(16px) scale(0.98); transition: transform 0.28s cubic-bezier(0.16,1,0.3,1); scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
-.modal-overlay.open .modal { transform: none; }
-.modal-bar { height: 4px; background: var(--gold); }
-.modal[data-era="pre-ww2"] .modal-bar { background: linear-gradient(90deg, #7a3c1a, #c9943a); }
-.modal[data-era="ww2"]     .modal-bar { background: linear-gradient(90deg, #1b3d5a, #4a8ab0); }
-.modal[data-era="post-ww2"].modal-bar { background: linear-gradient(90deg, #1a5c3a, #4ab07a); }
-.modal[data-era="scifi"]   .modal-bar { background: linear-gradient(90deg, #0d1a30, #2a6b8a); }
-.modal-header { padding: 24px 28px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
-.modal-era { font-family: var(--font-head); font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 5px; }
-.modal[data-era="ww2"]     .modal-era { color: #2a6080; }
-.modal[data-era="scifi"]   .modal-era { color: #1a5c6b; }
-.modal[data-era="post-ww2"].modal-era { color: #1a6040; }
-.modal-title { font-family: var(--font-head); font-size: clamp(1.3rem, 3vw, 1.9rem); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink); line-height: 1.1; margin-bottom: 3px; }
-.modal-subtitle { font-family: var(--font-body); font-size: 0.9rem; font-style: italic; color: var(--mid); }
-.modal-close { width: 34px; height: 34px; border: 1px solid var(--border); background: var(--light); color: var(--mid); font-size: 0.9rem; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; transition: all 0.15s; font-family: var(--font-body); margin-top: 2px; }
-.modal-close:hover { border-color: var(--gold); color: var(--gold-dark); background: var(--parchment); }
-.modal-body { padding: 22px 28px 28px; }
-.modal-section-label { font-family: var(--font-head); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 8px; margin-top: 20px; padding-bottom: 5px; border-bottom: 1px solid var(--border); }
-.modal-section-label:first-child { margin-top: 0; }
-.modal-desc { font-family: var(--font-body); font-size: 0.95rem; line-height: 1.7; color: var(--ink); margin-bottom: 4px; }
-.modal-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 6px; }
-.modal-tag { font-family: var(--font-head); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mid); border: 1px solid var(--border); padding: 3px 8px; background: var(--light); }
-.modal-meta-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; }
-.modal-meta-cell { background: var(--light); border: 1px solid var(--border); padding: 9px 12px; }
-.modal-meta-label { font-family: var(--font-head); font-size: 0.55rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mid); margin-bottom: 2px; }
-.modal-meta-value { font-family: var(--font-body); font-size: 0.92rem; color: var(--ink); font-weight: 600; }
-.modal-sides { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; }
-.modal-side { padding: 10px 13px; border: 1px solid var(--border); background: var(--light); }
-.modal-side-label { font-family: var(--font-head); font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 4px; }
-.modal-side-body { font-family: var(--font-body); font-size: 0.88rem; line-height: 1.55; color: var(--ink); }
-.modal-cta { display: block; margin-top: 22px; padding: 13px 22px; background: var(--navy); color: var(--gold-pale); font-family: var(--font-head); font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; text-decoration: none; text-align: center; transition: background 0.15s; }
-.modal-cta:hover { background: #0f1e30; }
-.modal-ext-links { display: flex; gap: 10px; margin-top: 22px; }
-.modal-ext-link { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 14px; border: 1px solid var(--border); background: var(--light); color: var(--mid); font-family: var(--font-head); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; transition: border-color 0.15s, color 0.15s, background 0.15s; }
-.modal-ext-link:hover { border-color: var(--gold); color: var(--gold-dark); background: var(--parchment); }
-.modal-ext-link svg { flex-shrink: 0; opacity: 0.65; }
+.modal-overlay{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(8,12,20,0.86);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .25s ease}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--parchment);border:1px solid rgba(201,148,58,0.5);max-width:660px;width:100%;max-height:90vh;overflow-y:auto;position:relative;transform:translateY(20px) scale(0.97);transition:transform .3s cubic-bezier(0.16,1,0.3,1);scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.modal-overlay.open .modal{transform:none}
+.modal-bar{height:3px}
+.modal[data-genre="strategy"] .modal-bar{background:linear-gradient(90deg,var(--g-strategy),#c9943a)}
+.modal[data-genre="4x"]       .modal-bar{background:linear-gradient(90deg,var(--g-4x),#2a6b9a)}
+.modal[data-genre="action"]    .modal-bar{background:linear-gradient(90deg,var(--g-action),#4ab07a)}
+.modal[data-genre="rpg"]       .modal-bar{background:linear-gradient(90deg,var(--g-rpg),#8a50c0)}
+.modal[data-genre="simulation"].modal-bar{background:linear-gradient(90deg,var(--g-simulation),#2a9aaa)}
+.modal[data-genre="survival"]  .modal-bar{background:linear-gradient(90deg,var(--g-survival),#c07830)}
+.modal[data-genre="adventure"] .modal-bar{background:linear-gradient(90deg,var(--g-adventure),#5aaa3a)}
+.modal-header{padding:26px 28px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.modal-badge-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.modal-genre-badge{font-family:var(--font-head);font-size:0.55rem;letter-spacing:0.16em;text-transform:uppercase;padding:2px 9px;border:1px solid}
+.modal[data-genre="strategy"] .modal-genre-badge{color:var(--g-strategy);border-color:var(--g-strategy);background:rgba(139,58,26,0.08)}
+.modal[data-genre="4x"]       .modal-genre-badge{color:var(--g-4x);border-color:var(--g-4x);background:rgba(26,61,107,0.08)}
+.modal[data-genre="action"]    .modal-genre-badge{color:var(--g-action);border-color:var(--g-action);background:rgba(26,92,58,0.08)}
+.modal[data-genre="rpg"]       .modal-genre-badge{color:var(--g-rpg);border-color:var(--g-rpg);background:rgba(74,24,112,0.08)}
+.modal[data-genre="simulation"].modal-genre-badge{color:var(--g-simulation);border-color:var(--g-simulation);background:rgba(26,80,96,0.08)}
+.modal[data-genre="survival"]  .modal-genre-badge{color:var(--g-survival);border-color:var(--g-survival);background:rgba(107,61,10,0.08)}
+.modal[data-genre="adventure"] .modal-genre-badge{color:var(--g-adventure);border-color:var(--g-adventure);background:rgba(42,92,26,0.08)}
+.modal-era-badge{font-family:var(--font-head);font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(74,63,50,0.5)}
+.modal-title{font-family:var(--font-head);font-size:clamp(1.3rem,3vw,1.95rem);font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:var(--ink);line-height:1.1;margin-bottom:3px}
+.modal-subtitle{font-family:var(--font-body);font-size:0.9rem;font-style:italic;color:var(--mid)}
+.modal-close{width:36px;height:36px;border:1px solid var(--border);background:var(--light);color:var(--mid);font-size:0.88rem;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .15s;font-family:var(--font-body);margin-top:2px}
+.modal-close:hover{border-color:var(--gold);color:var(--gold-dark);background:var(--parchment)}
+.modal-body{padding:22px 28px 28px}
+.modal-section-label{font-family:var(--font-head);font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:8px;margin-top:22px;padding-bottom:5px;border-bottom:1px solid var(--border)}
+.modal-section-label:first-child{margin-top:0}
+.modal-desc{font-family:var(--font-body);font-size:0.95rem;line-height:1.72;color:var(--ink)}
+.modal-tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 6px}
+.modal-tag{font-family:var(--font-head);font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);border:1px solid var(--border);padding:3px 8px;background:var(--light)}
+.modal-meta-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.modal-meta-cell{background:var(--light);border:1px solid var(--border);padding:10px 13px}
+.modal-meta-label{font-family:var(--font-head);font-size:0.54rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--mid);margin-bottom:2px}
+.modal-meta-value{font-family:var(--font-body);font-size:0.92rem;color:var(--ink);font-weight:600}
+.modal-sides{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.modal-side{padding:11px 14px;border:1px solid var(--border);background:var(--light)}
+.modal-side-label{font-family:var(--font-head);font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:5px}
+.modal-side-body{font-family:var(--font-body);font-size:0.88rem;line-height:1.58;color:var(--ink)}
+.modal-ext-links{display:flex;gap:10px;margin-top:22px}
+.modal-ext-link{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 14px;border:1px solid var(--border);background:var(--light);color:var(--mid);font-family:var(--font-head);font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;transition:border-color .15s,color .15s,background .15s}
+.modal-ext-link:hover{border-color:var(--gold);color:var(--gold-dark);background:var(--parchment)}
+.modal-cta{display:block;margin-top:10px;padding:14px 22px;background:var(--navy);color:var(--gold-pale);font-family:var(--font-head);font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;text-align:center;transition:background .15s,color .15s;position:relative;overflow:hidden}
+.modal-cta::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.04),transparent);transform:translateX(-100%);transition:transform .5s ease}
+.modal-cta:hover{background:#0a1626}
+.modal-cta:hover::after{transform:translateX(100%)}
 
 /* ─── FOOTER ─── */
-.site-footer { border-top: 1px solid var(--border); padding: 20px 40px; font-family: var(--font-head); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mid); text-align: center; }
+.site-footer{border-top:1px solid var(--border);padding:24px 44px;font-family:var(--font-head);font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);text-align:center;line-height:2}
 
 /* ─── RESPONSIVE ─── */
-@media (max-width: 700px) {
-  .site-hero { padding: 50px 24px 48px; }
-  .main-wrap { padding: 32px 20px 80px; }
-  .games-grid { grid-template-columns: 1fr; }
-  .modal-meta-row, .modal-sides { grid-template-columns: 1fr; }
-  .modal-header { flex-direction: column; }
-  .modal-close { align-self: flex-end; margin-top: -38px; }
-  .toolbar { flex-direction: column; align-items: stretch; }
-  .toolbar-search-wrap { max-width: 100%; }
-  .toolbar-right { margin-left: 0; justify-content: space-between; }
-  .hero-stats { gap: 20px; }
+@media(max-width:720px){
+  .site-hero{padding:60px 24px 56px}
+  .main-wrap{padding:32px 20px 80px}
+  .games-grid{grid-template-columns:1fr}
+  .modal-meta-row,.modal-sides{grid-template-columns:1fr}
+  .modal-header{flex-direction:column}
+  .modal-close{align-self:flex-end;margin-top:-40px}
+  .toolbar{flex-direction:column;align-items:stretch}
+  .toolbar-search-wrap{max-width:100%}
+  .toolbar-right{margin-left:0;justify-content:space-between}
+  .hero-stats{flex-wrap:wrap}
+  .hero-stat+.hero-stat::before{display:none}
+  .hero-stat{padding:10px 20px}
+  .genre-chips{gap:6px}
 }
 </style>
 </head>
 <body>
+<div id="scroll-bar"></div>
 
+<!-- ═══ HERO ═══ -->
 <header class="site-hero">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-orb hero-orb-3"></div>
   <div class="hero-inner">
-    <div class="hero-eyebrow">Community Resource &nbsp;&middot;&nbsp; Strategy Guides &nbsp;&middot;&nbsp; Historical &amp; Science Fiction</div>
-    <h1 class="hero-title">Strategy Guide Library</h1>
-    <div class="hero-rule"></div>
-    <p class="hero-desc">Comprehensive guides covering both sides, all systems, and every scenario &mdash; for historical wargames and grand strategy titles.</p>
+    <div class="hero-eyebrow">Community Resource &nbsp;&middot;&nbsp; Strategy &middot; Grand Strategy &middot; RPG &middot; Simulation &middot; Action</div>
+    <h1 class="hero-wordmark">Nadir</h1>
+    <div class="hero-tagline">Strategy Guide Library &nbsp;&middot;&nbsp; In-Depth &middot; Both Sides &middot; All Systems</div>
+    <div class="hero-rule">
+      <span class="hero-rule-line"></span>
+      <span class="hero-rule-icon">&#10022;</span>
+      <span class="hero-rule-line"></span>
+    </div>
+    <p class="hero-desc">Comprehensive strategy guides across historical wargames, grand strategy, action RPGs, and simulation &mdash; every system analysed, every side covered, every chapter written to matter.</p>
     <div class="hero-stats">
-      <div class="hero-stat"><span class="hero-stat-num" id="stat-guides">16</span><span class="hero-stat-label">Complete Guides</span></div>
-      <div class="hero-stat"><span class="hero-stat-num" id="stat-eras">4</span><span class="hero-stat-label">Eras Covered</span></div>
-      <div class="hero-stat"><span class="hero-stat-num">420+</span><span class="hero-stat-label">Chapters Written</span></div>
+      <div class="hero-stat"><span class="hero-stat-num" id="stat-guides">0</span><span class="hero-stat-label">Complete Guides</span></div>
+      <div class="hero-stat"><span class="hero-stat-num" id="stat-genres">0</span><span class="hero-stat-label">Genres Covered</span></div>
+      <div class="hero-stat"><span class="hero-stat-num" id="stat-chapters">0+</span><span class="hero-stat-label">Chapters Written</span></div>
     </div>
   </div>
 </header>
 
+<!-- ═══ MAIN ═══ -->
 <main class="main-wrap">
-  <div class="info-strip">
-    <div class="info-strip-icon">&#10022;</div>
-    <div class="info-strip-body">
-      <strong>How to use this library</strong>
-      Click any guide card to read a full overview &mdash; sides, scenarios, engine version, and what makes it unique &mdash; then follow the link to the complete guide. Filter by era or search by title, game, or keyword. New guides are added regularly.
+
+  <!-- GENRE FILTER RAIL -->
+  <div class="genre-rail">
+    <div class="genre-rail-label">Browse by Genre</div>
+    <div class="genre-chips" id="genre-chips">
+      <button class="genre-chip active" data-genre="all">All Guides</button>
+      <button class="genre-chip" data-genre="strategy">Strategy</button>
+      <button class="genre-chip" data-genre="4x">4X</button>
+      <button class="genre-chip" data-genre="rpg">RPG</button>
+      <button class="genre-chip" data-genre="action">Action</button>
+      <button class="genre-chip" data-genre="simulation">Simulation</button>
+      <button class="genre-chip" data-genre="adventure">Adventure</button>
+      <button class="genre-chip" data-era="pre-ww2">Pre-WW2</button>
+      <button class="genre-chip" data-era="ww2">World War II</button>
+      <button class="genre-chip" data-era="scifi">Sci-Fi &amp; Fantasy</button>
     </div>
   </div>
 
   <!-- TOOLBAR -->
-  <div class="toolbar" role="search" aria-label="Filter guides">
+  <div class="toolbar" role="search" aria-label="Search and sort guides">
     <div class="toolbar-search-wrap">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" id="search-input" placeholder="Search guides, eras, tags&hellip;" autocomplete="off" aria-label="Search guides">
-    </div>
-    <div class="filter-group" role="group" aria-label="Filter by era">
-      <button class="filter-btn active" data-filter="all">All Eras</button>
-      <button class="filter-btn" data-filter="pre-ww2">Pre-WW2</button>
-      <button class="filter-btn" data-filter="ww2">World War II</button>
-      <button class="filter-btn" data-filter="scifi">Sci-Fi &amp; Fantasy</button>
+      <input type="text" id="search-input" placeholder="Search by title, genre, tag&hellip;" autocomplete="off" aria-label="Search guides">
     </div>
     <div class="toolbar-right">
-      <span class="results-count" id="results-count">14 guides</span>
+      <span class="results-count" id="results-count"></span>
       <select id="sort-select" aria-label="Sort guides">
         <option value="default">Default Order</option>
         <option value="alpha">A &rarr; Z</option>
         <option value="sections-desc">Most Sections</option>
-        <option value="scenarios-desc">Most Scenarios</option>
       </select>
+      <button class="empty-state-reset" id="reset-btn" style="margin:0">Reset</button>
     </div>
   </div>
 
-  <!-- COMPLETE GUIDES -->
-  <div class="section-label">Available Guides</div>
-  <h2 class="section-title">Complete Strategy Guides</h2>
-  <p class="section-intro">Full multi-section guides covering historical context, rules, both sides&rsquo; strategies, all scenarios, and a complete glossary.</p>
+  <!-- GUIDES GRID -->
+  <div class="section-header">
+    <div class="section-label">Available Now</div>
+    <h2 class="section-title">Complete Strategy Guides</h2>
+    <p class="section-intro">Full multi-chapter guides with historical context, mechanical analysis, both-sides strategy, and a complete glossary.</p>
+  </div>
   <div class="games-grid" id="games-grid"></div>
   <div id="empty-state" style="display:none">
     <div class="empty-state">
       <span class="empty-state-icon">&#10022;</span>
-      <div class="empty-state-title">No guides match your search</div>
-      <div class="empty-state-body">Try a different keyword or era filter.</div>
-      <button class="empty-state-reset" id="reset-btn">Clear Filters</button>
+      <div class="empty-state-title">No guides match</div>
+      <div class="empty-state-body">Try a different keyword or genre filter.</div>
+      <button class="empty-state-reset" id="reset-btn-2">Clear Filters</button>
     </div>
   </div>
 
   <div id="coming-section" style="display:none">
-    <div class="section-label">In Progress</div>
-    <h2 class="section-title">Upcoming Guides</h2>
-    <p class="section-intro">Guides under research and development. Check back soon.</p>
+    <div class="section-header" style="margin-top:16px">
+      <div class="section-label">In Progress</div>
+      <h2 class="section-title">Upcoming Guides</h2>
+      <p class="section-intro">Guides under research and development. Check back soon.</p>
+    </div>
     <div class="games-grid" id="coming-grid"></div>
   </div>
+
 </main>
 
 <footer class="site-footer">
-  Strategy Guide Library &nbsp;&middot;&nbsp; Community Resource &nbsp;&middot;&nbsp; Avalon Digital / Strategy Game Studio / Matrix Games / Harebrained Schemes / Forever Entertainment / Illwinter / Paradox Interactive
+  Nadir &nbsp;&middot;&nbsp; Strategy Guide Library &nbsp;&middot;&nbsp; Community Resource<br>
+  Strategy Game Studio &nbsp;&middot;&nbsp; Killerfish Games &nbsp;&middot;&nbsp; Harebrained Schemes &nbsp;&middot;&nbsp; Forever Entertainment &nbsp;&middot;&nbsp; Illwinter &nbsp;&middot;&nbsp; Paradox Interactive &nbsp;&middot;&nbsp; Square Enix &nbsp;&middot;&nbsp; Amplitude Studios &nbsp;&middot;&nbsp; SHIFT UP &nbsp;&middot;&nbsp; Alkimia Interactive / THQ Nordic &nbsp;&middot;&nbsp; Owlcat Games
 </footer>
 
+<!-- ═══ MODAL ═══ -->
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal" id="modal">
     <div class="modal-bar"></div>
     <div class="modal-header">
       <div>
-        <div class="modal-era" id="m-era"></div>
+        <div class="modal-badge-row">
+          <span class="modal-genre-badge" id="m-genre-badge"></span>
+          <span class="modal-era-badge" id="m-era"></span>
+        </div>
         <div class="modal-title" id="m-title"></div>
         <div class="modal-subtitle" id="m-subtitle"></div>
       </div>
@@ -258,520 +371,507 @@ body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-i
 </div>
 
 <script>
-const GUIDES = [
+/* ─────────────────────────────────────────────
+   SCROLL PROGRESS
+───────────────────────────────────────────── */
+window.addEventListener('scroll',()=>{
+  const bar=document.getElementById('scroll-bar');
+  const t=document.documentElement.scrollHeight-window.innerHeight;
+  bar.style.transform='scaleX('+(window.scrollY/t)+')';
+},{passive:true});
+
+/* ─────────────────────────────────────────────
+   GUIDES DATA — 21 entries
+   genre: strategy | 4x | rpg | action | simulation | survival | adventure
+   era:   pre-ww2 | ww2 | scifi
+───────────────────────────────────────────── */
+const GUIDES=[
+  /* ── HISTORICAL WARGAMES ── */
   {
-    id:        'taipings',
-    title:     'SGS Taipings',
-    subtitle:  'The Taiping Rebellion, China 1851\u20131864',
-    era:       'pre-ww2',
-    period:    'Pre-World War II',
-    engine:    'SGS Engine v1.5',
-    sections:  18,
-    scenarios: 4,
-    sides:     ['Taiping Heavenly Kingdom', 'Qing Imperial China'],
-    hardest:   'Qing Dynasty',
-    desc:      'One of history\'s deadliest conflicts. The Taiping Rebellion pitted a millenarian Christian-influenced rebel movement against the crumbling Qing Dynasty. A loyalty-driven, economically complex campaign demanding mastery of the unique Imperial Concern Index.',
-    detail:    'SGS Taipings is one of the most mechanically distinctive entries in the SGS series. The Loyalty system governs income, Fog of War, and enemy unit placement simultaneously. The Qing player must raise the Imperial Concern Index to unlock the elite Xiang Army while managing the northern Nien Bandit threat. The Taiping player must exploit early momentum \u2014 capturing the Yangtze cities before Zeng Guofan\'s reformed forces arrive \u2014 or face a slow war of attrition they cannot win.',
-    sideA: { label: 'Taiping Heavenly Kingdom', body: 'Elite early units, fast expansion, powerful Taiping leaders. Must capture and hold the Yangtze before Qing modernises. Easier to learn; harder to sustain.' },
-    sideB: { label: 'Qing Imperial China',       body: 'Weak initially, powerful eventually. Must spike Imperial Concern to unlock the Xiang Army while surviving Taiping elite attacks. The most complex side in the game.' },
-    tags:  ['Loyalty System','Imperial Concern','Yangtze River','PBEM','Grand Campaign'],
-    file:  'https://t1ckles.github.io/nadir/taipings.html',
-    steam: 'https://store.steampowered.com/app/1519060/SGS_Taipings/',
-    site:  'https://strategygamestudio.com/games/sgs-taipings/',
+    id:'taipings',genre:'strategy',era:'pre-ww2',
+    title:'SGS Taipings',subtitle:'The Taiping Rebellion, China 1851–1864',
+    period:'Pre-World War II',engine:'SGS Engine v1.5',sections:18,scenarios:4,
+    desc:'One of history\'s deadliest conflicts. The Taiping Rebellion pitted a millenarian rebel movement against the crumbling Qing Dynasty — a loyalty-driven, economically complex campaign demanding mastery of the Imperial Concern Index.',
+    detail:'SGS Taipings is one of the most mechanically distinctive entries in the SGS series. The Loyalty system governs income, Fog of War, and enemy unit placement simultaneously. The Qing player must raise the Imperial Concern Index to unlock the elite Xiang Army while managing the northern Nien Bandit threat.',
+    sideA:{label:'Taiping Heavenly Kingdom',body:'Elite early units, fast expansion, powerful Taiping leaders. Must capture and hold the Yangtze before Qing modernises. Easier to learn; harder to sustain.'},
+    sideB:{label:'Qing Imperial China',body:'Weak initially, powerful eventually. Must spike Imperial Concern to unlock the Xiang Army while surviving Taiping elite attacks. The most complex side in the game.'},
+    tags:['Loyalty System','Imperial Concern','Yangtze River','PBEM','Grand Campaign'],
+    file:'https://t1ckles.github.io/nadir/taipings.html',
+    steam:'https://store.steampowered.com/app/1519060/SGS_Taipings/',
+    site:'https://strategygamestudio.com/games/sgs-taipings/',
+    hardest:'Qing Dynasty',
   },
   {
-    id:        'war-on-the-sea',
-    title:     'War on the Sea',
-    subtitle:  'The Guadalcanal Campaign, South Pacific 1942',
-    era:       'ww2',
-    period:    'Second World War',
-    engine:    'Killerfish 3D Naval Engine',
-    sections:  14,
-    scenarios: 2,
-    sides:     ['United States Navy & Allies', 'Imperial Japanese Navy'],
-    hardest:   'Imperial Japanese Navy',
-    desc:      'Brutal real-time tactical naval actions and strategic resource management in the Solomon Islands. Command surface columns, manage air wings, and guide supply networks to hold or seize the critical pivot of Guadalcanal.',
-    detail:    'The Iron Bottom Codex covers both the Allied and Japanese strategic campaigns. Victory requires balancing real-time tactical coordination of gunnery platforms, air wings, and submarine blocks against strategic-layer convoy tracking, logistics pipelines, and airfield infrastructure engineering. Features advanced structural tracking on 40 standing operational doctrines for fleet actions, sensor handling, visual visibility offsets, and emergency fire damage control.',
-    sideA: { label: 'United States Navy & Allies', body: 'Armed with SG surface and air search radar layers alongside heavy cruiser batteries. Highly technical, supply-reliant, and tasked with driving forward-leaning air wing advancement at Henderson Field.' },
-    sideB: { label: 'Imperial Japanese Navy',     body: 'Lacks early surface radar networks but wields supreme night-fighting optical lookouts and the devastating Type 93 Long Lance oxygen torpedo. Must execute defensive attritional traps to bleed Allied capital hulls.' },
-    tags:  ['Guadalcanal','Long Lance Torpedo','SG Radar','Damage Control','Henderson Field','Task Force Operations'],
-    file:  'https://t1ckles.github.io/nadir/war_on_the_sea.html',
-    steam: 'https://store.steampowered.com/app/1280780/War_on_the_Sea/',
-    site:  'https://store.steampowered.com/curator/45291654',
+    id:'war-on-the-sea',genre:'simulation',era:'ww2',
+    title:'War on the Sea',subtitle:'The Guadalcanal Campaign, South Pacific 1942',
+    period:'Second World War',engine:'Killerfish 3D Naval Engine',sections:14,scenarios:2,
+    desc:'Brutal real-time tactical naval actions and strategic resource management in the Solomon Islands. Command surface columns, manage air wings, and guide supply networks to hold or seize the critical pivot of Guadalcanal.',
+    detail:'The Iron Bottom Codex covers both the Allied and Japanese strategic campaigns. Victory requires balancing real-time tactical coordination alongside strategic-layer convoy tracking, logistics pipelines, and airfield infrastructure engineering.',
+    sideA:{label:'United States Navy & Allies',body:'Armed with SG surface and air search radar layers alongside heavy cruiser batteries. Highly technical, supply-reliant, and tasked with driving forward-leaning air wing advancement at Henderson Field.'},
+    sideB:{label:'Imperial Japanese Navy',body:'Lacks early surface radar networks but wields supreme night-fighting optical lookouts and the devastating Type 93 Long Lance oxygen torpedo. Must execute defensive attritional traps to bleed Allied capital hulls.'},
+    tags:['Guadalcanal','Long Lance Torpedo','SG Radar','Damage Control','Henderson Field','Task Force Operations'],
+    file:'https://t1ckles.github.io/nadir/war_on_the_sea.html',
+    steam:'https://store.steampowered.com/app/1280780/War_on_the_Sea/',
+    site:'https://store.steampowered.com/curator/45291654',
+    hardest:'Imperial Japanese Navy',
   },
   {
-    id:        'task-force-admiral',
-    title:     'Task Force Admiral',
-    subtitle:  'Vol. 1: American Carrier Battles, Pacific 1942',
-    era:       'ww2',
-    period:    'Second World War',
-    engine:    'Drydock Dreams 3D Simulation Engine',
-    sections:  24,
-    scenarios: 4,
-    sides:     ['United States Navy', 'Imperial Japanese Navy'],
-    hardest:   'United States Navy (Full Simulation Settings)',
-    desc:      'The most granular carrier warfare simulation ever attempted. Command American carrier task forces across the pivotal battles of 1942 \u2014 Coral Sea and Midway \u2014 in a full 3D environment where aircraft physically spot the deck, fog of war is absolute, and every search sector, CAP rotation, and strike timing decision carries real consequences.',
-    detail:    'The Admiral\'s War Manual covers the complete tactical and operational doctrine of American Pacific carrier warfare in 24 chapters. The guide walks through the full operational cycle \u2014 pre-dawn planning, dawn search sector allocation, CAP pattern configuration and staggered rotation, coordinated strike package assembly, torpedo and dive bomber timing doctrine, and post-strike damage management \u2014 alongside detailed analysis of the Coral Sea and Midway historical scenarios, all current hypothetical variants, and the Battle Generator system. Includes a 30-entry glossary and historical facts woven throughout every chapter.',
-    sideA: { label: 'United States Navy (1942)', body: 'Technologically inferior in aircraft and aircrew experience but armed with a decisive intelligence advantage from codebreaking. Victory requires translating that advantage into tactical surprise before it expires.' },
-    sideB: { label: 'Imperial Japanese Navy', body: 'Superior carrier air groups and the fearsome A6M Zero, but doctrinally rigid and vulnerable to coordinated surprise. Governs the hypothetical variants, including the hard-mode scenario where Japanese carriers find the Americans first.' },
-    tags:  ['Pacific War','Carrier Operations','Fog of War','Strike Timing','CAP Management','Coral Sea','Battle of Midway','Damage Control'],
-    file:  'https://t1ckles.github.io/nadir/task_force_admiral.html',
-    steam: 'https://store.steampowered.com/app/1281220/Task_Force_Admiral__Vol1_American_Carrier_Battles/',
-    site:  'https://drydockdreams.wordpress.com/about-the-game/',
+    id:'task-force-admiral',genre:'simulation',era:'ww2',
+    title:'Task Force Admiral',subtitle:'Vol. 1: American Carrier Battles, Pacific 1942',
+    period:'Second World War',engine:'Drydock Dreams 3D Simulation Engine',sections:24,scenarios:4,
+    desc:'The most granular carrier warfare simulation ever attempted. Command American carrier task forces across the pivotal battles of 1942 — Coral Sea and Midway — in a full 3D environment where fog of war is absolute and every search sector and strike timing decision carries real consequences.',
+    detail:'The Admiral\'s War Manual covers the complete tactical and operational doctrine of American Pacific carrier warfare in 24 chapters — pre-dawn planning, dawn search sector allocation, CAP pattern configuration, coordinated strike package assembly, and post-strike damage management.',
+    sideA:{label:'United States Navy (1942)',body:'Technologically inferior in aircraft and aircrew experience but armed with a decisive intelligence advantage from codebreaking. Victory requires translating that advantage into tactical surprise before it expires.'},
+    sideB:{label:'Imperial Japanese Navy',body:'Superior carrier air groups and the fearsome A6M Zero, but doctrinally rigid and vulnerable to coordinated surprise.'},
+    tags:['Pacific War','Carrier Operations','Fog of War','Strike Timing','CAP Management','Coral Sea','Battle of Midway'],
+    file:'https://t1ckles.github.io/nadir/task_force_admiral.html',
+    steam:'https://store.steampowered.com/app/1281220/Task_Force_Admiral__Vol1_American_Carrier_Battles/',
+    site:'https://drydockdreams.wordpress.com/about-the-game/',
+    hardest:'United States Navy (Full Simulation Settings)',
   },
   {
-    id:        'sgs-battle-of-the-bulge',
-    title:     'SGS Battle of the Bulge',
-    subtitle:  'Ardennes Offensive &amp; Counter-Offensive, December 1944 \u2013 January 1945',
-    era:       'ww2',
-    period:    'Second World War',
-    engine:    'SGS Engine v1.5',
-    sections:  25,
-    scenarios: 6,
-    sides:     ['Wehrmacht (Germany)', 'Allied Forces (USA & Allies)'],
-    hardest:   'Allied Forces (Turns 1\u20135)',
-    desc:      'Germany\'s last gamble on the Western Front. On December 16, 1944, over 200,000 German troops and nearly 1,000 tanks struck the Ardennes in a desperate bid to reach Antwerp and split the Allied armies. The Initiative Gauge gives the German player a ticking clock of momentum; the Allied player must hold the shoulders, keep Bastogne, and survive until Patton arrives.',
-    detail:    'The Winter War Manual covers both the Wehrmacht and Allied sides across all six scenarios in 25 chapters. The guide walks through the unique Initiative Gauge mechanic and how it shapes every German operational decision, the supply crisis that destroyed the historical offensive, the three critical Allied terrain anchors (Elsenborn Ridge, Bastogne, St. Vith), stacking and road network management, air power and the pivotal December 23 weather break, and all six scenarios: the full 45-turn campaign, the Wacht am Rhein alternative campaign, the Herbstnebel shortened offensive, the Nuts! Bastogne siege, Objective Li\u00e8ge, and The Siegfried Line counter-offensive. Features researched WW2 historical facts throughout.',
-    sideA: { label: 'Wehrmacht (Germany)', body: 'Three Panzer armies, twenty divisions, and a ticking Initiative Gauge. Must break through the Ardennes, bypass Bastogne, and reach the Meuse before supply runs out and Allied air returns. Every turn squandered is a turn closer to defeat.' },
-    sideB: { label: 'Allied Forces (USA)', body: 'Surprised, outnumbered, and initially outgunned. Must hold Elsenborn Ridge, get the 101st Airborne to Bastogne before encirclement, and keep St. Vith long enough for reinforcements to arrive. The hardest side in the opening turns; the dominant side by turn fifteen.' },
-    tags:  ['Initiative Gauge','Ardennes','Bastogne','Elsenborn Ridge','Patton','Supply Lines','PBEM','Both Sides Covered'],
-    file:  'https://t1ckles.github.io/nadir/battle_of_the_bulge.html',
-    steam: 'https://store.steampowered.com/app/3265620/SGS_Battle_of_the_Bulge/',
-    site:  'https://strategygamestudio.com/strategy-game-studio-battle-bulge-boxshot-3/',
+    id:'sgs-battle-of-the-bulge',genre:'strategy',era:'ww2',
+    title:'SGS Battle of the Bulge',subtitle:'Ardennes Offensive & Counter-Offensive, December 1944 – January 1945',
+    period:'Second World War',engine:'SGS Engine v1.5',sections:25,scenarios:6,
+    desc:'Germany\'s last gamble on the Western Front. Over 200,000 German troops struck the Ardennes in a desperate bid to reach Antwerp. The Initiative Gauge gives the German player a ticking clock of momentum; the Allied player must hold Bastogne and survive until Patton arrives.',
+    detail:'The Winter War Manual covers both the Wehrmacht and Allied sides across all six scenarios in 25 chapters — the Initiative Gauge mechanic, the supply crisis, all three Allied terrain anchors, stacking and road network management, and all six scenarios including the full 45-turn campaign.',
+    sideA:{label:'Wehrmacht (Germany)',body:'Three Panzer armies, twenty divisions, and a ticking Initiative Gauge. Must break through the Ardennes and reach the Meuse before supply runs out and Allied air returns.'},
+    sideB:{label:'Allied Forces (USA)',body:'Surprised, outnumbered, initially outgunned. Must hold Elsenborn Ridge, get the 101st to Bastogne, and keep St. Vith long enough for reinforcements.'},
+    tags:['Initiative Gauge','Ardennes','Bastogne','Elsenborn Ridge','Patton','Supply Lines','PBEM','Both Sides Covered'],
+    file:'https://t1ckles.github.io/nadir/battle_of_the_bulge.html',
+    steam:'https://store.steampowered.com/app/3265620/SGS_Battle_of_the_Bulge/',
+    site:'https://strategygamestudio.com/strategy-game-studio-battle-bulge-boxshot-3/',
+    hardest:'Allied Forces (Turns 1–5)',
   },
   {
-    id:        'overlord',
-    title:     'SGS Overlord',
-    subtitle:  'Operation Overlord, Normandy 1944',
-    era:       'ww2',
-    period:    'Second World War',
-    engine:    'SGS Engine v1.5',
-    sections:  17,
-    scenarios: 6,
-    sides:     ['Allied Forces', 'Wehrmacht / Waffen-SS'],
-    hardest:   'Allied Forces',
-    desc:      'The largest amphibious operation in history. From D-Day to the Falaise Pocket, command Allied forces pushing through the Norman bocage or hold the line as the Wehrmacht fights for time against overwhelming material superiority.',
-    detail:    'SGS Overlord covers the complete Normandy campaign from June 6th to September 3rd, 1944. The Allied player faces a uniquely difficult challenge: superior material power is constantly stymied by the bocage terrain, supply fragility, inter-Allied zone restrictions, and strict operational timelines. The German player has no air support but excellent terrain, high-quality Panzer and SS formations, and the ability to inflict punishing attrition on attacking forces.',
-    sideA: { label: 'Allied Forces',          body: 'US, British, Canadian, Polish, and French formations. Overwhelming air and naval support \u2014 when weather allows. Supply-dependent, terrain-frustrated, and racing against a historical clock. The hardest side to play well.' },
-    sideB: { label: 'Wehrmacht / Waffen-SS',  body: 'No air support whatsoever; random reinforcement timing. Compensated by terrain mastery, elite Panzer and SS formations, and the defensive advantage of bocage. Easier to learn; deeply satisfying to play well.' },
-    tags:  ['D-Day','Bocage','Operation Cobra','Falaise Pocket','Weather','PBEM'],
-    file:  'https://t1ckles.github.io/nadir/overlord.html',
-    steam: 'https://store.steampowered.com/app/2639440/SGS_Overlord/',
-    site:  'https://strategygamestudio.com/wargame/sgs-overlord/',
+    id:'overlord',genre:'strategy',era:'ww2',
+    title:'SGS Overlord',subtitle:'Operation Overlord, Normandy 1944',
+    period:'Second World War',engine:'SGS Engine v1.5',sections:17,scenarios:6,
+    desc:'The largest amphibious operation in history. From D-Day to the Falaise Pocket, command Allied forces pushing through the Norman bocage or hold the line as the Wehrmacht fights for time against overwhelming material superiority.',
+    detail:'SGS Overlord covers the complete Normandy campaign from June 6th to September 3rd, 1944. The Allied player faces superior material power stymied by bocage terrain, supply fragility, and strict operational timelines. Six scenarios across the full campaign.',
+    sideA:{label:'Allied Forces',body:'Overwhelming air and naval support — when weather allows. Supply-dependent, terrain-frustrated, racing against a historical clock.'},
+    sideB:{label:'Wehrmacht / Waffen-SS',body:'No air support whatsoever; compensated by terrain mastery, elite Panzer and SS formations, and the defensive advantage of bocage.'},
+    tags:['D-Day','Bocage','Operation Cobra','Falaise Pocket','Weather','PBEM'],
+    file:'https://t1ckles.github.io/nadir/overlord.html',
+    steam:'https://store.steampowered.com/app/2639440/SGS_Overlord/',
+    site:'https://strategygamestudio.com/wargame/sgs-overlord/',
+    hardest:'Allied Forces',
   },
   {
-    id:        'fall-weiss',
-    title:     'SGS Fall Weiss',
-    subtitle:  'Invasion of Poland, September 1939',
-    era:       'ww2',
-    period:    'Second World War',
-    engine:    'SGS Engine v1.5',
-    sections:  18,
-    scenarios: 6,
-    sides:     ['Wehrmacht', 'Polish Armed Forces'],
-    hardest:   'Polish Armed Forces',
-    desc:      'Germany\'s opening blitzkrieg and Poland\'s desperate defence. Fall Weiss covers the five-week September Campaign of 1939 \u2014 an asymmetric clash of modern armoured doctrine against a brave but outgunned opponent fighting on multiple fronts.',
-    detail:    'SGS Fall Weiss simulates the September 1939 invasion of Poland. The German player commands a mechanised force with overwhelming air superiority and superior operational tempo, tasked with encircling and destroying the Polish army before it can withdraw to defensible lines. The Polish player must trade space for time, concentrate forces at critical chokepoints, and exploit terrain and weather to inflict enough attrition to deny Germany a clean, rapid victory.',
-    sideA: { label: 'Wehrmacht',           body: 'Mechanised infantry, Panzer divisions, and total air superiority. Fast and powerful; the challenge is achieving decisive encirclements rather than pushing Poland back in a disorganised retreat.' },
-    sideB: { label: 'Polish Armed Forces', body: 'Outnumbered and outgunned but fighting on home terrain. Must delay, attrit, and hold key cities long enough to deny Germany a rapid campaign victory. The harder and more demanding side.' },
-    tags:  ['Blitzkrieg','September Campaign','Encirclement','Air Superiority','PBEM'],
-    file:  'https://t1ckles.github.io/nadir/fall_weiss.html',
-    steam: 'https://store.steampowered.com/app/1747580/SGS_Fall_Weiss/',
-    site:  'https://strategygamestudio.com/shop/sgs-fall-weiss/',
+    id:'fall-weiss',genre:'strategy',era:'ww2',
+    title:'SGS Fall Weiss',subtitle:'Invasion of Poland, September 1939',
+    period:'Second World War',engine:'SGS Engine v1.5',sections:18,scenarios:6,
+    desc:'Germany\'s opening blitzkrieg and Poland\'s desperate defence. Fall Weiss covers the five-week September Campaign — an asymmetric clash of modern armoured doctrine against a brave but outgunned opponent fighting on multiple fronts.',
+    detail:'SGS Fall Weiss simulates the September 1939 invasion. The German player commands mechanised forces with overwhelming air superiority, tasked with encircling the Polish army before it can withdraw to defensible lines.',
+    sideA:{label:'Wehrmacht',body:'Mechanised infantry, Panzer divisions, and total air superiority. The challenge is decisive encirclement rather than disorganised pursuit.'},
+    sideB:{label:'Polish Armed Forces',body:'Outnumbered and outgunned but fighting on home terrain. Must delay, attrit, and hold key cities long enough to deny Germany a rapid victory.'},
+    tags:['Blitzkrieg','September Campaign','Encirclement','Air Superiority','PBEM'],
+    file:'https://t1ckles.github.io/nadir/fall_weiss.html',
+    steam:'https://store.steampowered.com/app/1747580/SGS_Fall_Weiss/',
+    site:'https://strategygamestudio.com/shop/sgs-fall-weiss/',
+    hardest:'Polish Armed Forces',
   },
   {
-    id:        'afrika-korps',
-    title:     'SGS Afrika Korps',
-    subtitle:  'The Desert War, North Africa 1940\u20131942',
-    era:       'ww2',
-    period:    'Second World War',
-    engine:    'SGS Engine',
-    sections:  16,
-    scenarios: 8,
-    sides:     ['Axis Forces (Germany & Italy)', 'Allied Forces (Commonwealth)'],
-    hardest:   'Allied Forces',
-    desc:      'Rommel\u2019s Afrika Korps versus the Desert Rats in the defining campaign of the North African theatre. From Italy\u2019s 1940 offensive to the decisive battles of El Alamein \u2014 the desert pendulum swings both ways, and supply decides everything.',
-    detail:    'SGS Afrika Korps recreates the campaigns of Rommel\u2019s legendary Afrika Korps across Libya and Egypt from 1940 to late 1942. The campaign is defined by a self-balancing elastic tether: the nearer an army advances to its objective, the longer and more vulnerable its supply line becomes. Eight scenarios cover every phase from the Italian offensive to El Alamein. Weekly turns at divisional and brigade scale.',
-    sideA: { label: 'Axis Forces (Germany & Italy)', body: 'Elite German Panzer divisions with Rommel at their head, supported by Italian formations of variable quality. Powerful early but supply-constrained and time-pressured. Must reach Suez before Allied strength becomes overwhelming.' },
-    sideB: { label: 'Allied Forces (Commonwealth)',  body: 'British, Australian, New Zealand, Indian, South African, Free French, and Polish formations. Materially stronger in the long run; weaker in the early mobile battles. Play to the terrain, fix the flanks at El Alamein, and let time do the work.' },
-    tags:  ['Desert War','Rommel','Operation Crusader','El Alamein','Supply Lines','PBEM'],
-    file:  'https://t1ckles.github.io/nadir/afrika_korps.html',
-    steam: 'https://store.steampowered.com/app/1266640/SGS_Afrika_Korps/',
-    site:  'https://strategygamestudio.com/games/sgs-afrika-korps/',
+    id:'afrika-korps',genre:'strategy',era:'ww2',
+    title:'SGS Afrika Korps',subtitle:'The Desert War, North Africa 1940–1942',
+    period:'Second World War',engine:'SGS Engine v1.5',sections:16,scenarios:8,
+    desc:'Rommel\'s Afrika Korps versus the Desert Rats in the defining campaign of the North African theatre. From Italy\'s 1940 offensive to the decisive battles of El Alamein — the desert pendulum swings both ways, and supply decides everything.',
+    detail:'SGS Afrika Korps recreates the campaigns of Rommel\'s legendary Afrika Korps across Libya and Egypt from 1940 to late 1942. Eight scenarios cover every phase from the Italian offensive to El Alamein.',
+    sideA:{label:'Axis Forces (Germany & Italy)',body:'Elite German Panzer divisions with Rommel at their head, supported by Italian formations of variable quality. Supply-constrained and time-pressured.'},
+    sideB:{label:'Allied Forces (Commonwealth)',body:'Materially stronger in the long run; weaker in early mobile battles. Play to the terrain, fix the flanks at El Alamein, and let time do the work.'},
+    tags:['Desert War','Rommel','Operation Crusader','El Alamein','Supply Lines','PBEM'],
+    file:'https://t1ckles.github.io/nadir/afrika_korps.html',
+    steam:'https://store.steampowered.com/app/1266640/SGS_Afrika_Korps/',
+    site:'https://strategygamestudio.com/games/sgs-afrika-korps/',
+    hardest:'Allied Forces',
+  },
+  /* ── MECH / TACTICAL ── */
+  {
+    id:'battletech',genre:'strategy',era:'scifi',
+    title:'BattleTech',subtitle:'Mercenary Lance Command, Aurigan Reach 3025',
+    period:'Science Fiction & Far Future',engine:'Harebrained Schemes / Unity Engine',sections:24,scenarios:2,
+    desc:'Turn-based \'Mech warfare and hard-nosed mercenary management in the far future. Command a lance of towering BattleMechs through the Aurigan Reach — balancing initiative, heat, stability, and C-bill solvency while building a company that survives the Inner Sphere.',
+    detail:'The Mercenary Commander\'s Field Manual covers every system of BattleTech in 24 chapters — the initiative phase, heat threshold system, stability-knockdown-called shot pipeline, evasion mechanics, pilot skill trees, the Argo upgrade guide, and full glossary.',
+    sideA:{label:'Your Mercenary Company',body:'Four \'Mechs, a battered Argo, pilots whose skills must be developed carefully. Every tactical decision has a financial consequence on the campaign layer.'},
+    sideB:{label:'The Aurigan Directorate & Enemies',body:'Escalating opposition from light lances to full assault formations, scaled by contract skull rating. Understanding what you face and building to counter it is the strategic game.'},
+    tags:['Turn-Based Tactics','Mercenary Management','Heat Management','Lance Composition','Pilot Skills','Salvage','Argo Upgrades'],
+    file:'https://t1ckles.github.io/nadir/battletech.html',
+    steam:'https://store.steampowered.com/app/637090/BATTLETECH/',
+    site:'https://www.paradoxinteractive.com/games/battletech/about',
+    hardest:'Campaign (Story Missions + Financial Management)',sidesLabel:'Your Company & Its Enemies',scenariosLabel:'Game Modes',
   },
   {
-    id:        'battletech',
-    title:     'BattleTech',
-    subtitle:  'Mercenary Lance Command, Aurigan Reach 3025',
-    era:       'scifi',
-    period:    'Science Fiction & Far Future',
-    engine:    'Harebrained Schemes / Unity Engine',
-    sections:  24,
-    scenarios: 2,
-    sides:     ['Your Mercenary Company', 'The Inner Sphere & Aurigan Directorate'],
-    hardest:   'Campaign (Story Missions + Financial Management)',
-    sidesLabel:    'Your Company & Its Enemies',
-    scenariosLabel: 'Game Modes',
-    desc:      'Turn-based \u2018Mech warfare and hard-nosed mercenary management in the far future. Command a lance of towering BattleMechs through the Aurigan Reach\u2019s civil war \u2014 balancing initiative, heat, stability, and C-bill solvency while building a company that can survive the brutal attrition of the Inner Sphere.',
-    detail:    'The Mercenary Commander\u2019s Field Manual covers every system of Harebrained Schemes\u2019 2018 BattleTech in 24 in-depth chapters. The guide walks through the full tactical layer \u2014 initiative phases and the power of Reservation, the heat threshold system, the stability-knockdown-called shot pipeline, evasion mechanics and their late-game limitations, and the morale-driven Vigilance and Precision Strike abilities \u2014 alongside complete pilot skill tree analysis across all four branches (Gunnery, Piloting, Guts, Tactics), six named pilot class builds, all four \u2018Mech weight classes, a 13-entry key \u2018Mech roster with strategic notes, the full Argo upgrade priority guide, salvage strategy and C-bill management doctrine, contract selection and star map routing, phased early/mid/late-game progression frameworks, four named lance archetypes, and a 40-entry glossary.',
-    sideA: { label: 'Your Mercenary Company', body: 'Four \u2018Mechs, a battered Argo, and a roster of pilots whose skills must be developed through careful XP investment. Every tactical decision \u2014 heat, initiative, focus fire, called shots \u2014 has a financial consequence on the campaign layer. Master both layers or lose both.' },
-    sideB: { label: 'The Aurigan Directorate & Enemies', body: 'Escalating opposition from light lances to full assault \u2018Mech formations, scaled by contract skull rating. Story missions bring Directorate commanders and named units. Understanding what you face \u2014 and building the lance to counter it \u2014 is the strategic game.' },
-    tags:  ['Turn-Based Tactics','Mercenary Management','Heat Management','Lance Composition','Pilot Skills','Salvage','Argo Upgrades','Inner Sphere 3025'],
-    file:  'https://t1ckles.github.io/nadir/battletech.html',
-    steam: 'https://store.steampowered.com/app/637090/BATTLETECH/',
-    site:  'https://www.paradoxinteractive.com/games/battletech/about',
+    id:'front-mission-1st',genre:'strategy',era:'scifi',
+    title:'Front Mission 1st: Remake',subtitle:'The Second Huffman Conflict, OCU & UCS, 2090',
+    period:'Science Fiction & Far Future',engine:'MegaPixel Studio / Forever Entertainment',sections:24,scenarios:2,
+    desc:'The classic that started it all, remade. Captain Royd Clive hunts for answers on Huffman Island while the Second Conflict erupts — and discovers a conspiracy neither side wants exposed. Both OCU and UCS campaigns fully covered.',
+    detail:'The Huffman Field Manual covers both campaigns in 24 chapters — grid-based combat, Wanzer part targeting, the use-based skill growth system, Battle Skills, Wanzer anatomy, the Arena, and the inter-mission Network.',
+    sideA:{label:'O.C.U. Canyon Crows (Primary)',body:'Royd Clive leads a growing mercenary squad. More character development, more pilots, more strategic depth. The intended first playthrough.'},
+    sideB:{label:'U.C.S. (Kevin Greenfield)',body:'Special forces operative on the opposing side. Harder missions, smaller squad, morally ambiguous objectives. Designed as the second playthrough.'},
+    tags:['Huffman Island','Wanzer Customisation','Part Targeting','Arena','Battle Skills','Two Campaigns','OCU vs UCS'],
+    file:'https://t1ckles.github.io/nadir/front_mission_1st.html',
+    steam:'https://store.steampowered.com/app/2399730/FRONT_MISSION_1st_Remake/',
+    site:'https://frontmissionremake.com/',
+    hardest:'UCS Campaign',sidesLabel:'The Two Campaigns',scenariosLabel:'Story Routes',
   },
   {
-    id:        'front-mission-1st',
-    title:     'Front Mission 1st: Remake',
-    subtitle:  'The Second Huffman Conflict, OCU &amp; UCS, 2090',
-    era:       'scifi',
-    period:    'Science Fiction & Far Future',
-    engine:    'MegaPixel Studio / Forever Entertainment',
-    sections:  24,
-    scenarios: 2,
-    sides:     ['O.C.U. (Canyon Crows)', 'U.C.S. Forces'],
-    hardest:   'UCS Campaign (Special Forces Deployment)',
-    sidesLabel:    'The Two Campaigns',
-    scenariosLabel: 'Story Routes',
-    desc:      'The classic that started it all, remade for modern platforms. Captain Royd Clive is discharged from the O.C.U. military after the Larcus Incident destroys his unit and his fianc\u00e9e goes missing. Recruited to lead the Canyon Crows mercenaries, he hunts for answers while Huffman Island descends into the Second Conflict \u2014 and discovers a conspiracy neither side wants exposed.',
-    detail:    'The Huffman Field Manual covers both the OCU and UCS campaigns across 24 chapters. The guide walks through the grid-based combat system, individual Wanzer part targeting and destruction (body, arms, legs), the use-based skill growth system for Melee, Short, Long, and Dodge categories, all key Battle Skills (First, Stun, Switch, Double, Part Target), Wanzer anatomy and the weight budget, all five archetype types, the Arena development system, the inter-mission Network, and phased early/mid/late-game strategic frameworks. Every chapter opens with in-universe lore dispatches from the Canyon Crows. Includes a 35-entry glossary covering all pilots, mechanics, factions, and the complete Front Mission 1st universe.',
-    sideA: { label: 'O.C.U. Canyon Crows (Primary)', body: 'Royd Clive leads a growing mercenary squad through Huffman Island\u2019s civil war. More character development, more pilots, more strategic depth. The intended first playthrough \u2014 learn the system here before tackling the harder USN side.' },
-    sideB: { label: 'U.C.S. (Kevin Greenfield)', body: 'Special forces operative on the opposing side of every event in the OCU campaign. Harder missions, smaller squad, morally ambiguous objectives. Designed as the second playthrough \u2014 the opposing perspective that recontextualises the entire conflict.' },
-    tags:  ['Huffman Island','Wanzer Customisation','Part Targeting','Arena','Battle Skills','Two Campaigns','OCU vs UCS','2090'],
-    file:  'https://t1ckles.github.io/nadir/front_mission_1st.html',
-    steam: 'https://store.steampowered.com/app/2399730/FRONT_MISSION_1st_Remake/',
-    site:  'https://frontmissionremake.com/',
+    id:'front-mission-2',genre:'strategy',era:'scifi',
+    title:'Front Mission 2: Remake',subtitle:'The Alordesh Coup D\'état, 2102',
+    period:'Science Fiction & Far Future',engine:'Storm Trident / Forever Entertainment',sections:27,scenarios:3,
+    desc:'Twelve years after Huffman, a military coup tears apart the People\'s Republic of Alordesh. Three unconnected survivors discover the coup is a front for something far more dangerous. The most mechanically complex Front Mission title.',
+    detail:'The Alordesh Dossier covers all three protagonist perspectives across 27 chapters — the AP system, GEO terrain integration, counter-fire conditions, Honor Point development, computer upgrades, and the full Network lore layer.',
+    sideA:{label:'Ash Faruk — Muddy Otters',body:'OCU-MDF corporal trapped in his own home country when the coup erupts. Guerrilla operations in urban and forest terrain. The most character-driven perspective.'},
+    sideB:{label:'Thomas Norland / Lisa Stanley',body:'Thomas: mercenary contractor with ambiguous loyalties. Lisa: intelligence operative who understands the FENRIR conspiracy before anyone else. Both required for the full story.'},
+    tags:['AP System','GEO Terrain','Alordesh','FENRIR','Three Protagonists','Honor Skills','Panic Mechanic'],
+    file:'https://t1ckles.github.io/nadir/front_mission_2.html',
+    steam:'https://store.steampowered.com/app/2865440/FRONT_MISSION_2_Remake/',
+    site:'https://frontmissionremake.com/front-mission-2/',
+    hardest:'Lisa Stanley Campaign',sidesLabel:'Three Perspectives',scenariosLabel:'Story Perspectives',
   },
   {
-    id:        'front-mission-2',
-    title:     'Front Mission 2: Remake',
-    subtitle:  'The Alordesh Coup D\u2019\u00e9tat, 2102',
-    era:       'scifi',
-    period:    'Science Fiction & Far Future',
-    engine:    'Storm Trident / Forever Entertainment',
-    sections:  27,
-    scenarios: 3,
-    sides:     ['Ash Faruk (Muddy Otters)', 'Thomas Norland / Lisa Stanley'],
-    hardest:   'Lisa Stanley Campaign (Intelligence Operations)',
-    sidesLabel:    'Three Perspectives',
-    scenariosLabel: 'Story Perspectives',
-    desc:      'Twelve years after Huffman, a military coup tears apart the People\'s Republic of Alordesh. Three unconnected survivors \u2014 OCU corporal Ash Faruk, mercenary Thomas Norland, and intelligence operative Lisa Stanley \u2014 discover the coup is a front for something far more dangerous. The most mechanically complex Front Mission title, introducing the AP system and the GEO terrain mechanics that define the series at its hardest.',
-    detail:    'The Alordesh Dossier covers all three protagonist perspectives across 27 chapters. The guide provides a complete deep-dive into the AP (Action Point) system \u2014 FM2\'s defining mechanic, where current AP governs accuracy, evasion, and Panic status simultaneously \u2014 the GEO terrain integration, counter-fire conditions, the Honor Point and Combat Skill development system (First Strike, Double Attack, Evade, AP Boost), the new head component and its tactical targeting implications, computer upgrades and mode-switching, the Light Mobility Doctrine for front-line builds, per-squad composition guides for all three protagonist teams, and the Network lore layer. Includes a 35-entry glossary. The definitive guide to the series\u2019 hardest entry.',
-    sideA: { label: 'Ash Faruk \u2014 Muddy Otters', body: 'OCU-MDF corporal trapped in his own home country when the coup erupts. Guerrilla operations in urban and forest terrain. The most character-driven perspective; the natural entry point into FM2\'s three-way narrative.' },
-    sideB: { label: 'Thomas Norland / Lisa Stanley', body: 'Thomas: mercenary contractor whose only loyalty is his crew \u2014 the game\'s most morally ambiguous perspective. Lisa: intelligence operative who understands the FENRIR conspiracy before anyone else and cannot share what she knows. Both perspectives are required for the full story.' },
-    tags:  ['AP System','GEO Terrain','Alordesh','FENRIR','Three Protagonists','Honor Skills','Panic Mechanic','2102'],
-    file:  'https://t1ckles.github.io/nadir/front_mission_2.html',
-    steam: 'https://store.steampowered.com/app/2865440/FRONT_MISSION_2_Remake/',
-    site:  'https://frontmissionremake.com/front-mission-2/',
+    id:'front-mission-3',genre:'strategy',era:'scifi',
+    title:'Front Mission 3: Remake',subtitle:'The MIDAS Conspiracy, Japan & Da Han Zhong, 2112',
+    period:'Science Fiction & Far Future',engine:'MegaPixel Studio / Forever Entertainment',sections:26,scenarios:2,
+    desc:'A routine Wanzer delivery goes wrong when a weapon of mass destruction goes missing. Test pilot Kazuki Takemura is caught in the middle — and a single early choice sends him down one of two complete campaigns with different allies, enemies, Wanzers, and endings.',
+    detail:'The MIDAS Dossier covers both routes across 26 chapters — the Battle Skill system, Ace Rank progression, all eight essential skill types, the five Wanzer archetypes, the Network\'s recruitment role, and per-route character guides.',
+    sideA:{label:'Emma Route (Go with Ryogo)',body:'Kazuki allies with USN operative Emma Klamsky. More narrative scaffolding; preferred first playthrough.'},
+    sideB:{label:'Alisa Route (Stay Behind)',body:'Kazuki allies with DHZ intelligence and his sister Alisa. Harder in specific missions; provides exclusive pilots and Wanzers.'},
+    tags:['Battle Skills','Ace Rank','Combo System','Dual Routes','MIDAS','Wanzer Archetypes','Network'],
+    file:'https://t1ckles.github.io/nadir/front_mission_3.html',
+    steam:'https://store.steampowered.com/app/3795900/FRONT_MISSION_3_Remake/',
+    site:'https://frontmissionremake.com/front-mission-3/',
+    hardest:'Alisa Route',sidesLabel:'The Two Routes',scenariosLabel:'Story Routes',
+  },
+  /* ── GRAND STRATEGY / 4X ── */
+  {
+    id:'dominions-6',genre:'4x',era:'scifi',
+    title:'Dominions 6',subtitle:'Rise of the Pantokrator',
+    period:'Science Fiction & Fantasy',engine:'Illwinter Turn-Based Engine',sections:23,scenarios:3,
+    desc:'A colossal turn-based high-fantasy wargame of unparalleled depth. Design a Pretender God, lead thousands of mythological units, forge legendary magical relics, and claim the empty throne of the universe.',
+    detail:'The Ascendancy Guide outlines multi-era frameworks across Early, Middle, and Late stages — seven schools of magic, blood sacrifice scaling, province scales, bless configurations, and script-level auto-orders.',
+    sideA:{label:'Your Pretender God',body:'Choose from hundreds of forms: immortal archmages, multi-headed dragons, font structures, or ancient stone monuments. Tailor dominion scales and custom bless attributes.'},
+    sideB:{label:'The Aspirant Pantokrators',body:'Overlapping AI factions or global human opponents operating simultaneous turns. Demands complete knowledge of opposing nation troop strengths and magic path access.'},
+    tags:['Turn-Based Strategy','Pretender Design','Magic Paths','Domain Scales','Simultaneous Turns','Bless Effects'],
+    file:'https://t1ckles.github.io/nadir/dominions_6.html',
+    steam:'https://store.steampowered.com/app/2511500/Dominions_6__Rise_of_the_Pantokrator/',
+    site:'https://www.illwinter.com/dom6/',
+    hardest:'Late Era Factions (High Magic Complexity)',sidesLabel:'Your Domain & Rivals',scenariosLabel:'Historical Eras',
   },
   {
-    id:        'front-mission-3',
-    title:     'Front Mission 3: Remake',
-    subtitle:  'The MIDAS Conspiracy, Japan &amp; Da Han Zhong, 2112',
-    era:       'scifi',
-    period:    'Science Fiction & Far Future',
-    engine:    'MegaPixel Studio / Forever Entertainment',
-    sections:  26,
-    scenarios: 2,
-    sides:     ['Emma Route (USN Path)', 'Alisa Route (DHZ Path)'],
-    hardest:   'Alisa Route \u2014 Harder Missions, Exclusive Pilots',
-    sidesLabel:    'The Two Routes',
-    scenariosLabel: 'Story Routes',
-    desc:      'A routine Wanzer delivery goes wrong when a weapon of mass destruction \u2014 MIDAS, a biological bomb with no radiation signature \u2014 goes missing and every Pacific power scrambles to claim it. Test pilot Kazuki Takemura is caught in the middle, and a single early choice sends him down one of two complete campaigns with different allies, enemies, available Wanzers, and endings. The most accessible Front Mission entry, built around the Battle Skill combo system.',
-    detail:    'The MIDAS Dossier covers both the Emma and Alisa routes across 26 chapters. The guide provides a full analysis of the Battle Skill system \u2014 100 skills learned from Wanzer parts, stored in the pilot\u2019s computer, triggered by activation rate to produce combo chains \u2014 the Ace Rank progression (0\u20139, expanding computer slot count), all eight essential skill types (ROF1up, Shield Atk, Stun Punch, Dbl Shot, Skill+Xup, Toppleshot, AP 30%, Salvo), the five Wanzer archetypes (Assault, Gunner, Grappler, Sniper, Launcher) and their cross-archetype mixing freedom, the Network\u2019s critical role in recruitment and equipment access, the Battle Simulator, and per-route character guides for all key pilots in both campaigns. Includes a 35-entry glossary.',
-    sideA: { label: 'Emma Route (Go with Ryogo)', body: 'Kazuki allies with USN operative Emma Klamsky, whose arc of responsibility for MIDAS is the game\u2019s moral core. More narrative scaffolding; preferred first playthrough; gives access to Pham Luis and her Shield Atk-I teaching Zeros Wanzer.' },
-    sideB: { label: 'Alisa Route (Stay Behind)', body: 'Kazuki allies with DHZ intelligence and his sister Alisa. Harder in specific missions; provides exclusive access to Liu Hei Fong as an ally and Alisa\u2019s Meledyne M1 Wanzer whose legs teach the route-exclusive Skill+1up Battle Skill.' },
-    tags:  ['Battle Skills','Ace Rank','Combo System','Dual Routes','MIDAS','Wanzer Archetypes','Network','Battle Simulator','2112'],
-    file:  'https://t1ckles.github.io/nadir/front_mission_3.html',
-    steam: 'https://store.steampowered.com/app/3795900/FRONT_MISSION_3_Remake/',
-    site:  'https://frontmissionremake.com/front-mission-3/',
+    id:'distant-worlds-universe',genre:'4x',era:'scifi',
+    title:'Distant Worlds: Universe',subtitle:'Pausable Real-Time 4X Grand Strategy',
+    period:'Science Fiction',engine:'Distant Worlds Engine',sections:17,scenarios:5,
+    desc:'A living galaxy of up to 2,000 star systems, a dual public/private economy, 22 playable races, and as much or as little automation as you want. One of the deepest 4X strategy games ever made — and one of the most misunderstood.',
+    detail:'Distant Worlds: Universe is a vast pausable real-time 4X grand strategy game. The guide covers all 22 playable races, all major systems, the Shakturi threat, government types, ship design, and full early/mid/late-game frameworks.',
+    sideA:{label:'Your Empire',body:'Choose from 22 races across 7 biological families. Set policy, manage research, design ships — the private economy runs itself. The challenge is knowing what to automate and what to control personally.'},
+    sideB:{label:'The Galaxy & Shakturi',body:'Rival empires, pirate factions, space monsters, and the looming Shakturi Return. The galaxy is a living, competitive environment that never waits.'},
+    tags:['Real-Time Pausable','4X Grand Strategy','22 Races','Dual Economy','Shakturi','Automation'],
+    file:'https://t1ckles.github.io/nadir/distant_worlds_universe.html',
+    steam:'https://store.steampowered.com/app/261470/Distant_Worlds_Universe/',
+    site:'https://www.matrixgames.com/game/distant-worlds-universe',
+    hardest:'Any Race (Automation Mastery Required)',sidesLabel:'Your Faction & The Galaxy',scenariosLabel:'Victory Types',
   },
   {
-    id:        'dominions-6',
-    title:     'Dominions 6',
-    subtitle:  'Rise of the Pantokrator',
-    era:       'scifi',
-    period:    'Science Fiction & Fantasy',
-    engine:    'Illwinter Turn-Based Engine',
-    sections:  23,
-    scenarios: 3,
-    sides:     ['Your Pretender God', 'The Aspirant Pantokrators'],
-    hardest:   'Late Era Factions (High Magic Complexity)',
-    sidesLabel:    'Your Domain & Rivals',
-    scenariosLabel: 'Historical Eras',
-    desc:      'A colossal turn-based high-fantasy wargame of unparalleled depth. Design a Pretender God, lead thousands of mythological units, forge legendary magical relics, and claim the empty throne of the universe.',
-    detail:    'The Ascendancy Guide outlines complete multi-era frameworks across Early, Middle, and Late-stage eras. Mastery requires navigating complex pathing across seven schools of elemental and sorcerous magic, scaling blood sacrifices, establishing stable province scales, designing modular bless configurations, and tuning script-level auto-orders for complex battlefield formations.',
-    sideA: { label: 'Your Pretender God', body: 'Choose from hundreds of forms: immortal archmages, multi-headed dragons, font structures, or ancient stone monuments. Tailor your dominion scales, production limits, and custom dynamic bless attributes.' },
-    sideB: { label: 'The Aspirant Pantokrators', body: 'Overlapping AI factions or global human opponents operating simultaneous turns. Demands complete knowledge of opposing nation troop strengths, unique magic line access, and specific situational path limits.' },
-    tags:  ['Turn-Based Strategy','Pretender Design','Magic Paths','Domain Scales','Simultaneous Turns','Bless Effects'],
-    file:  'https://t1ckles.github.io/nadir/dominions_6.html',
-    steam: 'https://store.steampowered.com/app/2511500/Dominions_6__Rise_of_the_Pantokrator/',
-    site:  'https://www.illwinter.com/dom6/',
+    id:'conquest-of-elysium-5',genre:'strategy',era:'scifi',
+    title:'Conquest of Elysium 5',subtitle:'Dark Fantasy Conquest of the Planes, Elysium',
+    period:'Science Fiction & Fantasy',engine:'Illwinter Game Design',sections:24,scenarios:4,
+    desc:'A quick turn-based dark fantasy strategy game with twenty-four radically distinct factions, each playing by a completely different set of rules. The Baron fields levies. The Druid grows forests. The Scourge Lord drains the land itself. The same map; entirely different games.',
+    detail:'The Elysium Codex covers all twenty-four factions and ten planes across 24 chapters — every resource type, the full ritual tier system, the automated battle column system, seasonal events, and per-faction strategic guidance.',
+    sideA:{label:'Arcane & Ritual Factions',body:'Necromancer, Demonologist, Scourge Lord, Warlock, and others. Low early power; exponential late-game scaling through ritual investment.'},
+    sideB:{label:'Martial & Nature Factions',body:'Baron, Druid, Barbarian, Troll King, and others. Strong from Turn 1. Peak before arcane factions develop.'},
+    tags:['24 Factions','Roguelike Strategy','Dark Fantasy','Ritual System','10 Planes','Random Events'],
+    file:'https://t1ckles.github.io/nadir/conquest_of_elysium_5.html',
+    steam:'https://store.steampowered.com/app/1606340/Conquest_of_Elysium_5/',
+    site:'https://www.illwinter.com/coe5/',
+    hardest:'Demonologist (Binding Risk)',sidesLabel:'Your Faction & Its Rivals',scenariosLabel:'Society Settings',
   },
   {
-    id:        'nebulous-fleet-command',
-    title:     'Nebulous: Fleet Command',
-    subtitle:  'Simulation-Heavy Tactical Space Combat',
-    era:       'scifi',
-    period:    'Science Fiction',
-    engine:    'Eridanus Industries Tactical Engine',
-    sections:  14,
-    scenarios: 2,
-    sides:     ['Alliance Navy (ANS)', 'Outlying Systems Protectorate (OSP)'],
-    hardest:   'Alliance Navy (ANS) \u2014 Missile & EW Mastery Required',
-    sidesLabel:    'The Two Factions',
-    scenariosLabel: 'Faction Campaigns',
-    desc:      'The most simulation-faithful tactical space combat game available. Design custom fleets from the hull up, wage electronic warfare across the sensor spectrum, build bespoke missiles seeker-by-seeker, and outmanoeuvre opponents across fully three-dimensional asteroid-strewn battlefields.',
-    detail:    'The Commodore\'s Tactical Codex covers both the Alliance Navy and the Outlying Systems Protectorate in full doctrinal depth. All six ANS hull classes and all six OSP hulls are covered, alongside the complete missile design system, radar and EMCON discipline, electronic warfare jamming ratios, hardkill and softkill point defense layering, 3D terrain positioning, and five named fleet doctrines. Includes 30 standing orders in the Commodore\'s Codex.',
-    sideA: { label: 'Alliance Navy (ANS)', body: 'Purpose-built warships with superior radar suites, burnthrough fire control, and highly configurable hybrid missiles. Rewards meticulous pre-battle fleet editor planning and precise EW timing.' },
-    sideB: { label: 'Outlying Systems Protectorate (OSP)', body: 'Repurposed civilian vessels fitted for war. Wins through volume, close-range casemate saturation, and attrition economics. Do not play OSP like ANS; it requires a completely distinct doctrine.' },
-    tags:  ['Electronic Warfare','Missile Design','Fleet Editor','EMCON','Point Defense','3D Positioning','Radar Signature','Hardkill / Softkill'],
-    file:  'https://t1ckles.github.io/nadir/nebulous_fleet_command.html',
-    steam: 'https://store.steampowered.com/app/887570/NEBULOUS_Fleet_Command/',
-    site:  'https://wiki.hoodedhorse.com/NEBULOUS_Fleet_Command/NEBULOUS:_Fleet_Command_Official_Wiki',
+    id:'stellaris',genre:'4x',era:'scifi',
+    title:'Stellaris',subtitle:'Galactic Grand Strategy, the Year 2200',
+    period:'Science Fiction',engine:'Paradox Development Studio (v4.x)',sections:35,scenarios:4,
+    desc:'The definitive space grand strategy. In the year 2200 your species takes its first steps into a procedurally generated galaxy of hundreds of star systems. Build an empire from a single planet to galactic dominance — through conquest, diplomacy, trade, espionage, or by becoming the crisis yourself.',
+    detail:'The Galactic Codex covers every system of Stellaris 4.x across 35 chapters — empire creation, the Pop Group economy, Tradition trees, all three Ascension Paths, fleet design, Federations, the Galactic Community, all three End-Game Crises, and Gestalt empires.',
+    sideA:{label:'Your Empire (All Archetypes)',body:'Standard empires, MegaCorps, Hive Minds, and Machine Intelligences each require fundamentally different economic and military strategies.'},
+    sideB:{label:'The Galaxy & End-Game Crises',body:'Three galaxy-threatening crises. The Unbidden arrive through a dimensional portal; the Prethoryn Scourge consumes everything biological; the Contingency activates Sterilization Hubs on your worlds.'},
+    tags:['4X Grand Strategy','Pop Groups','Ascension Paths','End-Game Crises','Galactic Community','Federations','Ethics & Civics'],
+    file:'https://t1ckles.github.io/nadir/stellaris.html',
+    steam:'https://store.steampowered.com/app/281990/Stellaris/',
+    site:'https://www.paradoxinteractive.com/games/stellaris/about',
+    hardest:'Surviving the End-Game Crisis (Grand Admiral + 25x)',sidesLabel:'Your Empire & Its Rivals',scenariosLabel:'Victory Conditions',
   },
   {
-    id:        'distant-worlds-universe',
-    title:     'Distant Worlds: Universe',
-    subtitle:  'Pausable Real-Time 4X Grand Strategy',
-    era:       'scifi',
-    period:    'Science Fiction',
-    engine:    'Distant Worlds Engine',
-    sections:  17,
-    scenarios: 5,
-    sides:     ['Your Empire', 'Rival Empires / Shakturi'],
-    hardest:   'Any Race (Automation Mastery Required)',
-    sidesLabel:    'Your Faction & The Galaxy',
-    scenariosLabel: 'Victory Types',
-    ctalabel:  'Open Full Strategy Guide',
-    desc:      'A living galaxy of up to 2,000 star systems, a dual public/private economy, 22 playable races, and as much or as little automation as you want. One of the deepest 4X strategy games ever made \u2014 and one of the most misunderstood.',
-    detail:    'Distant Worlds: Universe is a vast, pausable real-time 4X grand strategy game covering exploration, expansion, and galactic domination. Its defining feature is the dual economy: a State economy you control directly and a Private economy operated autonomously by civilian AI ships. All four expansions included. The guide covers all 22 playable races, all major systems, the Shakturi threat, government types, ship design, and full early/mid/late-game strategic frameworks.',
-    sideA: { label: 'Your Empire',          body: 'Choose from 22 races across 7 biological families. Set policy, manage research, design ships, and govern \u2014 the private economy runs itself. The challenge is knowing what to automate and what to control personally.' },
-    sideB: { label: 'The Galaxy & Shakturi', body: 'Rival empires, pirate factions, space monsters, and the looming Shakturi Return. The galaxy is a living, competitive environment that never waits for you to be ready.' },
-    tags:  ['Real-Time Pausable','4X Grand Strategy','22 Races','Dual Economy','Shakturi','Automation'],
-    file:  'https://t1ckles.github.io/nadir/distant_worlds_universe.html',
-    steam: 'https://store.steampowered.com/app/261470/Distant_Worlds_Universe/',
-    site:  'https://www.matrixgames.com/game/distant-worlds-universe',
+    id:'nebulous-fleet-command',genre:'simulation',era:'scifi',
+    title:'Nebulous: Fleet Command',subtitle:'Simulation-Heavy Tactical Space Combat',
+    period:'Science Fiction',engine:'Eridanus Industries Tactical Engine',sections:14,scenarios:2,
+    desc:'The most simulation-faithful tactical space combat game available. Design custom fleets from the hull up, wage electronic warfare across the sensor spectrum, and build bespoke missiles seeker-by-seeker.',
+    detail:'The Commodore\'s Tactical Codex covers both factions in full doctrinal depth — all six ANS hull classes, all six OSP hulls, the complete missile design system, radar and EMCON discipline, electronic warfare, and five named fleet doctrines.',
+    sideA:{label:'Alliance Navy (ANS)',body:'Purpose-built warships with superior radar suites, burnthrough fire control, and highly configurable hybrid missiles. Rewards meticulous planning and precise EW timing.'},
+    sideB:{label:'Outlying Systems Protectorate (OSP)',body:'Repurposed civilian vessels fitted for war. Wins through volume, close-range casemate saturation, and attrition economics.'},
+    tags:['Electronic Warfare','Missile Design','Fleet Editor','EMCON','Point Defense','3D Positioning','Radar Signature'],
+    file:'https://t1ckles.github.io/nadir/nebulous_fleet_command.html',
+    steam:'https://store.steampowered.com/app/887570/NEBULOUS_Fleet_Command/',
+    site:'https://wiki.hoodedhorse.com/NEBULOUS_Fleet_Command/NEBULOUS:_Fleet_Command_Official_Wiki',
+    hardest:'Alliance Navy (ANS) — Missile & EW Mastery Required',sidesLabel:'The Two Factions',scenariosLabel:'Faction Campaigns',
+  },
+  /* ── ACTION RPG ── */
+  {
+    id:'ff7-remake-intergrade',genre:'action',era:'scifi',
+    title:'Final Fantasy VII Remake Intergrade',subtitle:'Midgar, the City of Steel — AVALANCHE & Shinra',
+    period:'Science Fiction & Fantasy',engine:'Square Enix / Unreal Engine 4',sections:28,scenarios:2,
+    desc:'The first chapter of Square Enix\'s FFVII trilogy. Cloud and AVALANCHE fight to blow up Shinra\'s Mako reactors inside the city of Midgar — a full-length RPG built within a single city, ending with the party\'s escape and the Fate question rewritten. Includes the INTERmission Yuffie DLC chapter.',
+    detail:'The Midgar Operations Manual covers every system across 28 chapters — ATB mechanics, Pressure and Stagger, Materia pairings, all character builds, INTERmission Yuffie mechanics, Hard Mode doctrine, and a full glossary.',
+    sideA:{label:'AVALANCHE & Cloud Strife',body:'A mercenary, an eco-terrorist cell, and a flower seller against a corporate state with its own army. ATB-driven tactical combat demanding Stagger mastery and Materia knowledge.'},
+    sideB:{label:'INTERmission — Yuffie Kisaragi',body:'The DLC chapter adds Yuffie\'s Ninjutsu-based mechanics, a second party member (Sonon), and the Scarlet encounter — a distinct and valuable combat system expansion.'},
+    tags:['ATB Combat','Pressure & Stagger','Materia Builds','Hard Mode','INTERmission','Yuffie Ninjutsu','Midgar'],
+    file:'https://t1ckles.github.io/nadir/final_fantasy_vii_remake_intergrade.html',
+    steam:'https://store.steampowered.com/app/1462040/FINAL_FANTASY_VII_REMAKE_INTERGRADE/',
+    site:'https://www.square-enix.com/ffvii/en-us/games/remake-intergrade/',
+    hardest:'Hard Mode (No Items, Limited MP)',sidesLabel:'The Two Perspectives',scenariosLabel:'Story Routes',
   },
   {
-    id:        'conquest-of-elysium-5',
-    title:     'Conquest of Elysium 5',
-    subtitle:  'Dark Fantasy Conquest of the Planes, Elysium',
-    era:       'scifi',
-    period:    'Science Fiction & Fantasy',
-    engine:    'Illwinter Game Design',
-    sections:  24,
-    scenarios: 4,
-    sides:     ['Your Chosen Faction', 'Rival Factions & the Planes'],
-    hardest:   'Demonologist (Binding Risk) / Pale One (Prophecy System)',
-    sidesLabel:    'Your Faction & Its Rivals',
-    scenariosLabel: 'Society Settings',
-    desc:      'A quick turn-based dark fantasy strategy game with twenty-four radically distinct factions, each playing by a completely different set of rules. No two factions share a resource system, a ritual tree, or a win condition. The Baron fields levies. The Druid grows forests. The Scourge Lord drains the life from the land itself. The Necromancer feeds on the battlefield’s dead. The same map; entirely different games.',
-    detail:    'The Elysium Codex covers all twenty-four factions and ten planes across 24 chapters. The guide walks through every resource type — Gold, Iron, Herbs, Sacrifices, Gems, Mushrooms, Hands of Glory, Relics, Corpses, Lifeforce, and Candles — alongside the full ritual tier system (Level 1 through 3), the roguelike random starting ritual set, the automated battle column system, seasonal events and catastrophic random occurrences (from bumper harvests to underworld gates opening simultaneously across the map), all ten planes (Elysium, Agartha, Inferno, Hades, Celestial, four Elemental Planes, and the Cloud Layer), per-faction strategic guidance for every class from the beginner Baron through the advanced Scourge Lord and Demonologist, the arcane-vs-martial timing problem, and the full four Society setting variants. Includes a 45-entry glossary.',
-    sideA: { label: 'Arcane & Ritual Factions', body: 'Necromancer, Demonologist, Scourge Lord, Warlock, High Cultist, Illusionist, and others. Low early power; exponential late-game scaling through ritual investment. Must survive the martial factions’ early pressure window before rituals come online. Enormously powerful when they do.' },
-    sideB: { label: 'Martial & Nature Factions', body: 'Baron, Druid, Barbarian, Troll King, Enchanter, Senator, and others. Strong from Turn 1. Peak before arcane factions develop. The Baron’s annual levy of free knights and spearmen, the Druid’s Ent armies, and the Enchanter’s elemental-immune Clockwork Dragons represent three completely different paths to dominance.' },
-    tags:  ['24 Factions','Roguelike Strategy','Dark Fantasy','Ritual System','10 Planes','Random Events','Arcane vs Martial','Illwinter'],
-    file:  'https://t1ckles.github.io/nadir/conquest_of_elysium_5.html',
-    steam: 'https://store.steampowered.com/app/1606340/Conquest_of_Elysium_5/',
-    site:  'https://www.illwinter.com/coe5/',
+    id:'ff7-rebirth',genre:'action',era:'scifi',
+    title:'Final Fantasy VII Rebirth',subtitle:'The World Beyond Midgar — The Planet Calls',
+    period:'Science Fiction & Fantasy',engine:'Square Enix / Unreal Engine 5',sections:28,scenarios:3,
+    desc:'The second entry in Square Enix\'s FFVII trilogy. The party escapes Midgar and the Planet opens wide — seven regions, seven characters, the Synergy system, the Folio upgrade tree, and the Jenova Reunion on the horizon. The largest Final Fantasy game ever made.',
+    detail:'The World Traveller\'s Codex covers the full open world across 28 chapters — the Synergy mechanic, all seven characters with Folio build guides, Stagger Extension Synergy Abilities, the seven regions and their World Intel systems, Protorelics, Gilgamesh, Hard Mode doctrine, and a full glossary.',
+    sideA:{label:'The Open World — Seven Regions',body:'From Grasslands to the Meridian Ocean, the Planet reveals itself in seven distinct regions. Each has unique terrain, regional enemies, a Chocobo with unique traversal, and Protorelic questlines.'},
+    sideB:{label:'The Seven Characters',body:'Cloud, Tifa, Barret, Aerith, Red XIII, Yuffie, and Cait Sith — each with a unique Folio, unique Synergy Ability pairings, and a distinct mechanical identity.'},
+    tags:['Synergy System','Folio Builds','7 Characters','World Intel','Protorelics','Stagger Extension','Hard Mode','Open World'],
+    file:'https://t1ckles.github.io/nadir/final_fantasy_vii_rebirth.html',
+    steam:'https://store.steampowered.com/app/2909400/FINAL_FANTASY_VII_REBIRTH/',
+    site:'https://www.square-enix.com/ffvii/en-us/games/rebirth/',
+    hardest:'Hard Mode (No Items, Bench-Only MP)',sidesLabel:'The World & The Party',scenariosLabel:'Story Acts',
   },
   {
-    id:        'stellaris',
-    title:     'Stellaris',
-    subtitle:  'Galactic Grand Strategy, the Year 2200',
-    era:       'scifi',
-    period:    'Science Fiction',
-    engine:    'Paradox Development Studio (v4.x)',
-    sections:  35,
-    scenarios: 4,
-    sides:     ['Your Empire', 'The Galaxy & End-Game Crises'],
-    hardest:   'Surviving the End-Game Crisis (Grand Admiral + 25x)',
-    sidesLabel:    'Your Empire & Its Rivals',
-    scenariosLabel: 'Victory Conditions',
-    desc:      'The definitive space grand strategy. In the year 2200 your species takes its first steps into a procedurally generated galaxy of hundreds of star systems, alien civilisations, ancient ruins, and sleeping powers older than your homeworld. Build an empire from a single planet to galactic dominance — through conquest, diplomacy, trade, espionage, or by becoming the crisis yourself.',
-    detail:    'The Galactic Codex covers every system of Stellaris 4.x across 35 chapters. The guide walks through empire creation in full depth — species traits, the four ethical axes, all authority types (Democratic through Machine Intelligence), all major civics and their synergies, and all key origins from Prosperous Unification through Shattered Ring and Void Dwellers — then moves through the complete economy (the Pop Group system, Districts and Specialisation, Building Slot management, Consumer Goods bottleneck, Trade and Markets), the Tradition tree system across all eight trees, all Ascension Perks, the three Ascension Paths (Synthetic, Psionic, Biological), fleet design and naval doctrine, the Leader and Council system, Federations and the Galactic Community, espionage operations, Fallen and Awakened Empires, all three End-Game Crises (Unbidden, Prethoryn Scourge, Contingency), and the Become the Crisis mechanic. Gestalt empires (Hive Minds and Machine Intelligences) receive dedicated treatment. Includes a 50-entry glossary covering all DLC systems.',
-    sideA: { label: 'Your Empire (All Archetypes)', body: 'Standard empires, MegaCorps, Hive Minds, and Machine Intelligences each require fundamentally different economic and military strategies. The guide covers all four archetypes with dedicated build paths, tradition priorities, and ascension recommendations for each.' },
-    sideB: { label: 'The Galaxy & End-Game Crises', body: 'Rival empires, Fallen Empires, the Galactic Community, and three galaxy-threatening end-game crises. The Unbidden arrive through a dimensional portal; the Prethoryn Scourge consumes everything biological; the Contingency activates Sterilization Hubs on your worlds. Surviving any of them requires preparation that begins at year 50.' },
-    tags:  ['4X Grand Strategy','Pop Groups','Ascension Paths','End-Game Crises','Galactic Community','Federations','Ethics & Civics','Paradox'],
-    file:  'https://t1ckles.github.io/nadir/stellaris.html',
-    steam: 'https://store.steampowered.com/app/281990/Stellaris/',
-    site:  'https://www.paradoxinteractive.com/games/stellaris/about',
+    id:'stellar-blade',genre:'action',era:'scifi',
+    title:'Stellar Blade',subtitle:'Eve\'s Descent — Earth Reclaimed',
+    period:'Science Fiction',engine:'SHIFT UP / Unreal Engine 5',sections:26,scenarios:2,
+    desc:'A stylish action RPG from SHIFT UP. Eve descends from the Orbital Corps to a ruined Earth, fighting the Naytiba that destroyed it. A combat system built on precise parry timing, ATB-style Beta and Burst gauges, and unlockable exospines that reshape your capabilities entirely.',
+    detail:'The Eve Protocols covers the complete Stellar Blade combat system — Beta/Burst gauge management, the parry and perfect dodge timing windows, all Exospines with build recommendations, boss pattern breakdowns, New Game+ escalation, and colony/camp side content.',
+    sideA:{label:'Eve — Offensive Combat',body:'Beta Skills, Burst attacks, and aggression. The parry-into-counterattack loop is the game\'s highest-expression play, but aggressive Beta spending creates damage windows that reward risk.'},
+    sideB:{label:'Eve — Defensive/Reactive Combat',body:'Perfect dodges and parries build Burst gauge passively. The reactive playstyle trades peak damage for survivability — critical for Extreme difficulty and boss patterns.'},
+    tags:['Parry Timing','ATB Gauges','Exospines','Beta Skills','Burst Mode','Boss Patterns','New Game+'],
+    file:'https://t1ckles.github.io/nadir/stellar_blade.html',
+    steam:'https://store.steampowered.com/app/3489700/Stellar_Blade/',
+    site:'https://stellar-blade.com/index_pc.html',
+    hardest:'Extreme Difficulty (Boss Pattern Mastery)',sidesLabel:'Combat Philosophies',scenariosLabel:'Game Modes',
+  },
+  {
+    id:'endless-legend-ii',genre:'4x',era:'scifi',
+    title:'Endless Legend II',subtitle:'The Dying World of Saiadha — Five Factions, One Ocean',
+    period:'Science Fiction & Fantasy',engine:'Amplitude Studios / Unreal Engine 5',sections:28,scenarios:5,
+    desc:'Set on Saiadha, a world whose oceans are receding. Five radically asymmetric factions race to survive the Tidefall — a geological event that reshapes the entire map at specific points in the game. One of the most ambitious 4X designs in years.',
+    detail:'The Saiadha Codex covers all five factions, the Tidefall and Monsoon mechanics, the FIDSI economy, city foundations and districts, the Empire Council, all victory conditions, the first 30 turns guide, mid/late-game doctrine, and faction counter-play strategies.',
+    sideA:{label:'Kin, Aspects & Last Lords',body:'The three most accessible factions. The Kin\'s war constructs, the Aspects\' coral spreading, and the Last Lords\' Dust-based population offer three radically different paths.'},
+    sideB:{label:'Tahuks & Necrophage',body:'The Tahuks\' Illuminate chain and research advantage. The Necrophage\'s single-city swarm empire. Two of the most mechanically distinct faction designs in the game.'},
+    tags:['Tidefall Mechanic','FIDSI Economy','5 Asymmetric Factions','Empire Council','Monsoon Cycle','Coral Spreading','Ocean World'],
+    file:'https://t1ckles.github.io/nadir/endless_legend_II.html',
+    steam:'https://store.steampowered.com/app/3407390/ENDLESS_Legend_2/',
+    site:'https://www.hoodedhorse.com/games/endless-legend-2',
+    hardest:'Necrophage (Single City Empire)',sidesLabel:'Faction Groups',scenariosLabel:'Victory Paths',
+  },
+  {
+    id:'gothic-1-remake',genre:'rpg',era:'scifi',
+    title:'Gothic 1 Remake',subtitle:'Valley of Mines — Behind the Barrier, 2026',
+    period:'Science Fiction & Fantasy',engine:'Alkimia Interactive / Unreal Engine 5',sections:24,scenarios:3,
+    desc:'The June 2026 remake of Piranha Bytes\' cult classic. The Valley of Mines is a prison colony trapped behind a magical barrier — three factions fight for dominance while the Nameless Hero carves a path through a world that does not scale to his level. Every LP decision is permanent.',
+    detail:'The Prisoner\'s Codex covers the full Valley of Mines across 24 chapters — the LP and trainer system, the ore economy, all three faction paths with LP roadmaps, the rebuilt stamina-based combat system, magic circles and rune builds, all three build paths (Warrior/Ranger/Battlemage), the bestiary, and chapter structure.',
+    sideA:{label:'Old Camp & New Camp',body:'The Kin\'s iron order and the free miners\' rebellion. The two recommended faction paths for newcomers — Old Camp for pure Warriors, New Camp for magic and hybrid builds.'},
+    sideB:{label:'Sect Camp — Brotherhood of the Sleeper',body:'The cult in the swamp. Earliest magic access in the game; permanent Circle 4 ceiling. The most atmospheric and unusual faction path.'},
+    tags:['Non-Scaling World','LP System','3 Factions','Magic Circles','Stamina Combat','No Respec','Open World RPG'],
+    file:'https://t1ckles.github.io/nadir/gothic_1_remake.html',
+    steam:'https://store.steampowered.com/app/1297900/Gothic_1_Remake/',
+    site:'https://gothic.thqnordic.com/',
+    hardest:'Sect Camp Magic Build (Circle 4 Cap)',sidesLabel:'The Three Factions',scenariosLabel:'Faction Paths',
   },
 ];
 
-const COMING_SOON = [];
+const COMING_SOON=[];
+
+/* ─── GENRE DISPLAY LABELS ─── */
+const GENRE_LABELS={'strategy':'Strategy','4x':'4X Grand Strategy','action':'Action RPG','rpg':'RPG','simulation':'Simulation','survival':'Survival','adventure':'Adventure'};
 
 /* ─── STATE ─── */
-let activeFilter = 'all';
-let activeSearch = '';
-let activeSort   = 'default';
+let activeGenre='all',activeEra='all',activeSearch='',activeSort='default';
 
-function getVisible() {
-  let list = [...GUIDES];
-  if (activeFilter !== 'all') list = list.filter(g => g.era === activeFilter);
-  if (activeSearch.trim()) {
-    const q = activeSearch.toLowerCase();
-    list = list.filter(g =>
-      g.title.toLowerCase().includes(q) ||
-      g.subtitle.toLowerCase().includes(q) ||
-      g.period.toLowerCase().includes(q) ||
-      g.tags.some(t => t.toLowerCase().includes(q)) ||
-      g.desc.toLowerCase().includes(q)
+/* ─── FILTER / RENDER ─── */
+function getVisible(){
+  let list=[...GUIDES];
+  if(activeGenre!=='all') list=list.filter(g=>g.genre===activeGenre);
+  if(activeEra!=='all')   list=list.filter(g=>g.era===activeEra);
+  if(activeSearch.trim()){
+    const q=activeSearch.toLowerCase();
+    list=list.filter(g=>
+      g.title.toLowerCase().includes(q)||
+      g.subtitle.toLowerCase().includes(q)||
+      g.period.toLowerCase().includes(q)||
+      (g.tags||[]).some(t=>t.toLowerCase().includes(q))||
+      g.desc.toLowerCase().includes(q)||
+      (GENRE_LABELS[g.genre]||'').toLowerCase().includes(q)
     );
   }
-  if (activeSort === 'alpha')          list.sort((a,b) => a.title.localeCompare(b.title));
-  if (activeSort === 'sections-desc')  list.sort((a,b) => b.sections  - a.sections);
-  if (activeSort === 'scenarios-desc') list.sort((a,b) => b.scenarios - a.scenarios);
+  if(activeSort==='alpha')         list.sort((a,b)=>a.title.localeCompare(b.title));
+  if(activeSort==='sections-desc') list.sort((a,b)=>b.sections-a.sections);
   return list;
 }
 
-function updateStats() {
-  document.getElementById('stat-guides').textContent = GUIDES.length;
-  const eras = [...new Set(GUIDES.map(g => g.era))].length;
-  document.getElementById('stat-eras').textContent = eras;
+function updateStats(){
+  document.getElementById('stat-guides').textContent=GUIDES.length;
+  const genres=new Set(GUIDES.map(g=>g.genre));
+  document.getElementById('stat-genres').textContent=genres.size;
+  const chapters=GUIDES.reduce((s,g)=>s+g.sections,0);
+  document.getElementById('stat-chapters').textContent=chapters+'+';
 }
 
-function renderGuides() {
-  const grid  = document.getElementById('games-grid');
-  const empty = document.getElementById('empty-state');
-  const list  = getVisible();
-  const count = document.getElementById('results-count');
-  count.textContent = list.length + (list.length === 1 ? ' guide' : ' guides');
-  grid.innerHTML = '';
-  if (list.length === 0) { empty.style.display = ''; return; }
-  empty.style.display = 'none';
-  list.forEach(g => {
-    const card = document.createElement('div');
-    card.className = 'game-card';
-    card.setAttribute('data-era', g.era);
-    card.setAttribute('data-id', g.id);
-    card.innerHTML =
-      '<div class="game-card-bar"></div>' +
-      '<div class="game-card-inner">' +
-        '<div class="game-card-era">' + g.period + '</div>' +
-        '<div class="game-card-title">' + g.title + '</div>' +
-        '<div class="game-card-subtitle">' + g.subtitle + '</div>' +
-        '<div class="game-card-divider"></div>' +
-        '<div class="game-card-desc">' + g.desc + '</div>' +
-        '<div class="game-card-tags">' + g.tags.map(t => '<span class="game-card-tag">' + t + '</span>').join('') + '</div>' +
-        '<div class="game-card-footer">' +
-          '<div class="game-card-cta">View Guide &rsaquo;</div>' +
-          '<div class="game-card-sections">' + g.sections + ' sections &middot; ' + g.scenarios + ' scenarios</div>' +
-        '</div>' +
-      '</div>';
-    card.addEventListener('click', () => openModal(g.id));
+/* colour helper for card img placeholder */
+const GENRE_DARK={strategy:'#1a0806',simulation:'#060c12','4x':'#06080c',action:'#060c08',rpg:'#090614',survival:'#0c0804',adventure:'#060c06'};
+const ERA_COLOR={pre:'#7a3c1a','ww2':'#1b3d5a',scifi:'#0d1a30'};
+
+function eraColor(era){return ERA_COLOR[era]||ERA_COLOR.scifi;}
+
+function placeholderGradient(g){
+  const gb=GENRE_DARK[g.genre]||'#080808';
+  return`linear-gradient(135deg,${gb} 0%,${eraColor(g.era)} 60%,${gb} 100%)`;
+}
+
+function renderGuides(){
+  const grid=document.getElementById('games-grid');
+  const empty=document.getElementById('empty-state');
+  const list=getVisible();
+  document.getElementById('results-count').textContent=list.length+(list.length===1?' guide':' guides');
+  grid.innerHTML='';
+  if(list.length===0){empty.style.display='';return;}
+  empty.style.display='none';
+  list.forEach((g,i)=>{
+    const card=document.createElement('div');
+    card.className='game-card';
+    card.setAttribute('data-genre',g.genre);
+    card.setAttribute('data-era',g.era);
+    card.setAttribute('data-id',g.id);
+    card.style.animationDelay=(i*0.045)+'s';
+    const genreLabel=GENRE_LABELS[g.genre]||g.genre;
+    const tagHtml=(g.tags||[]).slice(0,5).map(t=>`<span class="game-card-tag">${t}</span>`).join('');
+    card.innerHTML=
+      `<div class="card-shine"></div>`+
+      `<div class="game-card-bar"></div>`+
+      `<div class="card-img" style="background:${placeholderGradient(g)}">`+
+        `<div class="card-img-placeholder"><span class="card-img-placeholder-text">${g.title}</span></div>`+
+      `</div>`+
+      `<div class="game-card-inner">`+
+        `<div class="card-meta-row">`+
+          `<span class="game-card-genre-badge">${genreLabel}</span>`+
+          `<span class="game-card-era-label">${g.period}</span>`+
+        `</div>`+
+        `<div class="game-card-title">${g.title}</div>`+
+        `<div class="game-card-subtitle">${g.subtitle}</div>`+
+        `<div class="game-card-divider"></div>`+
+        `<div class="game-card-desc">${g.desc}</div>`+
+        `<div class="game-card-tags">${tagHtml}</div>`+
+        `<div class="game-card-footer">`+
+          `<div class="game-card-cta">View Guide &rsaquo;</div>`+
+          `<div class="game-card-sections">${g.sections} sections</div>`+
+        `</div>`+
+      `</div>`;
+    card.addEventListener('click',()=>openModal(g.id));
     grid.appendChild(card);
   });
-  const comingSection = document.getElementById('coming-section');
-  if (comingSection) comingSection.style.display = (COMING_SOON.length > 0 && activeFilter === 'all' && !activeSearch.trim()) ? '' : 'none';
+  const cs=document.getElementById('coming-section');
+  if(cs) cs.style.display=(COMING_SOON.length>0&&activeGenre==='all'&&activeEra==='all'&&!activeSearch.trim())?'':'none';
 }
 
-function renderComingSoon() {
-  const grid = document.getElementById('coming-grid');
-  if (!grid) return;
-  grid.innerHTML = '';
-  COMING_SOON.forEach(g => {
-    const card = document.createElement('div');
-    card.className = 'game-card coming-soon';
-    card.setAttribute('data-era', g.era || 'scifi');
-    card.innerHTML =
-      '<div class="game-card-bar"></div>' +
-      '<div class="game-card-inner">' +
-        '<div class="game-card-era">' + g.period + '</div>' +
-        '<div class="game-card-title">' + g.title + '</div>' +
-        '<div class="game-card-subtitle">' + g.subtitle + '</div>' +
-        '<div class="game-card-divider"></div>' +
-        '<div class="game-card-desc">' + g.desc + '</div>' +
-        '<div class="game-card-footer"><span class="coming-soon-badge">Guide In Progress</span></div>' +
-      '</div>';
-    grid.appendChild(card);
-  });
-}
-
-function openModal(id) {
-  const g = GUIDES.find(x => x.id === id);
-  if (!g) return;
-  const modal = document.getElementById('modal');
-  modal.setAttribute('data-era', g.era);
-  document.getElementById('m-era').textContent      = g.period + ' \u00b7 ' + g.engine;
-  document.getElementById('m-title').innerHTML      = g.title;
-  document.getElementById('m-subtitle').innerHTML   = g.subtitle;
-  const extLinks =
-    '<div class="modal-ext-links">' +
-      '<a class="modal-ext-link" href="' + g.steam + '" target="_blank" rel="noopener">' +
-        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h10m0 0l-3-3m3 3l-3 3"/></svg>Steam' +
-      '</a>' +
-      '<a class="modal-ext-link" href="' + g.site + '" target="_blank" rel="noopener">' +
-        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Official Site' +
-      '</a>' +
-    '</div>';
-  const guideCta = g.wip
-    ? '<div class="modal-cta" style="opacity:0.45;cursor:default;pointer-events:none;">Guide Coming Soon</div>'
-    : '<a class="modal-cta" href="' + g.file + '" target="_blank" rel="noopener">' + (g.ctalabel || 'Open Full Strategy Guide') + ' &rsaquo;</a>';
-  document.getElementById('modal-body').innerHTML =
-    '<div class="modal-section-label">Overview</div>' +
-    '<p class="modal-desc">' + g.detail + '</p>' +
-    '<div class="modal-section-label">' + (g.sidesLabel || 'The Two Sides') + '</div>' +
-    '<div class="modal-sides">' +
-      '<div class="modal-side"><div class="modal-side-label">' + g.sideA.label + '</div><div class="modal-side-body">' + g.sideA.body + '</div></div>' +
-      '<div class="modal-side"><div class="modal-side-label">' + g.sideB.label + '</div><div class="modal-side-body">' + g.sideB.body + '</div></div>' +
-    '</div>' +
-    '<div class="modal-section-label">At a Glance</div>' +
-    '<div class="modal-meta-row">' +
-      '<div class="modal-meta-cell"><div class="modal-meta-label">Engine</div><div class="modal-meta-value">' + g.engine + '</div></div>' +
-      '<div class="modal-meta-cell"><div class="modal-meta-label">Sections</div><div class="modal-meta-value">' + g.sections + '</div></div>' +
-      '<div class="modal-meta-cell"><div class="modal-meta-label">' + (g.scenariosLabel || 'Scenarios Covered') + '</div><div class="modal-meta-value">' + g.scenarios + '</div></div>' +
-      '<div class="modal-meta-cell"><div class="modal-meta-label">Hardest to Play</div><div class="modal-meta-value">' + g.hardest + '</div></div>' +
-    '</div>' +
-    '<div class="modal-section-label">Tags</div>' +
-    '<div class="modal-tags">' + g.tags.map(t => '<span class="modal-tag">' + t + '</span>').join('') + '</div>' +
-    '<div class="modal-section-label">External Links</div>' +
-    extLinks + guideCta;
-  document.getElementById('modal-overlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  document.getElementById('modal-close').focus();
-}
-
-function closeModal() {
-  document.getElementById('modal-overlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-function resetFilters() {
-  activeFilter = 'all';
-  activeSearch = '';
-  activeSort   = 'default';
-  document.getElementById('search-input').value = '';
-  document.getElementById('sort-select').value  = 'default';
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === 'all'));
-  renderGuides();
-}
-
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    activeFilter = btn.dataset.filter;
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+/* ─── GENRE CHIP LOGIC ─── */
+document.querySelectorAll('.genre-chip').forEach(chip=>{
+  chip.addEventListener('click',()=>{
+    document.querySelectorAll('.genre-chip').forEach(c=>c.classList.remove('active'));
+    chip.classList.add('active');
+    if(chip.dataset.genre){
+      activeGenre=chip.dataset.genre;
+      if(chip.dataset.genre!=='all') activeEra='all';
+    } else if(chip.dataset.era){
+      activeEra=chip.dataset.era;
+      activeGenre='all';
+    }
     renderGuides();
   });
 });
 
+/* ─── SEARCH ─── */
 let searchTimeout;
-document.getElementById('search-input').addEventListener('input', e => {
+document.getElementById('search-input').addEventListener('input',e=>{
   clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(() => { activeSearch = e.target.value; renderGuides(); }, 220);
+  searchTimeout=setTimeout(()=>{activeSearch=e.target.value;renderGuides();},220);
 });
 
-document.getElementById('sort-select').addEventListener('change', e => { activeSort = e.target.value; renderGuides(); });
-document.getElementById('modal-close').addEventListener('click', closeModal);
-document.getElementById('modal-overlay').addEventListener('click', e => { if (e.target === document.getElementById('modal-overlay')) closeModal(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-document.getElementById('reset-btn').addEventListener('click', resetFilters);
+/* ─── SORT ─── */
+document.getElementById('sort-select').addEventListener('change',e=>{activeSort=e.target.value;renderGuides();});
 
+/* ─── RESET ─── */
+function resetFilters(){
+  activeGenre='all';activeEra='all';activeSearch='';activeSort='default';
+  document.getElementById('search-input').value='';
+  document.getElementById('sort-select').value='default';
+  document.querySelectorAll('.genre-chip').forEach(c=>c.classList.toggle('active',c.dataset.genre==='all'));
+  renderGuides();
+}
+document.getElementById('reset-btn').addEventListener('click',resetFilters);
+document.getElementById('reset-btn-2').addEventListener('click',resetFilters);
+
+/* ─── MODAL ─── */
+function openModal(id){
+  const g=GUIDES.find(x=>x.id===id);if(!g)return;
+  const modal=document.getElementById('modal');
+  modal.setAttribute('data-genre',g.genre);
+  const genreLabel=GENRE_LABELS[g.genre]||g.genre;
+  document.getElementById('m-genre-badge').textContent=genreLabel;
+  document.getElementById('m-era').textContent=g.period;
+  document.getElementById('m-title').innerHTML=g.title;
+  document.getElementById('m-subtitle').innerHTML=g.subtitle;
+  const extLinks=
+    `<div class="modal-ext-links">`+
+      `<a class="modal-ext-link" href="${g.steam}" target="_blank" rel="noopener">`+
+        `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h10m0 0l-3-3m3 3l-3 3"/></svg>Steam`+
+      `</a>`+
+      `<a class="modal-ext-link" href="${g.site}" target="_blank" rel="noopener">`+
+        `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Official Site`+
+      `</a>`+
+    `</div>`;
+  const guideCta=g.wip
+    ?`<div class="modal-cta" style="opacity:0.45;cursor:default;pointer-events:none;">Guide Coming Soon</div>`
+    :`<a class="modal-cta" href="${g.file}" target="_blank" rel="noopener">${g.ctalabel||'Open Full Strategy Guide'} &rsaquo;</a>`;
+  document.getElementById('modal-body').innerHTML=
+    `<div class="modal-section-label">Overview</div>`+
+    `<p class="modal-desc">${g.detail}</p>`+
+    `<div class="modal-section-label">${g.sidesLabel||'The Two Sides'}</div>`+
+    `<div class="modal-sides">`+
+      `<div class="modal-side"><div class="modal-side-label">${g.sideA.label}</div><div class="modal-side-body">${g.sideA.body}</div></div>`+
+      `<div class="modal-side"><div class="modal-side-label">${g.sideB.label}</div><div class="modal-side-body">${g.sideB.body}</div></div>`+
+    `</div>`+
+    `<div class="modal-section-label">At a Glance</div>`+
+    `<div class="modal-meta-row">`+
+      `<div class="modal-meta-cell"><div class="modal-meta-label">Genre</div><div class="modal-meta-value">${genreLabel}</div></div>`+
+      `<div class="modal-meta-cell"><div class="modal-meta-label">Sections</div><div class="modal-meta-value">${g.sections}</div></div>`+
+      `<div class="modal-meta-cell"><div class="modal-meta-label">${g.scenariosLabel||'Scenarios'}</div><div class="modal-meta-value">${g.scenarios}</div></div>`+
+      `<div class="modal-meta-cell"><div class="modal-meta-label">Hardest</div><div class="modal-meta-value">${g.hardest||'—'}</div></div>`+
+    `</div>`+
+    `<div class="modal-section-label">Tags</div>`+
+    `<div class="modal-tags">${(g.tags||[]).map(t=>`<span class="modal-tag">${t}</span>`).join('')}</div>`+
+    `<div class="modal-section-label">External Links</div>`+
+    extLinks+guideCta;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  document.getElementById('modal-close').focus();
+}
+function closeModal(){
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.getElementById('modal-close').addEventListener('click',closeModal);
+document.getElementById('modal-overlay').addEventListener('click',e=>{if(e.target===document.getElementById('modal-overlay'))closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+/* ─── BOOT ─── */
 updateStats();
 renderGuides();
-renderComingSoon();
 </script>
 </body>
 </html>

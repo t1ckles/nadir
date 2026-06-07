@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Final Fantasy VII Rebirth &mdash; The World Traveller&apos;s Codex</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0c0e0a;--parchment:#f0ecdf;--gold:#c9943a;--gold-dark:#8b6420;--gold-pale:#f0d9a8;
+  --mid:#3a3820;--light:#f6f2e8;--border:rgba(201,148,58,0.3);
+  /* Rebirth open-world palette: Lifestream green, sunset amber, planet violet, sky blue */
+  --life:#081a0e;--life-mid:#0e2018;
+  --mako:#1a9060;--mako-pale:#c8f0e0;
+  --planet:#1a1030;--planet-pale:#e0d8f8;
+  --amber:#2a1200;--amber-pale:#f8e8c8;
+  --sky:#0a1e30;--sky-pale:#d0e4f5;
+  --fire:#280800;--fire-pale:#f8d8c8;
+  --font-head:'Cinzel','Times New Roman',serif;
+  --font-body:'Crimson Pro','Georgia',serif;
+  --sidebar-w:296px;
+}
+html{scroll-behavior:smooth;font-size:17px}
+body{background:var(--parchment);color:var(--ink);font-family:var(--font-body);line-height:1.75;display:flex;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.5}
+a{color:inherit;text-decoration:none}button{cursor:pointer;font-family:inherit}
+#progress-bar{position:fixed;top:0;left:var(--sidebar-w);right:0;height:3px;background:var(--gold);transform-origin:left;transform:scaleX(0);z-index:500;transition:transform 0.1s linear}
+#sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--life);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;border-right:2px solid var(--gold-dark);display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--gold-dark) var(--life)}
+#sidebar-header{padding:28px 20px 20px;border-bottom:1px solid rgba(201,148,58,0.22);background:linear-gradient(180deg,#020804 0%,var(--life) 100%)}
+#sidebar-title{font-family:var(--font-head);font-size:0.84rem;font-weight:900;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;line-height:1.3}
+#sidebar-sub{font-family:var(--font-body);font-size:0.66rem;color:rgba(220,240,210,0.38);margin-top:6px;letter-spacing:0.04em;font-style:italic}
+#sidebar-nav{padding:8px 0 40px;flex:1}
+.nav-section{padding:10px 20px 3px;font-family:var(--font-head);font-size:0.52rem;letter-spacing:0.2em;color:var(--gold-dark);text-transform:uppercase;margin-top:6px;opacity:0.85}
+.nav-item{display:block;padding:5px 20px 5px 26px;font-family:var(--font-body);font-size:0.76rem;color:rgba(230,240,210,0.58);text-decoration:none;border-left:2px solid transparent;transition:all 0.15s ease;line-height:1.3;position:relative}
+.nav-item::before{content:'&#9658;';position:absolute;left:11px;top:6px;color:var(--gold-dark);opacity:0;transition:opacity 0.12s;font-size:0.42rem}
+.nav-item:hover,.nav-item.active{color:var(--gold-pale);border-left-color:var(--gold);background:rgba(201,148,58,0.07);padding-left:28px}
+.nav-item:hover::before,.nav-item.active::before{opacity:1}
+#sidebar-toggle{display:none;position:fixed;top:10px;left:10px;z-index:200;background:var(--life);border:1px solid var(--gold-dark);color:var(--gold);font-size:1.1rem;padding:5px 9px;border-radius:2px}
+#main{margin-left:var(--sidebar-w);flex:1;min-width:0}
+/* Hero — open world Planet: Lifestream green below, dusk amber at horizon, deep sky above */
+#hero{background:linear-gradient(175deg,#040c06 0%,#06140a 25%,#141008 55%,#1a0c04 80%,#080408 100%);min-height:510px;display:flex;flex-direction:column;justify-content:flex-end;padding:0 64px 64px;position:relative;overflow:hidden;border-bottom:3px solid var(--gold-dark)}
+#hero::before{content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(150px 100px at 25% 90%,rgba(26,160,90,0.14) 0%,transparent 70%),
+    radial-gradient(100px 70px at 70% 85%,rgba(26,160,90,0.10) 0%,transparent 70%),
+    radial-gradient(80px 50px at 48% 78%,rgba(200,100,20,0.08) 0%,transparent 70%),
+    radial-gradient(40px 30px at 60% 90%,rgba(200,60,20,0.06) 0%,transparent 70%),
+    radial-gradient(1.5px 1.5px at 5% 8%,rgba(200,240,200,0.7) 0%,transparent 0%),
+    radial-gradient(1px 1px at 13% 3%,rgba(240,220,160,0.65) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 22% 14%,rgba(200,240,200,0.6) 0%,transparent 0%),
+    radial-gradient(2px 2px at 31% 6%,rgba(240,200,130,0.55) 0%,transparent 0%),
+    radial-gradient(1px 1px at 42% 16%,rgba(200,240,200,0.55) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 52% 4%,rgba(240,220,160,0.62) 0%,transparent 0%),
+    radial-gradient(1px 1px at 63% 13%,rgba(180,230,200,0.5) 0%,transparent 0%),
+    radial-gradient(1px 1px at 73% 7%,rgba(240,200,130,0.55) 0%,transparent 0%),
+    radial-gradient(2px 2px at 83% 15%,rgba(200,240,200,0.5) 0%,transparent 0%),
+    radial-gradient(1px 1px at 92% 5%,rgba(240,220,160,0.6) 0%,transparent 0%),
+    radial-gradient(1px 1px at 17% 25%,rgba(200,240,200,0.4) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 47% 28%,rgba(240,210,140,0.38) 0%,transparent 0%),
+    radial-gradient(1px 1px at 78% 23%,rgba(200,240,200,0.42) 0%,transparent 0%)}
+#hero::after{content:'';position:absolute;bottom:0;left:64px;right:64px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.hero-eyebrow{font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.28em;color:var(--gold-dark);text-transform:uppercase;margin-bottom:14px;position:relative}
+.hero-title{font-family:var(--font-head);font-size:clamp(1.8rem,4.5vw,3.5rem);font-weight:900;color:var(--parchment);letter-spacing:0.04em;text-transform:uppercase;line-height:1.05;margin-bottom:8px;position:relative;text-shadow:0 2px 24px rgba(0,0,0,0.95)}
+.hero-subtitle{font-family:var(--font-body);font-size:1.05rem;font-style:italic;color:rgba(240,217,168,0.72);font-weight:300;margin-bottom:26px;position:relative}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;position:relative}
+.hero-tag{font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-pale);border:1px solid rgba(201,148,58,0.38);padding:3px 10px;background:rgba(201,148,58,0.07)}
+#content{padding:0 64px 80px;max-width:960px}
+.section{padding:54px 0 6px;animation:fadeUp 0.45s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.sec-num{display:inline-block;font-family:var(--font-head);font-size:0.78rem;font-weight:400;letter-spacing:0.1em;color:var(--gold-dark);margin-right:0.5em;vertical-align:middle}
+.section-title{font-family:var(--font-head);font-size:clamp(1.25rem,2.4vw,1.75rem);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink);padding-bottom:12px;margin-bottom:20px;border-bottom:2px solid var(--border);position:relative}
+.section-title::after{content:'';position:absolute;bottom:-2px;left:0;width:58px;height:2px;background:var(--gold)}
+.sub-title{font-family:var(--font-head);font-size:1rem;font-weight:600;letter-spacing:0.05em;color:var(--mid);margin:26px 0 9px;text-transform:uppercase}
+p{margin-bottom:1rem;font-size:1rem}
+.guide-list{margin:0.5rem 0 1rem 1.2rem}
+.guide-list li{margin-bottom:0.5rem;font-size:1rem}
+.guide-list li::marker{color:var(--gold-dark)}
+.callout{padding:15px 20px;margin:20px 0;border-left:4px solid var(--gold);background:var(--light);border-radius:0 3px 3px 0}
+.callout.mako{border-left-color:#1a9060;background:var(--mako-pale)}
+.callout.planet{border-left-color:#5030a0;background:var(--planet-pale)}
+.callout.amber{border-left-color:#c07020;background:var(--amber-pale)}
+.callout.sky{border-left-color:#206090;background:var(--sky-pale)}
+.callout.fire{border-left-color:#c03010;background:var(--fire-pale)}
+.callout.tip{border-left-color:#2a5c18;background:#e8f5e0}
+.callout.warning{border-left-color:#7a2010;background:#f5e8d0}
+.callout-title{font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;margin-bottom:5px;color:var(--gold-dark)}
+.callout.mako .callout-title{color:#1a9060}
+.callout.planet .callout-title{color:#5030a0}
+.callout.amber .callout-title{color:#c07020}
+.callout.sky .callout-title{color:#206090}
+.callout.fire .callout-title{color:#c03010}
+.callout.tip .callout-title{color:#2a5c18}
+.callout.warning .callout-title{color:#7a2010}
+.callout p{font-size:0.94rem;margin-bottom:0.5rem}
+.callout p:last-child{margin-bottom:0}
+.lore-block{padding:16px 22px;margin:22px 0;border:1px solid rgba(26,160,90,0.35);background:rgba(8,20,12,0.05);position:relative}
+.lore-block::before{content:'LIFESTREAM RESONANCE';position:absolute;top:-0.6rem;left:1rem;font-family:var(--font-head);font-size:0.54rem;letter-spacing:0.22em;color:#1a9060;background:var(--parchment);padding:0 0.5rem}
+.lore-block p{font-style:italic;color:#081a0e;font-size:0.96rem;line-height:1.88}
+.lore-block .source{font-family:var(--font-head);font-size:0.58rem;color:rgba(26,160,90,0.6);text-align:right;display:block;margin-top:0.6rem;letter-spacing:0.1em}
+.data-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.9rem}
+.data-table th{background:var(--life);color:var(--gold-pale);font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;padding:8px 11px;text-align:left;border:1px solid rgba(201,148,58,0.2)}
+.data-table td{padding:7px 11px;border:1px solid var(--border);vertical-align:top;line-height:1.5;color:var(--ink)}
+.data-table tr:nth-child(even) td{background:rgba(201,148,58,0.04)}
+.data-table tr:hover td{background:rgba(201,148,58,0.07)}
+.phase{padding:16px 20px;margin:14px 0;border-left:4px solid var(--gold);background:rgba(201,148,58,0.05)}
+.phase.early{border-left-color:#1a6040;background:rgba(26,96,64,0.07)}
+.phase.mid{border-left-color:var(--gold-dark);background:rgba(201,148,58,0.07)}
+.phase.late{border-left-color:#902010;background:rgba(144,32,16,0.07)}
+.phase.planet-ph{border-left-color:#5030a0;background:rgba(80,48,160,0.07)}
+.phase-title{font-family:var(--font-head);font-size:0.84rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:7px;color:var(--gold-dark)}
+.phase.early .phase-title{color:#1a6040}
+.phase.late .phase-title{color:#902010}
+.phase.planet-ph .phase-title{color:#5030a0}
+.phase p{font-size:0.94rem;margin-bottom:0.6rem;color:var(--ink)}
+.phase p:last-child{margin-bottom:0}
+.unit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin:16px 0}
+.unit-card{border:1px solid var(--border);background:var(--light);padding:14px 16px;border-top:3px solid var(--gold)}
+.unit-card.cloud-card{border-top-color:#3a5080}
+.unit-card.tifa-card{border-top-color:#8a2028}
+.unit-card.barret-card{border-top-color:#6a4010}
+.unit-card.aerith-card{border-top-color:#1a6028}
+.unit-card.red-card{border-top-color:#902010}
+.unit-card.yuffie-card{border-top-color:#7030a0}
+.unit-card.cait-card{border-top-color:#206090}
+.unit-card.mako-card{border-top-color:#1a9060}
+.unit-card.neutral-card{border-top-color:#5a4820}
+.unit-name{font-family:var(--font-head);font-size:0.88rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink);margin-bottom:2px}
+.unit-type{font-family:var(--font-head);font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);margin-bottom:7px;display:block}
+.unit-card.cloud-card .unit-type{color:#3a5080}
+.unit-card.tifa-card .unit-type{color:#8a2028}
+.unit-card.barret-card .unit-type{color:#8a6030}
+.unit-card.aerith-card .unit-type{color:#1a6028}
+.unit-card.red-card .unit-type{color:#902010}
+.unit-card.yuffie-card .unit-type{color:#7030a0}
+.unit-card.cait-card .unit-type{color:#206090}
+.unit-card.mako-card .unit-type{color:#1a9060}
+.unit-card p{font-size:0.88rem;line-height:1.6;color:var(--ink);margin-bottom:0}
+.orn{text-align:center;color:var(--gold-dark);font-size:0.72rem;letter-spacing:0.42em;padding:28px 0 8px;opacity:0.65}
+.gloss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:1px;background:var(--border);margin-top:16px;border:1px solid var(--border)}
+.gloss-item{background:var(--light);padding:9px 13px;display:flex;gap:10px;align-items:flex-start}
+.gloss-item:nth-child(even){background:var(--parchment)}
+.gloss-term{font-family:var(--font-head);font-size:0.75rem;font-weight:700;color:var(--ink);white-space:normal;min-width:118px;max-width:148px;word-break:break-word;letter-spacing:0.04em;text-transform:uppercase}
+.gloss-def{font-size:0.86rem;color:var(--mid);line-height:1.55}
+#back-top{position:fixed;bottom:26px;right:26px;width:40px;height:40px;background:var(--life);border:1px solid var(--gold-dark);color:var(--gold);font-size:1rem;display:flex;align-items:center;justify-content:center;text-decoration:none;opacity:0;transform:translateY(8px);transition:opacity 0.3s,transform 0.3s;z-index:90}
+#back-top.visible{opacity:1;transform:none}
+#back-top:hover{background:var(--gold-dark);color:var(--parchment)}
+#footer{margin-top:40px;border-top:1px solid var(--border);padding:20px 64px;font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);text-align:center}
+@media(max-width:900px){
+  :root{--sidebar-w:0px}
+  #sidebar-toggle{display:flex;align-items:center;justify-content:center}
+  #sidebar{transform:translateX(-100%);transition:transform 0.26s ease;width:270px}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  #hero,#content,#footer{padding-left:22px;padding-right:22px}
+  #progress-bar{left:0}
+  .unit-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+<button id="sidebar-toggle" aria-label="Menu">&#9776;</button>
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <div id="sidebar-title">FF7 Rebirth</div>
+    <div id="sidebar-sub">The World Traveller&apos;s Codex &mdash; Square Enix / PC (Steam) &mdash; The Planet Beyond Midgar</div>
+  </div>
+  <div id="sidebar-nav">
+    <div class="nav-section">The Planet</div>
+    <a class="nav-item" href="#s01">01 &middot; Beyond the City of Steel</a>
+    <a class="nav-item" href="#s02">02 &middot; Game Overview</a>
+    <a class="nav-item" href="#s03">03 &middot; Story &amp; the Reunion</a>
+    <div class="nav-section">Combat Systems</div>
+    <a class="nav-item" href="#s04">04 &middot; ATB &amp; Combat Fundamentals</a>
+    <a class="nav-item" href="#s05">05 &middot; Pressure &amp; Stagger Evolved</a>
+    <a class="nav-item" href="#s06">06 &middot; Synergy Skills</a>
+    <a class="nav-item" href="#s07">07 &middot; Synergy Abilities</a>
+    <a class="nav-item" href="#s08">08 &middot; Limit Breaks &amp; Summons</a>
+    <div class="nav-section">Characters</div>
+    <a class="nav-item" href="#s09">09 &middot; Cloud Strife</a>
+    <a class="nav-item" href="#s10">10 &middot; Tifa Lockhart</a>
+    <a class="nav-item" href="#s11">11 &middot; Barret Wallace</a>
+    <a class="nav-item" href="#s12">12 &middot; Aerith Gainsborough</a>
+    <a class="nav-item" href="#s13">13 &middot; Red XIII</a>
+    <a class="nav-item" href="#s14">14 &middot; Yuffie Kisaragi</a>
+    <a class="nav-item" href="#s15">15 &middot; Cait Sith</a>
+    <div class="nav-section">Folio System</div>
+    <a class="nav-item" href="#s16">16 &middot; The Folio &amp; Skill Trees</a>
+    <a class="nav-item" href="#s17">17 &middot; Priority Folio Investments</a>
+    <div class="nav-section">Materia</div>
+    <a class="nav-item" href="#s18">18 &middot; Materia in Rebirth</a>
+    <a class="nav-item" href="#s19">19 &middot; Best Materia Combinations</a>
+    <div class="nav-section">Open World</div>
+    <a class="nav-item" href="#s20">20 &middot; The Seven Regions</a>
+    <a class="nav-item" href="#s21">21 &middot; World Intel</a>
+    <a class="nav-item" href="#s22">22 &middot; Chocobos &amp; Traversal</a>
+    <a class="nav-item" href="#s23">23 &middot; Protorelics &amp; Gilgamesh</a>
+    <a class="nav-item" href="#s24">24 &middot; Chadley &amp; the VR Battles</a>
+    <div class="nav-section">Strategy</div>
+    <a class="nav-item" href="#s25">25 &middot; Party Composition</a>
+    <a class="nav-item" href="#s26">26 &middot; Hard Mode</a>
+    <a class="nav-item" href="#s27">27 &middot; Boss Strategies</a>
+    <div class="nav-section">Reference</div>
+    <a class="nav-item" href="#s28">28 &middot; Glossary</a>
+  </div>
+</nav>
+
+<div id="main">
+<div id="hero">
+  <div class="hero-eyebrow">Nadir Strategy Archive &nbsp;&middot;&nbsp; Square Enix &nbsp;&middot;&nbsp; Action RPG &nbsp;&middot;&nbsp; PC (Steam) &nbsp;&middot;&nbsp; The Planet Beyond Midgar</div>
+  <h1 class="hero-title">Final Fantasy VII Rebirth</h1>
+  <p class="hero-subtitle">The World Traveller&apos;s Codex &mdash; A Complete Guide to Combat, Synergy, the Open World, and Everything the Planet Has Left to Show You</p>
+  <div class="hero-tags">
+    <span class="hero-tag">28 Chapters</span>
+    <span class="hero-tag">7 Characters</span>
+    <span class="hero-tag">Synergy System</span>
+    <span class="hero-tag">Folio Builds</span>
+    <span class="hero-tag">7 Regions</span>
+    <span class="hero-tag">World Intel</span>
+    <span class="hero-tag">Hard Mode</span>
+    <span class="hero-tag">Full Glossary</span>
+  </div>
+</div>
+
+<div id="content">
+
+<!-- S01 -->
+<section class="section" id="s01">
+<h2 class="section-title"><span class="sec-num">&sect;01</span> Beyond the City of Steel</h2>
+<div class="lore-block">
+  <p>The highway out of Midgar is a long descent through the city&apos;s structural underside and then, abruptly, open sky. Cloud has been inside Shinra&apos;s architecture for so long &mdash; the reactors, the slums, the headquarters, the escape &mdash; that the first real horizon in months catches him off guard. Not that he would admit this. But there is a quality to the light that he does not have a name for, because naming it would require acknowledging that he missed it, and that kind of acknowledgment is something he has spent a considerable amount of energy making unavailable to himself. The Planet, however, does not require his acknowledgment. It simply continues, with or without his permission, being very large and very much present, and gradually, against everything he would prefer, he begins to see it.</p>
+  <span class="source">// LIFESTREAM RESONANCE &middot; CHAPTER 1: FALL OF A HERO &middot; YEAR 200X //</span>
+</div>
+
+<p>Final Fantasy VII Rebirth is the second entry in Square Enix&apos;s planned trilogy remaking the original 1997 Final Fantasy VII. Where Remake was contained entirely within Midgar &mdash; a city defined by its steel, its reactors, and its artificial sky &mdash; Rebirth opens the world. The party escapes Midgar&apos;s ruins and encounters something none of them, including the player, have fully prepared for: the Planet itself. Open grasslands. Coastal cliffs. Volcanic ruins. Ancient forests. Deserts alive with Cactuars. The contrast is the game&apos;s defining mood, and it arrives immediately.</p>
+
+<p>The game covers the portion of the original Final Fantasy VII&apos;s story that runs from the escape from Midgar through the party&apos;s journey across the Planet in pursuit of Sephiroth &mdash; reaching Junon, Costa del Sol, Corel, the Gold Saucer, Gongaga, Cosmo Canyon, Nibelheim, and eventually the Forgotten Capital. It is a substantially larger game than Remake in both geographic scope and running time, with optional content alone capable of consuming dozens of hours beyond the main narrative.</p>
+
+<h2 class="sub-title">PC (Steam) Version</h2>
+<p>Final Fantasy VII Rebirth arrived on PC via Steam in 2025. The PC version includes DLSS support for NVIDIA hardware, AMD and Intel optimisation, full keybind customisation, graphics configuration options, and modding potential. Target 60fps is achievable on mid-range hardware with appropriate settings. The game is presented identically to the PlayStation 5 version in terms of content; all DLC, difficulty modes, and optional content are included at launch.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S02 -->
+<section class="section" id="s02">
+<h2 class="section-title"><span class="sec-num">&sect;02</span> Game Overview</h2>
+<p>Final Fantasy VII Rebirth is an <strong>open-world action RPG</strong> built on and substantially expanding the combat architecture of Final Fantasy VII Remake. The core systems &mdash; ATB gauges, Pressure and Stagger, Tactical Mode, Materia, Limit Breaks, and Summons &mdash; carry forward with significant additions. The new systems &mdash; the Synergy mechanic, the Folio character upgrade system, and the World Intel exploration framework &mdash; are equal in depth to the foundational systems they supplement.</p>
+
+<h2 class="sub-title">New Playable Characters</h2>
+<p>Remake&apos;s four-character party (Cloud, Tifa, Barret, Aerith) expands to seven in Rebirth:</p>
+<ul class="guide-list">
+  <li><strong>Red XIII:</strong> Full playable character; was a guest in Remake&apos;s final chapters; now complete with his own Folio, weapons, and Vengeance Mode mechanic</li>
+  <li><strong>Yuffie Kisaragi:</strong> Playable in Intergrade&apos;s INTERmission DLC; here a full party member with her Ninjutsu elemental system and new synergy integrations</li>
+  <li><strong>Cait Sith:</strong> New addition; the fortune-telling cat robot; a distinct dice-based luck mechanic unlike any other character in the game</li>
+</ul>
+
+<h2 class="sub-title">Difficulty Modes</h2>
+<table class="data-table">
+  <thead><tr><th>Mode</th><th>Description</th><th>Key Notes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Easy</strong></td><td>Reduced difficulty; accessibility focus</td><td>Lower enemy damage; faster ATB; action assists available</td></tr>
+    <tr><td><strong>Normal</strong></td><td>Intended experience</td><td>Balanced enemy scaling; full combat system required</td></tr>
+    <tr><td><strong>Dynamic</strong></td><td>Scales with player level</td><td>Enemy levels adjust to party level; prevents overlevelling from optional content</td></tr>
+    <tr><td><strong>Classic</strong></td><td>Basic attacks automated</td><td>AI handles normal attacks for ATB building; player manages ATB spending and commands</td></tr>
+    <tr><td><strong>Hard</strong></td><td>Maximum challenge; post-game unlock</td><td>No items in battle; MP restores only at benches; enemies stronger with additional patterns</td></tr>
+  </tbody>
+</table>
+
+<div class="callout mako">
+  <div class="callout-title">Dynamic Mode &mdash; The Open World Solution</div>
+  <p>Dynamic Mode is a new addition specific to Rebirth and is the recommended mode for players who plan to engage extensively with optional content. Because Rebirth&apos;s open world contains many hours of side content, players on Normal Mode can become significantly overlevelled before key story encounters, reducing their challenge. Dynamic Mode prevents this by scaling enemy levels to match the party, keeping every encounter meaningful regardless of how much optional content you have completed. Highly recommended for players who want to do everything the game offers without outlevelling the story.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S03 -->
+<section class="section" id="s03">
+<h2 class="section-title"><span class="sec-num">&sect;03</span> Story &amp; the Reunion</h2>
+<div class="lore-block">
+  <p>Sephiroth died at the Nibelheim Reactor five years ago. Cloud killed him. This is a fact that Cloud knows to be true, that AVALANCHE accepts as the foundation of the current mission, and that Sephiroth himself appears to have not received adequate notification of. The Jenova Reunion &mdash; the cellular pull that draws fragments of the alien organism back to a central convergence &mdash; is not a metaphor. It is a biological process, and it has a destination. Finding that destination before Sephiroth does whatever he intends to do at it is the mission. The mission has complications. The complications include the fact that Cloud&apos;s memories of Nibelheim are wrong in ways he cannot account for, which a lesser person would find distressing and which Cloud finds deeply inconvenient.</p>
+  <span class="source">// LIFESTREAM RESONANCE &middot; CHAPTER 2: THE LONG WAY AROUND &middot; GRASSLANDS //</span>
+</div>
+
+<p>Rebirth continues directly from Remake&apos;s ending. The party escapes Midgar and follows Sephiroth&apos;s trail across the Planet, knowing that the Jenova Reunion &mdash; the event in which the alien organism&apos;s scattered fragments converge &mdash; is approaching and that stopping it (or Sephiroth&apos;s plans around it) is their mission. Along the way, they are accompanied by the question of why Cloud&apos;s memories of his past don&apos;t match the records, and by the increasingly complex presence of <strong>Zack Fair</strong> &mdash; a figure who should be dead but, in this changed timeline, is not.</p>
+
+<h2 class="sub-title">Key New Characters</h2>
+<table class="data-table">
+  <thead><tr><th>Character</th><th>Role</th><th>Story Significance</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Zack Fair</strong></td><td>1st Class SOLDIER; playable in interludes and the final battle</td><td>Alive in the altered timeline; his survival and Cloud&apos;s past are deeply entangled; his sections represent the game&apos;s parallel narrative thread</td></tr>
+    <tr><td><strong>Sephiroth</strong></td><td>Primary antagonist; playable in Chapter 1</td><td>More present and interactive than in Remake; the nature of his awareness of the timeline changes provides the story&apos;s deepest unsettling quality</td></tr>
+    <tr><td><strong>Cissnei</strong></td><td>Turk; former Zack contact</td><td>Bridge between Zack&apos;s storyline and the main narrative; significant presence in the Gongaga region</td></tr>
+    <tr><td><strong>Bugenhagen</strong></td><td>Cosmo Canyon elder; Red XIII&apos;s grandfather</td><td>Central to the Cosmo Canyon chapter and Red XIII&apos;s personal arc; provides key Lifestream exposition</td></tr>
+  </tbody>
+</table>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S04 -->
+<section class="section" id="s04">
+<h2 class="section-title"><span class="sec-num">&sect;04</span> ATB &amp; Combat Fundamentals</h2>
+<div class="lore-block">
+  <p>The party has been fighting together for long enough now that they have stopped describing what they do to each other. Tifa knows where Cloud is going to be. Aerith knows when Barret is about to run low on energy. Red XIII knows what Yuffie is about to do approximately 0.3 seconds before Yuffie knows what she is about to do. This is not magic. It is not even exceptional. It is what happens to people who have survived the same things together often enough. The combat data calls it synergy. The party calls it Tuesday.</p>
+  <span class="source">// LIFESTREAM RESONANCE &middot; PARTY FIELD NOTES &middot; REGION 3: COREL //</span>
+</div>
+
+<p>Rebirth&apos;s combat is built on the same ATB foundation as Remake, with mechanical refinements, expanded aerial capabilities, and the new Synergy system layered on top. Understanding the foundational layer before the additions is still the correct learning sequence.</p>
+
+<h2 class="sub-title">ATB &mdash; What Changed from Remake</h2>
+<ul class="guide-list">
+  <li><strong>Deadly Dodge and Parry Materia are now built into Cloud and Tifa&apos;s default moveset</strong>, freeing Materia slots previously reserved for them.</li>
+  <li><strong>Expanded aerial combat:</strong> Several characters have substantially expanded aerial attack options, particularly Yuffie and Tifa. Launching enemies and pursuing into the air is now a distinct tactical option rather than a situational bonus.</li>
+  <li><strong>Synergy Skills generate ATB for both characters simultaneously</strong> &mdash; using a Synergy Skill on your active character fills ATB for both them and the partner character involved, accelerating the party&apos;s overall action economy.</li>
+  <li><strong>Intercharacter ATB queuing</strong> remains from Remake: open the command menu from any active character, issue commands to party members, and execute them in sequence while managing the active combat in real time.</li>
+</ul>
+
+<h2 class="sub-title">The Combat Flow</h2>
+<p>The fundamental combat loop in Rebirth operates on three concurrent tracks:</p>
+<ol class="guide-list">
+  <li><strong>Normal attack phase:</strong> Build ATB on the active character and Synergy gauge through normal attacks and Synergy Skills.</li>
+  <li><strong>ATB spending phase:</strong> Enter Tactical Mode, select Abilities, Spells, or Items; execute them against pressured or staggered enemies for maximum effect.</li>
+  <li><strong>Synergy phase:</strong> When sufficient Synergy gauge is built, execute Synergy Abilities for powerful paired attacks with significant battle-state bonuses (extended stagger, unlimited MP, raised Limit levels).</li>
+</ol>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S05 -->
+<section class="section" id="s05">
+<h2 class="section-title"><span class="sec-num">&sect;05</span> Pressure &amp; Stagger Evolved</h2>
+<p>The Pressure and Stagger system from Remake returns in Rebirth with the same foundational mechanics and several important expansions. Stagger remains the combat&apos;s primary damage window and the game&apos;s central strategic objective in every encounter. The new additions to the system primarily concern what can be done <em>after</em> Stagger begins.</p>
+
+<h2 class="sub-title">Stagger Extensions &mdash; The New Dimension</h2>
+<p>Several Synergy Abilities and skills now have the ability to <strong>extend Stagger duration</strong> after it has been triggered. This is one of Rebirth&apos;s most strategically significant additions: a Stagger window extended by a Synergy Ability is a Stagger window that can accommodate significantly more ATB spending, Limit Breaks, and party-wide coordinated assaults.</p>
+<ul class="guide-list">
+  <li><strong>Halcyon Descent</strong> (Cloud + Yuffie Synergy Ability): Extends the Stagger timer. Deploy immediately after Stagger is triggered to maximise the window.</li>
+  <li><strong>Call of the Wild</strong> (Tifa + Red XIII): Also extends Stagger duration. Particularly useful in boss encounters where the Stagger window is the primary damage phase.</li>
+  <li>The correct sequence against boss enemies: Trigger Stagger → immediately execute a Stagger-extension Synergy Ability → spend accumulated ATB, Limit Breaks, and follow-up abilities within the extended window.</li>
+</ul>
+
+<h2 class="sub-title">Pressure Conditions in Rebirth</h2>
+<p>Assess remains essential. Every enemy has specific Pressure triggers and Stagger conditions. In Rebirth, the expanded enemy variety across seven regions means the Pressure triggers are more varied than in Remake:</p>
+<ul class="guide-list">
+  <li>Elemental weakness exploitation (unchanged from Remake)</li>
+  <li>Ability-specific Pressure conditions (attacking with specific ability types mid-animation)</li>
+  <li>Positional Pressure (attacking from behind, from above during airborne states)</li>
+  <li>Status-effect Pressure (applying specific debuffs can Pressure enemy types)</li>
+  <li>Interrupt Pressure (breaking specific enemy abilities with sufficiently powerful attacks)</li>
+</ul>
+
+<div class="callout mako">
+  <div class="callout-title">Always Assess New Enemies</div>
+  <p>With seven regions worth of entirely new enemy types (many of them regional exclusives), Assess Materia is even more essential in Rebirth than it was in Remake. The enemy variety includes entirely new enemy classes &mdash; flying types with aerial Pressure conditions, armoured variants requiring Break damage before Stagger, and special enemy types exclusive to specific World Intel encounters. Run Assess on every new enemy type you encounter, especially in the early sections of each new region, before attempting to optimise your approach.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S06 -->
+<section class="section" id="s06">
+<h2 class="section-title"><span class="sec-num">&sect;06</span> Synergy Skills</h2>
+<div class="lore-block">
+  <p>The field researcher who was documenting the party&apos;s combat performance for the Shinra Academic Division wrote in their notes that the coordination between party members exceeded any military unit they had previously observed and that they could not determine a mechanism by which it had been trained. They suspected shared trauma, prolonged proximity, and something they could only describe as &ldquo;attunement.&rdquo; The Shinra Academic Division filed the report under Miscellaneous. The field researcher quit shortly thereafter and moved to Cosmo Canyon.</p>
+  <span class="source">// LIFESTREAM RESONANCE &middot; CLASSIFIED RESEARCH MEMO &middot; SHINRA ACADEMIC DIVISION //</span>
+</div>
+
+<p><strong>Synergy Skills</strong> are the first tier of the Synergy system. They are small team-up actions that can be triggered at any time during combat without spending ATB charges &mdash; instead, they <em>generate</em> ATB for both characters involved. Synergy Skills are accessed by holding Guard (R1) and pressing a face button when the corresponding paired character is in the active party.</p>
+
+<h2 class="sub-title">How Synergy Skills Work</h2>
+<ul class="guide-list">
+  <li><strong>No ATB cost:</strong> Unlike Abilities and Spells, Synergy Skills can be triggered freely without requiring a full ATB gauge.</li>
+  <li><strong>ATB generation:</strong> Using a Synergy Skill fills ATB for both the active character and the partner character. This makes Synergy Skills both a damage-dealing action <em>and</em> an ATB acceleration tool simultaneously.</li>
+  <li><strong>Synergy Gauge contribution:</strong> Using Synergy Skills contributes to building the Synergy gauge required for Synergy Abilities. The loop: use Synergy Skills to generate ATB, spend ATB on Abilities (which builds the Synergy gauge), use Synergy Abilities when available.</li>
+  <li><strong>Pair-specific:</strong> Each character has Synergy Skills specific to their relationship with other party members. The skills available when Cloud is paired with Tifa are different from those available when Cloud is paired with Aerith.</li>
+</ul>
+
+<h2 class="sub-title">Types of Synergy Skills</h2>
+<ul class="guide-list">
+  <li><strong>Offensive:</strong> Charged attacks that deal damage while generating ATB. Most common type; used frequently during the normal combat flow.</li>
+  <li><strong>Defensive/Counter:</strong> Set up a defensive or counter stance that intercepts incoming attacks. Converts defensive moments into ATB generation rather than passive guarding.</li>
+  <li><strong>Positioning:</strong> Manoeuvering skills that reposition the active character and the partner simultaneously for better tactical positioning.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S07 -->
+<section class="section" id="s07">
+<h2 class="section-title"><span class="sec-num">&sect;07</span> Synergy Abilities</h2>
+<p><strong>Synergy Abilities</strong> are the second, more powerful tier of the Synergy system. Unlike Synergy Skills, they require building a Synergy gauge through ATB usage during battle. They are powerful paired attacks comparable to Level 1 Limit Breaks in damage output, but their most significant feature is the <strong>battle-state bonus</strong> they provide alongside the damage.</p>
+
+<h2 class="sub-title">The Synergy Gauge</h2>
+<p>The Synergy gauge is shared across the entire party. It builds when any party member spends ATB charges on Abilities, Spells, or other ATB commands. The amount built per ATB charge depends on the command used and the Folio upgrades the characters have invested in. When the gauge reaches sufficient charge for a paired Synergy Ability, that ability becomes available for the relevant character pair.</p>
+
+<h2 class="sub-title">Battle-State Bonuses &mdash; The Defining Feature</h2>
+<p>Each Synergy Ability provides one of three battle-state bonuses alongside its damage, in addition to its damage output:</p>
+<ul class="guide-list">
+  <li><strong>Extended Stagger Duration:</strong> Prolongs the window during which an enemy is Staggered, allowing additional damage to be applied. This is the most strategically significant bonus in boss encounters where Stagger windows are the primary damage opportunity.</li>
+  <li><strong>Unlimited MP:</strong> Both characters involved in the Synergy Ability gain temporary unlimited MP. This is exceptional for magic-heavy parties or specific phases where high-tier spells are needed without MP conservation concerns.</li>
+  <li><strong>Raised Limit Level:</strong> Advances the Limit Break level of both characters by one. In a two-Limit-level framework, this can immediately make a Limit Break available that was not previously accessible.</li>
+</ul>
+
+<h2 class="sub-title">Key Synergy Abilities</h2>
+<div class="unit-grid">
+  <div class="unit-card cloud-card">
+    <div class="unit-name">Halcyon Descent</div>
+    <span class="unit-type">CLOUD + YUFFIE &middot; STAGGER EXTENSION</span>
+    <p>Cloud and Yuffie leap and deliver a combined aerial combo. Provides Stagger Extension bonus. One of the most broadly useful Synergy Abilities in the game for boss encounters &mdash; deploy immediately when Stagger triggers to extend the window for the party&apos;s full ATB dump. Prioritise unlocking in Yuffie&apos;s Folio.</p>
+  </div>
+  <div class="unit-card tifa-card">
+    <div class="unit-name">Call of the Wild</div>
+    <span class="unit-type">TIFA + RED XIII &middot; STAGGER EXTENSION</span>
+    <p>Tifa and Red XIII combine for a high-speed physical assault. Also provides Stagger Extension. Pairs two of the game&apos;s fastest physical attackers for a devastating combo that extends the window they create. Essential for parties running Tifa + Red XIII as the stagger-specialist pairing.</p>
+  </div>
+  <div class="unit-card aerith-card">
+    <div class="unit-name">Mystic Multiplication</div>
+    <span class="unit-type">AERITH + YUFFIE &middot; UNLIMITED MP</span>
+    <p>Aerith clones Yuffie for a rapid assault. Provides Unlimited MP to both. Transforms Aerith into a temporarily limitless magical artillery during the bonus window. Deploy before a high-value spell phase (multiple Firaga casts or Magnify+Barrier) to eliminate MP cost concerns during the most impactful combat phase.</p>
+  </div>
+  <div class="unit-card barret-card">
+    <div class="unit-name">Ninja Carbine</div>
+    <span class="unit-type">YUFFIE + BARRET &middot; AREA DAMAGE</span>
+    <p>Yuffie and Barret combine ranged and ninjutsu for an area-of-effect assault. Useful against groups of enemies. Barret&apos;s ranged positioning and Yuffie&apos;s elemental Ninjutsu create a strong AOE combo for clearing crowds during the Synergy Ability window.</p>
+  </div>
+  <div class="unit-card aerith-card">
+    <div class="unit-name">Ringmaster</div>
+    <span class="unit-type">AERITH + RED XIII &middot; RANGED AREA</span>
+    <p>Aerith takes control of Red XIII and launches him as a wide-area ranged assault. Excellent for hitting aerial targets and for area coverage. Red XIII&apos;s speed under Aerith&apos;s magical direction creates a unique hybrid physical-magical attack profile.</p>
+  </div>
+  <div class="unit-card cait-card">
+    <div class="unit-name">Feline Fury</div>
+    <span class="unit-type">CAIT SITH + RED XIII &middot; CHARGE ATTACK</span>
+    <p>Cait Sith and Red XIII charge forward together with combined animal momentum. Provides good single-target damage and works well with Cait Sith&apos;s Luck-based damage model when fortune favours the dice.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S08 -->
+<section class="section" id="s08">
+<h2 class="section-title"><span class="sec-num">&sect;08</span> Limit Breaks &amp; Summons</h2>
+<p>Limit Breaks and Summons return from Remake with the same core mechanics and several expansions, including the Limit Level system and new Summons from Rebirth&apos;s expanded world.</p>
+
+<h2 class="sub-title">Limit Levels</h2>
+<p>Each character now has multiple Limit Break tiers, with higher-level Limit Breaks available as the Limit gauge advances beyond the first threshold. The Synergy Ability bonus of &ldquo;Raised Limit Level&rdquo; is particularly valuable because it can advance characters to higher Limit tiers faster than natural gauge-filling, enabling access to devastating Level 2 abilities in the middle of encounters where gauge accumulation is slow.</p>
+
+<h2 class="sub-title">New Summons in Rebirth</h2>
+<p>Rebirth introduces new Summon Materia not available in Remake or Intergrade:</p>
+<table class="data-table">
+  <thead><tr><th>Summon</th><th>Region Obtained</th><th>Element / Type</th><th>Notable Feature</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Titan</strong></td><td>Junon region VR</td><td>Earth / Physical</td><td>Massive area damage; earth-element attacks; excellent against non-flying enemies</td></tr>
+    <tr><td><strong>Alexander</strong></td><td>Corel region VR</td><td>Holy / Multi-hit</td><td>Immune to many attacks while arms are active; must target arms first; Thunder-weak</td></tr>
+    <tr><td><strong>Phoenix</strong></td><td>Corel / story progression</td><td>Fire / Revival</td><td>Has a chance to auto-revive party members on defeat; highly valuable in Hard Mode</td></tr>
+    <tr><td><strong>Kujata</strong></td><td>Gongaga region VR</td><td>Tri-elemental</td><td>Fire, Ice, and Thunder simultaneously; extremely powerful against multi-weak enemies</td></tr>
+    <tr><td><strong>Odin</strong></td><td>Cosmo Canyon region</td><td>Non-elemental / Slash</td><td>Zantetsuken instant-kills eligible enemies; powerful finisher in multi-enemy encounters</td></tr>
+    <tr><td><strong>Gilgamesh</strong></td><td>Protorelic completion reward</td><td>Non-elemental / Superboss</td><td>The ultimate Summon Materia; obtained by completing all Protorelic chains across all seven regions</td></tr>
+  </tbody>
+</table>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S09 -->
+<section class="section" id="s09">
+<h2 class="section-title"><span class="sec-num">&sect;09</span> Cloud Strife</h2>
+<div class="lore-block">
+  <p>Something is wrong with his memories. He knows this, in the way that a person knows something is wrong when events they lived through and events they remember no longer quite align, and the version they remember keeps getting supported by evidence that the version they lived through could not have produced. He does not discuss this. He continues to function. He continues to be effective. These are the things he can still verify. Everything else is the kind of question he has learned to file under &ldquo;later&rdquo; and close the folder.</p>
+  <span class="source">// LIFESTREAM RESONANCE &middot; CLOUD STRIFE PERSONAL LOG &middot; NIBELHEIM REGION //</span>
+</div>
+
+<p>Cloud remains the party&apos;s protagonist and most mechanically flexible fighter. His two-mode system (Operator/Punisher) carries over from Remake with the addition of new Folio skills and expanded Synergy options with all six other party members. He is the character in whom the game&apos;s narrative tension is most concentrated, and his mechanical depth reflects that position.</p>
+
+<h2 class="sub-title">Operator vs. Punisher Mode &mdash; Rebirth Updates</h2>
+<p>Both modes function identically to Remake with some refinements. Punisher Mode&apos;s automatic counter is still the most powerful defensive-offensive mechanic in the game against blockable attacks. The critical Rebirth addition: Cloud now has Deadly Dodge and Parry capabilities as <strong>default moveset elements</strong> rather than requiring dedicated Materia slots, freeing those slots for other configurations.</p>
+
+<h2 class="sub-title">Cloud&apos;s Synergy Pairings</h2>
+<p>Cloud is always in the active party (solo sections aside). His Synergy options span all six other party members, with the most strategically impactful being:</p>
+<ul class="guide-list">
+  <li><strong>Cloud + Yuffie → Halcyon Descent:</strong> Stagger Extension bonus; the premier boss-fight Synergy Ability</li>
+  <li><strong>Cloud + Tifa:</strong> Physical stagger and Punisher Mode coordination; their shared history makes their synergy skills among the most emotionally resonant and mechanically fluid in the game</li>
+  <li><strong>Cloud + Aerith:</strong> Elemental and magical coverage; Cloud&apos;s physical output combined with Aerith&apos;s magical synergy creates comprehensive elemental pressure</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S10 -->
+<section class="section" id="s10">
+<h2 class="section-title"><span class="sec-num">&sect;10</span> Tifa Lockhart</h2>
+<div class="lore-block">
+  <p>She has been holding the party together through the Nibelheim question by the simple expedient of refusing to let Cloud be alone with it. This is not a strategy she has articulated. It is simply what she does. She stands next to him. She says the thing that does not require him to acknowledge the question, which is also the thing that keeps the question from becoming overwhelming. She is better at this than she knows. Most people are.</p>
+  <span class="source">// LIFESTREAM RESONANCE &middot; PARTY FIELD NOTES &middot; REGION 6: NIBEL //</span>
+</div>
+
+<p>Tifa remains the party&apos;s premier stagger specialist and fastest ATB generator. The Unbridled Strength mechanic returns with expansions: her aerial combat options are substantially improved, and her speed-to-Stagger conversion in Rebirth is one of the game&apos;s highest single-character contributions to any boss encounter&apos;s critical phase.</p>
+
+<h2 class="sub-title">Tifa&apos;s Expanded Aerial Combat</h2>
+<p>Rebirth substantially expands Tifa&apos;s aerial attack capabilities. She can launch enemies into the air and pursue with extended aerial combo chains that were only briefly available in Remake. This opens a new dimension for her stagger-building: an enemy that has been launched into the air can be Staggered through aerial combo contributions while Red XIII or Yuffie also attack from their own aerial options, creating multi-character aerial Stagger scenarios.</p>
+
+<h2 class="sub-title">Key Abilities (Rebirth Additions)</h2>
+<ul class="guide-list">
+  <li><strong>True Strike:</strong> Returns from Remake; still the most important Ability to use at Stagger onset to maximise the damage multiplier before other attacks land.</li>
+  <li><strong>Unbridled Strength Expansion:</strong> The chain from base to Whirlwind to Rise and Fall to Dolphin Flurry remains; Folio upgrades allow the chain to reset faster and contribute more Stagger each cycle.</li>
+  <li><strong>Call of the Wild (Synergy with Red XIII):</strong> The most mechanically impactful Tifa Synergy for boss encounters. Use it immediately upon Stagger for extension, then follow with True Strike and the Unbridled Strength chain.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S11 -->
+<section class="section" id="s11">
+<h2 class="section-title"><span class="sec-num">&sect;11</span> Barret Wallace</h2>
+<div class="lore-block">
+  <p>The further from Midgar they travel, the more Barret sees what Midgar cost. Every Mako Reactor they pass on the Planet&apos;s surface is a drill wound in the ground, and the ground around it is sick in ways he can now identify because he has seen the healthy version enough to know the difference. He does not say this out loud often. He does not need to. The Planet says it for him. He just makes sure someone is listening.</p>
+  <span class="source">// LIFESTREAM RESONANCE &middot; BARRET WALLACE FIELD LOG &middot; COREL REGION //</span>
+</div>
+
+<p>Barret&apos;s ranged fire support role is expanded in Rebirth with more robust Folio options and greater integration into the Synergy system. His Lifesaver passive continues to provide passive party protection, and his combination of high HP, ranged positioning, and Focused Shot burst damage makes him the most versatile back-line character in extended encounters.</p>
+
+<h2 class="sub-title">Barret&apos;s Key Improvements in Rebirth</h2>
+<ul class="guide-list">
+  <li><strong>Enhanced Overcharge:</strong> The charging mechanic for Overcharge is more responsive in Rebirth; partial charges at lower power than full charges are available for scenarios where the full charge time is impractical.</li>
+  <li><strong>Focused Shot remains king:</strong> All-ATB spends are still Barret&apos;s highest single-ability damage output. The Synergy Ability bonus of Unlimited MP (from specific pairs) can fund more Focused Shot setups than normal MP constraints would allow.</li>
+  <li><strong>Barret as a Synergy hub:</strong> Ninja Carbine (with Yuffie) provides AOE coverage; his pairings with Aerith provide solid back-line magical support combos.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S12 -->
+<section class="section" id="s12">
+<h2 class="section-title"><span class="sec-num">&sect;12</span> Aerith Gainsborough</h2>
+<div class="lore-block">
+  <p>She knows what is coming. She has always known what is coming, or enough of it to understand that the version of events she is currently inside is one of several, and that the others are not irrelevant, and that some of what feels like impossible coincidence is actually the Planet trying very hard to correct an error it cannot fix with physics alone. She maintains the garden because growth is the correct response to a world that wants to stop growing. She fights because the alternative is not something she has decided to accept yet. The &ldquo;yet&rdquo; is doing some heavy work in that sentence, and she knows it.</p>
+  <span class="source">// LIFESTREAM RESONANCE &middot; AERITH GAINSBOROUGH &middot; [RESTRICTED ACCESS] //</span>
+</div>
+
+<p>Aerith&apos;s role as magical artillery and support anchor deepens in Rebirth. Her Arcane Ward returns. Her spell damage output with high Magic Attack and appropriate Materia remains the party&apos;s ceiling for magical damage. The Mystic Multiplication Synergy Ability (with Yuffie, providing Unlimited MP) unlocks temporary spell-cost-free phases that represent the highest magical output possible in the game.</p>
+
+<h2 class="sub-title">Aerith in Rebirth&apos;s Extended World</h2>
+<p>With seven regions and harder enemies, Aerith&apos;s MP management becomes even more central than in Remake. The expanded Folio system provides options to reduce spell costs and improve MP regeneration, making investments in these nodes among Aerith&apos;s highest priorities. The Magnify + Healing combination continues to be the most important Materia pairing in the game.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S13 -->
+<section class="section" id="s13">
+<h2 class="section-title"><span class="sec-num">&sect;13</span> Red XIII</h2>
+<div class="lore-block">
+  <p>He was given the name Nanaki by his father. The number thirteen was assigned by Hojo. He uses neither designation with the party because neither requires any particular discussion at this point, and because the name that matters &mdash; the one that belonged to his whole self, the self before Shinra took it apart to study and then couldn&apos;t reassemble it correctly &mdash; is not something he has decided to share yet. He fights because the Planet is alive and he can feel it and it is in pain, and that is a sufficient reason. The Cosmo Canyon ahead answers questions he has been carrying since before the party met him. He hopes the answers are the ones he needs rather than the ones that would simply confirm his worst fears.</p>
+  <span class="source">// LIFESTREAM RESONANCE &middot; RED XIII TRAVEL LOG &middot; APPROACH TO COSMO CANYON //</span>
+</div>
+
+<p>Red XIII is a full playable character in Rebirth after serving only as a guest in Remake&apos;s finale. He is one of the game&apos;s most mechanically distinct characters, built around the <strong>Vengeance Mode</strong> system and possessing the game&apos;s highest Speed stat after Folio investment.</p>
+
+<h2 class="sub-title">Vengeance Mode</h2>
+<p>Red XIII&apos;s Triangle ability builds and activates <strong>Vengeance Mode</strong>:</p>
+<ul class="guide-list">
+  <li>The Vengeance gauge fills when Red XIII successfully blocks or guards against enemy attacks. The more precisely he guards, the faster the gauge fills.</li>
+  <li>Activating Vengeance Mode provides a significant boost to both Attack and Speed &mdash; he is already the fastest character after Speed investments; in Vengeance Mode he is blisteringly fast.</li>
+  <li><strong>Counterspin</strong> can be activated any time but is most powerful at or near a full Vengeance gauge; at full gauge, Counterspin deals exceptional damage and massive Stagger contribution.</li>
+  <li>The optimal Red XIII loop: Guard attacks to build Vengeance → activate at full gauge → attack with Counterspin and high-speed normal attacks → use the ATB generated by fast attacks to spend on Abilities during the Vengeance phase.</li>
+</ul>
+
+<h2 class="sub-title">Key Folio Investments for Red XIII</h2>
+<ul class="guide-list">
+  <li><strong>Speed +30:</strong> Gives Red XIII the game&apos;s highest Speed stat; directly accelerates ATB generation and makes him the most frequent ATB-spender in the active party when speed-invested</li>
+  <li><strong>Vengeful Guardian (Folio passive):</strong> Improves the power and duration of Vengeance Mode activation; the foundation of his offensive burst potential</li>
+  <li><strong>Magic Defense Up:</strong> Red XIII&apos;s magic defense rivals Aerith&apos;s; combined with his physical speed he becomes the party&apos;s best all-around frontliner against magic-using enemies</li>
+</ul>
+
+<h2 class="sub-title">Recommended Materia for Red XIII</h2>
+<p>Steadfast Block and Precision Defense are particularly strong on Red XIII because his playstyle emphasises guarding and counter-attacking. Guarding charges Vengeance; better guarding means faster Vengeance; Steadfast Block improves guarding efficiency. Fire Magic Materia with Elemental pairing in his weapon provides elemental infusion on his high-speed normal attacks. He is one of the game&apos;s most ATB-efficient characters when his guard-into-Vengeance loop is functioning.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S14 -->
+<section class="section" id="s14">
+<h2 class="section-title"><span class="sec-num">&sect;14</span> Yuffie Kisaragi</h2>
+<div class="lore-block">
+  <p>She is delighted to be on the road. The mission is a Wutai government operation and she is a serious agent in service of Wutai&apos;s restoration and she does not find the Planet&apos;s open sky or the absurdity of the Gold Saucer or the fact that she is traveling with an entire squad of wildly competent people any less wonderful for any of that. She takes the mission completely seriously. She also cannot remember the last time she had this much fun. Both of these things are true simultaneously. She finds this unremarkable. Most people who are genuinely good at something feel this way about it.</p>
+  <span class="source">// LIFESTREAM RESONANCE &middot; YUFFIE KISARAGI FIELD REPORT &middot; PERSONAL ADDENDUM //</span>
+</div>
+
+<p>Yuffie transitions from INTERmission&apos;s lead to Rebirth&apos;s full party member with full Folio integration, expanded Synergy abilities, and her complete Ninjutsu elemental system. She is the party&apos;s most Luck-focused character and one of the best Stagger builders in the game.</p>
+
+<h2 class="sub-title">Yuffie&apos;s Core Mechanics in Rebirth</h2>
+<ul class="guide-list">
+  <li><strong>Thrown Shuriken system:</strong> Identical to INTERmission; airborne shuriken enables hand-to-hand attacks while it travels; dual-mode rhythm between throwing and melee.</li>
+  <li><strong>Ninjutsu elemental switching:</strong> Set the active element (Fire/Ice/Thunder/Wind) and Windstorm + elemental attacks deal the chosen element&apos;s damage. Switching to match weaknesses mid-battle remains the core of advanced Yuffie play.</li>
+  <li><strong>Faithful Thief Folio passive:</strong> Elemental Ninjutsu attacks count as magic damage; Steal provides a Magic Attack boost. Creates a synergy between her thieving playstyle and her offensive elemental output.</li>
+</ul>
+
+<h2 class="sub-title">Yuffie&apos;s Priority Synergy Pairings</h2>
+<ul class="guide-list">
+  <li><strong>Yuffie + Cloud → Halcyon Descent:</strong> Stagger Extension; unlock this first</li>
+  <li><strong>Yuffie + Aerith → Mystic Multiplication:</strong> Unlimited MP; essential when spell-heavy phases are needed</li>
+  <li><strong>Yuffie + Barret → Ninja Carbine:</strong> Area-of-effect coverage; useful for multi-enemy encounters</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S15 -->
+<section class="section" id="s15">
+<h2 class="section-title"><span class="sec-num">&sect;15</span> Cait Sith</h2>
+<div class="lore-block">
+  <p>There are several things about Cait Sith that the party knows and does not say out loud because saying them out loud would require a conversation that nobody wants to have in the middle of everything else that is happening. Cait Sith knows this too. He is, in fact, counting on it. He is also, as a matter of separate and genuine fact, actually helpful in a fight. The giant stuffed Mog is not a joke. The dice are not a joke. Luck has a physics, and he understands it better than almost anyone.</p>
+  <span class="source">// LIFESTREAM RESONANCE &middot; CAIT SITH PROFILE &middot; [SOURCE: UNKNOWN] //</span>
+</div>
+
+<p>Cait Sith is Rebirth&apos;s most unique and unconventional party member. His combat revolves around <strong>luck-based dice mechanics</strong>, making him fundamentally different from every other character in the game. He is simultaneously the most difficult character to optimise for and, when properly built, capable of enormous burst damage through favourable dice outcomes.</p>
+
+<h2 class="sub-title">Cait Sith&apos;s Mechanics</h2>
+<ul class="guide-list">
+  <li><strong>Dice rolls:</strong> Many of Cait Sith&apos;s abilities involve dice with outcomes that depend on his Luck stat and on RNG. Higher Luck dramatically improves dice outcome probabilities.</li>
+  <li><strong>Moogle combat:</strong> His giant stuffed Moogle functions as an independent combat entity that Cait Sith can ride and direct. Moogle attack abilities are separate from Cait Sith&apos;s own attacks.</li>
+  <li><strong>Lucky Jockey (Folio):</strong> Boosts Luck by 100 when riding the Moogle. Combined with Luck Up Materia (which can be stacked), this creates extreme Luck values that make dice outcomes significantly more favourable.</li>
+  <li><strong>Moogle Sentinel / Moogle Vanguard (Folio):</strong> Improve the Moogle&apos;s durability and damage respectively; makes the Moogle a more effective independent combat entity.</li>
+</ul>
+
+<h2 class="sub-title">Building Cait Sith</h2>
+<p>Cait Sith&apos;s Folio should focus almost entirely on Luck-based upgrades. Luck Up Materia stacked to maximum on him combined with Lucky Jockey creates the conditions for his maximum damage potential. He is not the most reliable damage dealer &mdash; dice are inherently variable &mdash; but his ceiling is exceptional when fortune favours the combination. Pair him with characters whose reliability compensates for his variance: a Cloud-Tifa-Cait Sith party has reliable stagger (Cloud/Tifa) supplemented by Cait Sith&apos;s burst potential when dice align.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S16 -->
+<section class="section" id="s16">
+<h2 class="section-title"><span class="sec-num">&sect;16</span> The Folio &amp; Skill Trees</h2>
+<p>The <strong>Folio</strong> is Rebirth&apos;s character advancement system, replacing Remake&apos;s weapon-centric upgrade trees with a unified skill tree for each character. Every character has a Folio containing passive stat improvements, new ability unlocks, Synergy Skill and Ability unlocks, and unique mechanic enhancements. SP (Skill Points) earned from battles are spent to progress through each character&apos;s Folio.</p>
+
+<h2 class="sub-title">How the Folio Works</h2>
+<ul class="guide-list">
+  <li><strong>Node-based progression:</strong> The Folio is a network of interconnected nodes. To unlock a deeper node, you must first unlock the nodes connecting to it from the entry point. This means early investments determine which advanced options become accessible.</li>
+  <li><strong>Shared SP pool per character:</strong> Each character has their own SP pool separate from others. SP earned in battles is distributed across all party members present.</li>
+  <li><strong>Synergy unlocks in the Folio:</strong> Synergy Skills and Synergy Abilities must be explicitly unlocked in the Folio before they become available in battle. This makes Folio investment directly tied to Synergy system access.</li>
+  <li><strong>Manuscripts extend the Folio:</strong> As in Remake, Manuscripts provide large SP bonuses. In Rebirth, they also unlock additional Folio node tiers beyond what base SP accumulation can reach without them.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S17 -->
+<section class="section" id="s17">
+<h2 class="section-title"><span class="sec-num">&sect;17</span> Priority Folio Investments</h2>
+<p>The Folio contains more options than can be fully invested in a single playthrough without extensive Manuscript collection. Knowing which nodes provide the most value per SP spent is the difference between a party that functions and one that excels.</p>
+
+<div class="phase early">
+  <div class="phase-title">Cloud &mdash; Priority Folio Nodes</div>
+  <p><strong>Synergy Skills with Tifa and Yuffie first:</strong> Unlocking Synergy Skills provides immediate combat improvement without requiring a full Synergy gauge. Then unlock the Halcyon Descent Synergy Ability (Cloud + Yuffie) for Stagger Extension capability. Follow with physical stat nodes that improve Punisher Mode output. The Focused Thrust upgrade (improved Stagger contribution) is a high-value node for boss encounters.</p>
+</div>
+
+<div class="phase early">
+  <div class="phase-title">Tifa &mdash; Priority Folio Nodes</div>
+  <p><strong>True Strike enhancements first:</strong> Any nodes that improve True Strike&apos;s Stagger multiplier increase are the highest-priority investment because they multiply all subsequent Stagger damage. Then unlock Call of the Wild (Tifa + Red XIII Synergy Ability) for Stagger Extension. Speed improvements compound with her naturally fast attack speed for more ATB generation.</p>
+</div>
+
+<div class="phase early">
+  <div class="phase-title">Aerith &mdash; Priority Folio Nodes</div>
+  <p><strong>MP cost reduction nodes:</strong> Any Folio node that reduces spell MP cost or improves MP regeneration is the highest return on SP for Aerith given the Hard Mode MP restriction. Then unlock Mystic Multiplication (Aerith + Yuffie) for Unlimited MP synergy. Magic Attack improvement nodes improve all spell damage and healing output multiplicatively.</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">Red XIII &mdash; Priority Folio Nodes</div>
+  <p><strong>Speed +30 as the anchor investment:</strong> The Speed node is the single most impactful node in Red XIII&apos;s entire Folio &mdash; getting the game&apos;s highest Speed stat transforms his ATB generation and makes him the most action-efficient character when actively controlled. Vengeful Guardian improves Vengeance Mode. Magic Defense Up makes him the best frontline defender against magical enemies.</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">Yuffie &mdash; Priority Folio Nodes</div>
+  <p><strong>Faithful Thief early:</strong> Making Ninjutsu attacks count as magic damage and linking Steal to a Magic Attack boost creates Yuffie&apos;s core offensive synergy. Then unlock Halcyon Descent (Yuffie + Cloud) for Stagger Extension. Any nodes that improve Ninjutsu elemental efficiency improve the damage output of her primary attack mode.</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">Cait Sith &mdash; Priority Folio Nodes</div>
+  <p><strong>Lucky Jockey immediately:</strong> The Luck boost from Lucky Jockey is the foundation of his entire damage model. Without maximum Luck, his dice output is variable to the point of unreliability. Moogle Sentinel and Vanguard improve his most unique combat feature. Luck-boosting passive nodes are secondary priorities after the core Lucky Jockey investment is made.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S18 -->
+<section class="section" id="s18">
+<h2 class="section-title"><span class="sec-num">&sect;18</span> Materia in Rebirth</h2>
+<div class="lore-block">
+  <p>The Materia works differently outside of Midgar. Inside the city, the Mako refinement process strips the Lifestream of some of its complexity before crystallising it. Outside, in the ground that Shinra has not yet reached, the Materia is rawer. More responsive. The party has noticed this without having a framework for discussing it. The spells feel different. The connections feel different. The Planet is closer here. This should be reassuring. In some ways it is. In other ways it means that the Planet is paying closer attention to what they are doing, which is a condition that generates its own category of pressure.</p>
+  <span class="source">// LIFESTREAM RESONANCE &middot; CHADLEY RESEARCH NOTES &middot; GRASSLANDS SURVEY STATION //</span>
+</div>
+
+<p>Materia in Rebirth operates on the same five-category system as Remake (Green Magic, Yellow Command, Blue Support, Purple Independent, Red Summon) with several additions specific to the expanded world and character roster. Several Materia types are new and some mechanics have been updated.</p>
+
+<h2 class="sub-title">New Materia in Rebirth</h2>
+<table class="data-table">
+  <thead><tr><th>Materia</th><th>Type</th><th>Effect</th><th>How Obtained</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Warding</strong></td><td>Blue Support</td><td>When paired with status-effect Materia, provides resistance to that status and reduces debuff duration</td><td>World Intel and regional vendors</td></tr>
+    <tr><td><strong>Synergy Materia (expanded)</strong></td><td>Blue Support</td><td>Triggers non-active party member auto-cast when linked Materia is used; improved in Rebirth to work more reliably</td><td>Regional vendors and World Intel rewards</td></tr>
+    <tr><td><strong>Skill Master</strong></td><td>Purple Independent</td><td>Raises the level of linked Materia by one; allows instant access to higher-tier spells</td><td>Specific World Intel rewards and side quests</td></tr>
+    <tr><td><strong>ATB Ward</strong></td><td>Purple Independent</td><td>Extends ATB benefits related to Arcane Ward placement</td><td>Grasslands region Intel</td></tr>
+    <tr><td><strong>Enemy Skill</strong></td><td>Special (evolves)</td><td>Learns abilities from enemies; upgrades through Chadley VR battles requiring specific Assess completion</td><td>Starts basic; upgraded through Chadley&apos;s biological intel VR battles in each region</td></tr>
+  </tbody>
+</table>
+
+<div class="callout amber">
+  <div class="callout-title">Enemy Skill Materia &mdash; The Evolving Tool</div>
+  <p>Enemy Skill Materia is one of Rebirth&apos;s most distinctive systems. It begins with basic enemy abilities and upgrades to more powerful versions by completing Chadley&apos;s Biological Intel VR battles in each region &mdash; which themselves require Assessing a minimum number of native enemies in that region first. The progression path: Assess 12&ndash;15 enemies in a new region → unlock the Biological Intel VR battle → win the battle → Enemy Skill Materia gains new abilities. Keeping pace with this upgrade path requires active Assessing in every new region, which you should be doing anyway.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S19 -->
+<section class="section" id="s19">
+<h2 class="section-title"><span class="sec-num">&sect;19</span> Best Materia Combinations</h2>
+<p>The foundational pairings from Remake carry forward in Rebirth with the same strategic logic. Several new combinations emerge from Rebirth&apos;s expanded Materia roster and the new character mechanics.</p>
+
+<div class="phase planet-ph">
+  <div class="phase-title">Magnify + Healing (Core; Aerith or Party Healer)</div>
+  <p>Unchanged from Remake: the game&apos;s most important Materia pairing. Converts any Cure/Cura/Curaga cast into party-wide healing at reduced per-target potency. The efficiency gain of one cast healing the entire party versus three individual casts remains the most valuable single-pair combination in the game. Never remove this from Aerith.</p>
+</div>
+
+<div class="phase planet-ph">
+  <div class="phase-title">Elemental + Fire/Thunder/Ice (Cloud weapon &mdash; physical infusion)</div>
+  <p>Infuses Cloud&apos;s normal physical attacks with the chosen element for free on every swing. In Rebirth, the expanded enemy variety makes element-matching even more impactful than in Remake since regional enemy weaknesses vary. Swap the elemental pairing at region transitions to match the primary enemy weakness of each new area.</p>
+</div>
+
+<div class="phase planet-ph">
+  <div class="phase-title">Warding + Poison/Sleep/Stop (Status protection pairing)</div>
+  <p>New to Rebirth: Warding Materia paired with a status-effect Materia provides resistance to that status and reduces its duration when it does land. Rebirth&apos;s expanded enemy roster includes more enemies that apply dangerous statuses (particularly in the Gongaga jungle and Nibel regions). Warding + Poison on Aerith prevents the most common and most damaging debuff in those regions from disrupting her critical healing role.</p>
+</div>
+
+<div class="phase planet-ph">
+  <div class="phase-title">Luck Up + Cait Sith (Dice optimisation)</div>
+  <p>Stacking Luck Up Materia on Cait Sith to maximum, combined with Lucky Jockey Folio investment, transforms his dice from RNG gambling into statistically reliable high-damage output. Luck Up is purchasable from regional vendors for 2,000 Gil. Buy and equip multiple copies exclusively on Cait Sith &mdash; no other character benefits from this investment as significantly.</p>
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">AP Up + Priority Materia</div>
+  <p>AP Up (Purple Independent) pairs with any Materia in a linked slot to double its AP gain rate. In Rebirth, the expanded Materia roster means there are more high-priority pieces to level. Pair AP Up with whichever Materia you most urgently want to reach a higher tier &mdash; typically Healing (for Cura/Curaga), your most-used elemental offensive Materia, or Enemy Skill Materia (which evolves through Chadley&apos;s biological intel VR battles rather than AP, but still benefits from faster progress on the AP-gated sections). Rotate AP Up between pieces as they master.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S20 -->
+<section class="section" id="s20">
+<h2 class="section-title"><span class="sec-num">&sect;20</span> The Seven Regions</h2>
+<div class="lore-block">
+  <p>The Planet is not one thing. The Shinra surveys showed them topography and resource deposits. What they did not show &mdash; what surveys cannot show &mdash; is that each region of the Planet has a character, a quality that is not simply a function of elevation and soil composition and rainfall. The Grasslands are patient. The Junon coast is mercantile and watchful. The Corel wasteland remembers something it was before the reactor, and it is angry about it. The jungle of Gongaga is too alive, in the way that things that have grown without interference for a very long time are too alive. Cosmo Canyon is a conversation with the deep past. Nibel is a wound. The Meridian Ocean is everything that is waiting.</p>
+  <span class="source">// LIFESTREAM RESONANCE &middot; BUGENHAGEN &middot; COSMO CANYON OBSERVATORY //</span>
+</div>
+
+<p>Rebirth&apos;s open world is divided into seven explorable regions. Each region is visited as part of the main story progression but can be extensively explored beyond the story requirements. All regions remain accessible via Chapter Select after story completion if content is missed.</p>
+
+<h2 class="sub-title">The Seven Regions</h2>
+<table class="data-table">
+  <thead><tr><th>Region</th><th>Story Chapter</th><th>Environment</th><th>Notable Content</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Grasslands</strong></td><td>Ch. 2</td><td>Open prairie; Kalm town; Chocobo Ranch</td><td>First open world area; Protorelic Quest introduction; Grasslands Chocobo for basic traversal; Fort Condor introduction in Junon subregion</td></tr>
+    <tr><td><strong>Junon Region</strong></td><td>Ch. 3&ndash;4</td><td>Coastal cliffs; military port city; Under Junon fishing village</td><td>Titan VR summon; Fort Condor Protorelic; extensive coastal exploration; Dolphin minigame in Under Junon</td></tr>
+    <tr><td><strong>Corel Region</strong></td><td>Ch. 5&ndash;6</td><td>Desert wasteland; Mount Corel; Costa del Sol resort</td><td>Alexander VR summon; Cactuar Crusher Protorelic; Gold Saucer access; largest concentration of optional side content in the game</td></tr>
+    <tr><td><strong>Gongaga Region</strong></td><td>Ch. 9</td><td>Dense jungle; ruined reactor; Gongaga Village</td><td>Kujata VR summon; Cissnei story content; unique Gongaga Chocobo with bouncing traversal; challenging jungle navigation</td></tr>
+    <tr><td><strong>Cosmo Canyon</strong></td><td>Ch. 10&ndash;11</td><td>Canyon settlement; Cave of the Gi</td><td>Odin VR summon; Red XIII personal story arc; Bugenhagen relationship; Gi Nattak boss encounter</td></tr>
+    <tr><td><strong>Nibel Region</strong></td><td>Ch. 12</td><td>Nibelheim town; Mount Nibel; Nibelheim Reactor</td><td>Nibelheim Reactor story sequence; Cloud&apos;s past; highest-difficulty region standard enemies; Professional Handler Protorelic</td></tr>
+    <tr><td><strong>Meridian Ocean</strong></td><td>Ch. 13 onward</td><td>Ocean; Forgotten Capital approach</td><td>Final story approach region; Gilgamesh unlocked here after all Protorelics; endgame content culmination</td></tr>
+  </tbody>
+</table>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S21 -->
+<section class="section" id="s21">
+<h2 class="section-title"><span class="sec-num">&sect;21</span> World Intel</h2>
+<p>World Intel is Rebirth&apos;s open-world collectible and activity system. There are <strong>169 total World Intel locations</strong> across seven regions. Completing all World Intel in a region unlocks the Protorelic for that region and is required for crafting all Materia from Chadley. Not all World Intel is missable &mdash; Chapter Select after story completion allows returning to collect anything missed.</p>
+
+<h2 class="sub-title">The Nine Intel Types</h2>
+<div class="unit-grid">
+  <div class="unit-card mako-card">
+    <div class="unit-name">Activation Intel</div>
+    <span class="unit-type">TOWERS &middot; MAP REVEALS</span>
+    <p>Communication towers that, when activated, mark all other Intel types in the surrounding area on the map. Always find and activate these first when entering a new area of any region. They turn the overwhelming open world into a manageable checklist of marked objectives.</p>
+  </div>
+  <div class="unit-card mako-card">
+    <div class="unit-name">Fiend Intel</div>
+    <span class="unit-type">COMBAT CHALLENGES &middot; ENEMY ENCOUNTERS</span>
+    <p>Specific combat encounters against regional enemy types and rare variants. Provide SP, Gil, and specific enemy Assess data. Required for unlocking Chadley&apos;s biological VR battles. Completing Fiend Intel in order of appearance ensures Enemy Skill Materia stays current with your progression.</p>
+  </div>
+  <div class="unit-card mako-card">
+    <div class="unit-name">Phenomenon Intel</div>
+    <span class="unit-type">UNIQUE MINIGAMES &middot; PROTORELICS</span>
+    <p>Region-specific Protorelic quests with unique minigame mechanics per region. Four per region; completing all four in any region unlocks the Protorelic. The most substantial individual Intel type in terms of time investment and reward significance.</p>
+  </div>
+  <div class="unit-card mako-card">
+    <div class="unit-name">Chocobo Intel</div>
+    <span class="unit-type">CHOCOBO CATCHING &middot; TRAVERSAL UNLOCK</span>
+    <p>Required for catching regional Chocobos. Each region&apos;s Chocobo has unique traversal abilities (swimming, bouncing, climbing, etc.) that unlock access to specific World Intel and terrain types. Catching the regional Chocobo is the gating condition for full regional exploration.</p>
+  </div>
+  <div class="unit-card mako-card">
+    <div class="unit-name">Excavation Intel</div>
+    <span class="unit-type">DIGGING &middot; TREASURE DISCOVERY</span>
+    <p>Special dig sites accessible by Chocobo. Provides Gil, materials, and unique items. Requires the regional Chocobo to be caught and its digging ability to be available. Lower priority than combat and Protorelic Intel but provides useful crafting materials.</p>
+  </div>
+  <div class="unit-card mako-card">
+    <div class="unit-name">Moogle Intel</div>
+    <span class="unit-type">EMPORIUM &middot; MOOGLE MEDALS</span>
+    <p>Moogle emporium shops with a minigame where you chase Moogles to interact with their shop. Provides access to the Moogle Emporium merchant, which sells unique items including Materia unavailable elsewhere. Maxing out Moogle Emporium merchant rank is required for the Moogle Lover achievement.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S22 -->
+<section class="section" id="s22">
+<h2 class="section-title"><span class="sec-num">&sect;22</span> Chocobos &amp; Traversal</h2>
+<div class="lore-block">
+  <p>The Chocobo is not a vehicle. This distinction is lost on some people who have not spent time with one. A vehicle goes where you direct it. A Chocobo goes where it is persuaded to go, by a combination of handling skill, mutual understanding, and in certain cases the application of specific food items at strategic intervals. The Chocobo that has been persuaded has made a decision. It is a partnership, even when the partnership is between a large bird and a mercenary who would prefer to frame all of his relationships as transactions. The Chocobo is not persuaded by this framing. Neither, ultimately, is anyone else.</p>
+  <span class="source">// LIFESTREAM RESONANCE &middot; CHOCOBO RANCH OPERATOR NOTES &middot; GRASSLANDS //</span>
+</div>
+
+<p>Each of Rebirth&apos;s seven regions has a regional Chocobo with unique traversal capabilities. Catching the regional Chocobo unlocks full exploration of that region&apos;s terrain types. The sequence for each new region: find the Chocobo Intel → complete the Chocobo quest → ride the captured Chocobo → access the full map.</p>
+
+<h2 class="sub-title">Regional Chocobo Abilities</h2>
+<table class="data-table">
+  <thead><tr><th>Region</th><th>Chocobo Type</th><th>Unique Ability</th><th>Terrain Unlocked</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Grasslands</strong></td><td>Standard Yellow Chocobo</td><td>Basic riding; moderate speed</td><td>Open grassland; basic terrain</td></tr>
+    <tr><td><strong>Junon</strong></td><td>Coastal Chocobo</td><td>Swimming / coastal traversal</td><td>Coastal water areas; cliff bases</td></tr>
+    <tr><td><strong>Corel</strong></td><td>Desert Chocobo</td><td>Sand running; Cactuar Conductor desert rails</td><td>Deep desert; Cactuar rail network</td></tr>
+    <tr><td><strong>Gongaga</strong></td><td>Jungle Chocobo</td><td>Bouncing on specific mushroom platforms</td><td>Vertical jungle terrain; elevated platforms</td></tr>
+    <tr><td><strong>Cosmo Canyon</strong></td><td>Canyon Chocobo</td><td>Wall running; canyon traversal</td><td>Canyon walls; elevated cliff paths</td></tr>
+    <tr><td><strong>Nibel</strong></td><td>Mountain Chocobo</td><td>Climbing steep terrain; rope lines</td><td>Mountain paths; high-altitude areas</td></tr>
+  </tbody>
+</table>
+
+<div class="callout tip">
+  <div class="callout-title">Catch the Chocobo First</div>
+  <p>Upon entering any new region, the highest priority is catching the regional Chocobo. Without it, significant portions of the map are physically inaccessible &mdash; not hidden, just unreachable due to terrain type restrictions. Attempting World Intel without the regional Chocobo will frequently lead to World Intel locations that are visible on the map but cannot be reached. The Chocobo Intel quest in each region unlocks with the first exploration phase; complete it before anything else.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S23 -->
+<section class="section" id="s23">
+<h2 class="section-title"><span class="sec-num">&sect;23</span> Protorelics &amp; Gilgamesh</h2>
+<p>Protorelics are the signature rewards for completing the Phenomenon Intel questlines in each region. There are <strong>28 Phenomenon Intel nodes</strong> across seven regions (four per region), and completing all four in a given region unlocks that region&apos;s Protorelic. Collecting all seven Protorelics unlocks a final eighth quest chain &mdash; and ultimately the fight against <strong>Gilgamesh</strong>.</p>
+
+<h2 class="sub-title">Protorelic Rewards &mdash; The Genji Set</h2>
+<p>Completing the full Protorelic chain across all regions unlocks the <strong>Genji equipment set</strong> &mdash; some of the most strategically impactful accessories in the game:</p>
+<ul class="guide-list">
+  <li><strong>Genji Gloves:</strong> Breaks the 9,999 maximum damage cap on physical and magical attacks. Against high-HP boss enemies in Hard Mode, this makes damage ceiling-breaking available for optimised builds.</li>
+  <li><strong>Genji Earrings:</strong> Increases damage dealt by 15%; increases damage received by 15%. An aggressive trade-off item for high-DPS builds that can sustain the additional damage taken.</li>
+  <li><strong>Genji Ring:</strong> Reduces damage received by 15%; reduces damage dealt by 15%. The defensive counterpart to Genji Earrings; excellent for survivability-focused Hard Mode builds.</li>
+</ul>
+
+<h2 class="sub-title">Gilgamesh &mdash; The Summon Superboss</h2>
+<p>Gilgamesh appears as the final fight unlocked by completing all Protorelics. He is the game&apos;s most challenging optional encounter and his defeat provides the <strong>Gilgamesh Summon Materia</strong> &mdash; the most powerful Summon available, earned through the game&apos;s most comprehensive optional content chain. Key notes for the Gilgamesh fight:</p>
+<ul class="guide-list">
+  <li>Approach with a fully upgraded party at maximum Folio investment</li>
+  <li>Genji Gloves on Cloud removes his damage cap during the fight&apos;s critical windows</li>
+  <li>Stagger-extension Synergy Abilities (Halcyon Descent, Call of the Wild) are essential for creating damage windows against his exceptional HP and resistance</li>
+  <li>Prepare multiple status resistances via Warding Materia; Gilgamesh applies diverse debuffs throughout the fight</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S24 -->
+<section class="section" id="s24">
+<h2 class="section-title"><span class="sec-num">&sect;24</span> Chadley &amp; the VR Battles</h2>
+<p>Chadley returns as Rebirth&apos;s primary World Intel liaison and the gateway to Summon Materia through his VR Battle combat simulations. In each new region, he provides a set of VR Battles that unlock progressively as you complete prerequisite activities: Assessing enemies, defeating specific enemies, and completing earlier VR tiers.</p>
+
+<h2 class="sub-title">How to Unlock VR Battles</h2>
+<ul class="guide-list">
+  <li><strong>Assess requirement:</strong> Most region VR battles require Assessing a minimum number of native enemies (typically 12&ndash;15 per region). Keep Assess active on every new enemy type.</li>
+  <li><strong>Defeat requirement:</strong> Some VR battles require defeating a specific enemy type first. Fiend Intel locations reliably provide encounters with required enemies.</li>
+  <li><strong>Tiered progression:</strong> VR battles unlock in tiers. Completing the first tier enables the second, which enables the third. Complete lower tiers before expecting higher ones to become available.</li>
+</ul>
+
+<h2 class="sub-title">VR Battle Difficulty and Rewards</h2>
+<p>VR battles scale from accessible early encounters (providing two-star elemental Materia) to genuinely challenging late-region encounters against regional superbosses. The Summon VR battles are typically the most demanding in each region:</p>
+<ul class="guide-list">
+  <li>Alexander (Corel): Immune to many attacks while arms are active; must target arms first; Thunder is the key weakness; one of the most mechanically demanding early-region Summon fights</li>
+  <li>Kujata (Gongaga): Mindflayer encounter requires using Sleep (Binding Materia + Magnify) to prevent adds from interfering during the primary target phase</li>
+  <li>Enemy Skill VR battles: Require specific Assess counts and provide the most significant upgrade to the Enemy Skill Materia</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S25 -->
+<section class="section" id="s25">
+<h2 class="section-title"><span class="sec-num">&sect;25</span> Party Composition</h2>
+<p>Rebirth typically allows a three-character active party. The correct party composition depends on the encounter, the region, and which Synergy Abilities you want access to. With seven characters and their pair-specific Synergy options, the composition decision is now a meaningful strategic layer that was not present in Remake&apos;s four-character roster.</p>
+
+<h2 class="sub-title">Party Composition Principles</h2>
+<ul class="guide-list">
+  <li><strong>Always consider Synergy pairings when building the party.</strong> A party of Cloud + Yuffie + Tifa has access to Halcyon Descent (Cloud + Yuffie, Stagger Extension) and Call of the Wild (Tifa + Red XIII &mdash; not available, since Red XIII isn&apos;t in party). Versus Cloud + Yuffie + Red XIII: has Halcyon Descent AND Call of the Wild but loses Tifa&apos;s physical DPS. The Synergy pairings are the deciding factor when the raw character strengths are otherwise similar.</li>
+  <li><strong>One dedicated healer, always.</strong> Aerith is the most efficient healer in all configurations; if she is available, put her in the party. The Magnify + Healing combination is too valuable to leave on the bench unless the specific encounter provides a better argument.</li>
+  <li><strong>One Stagger Extension Synergy pair per party.</strong> Build every party around having at least one pairing that provides Stagger Extension (Halcyon Descent or Call of the Wild) so that boss Stagger windows can be maximised.</li>
+</ul>
+
+<h2 class="sub-title">Recommended Party Configurations</h2>
+<div class="phase early">
+  <div class="phase-title">Standard Boss Party (Recommended Default)</div>
+  <p><strong>Cloud + Yuffie + Aerith.</strong> Cloud anchors physical DPS; Yuffie provides Halcyon Descent for Stagger Extension and elemental Ninjutsu flexibility; Aerith provides healing, Magnify support, and Mystic Multiplication for Unlimited MP windows. This party has Stagger Extension (Cloud + Yuffie), a reliable healer, and Unlimited MP synergy all available simultaneously. It is the best all-around composition for most story content.</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">Physical Burst Party</div>
+  <p><strong>Cloud + Tifa + Red XIII.</strong> Cloud and Tifa handle Pressure and Stagger through their combined physical pressure; Tifa&apos;s True Strike at Stagger onset combined with Call of the Wild (Tifa + Red XIII) for Stagger Extension; Red XIII&apos;s speed generates ATB rapidly during the extended window. This party trades Aerith&apos;s healing for the game&apos;s highest physical burst potential during Stagger. Use on encounters where healing is less critical than maximising Stagger damage output.</p>
+</div>
+
+<div class="phase late">
+  <div class="phase-title">Magic Burst Party</div>
+  <p><strong>Cloud + Aerith + Yuffie or Barret.</strong> Cloud maintains physical Stagger pressure; Aerith with Magnify + Healing provides support; Yuffie&apos;s Mystic Multiplication (with Aerith) provides Unlimited MP windows for Aerith&apos;s highest-tier spells. Against enemies resistant to physical damage where elemental weakness exploitation is the primary path, this configuration maximises magical output. Alternatively, Barret provides ranged coverage and Focused Shot burst while Aerith heals.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S26 -->
+<section class="section" id="s26">
+<h2 class="section-title"><span class="sec-num">&sect;26</span> Hard Mode</h2>
+<div class="lore-block">
+  <p>The second time through a world is different from the first. The first time, you are learning it. The second time, you know it and you are learning something else: what it demands when it decides not to be generous. The path is the same. The destination is the same. The cost of making a mistake is not the same at all, and the enemies have been given the time since your first visit to consider what they should have done differently. They have reached conclusions. The conclusions are not in your favour.</p>
+  <span class="source">// LIFESTREAM RESONANCE &middot; HARD MODE ASSESSMENT &middot; [SECOND TRAVERSAL LOG] //</span>
+</div>
+
+<p>Hard Mode unlocks after completing the main story. It applies the same core restriction as Remake: <strong>no items usable in battle, MP restores only at benches</strong>. Enemies are significantly stronger and some bosses have additional attack patterns. Hard Mode in Rebirth is longer and more demanding than Remake&apos;s equivalent because the expanded world means more encounters between healing opportunities.</p>
+
+<h2 class="sub-title">Hard Mode Preparation Checklist</h2>
+<ul class="guide-list">
+  <li><strong>Folio investment to maximum for all active party members:</strong> Hard Mode&apos;s increased enemy strength requires fully developed character capabilities. Incomplete Folio investment means missing Synergy Skills and Abilities that provide essential tactical options.</li>
+  <li><strong>Aerith&apos;s MP at maximum through Folio + MP Up Materia:</strong> MP is the most critical resource in Hard Mode. Aerith should have maximum MP capacity from both Folio nodes and MP Up Materia before Hard Mode begins.</li>
+  <li><strong>Prayer on Cloud and Tifa for free party healing:</strong> Prayer (Yellow Command Materia) heals the party without MP cost. Having it on at least two characters provides MP-free sustained healing during extended encounters between benches.</li>
+  <li><strong>Warding + appropriate status Materia:</strong> Hard Mode bosses apply more dangerous status effects than Normal. Warding + Poison and Warding + Sleep on relevant party members prevents the most disruptive debuffs.</li>
+  <li><strong>Stagger Extension Synergy unlocked:</strong> Hard Mode&apos;s stronger enemies have more HP and faster Stagger recovery. Maximising each Stagger window through extension Synergy Abilities is more impactful in Hard Mode than any other difficulty.</li>
+</ul>
+
+<h2 class="sub-title">Hard Mode Resource Conservation</h2>
+<p>The No-Items restriction eliminates Phoenix Downs and Ethers from battle. This means:</p>
+<ul class="guide-list">
+  <li><strong>Revive Materia is mandatory:</strong> Party resurrection requires Revive Materia. Run it on Aerith at minimum. If Aerith falls, the party needs a second character with Revive as backup.</li>
+  <li><strong>Use Mystic Multiplication aggressively:</strong> When Unlimited MP Synergy is available (Aerith + Yuffie), use it during high-spell-demand phases. Cast the highest-tier spells freely during the unlimited MP window rather than hoarding them for later &mdash; the window is finite but its spell savings are permanent.</li>
+  <li><strong>Conserve Cura/Curaga for genuine emergencies:</strong> Prayer (no MP) is the primary healing tool. Cura and Curaga are reserved for situations where Prayer&apos;s output is insufficient for immediate party survival. The MP cost of unnecessary Cura casts accumulates into the inability to cast Cura when it matters most.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S27 -->
+<section class="section" id="s27">
+<h2 class="section-title"><span class="sec-num">&sect;27</span> Boss Strategies</h2>
+<div class="lore-block">
+  <p>Sephiroth walks through every encounter the party has with Shinra&apos;s machinery as if it is a corridor he has already mapped. He is not wrong. The difference between Sephiroth and the party is that the party fights every encounter as if it is the last one they will be able to fight, and Sephiroth fights every encounter as if it is an argument he expects to win by arriving. Both approaches have their merits. Only one of them appears to be experiencing the journey.</p>
+  <span class="source">// LIFESTREAM RESONANCE &middot; FIELD OBSERVATION &middot; [ATTRIBUTION WITHHELD] //</span>
+</div>
+
+<div class="phase early">
+  <div class="phase-title">Midgardsormr &mdash; Grasslands Region Boss</div>
+  <p>A massive serpentine creature that introduces Rebirth&apos;s open-world boss design. The key mechanic: its armour plates must be targeted individually before the core body is accessible to normal damage. Use Beta Skill equivalents and AOE abilities to strip multiple plates simultaneously. When plates are stripped and the creature is Pressured, it temporarily exposes a large weak point on its main body &mdash; converge all ATB spending and Synergy Abilities at this moment. Thunder-elemental attacks exploit the creature&apos;s primary weakness; equip Elemental + Thunder on Cloud before the encounter.</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">Sample: Gi Nattak &mdash; Cave of the Gi, Cosmo Canyon</div>
+  <p>A boss that summons Soul Flame minions during the encounter. The community tactical note: do not Assess Gi Nattak until it summons Soul Flames &mdash; if your Assess Materia is level 2, you can Assess the boss and the Soul Flames in a single cast, satisfying the Intel requirement for both entries simultaneously. This is a minor efficiency but notable as a pattern: always assess bosses and their summoned minions together when both Intel entries are needed. The fight itself emphasises elemental coverage; holy-aspected attacks (found through specific Materia and abilities) are effective against undead Gi enemies throughout the cave.</p>
+</div>
+
+<div class="phase late">
+  <div class="phase-title">Elena &amp; Rude (Turks) &mdash; Chapter 12</div>
+  <p>A paired Turk encounter returning from the recurring Turk boss template. Both Elena and Rude now have abilities not present in Remake&apos;s equivalents. The Pressure condition for each is revealed by Assess; as with all paired fights, prioritise Pressing whichever is currently active and save Synergy Ability charges for the moment when both are Staggered simultaneously &mdash; two Staggered enemies accepting the same Synergy Ability simultaneously multiplies the output of that ability&apos;s window.</p>
+</div>
+
+<div class="callout fire">
+  <div class="callout-title">Universal Boss Protocol</div>
+  <p>Every boss encounter in Rebirth follows the same strategic template: Assess immediately for Pressure conditions and weaknesses → exploit elemental weakness to build Pressure → spend ATB on Balance-bar abilities during Pressure → wait for Stagger → immediately deploy a Stagger-extension Synergy Ability (Halcyon Descent or Call of the Wild) → spend all accumulated ATB, Limit Breaks, and follow-up abilities during the extended Stagger window → Assess any summoned adds immediately → repeat. This template applies from the first Grasslands boss to the final chapter. Build every party and Materia configuration to execute this template as efficiently as possible.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S28 -->
+<section class="section" id="s28">
+<h2 class="section-title"><span class="sec-num">&sect;28</span> Glossary</h2>
+<div class="gloss-grid">
+  <div class="gloss-item"><div class="gloss-term">Activation Intel</div><div class="gloss-def">World Intel towers that, when found and activated, mark all other Intel types in the surrounding area on the regional map. The first priority in every new region.</div></div>
+  <div class="gloss-item"><div class="gloss-term">AP (Ability Points)</div><div class="gloss-def">Materia experience; accumulated through battle; levels Materia up to unlock higher spell tiers and stronger passive bonuses; AP Up Materia doubles the AP gain of its linked partner.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Arcane Ward</div><div class="gloss-def">Aerith&apos;s Triangle ability; creates a magical circle on the ground; any character inside casts linked spells twice for the cost of one. Returns from Remake with the same function.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Assess</div><div class="gloss-def">Yellow Command Materia; reveals enemy HP, elemental weaknesses, Pressure conditions, Stagger triggers, and drops. Required for unlocking Chadley&apos;s VR battles and upgrading Enemy Skill Materia. Mandatory in every new region.</div></div>
+  <div class="gloss-item"><div class="gloss-term">ATB (Active Time Battle)</div><div class="gloss-def">The two-segment resource gauge filled by attacking, taking damage, and guarding; spent on Abilities, Spells, Items, and Summon commands. The foundation of all combat resource management.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Bugenhagen</div><div class="gloss-def">Red XIII&apos;s grandfather and elder of Cosmo Canyon; provides key Lifestream exposition and is central to the Cosmo Canyon chapter&apos;s story and Red XIII&apos;s personal arc.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Cait Sith</div><div class="gloss-def">A robotic fortune-telling cat riding a giant Moogle; new playable character in Rebirth; combat built around luck-based dice mechanics; maximises effectiveness through Luck Up Materia and Lucky Jockey Folio investment.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Call of the Wild</div><div class="gloss-def">Tifa + Red XIII Synergy Ability; provides Stagger Extension bonus; one of the two most strategically valuable Synergy Abilities in the game for boss encounters alongside Halcyon Descent.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Chadley</div><div class="gloss-def">World Intel research liaison; present in every region; provides VR Battle access through Intel completion; the primary source of Summon Materia in Rebirth.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Chocobo Intel</div><div class="gloss-def">World Intel type for catching regional Chocobos; must be completed before full exploration of each region&apos;s unique terrain types becomes possible. Always the first Intel to complete in a new region.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Cissnei</div><div class="gloss-def">A Turk operative with a personal history with Zack Fair; significant narrative presence in the Gongaga region and in the parallel Zack storyline.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Dynamic Mode</div><div class="gloss-def">A new difficulty mode in Rebirth that scales enemy levels to the party&apos;s current level; prevents overlevelling from optional content; recommended for players who engage extensively with World Intel and side quests.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Elemental Materia</div><div class="gloss-def">Blue Support Materia; when paired with elemental Magic in a weapon slot, infuses normal physical attacks with that element for free; when paired in armor, provides elemental resistance. Swap the linked element per region for optimal damage.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Enemy Skill Materia</div><div class="gloss-def">A special Materia that evolves by completing Chadley&apos;s Biological Intel VR battles in each region; these VR battles require Assessing a minimum number of native enemies first. Must be kept current with progression.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Excavation Intel</div><div class="gloss-def">World Intel dig sites accessible by Chocobo; provides Gil, materials, and unique items. Requires the regional Chocobo to access.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Faithful Thief</div><div class="gloss-def">Yuffie Folio passive; makes elemental Ninjutsu attacks count as magic damage and links Steal to a Magic Attack boost. The core of Yuffie&apos;s offensive build in Rebirth.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Fiend Intel</div><div class="gloss-def">World Intel combat encounters against specific regional enemies; provides SP, Gil, and Assess data for Chadley&apos;s VR battle unlock requirements.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Folio</div><div class="gloss-def">Rebirth&apos;s character upgrade system; a node-based skill tree for each character unlocked with SP; contains stat improvements, ability unlocks, and Synergy Skill/Ability unlocks.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Genji Set</div><div class="gloss-def">Three accessories (Gloves, Earrings, Ring) obtained by completing all seven Protorelic chains; Genji Gloves break the 9,999 damage cap; Genji Earrings and Ring trade damage dealt/received in opposite directions.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Gilgamesh</div><div class="gloss-def">The game&apos;s optional superboss; appears after all seven Protorelics are collected; defeating him provides the Gilgamesh Summon Materia &mdash; the most powerful Summon in Rebirth.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Halcyon Descent</div><div class="gloss-def">Cloud + Yuffie Synergy Ability; aerial combo attack; provides Stagger Extension bonus; the premier boss-fight Synergy Ability and the single most strategically valuable Synergy unlock available. Prioritise in Yuffie&apos;s Folio.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Kujata</div><div class="gloss-def">Tri-elemental Summon (Fire, Ice, Thunder) obtained from the Gongaga region Chadley VR battle; one of the strongest Summons against enemies with multiple elemental weaknesses.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Lucky Jockey</div><div class="gloss-def">Cait Sith Folio passive; boosts Luck by 100 when riding the Moogle; the foundation of Cait Sith&apos;s luck-based damage model when combined with Luck Up Materia.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Luck Up</div><div class="gloss-def">Purple Independent Materia; increases Luck stat; particularly important for Cait Sith to improve dice outcome probabilities; purchase from regional vendors for 2,000 Gil and stack multiple copies on Cait Sith.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Magnify</div><div class="gloss-def">Blue Support Materia; the game&apos;s most powerful support pairing; converts single-target spells linked to it into party-wide or enemy-wide area-of-effect spells. Magnify + Healing is the most essential Materia combination in the game.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Manuscripts</div><div class="gloss-def">Weapon skill books providing large SP bonuses; unlock additional Folio tiers and accelerate skill development; found through story progression, World Intel completion, and Chadley VR battle rewards.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Moogle Intel</div><div class="gloss-def">World Intel type involving chasing Moogles to access the Moogle Emporium shop; sells unique Materia and items unavailable from standard vendors; maxing merchant rank required for specific achievements.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Mystic Multiplication</div><div class="gloss-def">Aerith + Yuffie Synergy Ability; provides Unlimited MP to both characters as its battle-state bonus; the most impactful Synergy Ability for spell-heavy combat phases and hard mode MP conservation.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Odin</div><div class="gloss-def">Summon Materia from the Cosmo Canyon region Chadley VR; Zantetsuken ability can instant-kill eligible enemies; powerful in multi-enemy encounters during Stagger.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Phenomenon Intel</div><div class="gloss-def">Region-specific Protorelic quests with unique minigame mechanics; four per region; completing all four unlocks the Protorelic; the game&apos;s most substantial World Intel content category.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Prayer</div><div class="gloss-def">Yellow Command Materia; heals the entire party with ATB cost but no MP; the primary Hard Mode party healing tool alongside Healing Wind Limit Break; run on at least two characters for Hard Mode coverage.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Pressure</div><div class="gloss-def">Interrupting an enemy&apos;s actions and accelerating Stagger bar fill rate; triggered by exploiting elemental weaknesses, specific ability types, positional advantages, or status effects depending on enemy type.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Protorelic</div><div class="gloss-def">The reward for completing all four Phenomenon Intel in a region; seven total across the game; collecting all seven unlocks the final Protorelic quest chain leading to Gilgamesh.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Red XIII</div><div class="gloss-def">Full playable character in Rebirth; Vengeance Mode mechanic builds through blocking; highest Speed stat in the game after Folio investment; excellent Magic Defense; one of the most ATB-efficient characters when his guard-counter loop is functioning.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Revive</div><div class="gloss-def">Green Magic Materia providing resurrection spells; mandatory in Hard Mode where Phoenix Down items cannot be used; run on at least Aerith with a backup character carrying it as well.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Ringmaster</div><div class="gloss-def">Aerith + Red XIII Synergy Ability; Aerith directs Red XIII as a wide-area ranged attack; useful for aerial and spread-target scenarios.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Skill Master Materia</div><div class="gloss-def">Purple Independent Materia; raises the linked Materia&apos;s level by one; provides instant access to higher-tier spells; obtained from specific World Intel rewards and side quests.</div></div>
+  <div class="gloss-item"><div class="gloss-term">SP (Skill Points)</div><div class="gloss-def">Folio upgrade currency earned through battles; spent in each character&apos;s Folio to unlock abilities, stat improvements, and Synergy options. Manuscripts provide large SP bonuses for accelerated development.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Stagger</div><div class="gloss-def">The combat state triggered when an enemy&apos;s Stagger bar reaches 100%; immobilises the enemy briefly and multiplies all incoming damage; the primary damage window in all encounters. Stagger Extension Synergy Abilities prolong this window.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Summon</div><div class="gloss-def">Red Materia providing access to powerful entities called into extended battles; unlocked through Chadley&apos;s VR battles; new Summons include Titan, Alexander, Kujata, Odin, Phoenix, and the superboss reward Gilgamesh.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Synergy Ability</div><div class="gloss-def">The more powerful tier of the Synergy system; requires building a Synergy gauge through ATB usage; powerful paired attacks that also provide a battle-state bonus (Stagger Extension, Unlimited MP, or Raised Limit Level). Unlocked through the Folio.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Synergy Gauge</div><div class="gloss-def">A party-wide resource that builds when any party member spends ATB charges; when sufficient gauge is accumulated for a specific pairing&apos;s Synergy Ability, that ability becomes available.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Synergy Skill</div><div class="gloss-def">The smaller tier of the Synergy system; triggered by holding Guard and pressing a face button; no ATB cost; generates ATB for both involved characters; available at any time in combat without resource requirement. Unlocked through the Folio.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Tactical Mode</div><div class="gloss-def">Activated by holding L2; dramatically slows time; allows ATB menu navigation, spell tier selection, party command queuing, and strategic decision-making in real-time combat. More essential in Hard Mode than any other.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Titan</div><div class="gloss-def">Earth-element Summon obtained from the Junon region Chadley VR battle; powerful area physical damage; excellent against non-flying grounded enemies.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Vengeance Mode</div><div class="gloss-def">Red XIII&apos;s Triangle ability mechanic; the Vengeance gauge fills through blocking; activation provides significant Attack and Speed boosts; Counterspin at full gauge deals exceptional damage and Stagger contribution. The core of Red XIII&apos;s playstyle.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Warding Materia</div><div class="gloss-def">New Blue Support Materia in Rebirth; when paired with a status-effect Materia, provides resistance to that status and reduces its duration if it lands. Essential in later regions where enemy status attacks are prevalent.</div></div>
+  <div class="gloss-item"><div class="gloss-term">World Intel</div><div class="gloss-def">Rebirth&apos;s open-world collectible and activity framework; 169 total locations across seven regions in nine Intel types; completing all World Intel in a region is required for Protorelic access and Materia Completionist trophy.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Zack Fair</div><div class="gloss-def">1st Class SOLDIER; should be dead in the original timeline but survived in the altered one; playable during story interludes and the final battle; his parallel storyline and connection to Cloud&apos;s past is one of Rebirth&apos;s most significant narrative threads.</div></div>
+</div>
+</section>
+
+</div><!-- /content -->
+<footer id="footer">
+  Final Fantasy VII Rebirth &nbsp;&middot;&nbsp; Square Enix &nbsp;&middot;&nbsp; Nadir Strategy Archive &nbsp;&middot;&nbsp; The Planet Beyond Midgar &mdash; The Lifestream Remembers Everything
+</footer>
+</div><!-- /main -->
+<a id="back-top" href="#hero" title="Back to top">&#8593;</a>
+<script>
+const bar=document.getElementById('progress-bar');
+const bt=document.getElementById('back-top');
+const tog=document.getElementById('sidebar-toggle');
+const sb=document.getElementById('sidebar');
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;
+  bar.style.transform='scaleX('+(s/t)+')';
+  bt.classList.toggle('visible',s>400);
+},{passive:true});
+const secs=document.querySelectorAll('.section[id]');
+const navs=document.querySelectorAll('.nav-item');
+const obs=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){navs.forEach(n=>n.classList.remove('active'));const a=document.querySelector('.nav-item[href="#'+e.target.id+'"]');if(a){a.classList.add('active');a.scrollIntoView({block:'nearest'});}}});
+},{rootMargin:'-20% 0px -70% 0px'});
+secs.forEach(s=>obs.observe(s));
+tog.addEventListener('click',()=>sb.classList.toggle('open'));
+document.querySelectorAll('.nav-item').forEach(i=>i.addEventListener('click',()=>sb.classList.remove('open')));
+document.querySelectorAll('.section').forEach((s,i)=>{s.style.animationDelay=i*0.03+'s';});
+</script>
+</body>
+</html>

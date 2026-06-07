@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Warhammer 40,000: Rogue Trader &mdash; The Warrant of Trade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0e0c08;--parchment:#f0ecdf;--gold:#c9943a;--gold-dark:#8b6420;--gold-pale:#f0d9a8;
+  --mid:#3a3020;--light:#f6f2e8;--border:rgba(201,148,58,0.3);
+  /* 40K palette: void black, imperial gold, dogmatic crimson, iconoclast teal, heretical purple, mechanicus red */
+  --void:#080608;--void-mid:#100e0e;
+  --imperial:#8a6010;--imperial-pale:#f8e8c0;
+  --dogmatic:#7a1010;--dogmatic-pale:#f8d0d0;
+  --iconoclast:#106070;--iconoclast-pale:#c8e8f0;
+  --heretical:#501060;--heretical-pale:#e8d0f8;
+  --mechanicus:#801010;--mechanicus-pale:#f8d4c8;
+  --font-head:'Cinzel','Times New Roman',serif;
+  --font-body:'Crimson Pro','Georgia',serif;
+  --sidebar-w:296px;
+}
+html{scroll-behavior:smooth;font-size:17px}
+body{background:var(--parchment);color:var(--ink);font-family:var(--font-body);line-height:1.75;display:flex;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.5}
+a{color:inherit;text-decoration:none}button{cursor:pointer;font-family:inherit}
+#progress-bar{position:fixed;top:0;left:var(--sidebar-w);right:0;height:3px;background:var(--gold);transform-origin:left;transform:scaleX(0);z-index:500;transition:transform 0.1s linear}
+#sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--void);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;border-right:2px solid var(--gold-dark);display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--gold-dark) var(--void)}
+#sidebar-header{padding:28px 20px 20px;border-bottom:1px solid rgba(201,148,58,0.22);background:linear-gradient(180deg,#020202 0%,var(--void) 100%)}
+#sidebar-title{font-family:var(--font-head);font-size:0.84rem;font-weight:900;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;line-height:1.3}
+#sidebar-sub{font-family:var(--font-body);font-size:0.66rem;color:rgba(240,220,160,0.38);margin-top:6px;letter-spacing:0.04em;font-style:italic}
+#sidebar-nav{padding:8px 0 40px;flex:1}
+.nav-section{padding:10px 20px 3px;font-family:var(--font-head);font-size:0.52rem;letter-spacing:0.2em;color:var(--gold-dark);text-transform:uppercase;margin-top:6px;opacity:0.85}
+.nav-item{display:block;padding:5px 20px 5px 26px;font-family:var(--font-body);font-size:0.76rem;color:rgba(240,220,160,0.55);text-decoration:none;border-left:2px solid transparent;transition:all 0.15s ease;line-height:1.3;position:relative}
+.nav-item::before{content:'&#9658;';position:absolute;left:11px;top:6px;color:var(--gold-dark);opacity:0;transition:opacity 0.12s;font-size:0.42rem}
+.nav-item:hover,.nav-item.active{color:var(--gold-pale);border-left-color:var(--gold);background:rgba(201,148,58,0.07);padding-left:28px}
+.nav-item:hover::before,.nav-item.active::before{opacity:1}
+#sidebar-toggle{display:none;position:fixed;top:10px;left:10px;z-index:200;background:var(--void);border:1px solid var(--gold-dark);color:var(--gold);font-size:1.1rem;padding:5px 9px;border-radius:2px}
+#main{margin-left:var(--sidebar-w);flex:1;min-width:0}
+/* Hero — 40K: Gothic void with aquila gold light shafts, cathedral shadow, warp stars */
+#hero{background:linear-gradient(175deg,#040202 0%,#0c0608 30%,#08060c 60%,#100808 85%,#040204 100%);min-height:510px;display:flex;flex-direction:column;justify-content:flex-end;padding:0 64px 64px;position:relative;overflow:hidden;border-bottom:3px solid var(--gold-dark)}
+#hero::before{content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(80px 120px at 50% 60%,rgba(138,96,16,0.08) 0%,transparent 70%),
+    radial-gradient(60px 80px at 20% 70%,rgba(122,16,16,0.07) 0%,transparent 70%),
+    radial-gradient(40px 60px at 80% 65%,rgba(80,16,96,0.06) 0%,transparent 70%),
+    radial-gradient(1.5px 1.5px at 5% 7%,rgba(240,220,160,0.75) 0%,transparent 0%),
+    radial-gradient(1px 1px at 13% 3%,rgba(200,180,120,0.7) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 22% 13%,rgba(240,220,160,0.65) 0%,transparent 0%),
+    radial-gradient(2px 2px at 32% 5%,rgba(200,160,100,0.6) 0%,transparent 0%),
+    radial-gradient(1px 1px at 43% 15%,rgba(240,220,160,0.6) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 53% 4%,rgba(200,180,120,0.65) 0%,transparent 0%),
+    radial-gradient(1px 1px at 63% 12%,rgba(240,210,150,0.55) 0%,transparent 0%),
+    radial-gradient(1px 1px at 74% 6%,rgba(200,160,100,0.6) 0%,transparent 0%),
+    radial-gradient(2px 2px at 84% 14%,rgba(240,220,160,0.55) 0%,transparent 0%),
+    radial-gradient(1px 1px at 93% 4%,rgba(200,180,120,0.62) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 18% 24%,rgba(240,220,160,0.45) 0%,transparent 0%),
+    radial-gradient(1px 1px at 49% 26%,rgba(200,180,120,0.4) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 78% 22%,rgba(240,220,160,0.45) 0%,transparent 0%)}
+#hero::after{content:'';position:absolute;bottom:0;left:64px;right:64px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.hero-eyebrow{font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.28em;color:var(--gold-dark);text-transform:uppercase;margin-bottom:14px;position:relative}
+.hero-title{font-family:var(--font-head);font-size:clamp(1.5rem,4vw,3.2rem);font-weight:900;color:var(--parchment);letter-spacing:0.04em;text-transform:uppercase;line-height:1.05;margin-bottom:8px;position:relative;text-shadow:0 2px 24px rgba(0,0,0,0.95)}
+.hero-subtitle{font-family:var(--font-body);font-size:1.05rem;font-style:italic;color:rgba(240,217,168,0.72);font-weight:300;margin-bottom:26px;position:relative}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;position:relative}
+.hero-tag{font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-pale);border:1px solid rgba(201,148,58,0.38);padding:3px 10px;background:rgba(201,148,58,0.07)}
+#content{padding:0 64px 80px;max-width:960px}
+.section{padding:54px 0 6px;animation:fadeUp 0.45s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.sec-num{display:inline-block;font-family:var(--font-head);font-size:0.78rem;font-weight:400;letter-spacing:0.1em;color:var(--gold-dark);margin-right:0.5em;vertical-align:middle}
+.section-title{font-family:var(--font-head);font-size:clamp(1.25rem,2.4vw,1.75rem);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink);padding-bottom:12px;margin-bottom:20px;border-bottom:2px solid var(--border);position:relative}
+.section-title::after{content:'';position:absolute;bottom:-2px;left:0;width:58px;height:2px;background:var(--gold)}
+.sub-title{font-family:var(--font-head);font-size:1rem;font-weight:600;letter-spacing:0.05em;color:var(--mid);margin:26px 0 9px;text-transform:uppercase}
+p{margin-bottom:1rem;font-size:1rem}
+.guide-list{margin:0.5rem 0 1rem 1.2rem}
+.guide-list li{margin-bottom:0.5rem;font-size:1rem}
+.guide-list li::marker{color:var(--gold-dark)}
+.callout{padding:15px 20px;margin:20px 0;border-left:4px solid var(--gold);background:var(--light);border-radius:0 3px 3px 0}
+.callout.imperial{border-left-color:#8a6010;background:var(--imperial-pale)}
+.callout.dogmatic{border-left-color:#7a1010;background:var(--dogmatic-pale)}
+.callout.iconoclast{border-left-color:#106070;background:var(--iconoclast-pale)}
+.callout.heretical{border-left-color:#501060;background:var(--heretical-pale)}
+.callout.mechanicus{border-left-color:#801010;background:var(--mechanicus-pale)}
+.callout.tip{border-left-color:#2a5c18;background:#e8f5e0}
+.callout.warning{border-left-color:#7a2010;background:#f5e8d0}
+.callout-title{font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;margin-bottom:5px;color:var(--gold-dark)}
+.callout.imperial .callout-title{color:#8a6010}
+.callout.dogmatic .callout-title{color:#7a1010}
+.callout.iconoclast .callout-title{color:#106070}
+.callout.heretical .callout-title{color:#501060}
+.callout.mechanicus .callout-title{color:#801010}
+.callout.tip .callout-title{color:#2a5c18}
+.callout.warning .callout-title{color:#7a2010}
+.callout p{font-size:0.94rem;margin-bottom:0.5rem}
+.callout p:last-child{margin-bottom:0}
+.lore-block{padding:16px 22px;margin:22px 0;border:1px solid rgba(138,96,16,0.38);background:rgba(8,6,4,0.05);position:relative}
+.lore-block::before{content:'IMPERIAL ARCHIVE';position:absolute;top:-0.6rem;left:1rem;font-family:var(--font-head);font-size:0.54rem;letter-spacing:0.22em;color:#8a6010;background:var(--parchment);padding:0 0.5rem}
+.lore-block p{font-style:italic;color:#1a1006;font-size:0.96rem;line-height:1.88}
+.lore-block .source{font-family:var(--font-head);font-size:0.58rem;color:rgba(138,96,16,0.6);text-align:right;display:block;margin-top:0.6rem;letter-spacing:0.1em}
+.data-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.9rem}
+.data-table th{background:var(--void);color:var(--gold-pale);font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;padding:8px 11px;text-align:left;border:1px solid rgba(201,148,58,0.2)}
+.data-table td{padding:7px 11px;border:1px solid var(--border);vertical-align:top;line-height:1.5;color:var(--ink)}
+.data-table tr:nth-child(even) td{background:rgba(201,148,58,0.04)}
+.data-table tr:hover td{background:rgba(201,148,58,0.07)}
+.phase{padding:16px 20px;margin:14px 0;border-left:4px solid var(--gold);background:rgba(201,148,58,0.05)}
+.phase.dogm{border-left-color:#7a1010;background:rgba(122,16,16,0.06)}
+.phase.icon{border-left-color:#106070;background:rgba(16,96,112,0.06)}
+.phase.here{border-left-color:#501060;background:rgba(80,16,96,0.06)}
+.phase.imper{border-left-color:#8a6010;background:rgba(138,96,16,0.06)}
+.phase-title{font-family:var(--font-head);font-size:0.84rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:7px;color:var(--gold-dark)}
+.phase.dogm .phase-title{color:#7a1010}
+.phase.icon .phase-title{color:#106070}
+.phase.here .phase-title{color:#501060}
+.phase.imper .phase-title{color:#8a6010}
+.phase p{font-size:0.94rem;margin-bottom:0.6rem;color:var(--ink)}
+.phase p:last-child{margin-bottom:0}
+.unit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin:16px 0}
+.unit-card{border:1px solid var(--border);background:var(--light);padding:14px 16px;border-top:3px solid var(--gold)}
+.unit-card.dogm-card{border-top-color:#7a1010}
+.unit-card.icon-card{border-top-color:#106070}
+.unit-card.here-card{border-top-color:#501060}
+.unit-card.imper-card{border-top-color:#8a6010}
+.unit-card.mech-card{border-top-color:#801010}
+.unit-card.neutral-card{border-top-color:#5a4820}
+.unit-name{font-family:var(--font-head);font-size:0.88rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink);margin-bottom:2px}
+.unit-type{font-family:var(--font-head);font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);margin-bottom:7px;display:block}
+.unit-card.dogm-card .unit-type{color:#7a1010}
+.unit-card.icon-card .unit-type{color:#106070}
+.unit-card.here-card .unit-type{color:#501060}
+.unit-card.imper-card .unit-type{color:#8a6010}
+.unit-card.mech-card .unit-type{color:#801010}
+.unit-card p{font-size:0.88rem;line-height:1.6;color:var(--ink);margin-bottom:0}
+.orn{text-align:center;color:var(--gold-dark);font-size:0.72rem;letter-spacing:0.42em;padding:28px 0 8px;opacity:0.65}
+.gloss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:1px;background:var(--border);margin-top:16px;border:1px solid var(--border)}
+.gloss-item{background:var(--light);padding:9px 13px;display:flex;gap:10px;align-items:flex-start}
+.gloss-item:nth-child(even){background:var(--parchment)}
+.gloss-term{font-family:var(--font-head);font-size:0.75rem;font-weight:700;color:var(--ink);white-space:normal;min-width:118px;max-width:148px;word-break:break-word;letter-spacing:0.04em;text-transform:uppercase}
+.gloss-def{font-size:0.86rem;color:var(--mid);line-height:1.55}
+#back-top{position:fixed;bottom:26px;right:26px;width:40px;height:40px;background:var(--void);border:1px solid var(--gold-dark);color:var(--gold);font-size:1rem;display:flex;align-items:center;justify-content:center;text-decoration:none;opacity:0;transform:translateY(8px);transition:opacity 0.3s,transform 0.3s;z-index:90}
+#back-top.visible{opacity:1;transform:none}
+#back-top:hover{background:var(--gold-dark);color:var(--parchment)}
+#footer{margin-top:40px;border-top:1px solid var(--border);padding:20px 64px;font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);text-align:center}
+@media(max-width:900px){
+  :root{--sidebar-w:0px}
+  #sidebar-toggle{display:flex;align-items:center;justify-content:center}
+  #sidebar{transform:translateX(-100%);transition:transform 0.26s ease;width:270px}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  #hero,#content,#footer{padding-left:22px;padding-right:22px}
+  #progress-bar{left:0}
+  .unit-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+<button id="sidebar-toggle" aria-label="Menu">&#9776;</button>
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <div id="sidebar-title">WH40K: Rogue Trader</div>
+    <div id="sidebar-sub">The Warrant of Trade &mdash; Owlcat Games &mdash; Koronus Expanse &mdash; Year 41,000</div>
+  </div>
+  <div id="sidebar-nav">
+    <div class="nav-section">The Expanse</div>
+    <a class="nav-item" href="#s01">01 &middot; In the Grim Darkness</a>
+    <a class="nav-item" href="#s02">02 &middot; Game Overview</a>
+    <a class="nav-item" href="#s03">03 &middot; Character Creation</a>
+    <div class="nav-section">Core Systems</div>
+    <a class="nav-item" href="#s04">04 &middot; Characteristics &amp; Skills</a>
+    <a class="nav-item" href="#s05">05 &middot; Archetypes</a>
+    <a class="nav-item" href="#s06">06 &middot; The Conviction System</a>
+    <a class="nav-item" href="#s07">07 &middot; Combat Fundamentals</a>
+    <a class="nav-item" href="#s08">08 &middot; Momentum &amp; Heroic Acts</a>
+    <div class="nav-section">Companions</div>
+    <a class="nav-item" href="#s09">09 &middot; Abelard Werserian</a>
+    <a class="nav-item" href="#s10">10 &middot; Argenta</a>
+    <a class="nav-item" href="#s11">11 &middot; Cassia Orsellio</a>
+    <a class="nav-item" href="#s12">12 &middot; Heinrix van Calox</a>
+    <a class="nav-item" href="#s13">13 &middot; Pasqal Haneumann</a>
+    <a class="nav-item" href="#s14">14 &middot; Jae Heydari &amp; Yrliet</a>
+    <a class="nav-item" href="#s15">15 &middot; Idira, Ulfar &amp; Marazhai</a>
+    <div class="nav-section">Empire</div>
+    <a class="nav-item" href="#s16">16 &middot; The Voidship</a>
+    <a class="nav-item" href="#s17">17 &middot; Voidship Combat</a>
+    <a class="nav-item" href="#s18">18 &middot; Colony Management</a>
+    <a class="nav-item" href="#s19">19 &middot; Warp Travel</a>
+    <div class="nav-section">Strategy</div>
+    <a class="nav-item" href="#s20">20 &middot; Party Composition</a>
+    <a class="nav-item" href="#s21">21 &middot; Tactical Doctrine</a>
+    <a class="nav-item" href="#s22">22 &middot; Equipment &amp; Progression</a>
+    <a class="nav-item" href="#s23">23 &middot; Endings &amp; Conviction Paths</a>
+    <div class="nav-section">Reference</div>
+    <a class="nav-item" href="#s24">24 &middot; Glossary</a>
+  </div>
+</nav>
+
+<div id="main">
+<div id="hero">
+  <div class="hero-eyebrow">Nadir Strategy Archive &nbsp;&middot;&nbsp; Owlcat Games &nbsp;&middot;&nbsp; CRPG &nbsp;&middot;&nbsp; PC (Steam) &nbsp;&middot;&nbsp; The Koronus Expanse &nbsp;&middot;&nbsp; Year M41</div>
+  <h1 class="hero-title">Warhammer 40,000: Rogue Trader</h1>
+  <p class="hero-subtitle">The Warrant of Trade &mdash; A Complete Guide to Command, Combat, and Conviction in the Grimdark Far Future</p>
+  <div class="hero-tags">
+    <span class="hero-tag">24 Chapters</span>
+    <span class="hero-tag">All Archetypes</span>
+    <span class="hero-tag">All Companions</span>
+    <span class="hero-tag">Conviction Paths</span>
+    <span class="hero-tag">Combat Doctrine</span>
+    <span class="hero-tag">Voidship System</span>
+    <span class="hero-tag">Colony Management</span>
+    <span class="hero-tag">Full Glossary</span>
+  </div>
+</div>
+
+<div id="content">
+
+<!-- S01 -->
+<section class="section" id="s01">
+<h2 class="section-title"><span class="sec-num">&sect;01</span> In the Grim Darkness</h2>
+<div class="lore-block">
+  <p>In the grim darkness of the far future, there is only war. This is not an exaggeration. It is not rhetoric for the benefit of the populace. It is the literal, administrative description of the forty-first millennium: a species that has been at war for ten thousand years, that measures its theology in casualties, that worships the corpse of a man on a golden throne because it has found, empirically, that the alternative is worse. You are a Rogue Trader. You hold a Warrant of Trade, a document so old it predates the Imperium that currently honours it. You are, by that document, entitled to go where the Emperor&apos;s light has not yet reached. The question of what you will do when you get there is the one the Koronus Expanse is asking.</p>
+  <span class="source">// IMPERIAL ARCHIVE &middot; WARRANT OF TRADE DOCUMENTATION &middot; HOUSE VON VALANCIUS &middot; CLASSIFIED //</span>
+</div>
+
+<p>Warhammer 40,000: Rogue Trader is the first CRPG set in the Warhammer 40,000 universe, developed by <strong>Owlcat Games</strong> (creators of Pathfinder: Kingmaker and Pathfinder: Wrath of the Righteous) and released on December 7, 2023. It is a game of exceptional depth, rich writing, and mechanical complexity set in one of fiction&apos;s most extensively developed science-fantasy settings. The game puts players in command of a Rogue Trader &mdash; one of a rare few individuals who hold a Warrant of Trade, an ancient document authorising them to explore, colonise, and profit from regions beyond the Imperium&apos;s known borders.</p>
+
+<p>The setting is the <strong>Koronus Expanse</strong>, an unmapped region of space in the Segmentum Obscurus, beyond the Maw &mdash; a treacherous passage through the Warp that serves as the Expanse&apos;s only reliable gateway. The Expanse is full of ancient ruins, xenospecies, cultists, heretics, and secrets the Imperium has not yet had the opportunity to classify as threats. Your predecessor, Theodora von Valancius, died before she could fully exploit the opportunity. The Warrant of Trade is now yours. What you do with it is the game.</p>
+
+<h2 class="sub-title">40K Lore for New Players</h2>
+<p>The Warhammer 40,000 universe is enormous and decades old. New players do not need to know all of it to enjoy the game; the writing is accessible. But a few contextual anchors help: the <strong>Imperium of Man</strong> is a galaxy-spanning theocratic military empire worshipping the God-Emperor, defined by bureaucratic horror and perpetual war. The <strong>Chaos Gods</strong> inhabit the Warp (a psychic dimension used for faster-than-light travel) and are humanity&apos;s greatest existential threat. <strong>Xenos</strong> (alien species) are universally classified as enemies but are sometimes tolerated by Rogue Traders when profit demands it. And the phrase &ldquo;grimdark&rdquo; is not a genre label &mdash; it is a description.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S02 -->
+<section class="section" id="s02">
+<h2 class="section-title"><span class="sec-num">&sect;02</span> Game Overview</h2>
+<p>Rogue Trader is a <strong>party-based CRPG with turn-based tactical combat</strong>. The player controls a Rogue Trader and up to five companions in ground combat, manages a voidship for naval encounters and exploration, builds colonies on discovered worlds, navigates the politics of the Koronus Expanse through a dialogue-driven narrative, and develops their character through a deep RPG progression system rooted in the Fantasy Flight Games tabletop RPG of the same name.</p>
+
+<h2 class="sub-title">Core Game Loops</h2>
+<ul class="guide-list">
+  <li><strong>Ground combat:</strong> Turn-based tactical battles on grid-based maps; the primary gameplay mode; requires positioning, ability management, and understanding the Momentum and Heroic Act systems</li>
+  <li><strong>Narrative and dialogue:</strong> Rich dialogue trees with skill checks, conviction-dependent options, and relationship-affecting choices; Owlcat&apos;s signature writing quality is at its best here</li>
+  <li><strong>Voidship management:</strong> Your ship serves as both a mobile base and a warship; crew quality, void shields, and weapons determine performance in naval combat</li>
+  <li><strong>Colony building:</strong> Discovered worlds can be colonised and developed; colonies produce resources and story content reflecting your conviction alignment</li>
+  <li><strong>Warp travel:</strong> Moving between star systems traverses the Warp, generating events that test your crew and Navigator</li>
+</ul>
+
+<h2 class="sub-title">Difficulty Modes</h2>
+<table class="data-table">
+  <thead><tr><th>Difficulty</th><th>Description</th><th>Recommendation</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Operative</strong></td><td>Story-focused; reduced enemy aggression; full narrative access</td><td>Pure story playthrough; combat is not the focus</td></tr>
+    <tr><td><strong>Soldier</strong></td><td>Normal difficulty; standard enemy scaling</td><td>First playthrough recommended; accessible combat with full depth</td></tr>
+    <tr><td><strong>Daring</strong></td><td>Higher challenge; enemies deal more damage</td><td>Experienced CRPG players; reward for build optimisation</td></tr>
+    <tr><td><strong>Ruthless</strong></td><td>Maximum difficulty; very demanding</td><td>Mastery playthrough only; requires full system knowledge</td></tr>
+  </tbody>
+</table>
+
+<div class="callout imperial">
+  <div class="callout-title">Void Shadows DLC</div>
+  <p>The first DLC, Void Shadows, released September 2024, adds a significant chapter of content including new companions Kibellah (a Death Cult Assassin) and Solomorne, additional colony projects, new enemy types, and endgame-relevant equipment including several build-defining accessories. Players with access to Void Shadows will encounter its content integrated into the main game progression. This guide covers base game content with notes where DLC provides significant interactions.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S03 -->
+<section class="section" id="s03">
+<h2 class="section-title"><span class="sec-num">&sect;03</span> Character Creation</h2>
+<div class="lore-block">
+  <p>The Warrant of Trade identifies the holder by name and authority. It does not specify what kind of person they are, what they believe, where they came from, or what they will do when faced with a choice between orthodoxy and survival. These are considered details that the holder will resolve in the field. The Imperium has found that issuing guidance on such matters to people with this much independent authority is ineffective. The Warrant defines the position. The Rogue Trader defines themselves.</p>
+  <span class="source">// IMPERIAL ARCHIVE &middot; WARRANT OF TRADE ISSUANCE PROTOCOL &middot; ADMINISTRATUM NOTATION //</span>
+</div>
+
+<p>Character creation in Rogue Trader involves three primary decisions: your <strong>Homeworld</strong>, your <strong>Origin</strong>, and your starting <strong>Archetype</strong>. Together, these establish your initial characteristics, skills, and available talents. All three choices can be adjusted later through respeccing at Janris Danrok (the High Factotum on your voidship&apos;s bridge) &mdash; so first-playthrough choices are not permanent errors.</p>
+
+<h2 class="sub-title">Homeworld</h2>
+<p>Homeworld determines your starting characteristic adjustments and provides one characteristic with a bonus and another with a penalty. The choice also influences available skill selections. Common options include:</p>
+<ul class="guide-list">
+  <li><strong>Noble:</strong> Bonus to Fellowship; diplomatic and social character</li>
+  <li><strong>Void-Born:</strong> Bonus to Willpower; suited to Psyker and Warp-adjacent builds</li>
+  <li><strong>Forge World:</strong> Bonus to Intelligence; Technical and Tech-Use oriented</li>
+  <li><strong>Death World:</strong> Bonus to Agility and Toughness; survivalist fighter profile</li>
+</ul>
+
+<h2 class="sub-title">Origin</h2>
+<p>Origin provides your background narrative and additional skill access. Origins represent what your Rogue Trader was before inheriting the Warrant. Origins include roles like Administratum Adept (Intelligence and Lore skills), Ministorum Priest (Faith and Fellowship), Naval Officer (Command and Ballistic Skill), and others. Choose an Origin that complements your intended Archetype&apos;s primary characteristics.</p>
+
+<div class="callout tip">
+  <div class="callout-title">The Respec Is Always Available</div>
+  <p>Unlike many CRPGs, Rogue Trader allows complete character respecification at any time by speaking with Janris Danrok on your bridge. This applies to both your Rogue Trader and all companions. There is no resource cost and no punishment beyond returning the character to Level 1 in their skill tree. This means that experimenting with builds is actively encouraged. Do not agonise over character creation choices; if a build turns out not to work as intended, visit Danrok and rebuild.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S04 -->
+<section class="section" id="s04">
+<h2 class="section-title"><span class="sec-num">&sect;04</span> Characteristics &amp; Skills</h2>
+<p>Rogue Trader uses a characteristic system derived from the Fantasy Flight tabletop RPG. Eight <strong>Characteristics</strong> define your character&apos;s fundamental capabilities, and skills are checked against characteristics in dialogue and exploration encounters. Understanding what each characteristic does prevents the mistake of investing in characteristics that don&apos;t support your intended play pattern.</p>
+
+<h2 class="sub-title">The Eight Characteristics</h2>
+<table class="data-table">
+  <thead><tr><th>Characteristic</th><th>Abbreviation</th><th>Governs</th><th>Best For</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Weapon Skill</strong></td><td>WS</td><td>Melee attack accuracy and damage</td><td>Warriors, melee builds, close-combat Archetypes</td></tr>
+    <tr><td><strong>Ballistic Skill</strong></td><td>BS</td><td>Ranged attack accuracy</td><td>Soldiers, Operatives, all ranged builds</td></tr>
+    <tr><td><strong>Strength</strong></td><td>S</td><td>Melee damage bonus; Strength-based skill checks</td><td>Warriors; physical interaction checks</td></tr>
+    <tr><td><strong>Toughness</strong></td><td>T</td><td>Damage reduction from physical attacks</td><td>Tanks; any character who will take sustained fire</td></tr>
+    <tr><td><strong>Agility</strong></td><td>Ag</td><td>Movement points; evasion; Agility-based checks</td><td>Mobile units; Assassins; anyone who needs to reposition frequently</td></tr>
+    <tr><td><strong>Intelligence</strong></td><td>Int</td><td>Tech-Use, Logic, Medicae; Tech-Priest effectiveness</td><td>Tech builds; support roles; skill check heavy characters</td></tr>
+    <tr><td><strong>Perception</strong></td><td>Per</td><td>Awareness; Operatives&apos; Exploit mechanic; ranged support</td><td>Operatives; spotters; trap detection</td></tr>
+    <tr><td><strong>Willpower</strong></td><td>WP</td><td>Psychic power effectiveness; Warp resistance</td><td>Psykers; Willpower builds; Warp-focused characters</td></tr>
+    <tr><td><strong>Fellowship</strong></td><td>Fel</td><td>Leadership; Officer abilities; social skill checks</td><td>Officers; diplomatic Rogue Traders; Commander builds</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Skills in Dialogue</h2>
+<p>Many dialogue options throughout the game require specific skill checks: Persuasion (Fellowship-based), Intimidation (Strength or Willpower), Logic (Intelligence), Awareness (Perception), and faction-specific Lore checks. Your Rogue Trader does not need to be built for every skill check &mdash; but identifying the check types most common in your intended playstyle and ensuring your character can pass them prevents the frustration of repeatedly failing the options you care about.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S05 -->
+<section class="section" id="s05">
+<h2 class="section-title"><span class="sec-num">&sect;05</span> Archetypes</h2>
+<div class="lore-block">
+  <p>The Imperium does not produce generalists. It produces specialists, and it produces them in volume, because generalists do not win the kinds of wars the Imperium fights. A Soldier knows exactly what their job is. A Psyker knows exactly what they can do and exactly what it costs them. An Officer knows exactly how to take the Soldier and the Psyker and create something capable of doing what neither could alone. The Warrant of Trade grants authority. The Archetype grants capability. The two together are the minimum viable unit of Imperial ambition.</p>
+  <span class="source">// IMPERIAL ARCHIVE &middot; OFFICER TRAINING MANUAL &middot; KORONUS EXPANSE DEPLOYMENT BRIEFING //</span>
+</div>
+
+<p>Archetypes are Rogue Trader&apos;s class system. Each character begins with a base Archetype and advances toward one of several <strong>Advanced Archetypes</strong> as they level. The base Archetype defines your fundamental combat identity; the Advanced Archetype refines and specialises it.</p>
+
+<h2 class="sub-title">Base Archetypes</h2>
+<div class="unit-grid">
+  <div class="unit-card imper-card">
+    <div class="unit-name">Officer</div>
+    <span class="unit-type">COMMAND &middot; FELLOWSHIP &middot; TURN ECONOMY</span>
+    <p>The command archetype. Officers specialise in providing extra actions and turns to other party members &mdash; effectively multiplying the party&apos;s total action economy. A well-built Officer does not need to be a powerful combat unit themselves; they win by making every other unit more powerful. Fellowship is the primary stat. Advanced Archetypes: Grand Strategist, Bounty Hunter, Overseer.</p>
+  </div>
+  <div class="unit-card dogm-card">
+    <div class="unit-name">Warrior</div>
+    <span class="unit-type">MELEE &middot; TOUGHNESS &middot; FRONTLINE</span>
+    <p>The melee damage and durability archetype. Warriors tank hits, deal close-combat damage, and maintain frontline pressure. Weapon Skill and Toughness are the primary stats. The straightforward, reliable archetype that compensates for almost any party composition gap by simply surviving longer and hitting harder. Advanced Archetypes: Arch-Militant, Exemplar, Death-Cult Assassin.</p>
+  </div>
+  <div class="unit-card dogm-card">
+    <div class="unit-name">Soldier</div>
+    <span class="unit-type">RANGED &middot; BALLISTIC SKILL &middot; SUSTAINED FIRE</span>
+    <p>The ranged damage archetype. Soldiers deal reliable damage from distance using the full range of Imperial firearms. Ballistic Skill is the primary stat. Argenta is the quintessential Soldier companion &mdash; relentless, accurate, and able to apply enormous firepower from a position of relative safety. Advanced Archetypes: Arch-Militant, Exemplar, others.</p>
+  </div>
+  <div class="unit-card icon-card">
+    <div class="unit-name">Operative</div>
+    <span class="unit-type">EXPLOIT &middot; PERCEPTION &middot; BURST DAMAGE</span>
+    <p>The burst-damage and debuff archetype. Operatives apply the Exploit debuff to targets (through their specialised ability), making enemies take more damage from subsequent attacks. Perception is the primary stat; Intelligence matters for secondary abilities. Operatives deal the highest single-target damage but are fragile and require positioning to avoid being targeted. Advanced Archetypes: Assassin, Bounty Hunter, Grand Strategist, Executioner, Overseer.</p>
+  </div>
+  <div class="unit-card here-card">
+    <div class="unit-name">Psyker</div>
+    <span class="unit-type">WARP POWERS &middot; WILLPOWER &middot; AREA EFFECTS</span>
+    <p>The psychic powers archetype. Psykers bend reality through the Warp, dealing area damage, applying devastating debuffs, and providing powerful support effects. Willpower is the primary stat. Psykers generate Warp Degradation with every power they use &mdash; managing this meter is the central tension of the Psyker playstyle. They are among the game&apos;s most powerful archetypes and the most mechanically complex. Advanced Archetypes: Warrior-Psyker hybrid (Heinrix), or deep psychic paths.</p>
+  </div>
+</div>
+
+<h2 class="sub-title">Advanced Archetypes &mdash; Key Options</h2>
+<table class="data-table">
+  <thead><tr><th>Advanced Archetype</th><th>Base Requirement</th><th>Specialisation</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Grand Strategist</strong></td><td>Officer or Operative</td><td>Maximum action economy extension; giving turns to the entire party; the ultimate support/commander role</td></tr>
+    <tr><td><strong>Assassin</strong></td><td>Operative</td><td>Maximum single-target burst; Exploit stacking for obscene damage against priority targets</td></tr>
+    <tr><td><strong>Arch-Militant</strong></td><td>Warrior or Soldier</td><td>Alternating attack types for stacking buffs; versatile combat specialist</td></tr>
+    <tr><td><strong>Executioner</strong></td><td>Operative</td><td>Execution-focused burst; killing priority targets rapidly</td></tr>
+    <tr><td><strong>Overseer</strong></td><td>Officer or Operative</td><td>Support and debuff specialist; commanding companions from distance</td></tr>
+  </tbody>
+</table>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S06 -->
+<section class="section" id="s06">
+<h2 class="section-title"><span class="sec-num">&sect;06</span> The Conviction System</h2>
+<div class="lore-block">
+  <p>The Inquisition would say that there are things a Rogue Trader may not do. This is technically true, in the sense that the Inquisition retains the theoretical authority to pursue a Warrant holder who violates Imperial doctrine sufficiently egregiously to attract their attention. In practice, the Koronus Expanse is beyond the Astronomican&apos;s reliable range, and the Inquisition has many other concerns. What constrains a Rogue Trader, ultimately, is what they believe is constraining them. The Warrant of Trade creates an empire. What kind of empire it becomes is entirely down to the person holding the Warrant.</p>
+  <span class="source">// IMPERIAL ARCHIVE &middot; ROGUE TRADER AUTHORITY ASSESSMENT &middot; ORDO XENOS NOTES //</span>
+</div>
+
+<p>The Conviction system is Rogue Trader&apos;s alignment mechanic &mdash; but more expansive and more consequential than most CRPG alignment systems. Every significant dialogue choice, every colony decision, and every major action accumulates points in one of three conviction tracks. Your dominant conviction unlocks unique abilities, shapes how the world responds to you, determines which companion relationships deepen or deteriorate, and ultimately defines which ending you can reach.</p>
+
+<h2 class="sub-title">The Three Convictions</h2>
+<div class="unit-grid">
+  <div class="unit-card dogm-card">
+    <div class="unit-name">Dogmatic</div>
+    <span class="unit-type">IMPERIAL ORTHODOXY &middot; FAITH &amp; DUTY</span>
+    <p>The conviction of Imperial orthodoxy: the God-Emperor above all, heresy purged without mercy, xenos destroyed or at minimum subordinated, the Imperium&apos;s laws observed even when they are inconvenient. Dogmatic characters receive unique dialogue options that express Imperial piety, access Sanctic psychic powers, and unlock abilities tied to faith and righteous fury. Argenta strongly approves; Marazhai strongly disapproves.</p>
+  </div>
+  <div class="unit-card icon-card">
+    <div class="unit-name">Iconoclast</div>
+    <span class="unit-type">PRAGMATIC INDEPENDENCE &middot; MERCY &amp; REASON</span>
+    <p>The conviction of independent pragmatism: the value of human life, freedom over rigid doctrine, seeking common ground rather than uncompromising destruction, willingness to work with xenos when it serves everyone&apos;s survival. Iconoclasts believe the Emperor&apos;s power comes from humanity&apos;s collective will, not from blind obedience. Rank 1 ability: allies start battle with temporary Wounds. Generally the most &ldquo;humane&rdquo; path through the game.</p>
+  </div>
+  <div class="unit-card here-card">
+    <div class="unit-name">Heretical</div>
+    <span class="unit-type">CHAOS CORRUPTION &middot; WARP POWER</span>
+    <p>The conviction of Chaos: exploiting the dark powers for personal gain, embracing Warp corruption, serving the Ruinous Powers (knowingly or with plausible deniability). Heretical characters access unique Chaos abilities, can pursue the Heretic ending, and unlock options that horrify Dogmatic companions while occasionally interesting Iconoclasts for purely pragmatic reasons. This is the &ldquo;evil&rdquo; path in the most literal sense the 40K universe defines evil.</p>
+  </div>
+</div>
+
+<h2 class="sub-title">How Conviction Develops</h2>
+<p>Conviction accumulates from tagged dialogue choices marked [Dogmatic], [Iconoclast], or [Heretical]. It also accumulates from colony decisions (Execute heretics = Dogmatic; Establish free trade = Iconoclast; Exploit dark powers = Heretical) and from certain combat choices. Your conviction rank advances through accumulation tiers (1 through 5 for each path), with each rank providing new passive abilities. You cannot simultaneously advance all three &mdash; points in one path push your overall alignment in that direction. Committing to one path and pursuing it consistently produces the strongest results both narratively and mechanically.</p>
+
+<div class="callout warning">
+  <div class="callout-title">Companion Approval Is Not Optional</div>
+  <p>Every major decision you make affects the approval ratings of your companions, and companions who reach extreme disapproval can leave the party or turn hostile at critical story moments. More critically: companions at high approval unlock personal quest chains that provide unique equipment, abilities, and narrative content unavailable through any other path. Managing companion approval requires knowing what each companion values before you make significant decisions &mdash; some companions (Abelard/Argenta: Dogmatic) will approve of what others (Marazhai: Heretical) will despise. You cannot make all companions happy simultaneously. Choose whose approval matters most and accept the diplomatic cost of your convictions.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S07 -->
+<section class="section" id="s07">
+<h2 class="section-title"><span class="sec-num">&sect;07</span> Combat Fundamentals</h2>
+<div class="lore-block">
+  <p>The Administratum&apos;s combat doctrine states that Imperial soldiers do not win through tactical brilliance. They win through attrition, materiel advantage, and the willingness to sustain casualties that would break any other species. This is the official position. The unofficial position, held by every Imperial officer who has survived more than two engagements in the Koronus Expanse, is that the Administratum&apos;s doctrine is correct in aggregate and catastrophically wrong in any specific engagement. You win the fight in front of you through positioning, priority targeting, and not walking into cover that someone thought of before you did.</p>
+  <span class="source">// IMPERIAL ARCHIVE &middot; OFFICER FIELD NOTES &middot; KORONUS EXPANSE DEPLOYMENT &middot; CLASSIFIED //</span>
+</div>
+
+<p>Combat in Rogue Trader is turn-based and takes place on grid-based maps where positioning, cover, and action economy are the decisive factors. Each character has two primary resources per turn: <strong>Movement Points (MP)</strong> for movement, and <strong>Action Points (AP)</strong> for attacks, abilities, and other actions. Most actions cost AP; some cost MP (movement) or both.</p>
+
+<h2 class="sub-title">The Action Point Economy</h2>
+<ul class="guide-list">
+  <li><strong>Full Action (2 AP):</strong> Most powerful abilities and full-auto weapon modes. These have the highest impact per turn but exhaust your resources quickly.</li>
+  <li><strong>Half Action (1 AP):</strong> Standard attacks, single-target abilities, movement supplements. The backbone of normal combat turns.</li>
+  <li><strong>Free Action:</strong> Activations, some abilities, stance changes. Cost nothing; use them all every turn.</li>
+  <li><strong>Bonus Actions:</strong> Character-specific free activations from talents or abilities; supplement the normal AP budget without consuming it.</li>
+</ul>
+
+<h2 class="sub-title">Cover, Positioning, and Flanking</h2>
+<p>Cover is the game&apos;s primary defensive mechanic. Characters behind partial cover receive a Defence bonus against ranged attacks; characters behind full cover receive a larger bonus and also gain protection from some area effects. The cover system makes positioning the most impactful pre-combat decision: characters who begin their turn in cover are significantly more durable than those in open ground.</p>
+<p>Flanking &mdash; attacking an enemy from the side or rear when they are engaged by an ally from the front &mdash; removes their cover bonus and typically allows bonus attacks or improved hit rates. Building parties and positioning turns around the flanking mechanic is a consistent efficiency multiplier across all difficulty levels.</p>
+
+<h2 class="sub-title">Weapon Types and Penetration</h2>
+<p>Enemies in the Koronus Expanse wear varying levels of armour and have different resistances. Understanding weapon penetration (AP value &mdash; Armour Penetration, separate from Action Points) prevents the common mistake of dealing full-auto fire with low-penetration weapons into heavily armoured enemies. Bolters, plasma weapons, and melta weapons have high penetration; autoguns and lasguns do not. Match weapon types to target armour profiles before committing AP expenditure.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S08 -->
+<section class="section" id="s08">
+<h2 class="section-title"><span class="sec-num">&sect;08</span> Momentum &amp; Heroic Acts</h2>
+<p>Momentum and Heroic Acts are Rogue Trader&apos;s most distinctive combat systems and the mechanics that separate competent play from tactical mastery. Understanding how they interact is the difference between fighting enemies and controlling every engagement from the first turn.</p>
+
+<h2 class="sub-title">The Momentum Gauge</h2>
+<p>The <strong>Momentum gauge</strong> is a party-wide resource that tracks combat momentum. It fills when your party performs well &mdash; attacking, hitting, killing enemies &mdash; and depletes when enemies perform well against your party. The key insight: Momentum is not passive. Specific abilities and talents deliberately generate Momentum, and others spend it for immediate tactical effects. The game rewards parties that understand Momentum as an active resource to be generated and spent rather than a passive score tracker.</p>
+
+<p>Momentum thresholds unlock access to increasingly powerful effects. At specific Momentum levels, the entire party gains stacking combat bonuses. At maximum Momentum, the most powerful effects become available. Fighting aggressively to reach and maintain high Momentum &mdash; rather than conservatively managing AP &mdash; is typically the more effective combat approach.</p>
+
+<h2 class="sub-title">Heroic Acts</h2>
+<p><strong>Heroic Acts</strong> are powerful special actions available to all characters when sufficient Momentum has been accumulated. They are not archetype-specific &mdash; any character can perform a Heroic Act when the conditions are met. Heroic Acts typically:</p>
+<ul class="guide-list">
+  <li>Deal significantly higher damage than standard attacks</li>
+  <li>Apply powerful status effects or debuffs to multiple enemies</li>
+  <li>Provide major buffs to the entire party</li>
+  <li>Generate additional Momentum when used well, creating positive feedback loops</li>
+</ul>
+
+<div class="callout imperial">
+  <div class="callout-title">Momentum Synergy with the Officer</div>
+  <p>The Officer&apos;s core ability is granting additional turns and actions to other party members. When those additional turns are used to trigger Heroic Acts (because the Momentum threshold was already reached at the start of the sequence), the combination of Officer ability + Heroic Act produces turn-sequence efficiency no other archetype pairing can match. The best-performing parties in Rogue Trader almost always include an Officer whose primary purpose is maximising Heroic Act access for the party&apos;s most damaging members. Cassia or Jae as the Officer, with Abelard, Argenta, and Yrliet as the beneficiaries, is one of the game&apos;s highest-performing party configurations for this reason.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S09 -->
+<section class="section" id="s09">
+<h2 class="section-title"><span class="sec-num">&sect;09</span> Abelard Werserian &mdash; The Seneschal</h2>
+<div class="lore-block">
+  <p>Abelard Werserian served under Theodora von Valancius for two decades. He knows more about the dynasty than anyone alive, more about the Koronus Expanse than most Rogue Traders who have spent their careers there, and more about the personal habits and limitations of every member of the current crew than any of them would find comfortable. He considers himself your right hand. He is the first to say so and the last to stop acting like it. He is also, in most situations, correct. In the forty-first millennium, having someone who is always correct about what the dynasty requires is not a luxury. It is the minimum viable condition for survival.</p>
+  <span class="source">// IMPERIAL ARCHIVE &middot; SENIOR CREW ASSESSMENT &middot; HOUSE VON VALANCIUS //</span>
+</div>
+
+<p>Abelard is your Seneschal &mdash; your right hand, your most loyal officer, and one of the most reliable companions in the game. He is the tank of your crew: a melee-focused Warrior with exceptional durability, the ability to taunt enemies into targeting him, and the capacity to shield other companions from damage. He is the companion that makes every other companion safer simply by being present on the battlefield.</p>
+
+<h2 class="sub-title">Combat Role</h2>
+<p>Abelard fills the classic tank role: he draws enemy attention, absorbs damage that would otherwise kill more fragile companions, and deals respectable melee damage in the process. His <strong>Taunt</strong> ability forces nearby enemies to target him rather than your more vulnerable characters. Positioned correctly &mdash; between ranged enemies and your Psykers and Operatives &mdash; Abelard changes the geometry of every engagement he enters.</p>
+
+<h2 class="sub-title">Build Guidance</h2>
+<p>Invest in Toughness and Weapon Skill as primary characteristics. Abelard&apos;s advanced progression should focus on improved defensive talents, stronger taunt effects, and Power weapon proficiency &mdash; power swords and power mauls that deal damage proportional to his high WS stat become competitive with two-handed weapons in the mid game. Fellowship bonuses are available to him through specific talents (his Officer aptitudes when built with those in mind) and make him a viable secondary Officer if Jae or Cassia are unavailable for a specific encounter.</p>
+
+<div class="callout dogmatic">
+  <div class="callout-title">Companion Approval: Abelard</div>
+  <p>Abelard is Dogmatic-leaning: he approves of decisions that maintain Imperial order, protect the innocent, and honour the dynasty&apos;s commitments. He disapproves of dealings with Chaos, gratuitous cruelty, and choices that compromise the dynasty&apos;s reputation. His loyalty is essentially unconditional if you treat him with the respect his service deserves; he will push back on decisions he finds wrong but will follow through regardless. The highest-approval relationship with Abelard does not require being Dogmatic &mdash; it requires being consistent and treating him as the valued advisor he is.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S10 -->
+<section class="section" id="s10">
+<h2 class="section-title"><span class="sec-num">&sect;10</span> Argenta &mdash; Sister of Battle</h2>
+<div class="lore-block">
+  <p>She carries her faith the way some people carry weapons &mdash; not as a tool to be deployed when necessary, but as a constant, ambient fact of her existence. The Emperor&apos;s grace is not something Argenta prays for. It is something she acts from, continuously, in every engagement with every enemy of mankind. The flamer does not express her conviction. The flamer is the product of her conviction having made a combustion-based decision about the target. There is a difference, and the difference matters to Argenta considerably more than it matters to the target.</p>
+  <span class="source">// IMPERIAL ARCHIVE &middot; CREW ASSESSMENT &middot; BATTLE-SISTER ARGENTA &middot; ADEPTUS SORORITAS NOTATION //</span>
+</div>
+
+<p>Argenta is a Ministorum Priest with the Soldier Archetype. She is the game&apos;s premier ranged damage dealer: a Sister of Battle who carries boltguns, melta weapons, and flamers with devastating effectiveness. She is consistently among the most useful combat companions regardless of party composition and is widely considered the best overall companion in the base game.</p>
+
+<h2 class="sub-title">Combat Role</h2>
+<p>Argenta delivers sustained, high-accuracy ranged damage backed by the Adeptus Sororitas&apos; faith abilities. Her unique <strong>Act of Faith</strong> mechanic allows her to fuel abilities through accumulated faith rather than spending AP &mdash; providing actions that effectively cost nothing. She can also use hymns and prayers to buff party members in the surrounding area, providing utility beyond pure damage output. Her bolter accuracy against multiple enemy types is reliable across every act of the game.</p>
+
+<h2 class="sub-title">Build Guidance</h2>
+<p>Ballistic Skill is Argenta&apos;s primary characteristic. Investing in the full Soldier and Arch-Militant advancement tracks provides her with improved firing modes and weapon specialisations. She benefits significantly from Ballistic Skill-boosting equipment and from positioning that gives her clear lines of sight without exposing her to melee engagement. She is a backline ranged attacker who should never be in melee range if it can be avoided &mdash; most enemies that reach her will kill her before she can respond.</p>
+
+<div class="callout dogmatic">
+  <div class="callout-title">Argenta and Dogmatic Conviction</div>
+  <p>Argenta is one of the strongest Dogmatic conviction companions in the game. She approves significantly of decisions that honour the Emperor, purge heresy, and demonstrate proper Imperial piety. For Dogmatic playthrough players, keeping Argenta at maximum approval is both mechanically beneficial (her quest line provides unique equipment) and tonally appropriate &mdash; her unwavering faith in the Emperor is the exact expression of the Dogmatic conviction at its most sincere. She is deeply uncomfortable with Iconoclast compromises and will refuse certain Heretical choices entirely.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S11 -->
+<section class="section" id="s11">
+<h2 class="section-title"><span class="sec-num">&sect;11</span> Cassia Orsellio &mdash; The Navigator</h2>
+<div class="lore-block">
+  <p>A Navigator without a ship is a very expensive person with a third eye and no useful outlet for it. A ship without a Navigator in the Koronus Expanse is a very large debris field waiting to be catalogued. Cassia Orsellio understands both ends of this arrangement with perfect clarity, which is why she accepted a berth on a ship run by someone who had just inherited a Warrant by virtue of surviving a prologue rather than by virtue of having deserved it. The Navigator&apos;s calculation is simple: this ship is going somewhere interesting, and interesting is the only thing she has ever wanted. The rest is details she will manage as they develop.</p>
+  <span class="source">// IMPERIAL ARCHIVE &middot; NAVIGATOR HOUSE ASSESSMENT &middot; ORSELLIO GENE-LINE &middot; NAVIS NOBILITE //</span>
+</div>
+
+<p>Cassia is your Navigator &mdash; an essential NPC whose skill affects Warp travel safety &mdash; and also one of your most powerful combat companions. She is widely considered the best companion in the game, appearing as first or second choice in almost every tactical role from healer to damage dealer to crowd controller to Officer. Her exceptional versatility makes her effectively mandatory for every party configuration.</p>
+
+<h2 class="sub-title">Combat Role &mdash; Everything</h2>
+<p>Cassia&apos;s combat kit spans an extraordinary range:</p>
+<ul class="guide-list">
+  <li><strong>Leader/Officer:</strong> Her command abilities can hand turns to other party members, making her a premier action economy character alongside Jae</li>
+  <li><strong>Psyker/Blaster:</strong> Her Navigator powers include devastating warp-based attacks that can affect entire areas of the battlefield</li>
+  <li><strong>Disabler:</strong> Several of her abilities apply crowd control effects that prevent enemy actions entirely for one or more turns</li>
+  <li><strong>Medic/Support:</strong> Cassia provides healing and buff effects that keep the party functional in extended encounters</li>
+</ul>
+
+<h2 class="sub-title">Build Guidance</h2>
+<p>Cassia&apos;s Willpower-based Navigator powers are her primary offensive tool. Willpower should be her highest characteristic. Her Officer advancement track provides the party-wide action sharing that makes her indispensable; most Cassia builds invest in both her psychic abilities and her Officer skills simultaneously, producing the hybrid Leader/Blaster role that no other companion can fill as effectively. The Dogmatic psyker build guide for the Rogue Trader specifically calls out the colony project providing the Eyes of Joyeuse helmet for Cassia, significantly boosting her psy rating when playing Dogmatically.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S12 -->
+<section class="section" id="s12">
+<h2 class="section-title"><span class="sec-num">&sect;12</span> Heinrix van Calox &mdash; The Interrogator</h2>
+<div class="lore-block">
+  <p>The Inquisition does not send representatives to accompany Rogue Traders out of courtesy. Heinrix van Calox represents a specific interest that the Inquisition has in the Koronus Expanse, and the fact that he is accompanying you rather than someone else is not accidental. He follows his own agenda. He will tell you this openly, which is either a sign of confidence or a sign that the agenda he is following does not conflict with yours in ways he expects you to notice. He is a capable Psyker and a formidable fighter. He is also exactly as loyal as the Inquisition&apos;s interests require him to be, which is, for now, very loyal indeed.</p>
+  <span class="source">// IMPERIAL ARCHIVE &middot; CREW ASSESSMENT &middot; INTERROGATOR HEINRIX VAN CALOX &middot; INQUISITORIAL NOTATION //</span>
+</div>
+
+<p>Heinrix is an Inquisitorial Interrogator and a Warrior-Psyker hybrid: he combines Warrior Archetype melee capability with sanctioned psychic powers. He fills both a front-line fighting role and a psychic support/blaster role, making him one of the more complex companions to build effectively but also one of the most powerful when properly developed.</p>
+
+<h2 class="sub-title">Combat Role</h2>
+<p>Heinrix is tankier than Idira (the other Psyker companion) by virtue of his Warrior base, making him more forgiving to position. He works at close range, applying psychic effects during melee engagement rather than from the backline. His force weapons (which scale with Willpower) become competitive in the mid-game as alternatives to standard melee weapons, particularly for penetrating heavily armoured targets that would resist physical damage. His psychic spells generate Warp Degradation alongside Idira&apos;s; managing both simultaneously in the same party requires discipline about which powers each Psyker uses.</p>
+
+<h2 class="sub-title">Build Guidance</h2>
+<p>Heinrix functions best when built toward either the tank-Psyker hybrid (focusing on Toughness and Willpower simultaneously) or the melee Psyker specialist (Force weapon proficiency, high Willpower for psychic enhancement, mid Toughness for survivability). He requires more SP investment to reach his capability peak than simpler companions but produces excellent results in sustained melee engagements where his durability differentiates him from the frailer backline Psykers.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S13 -->
+<section class="section" id="s13">
+<h2 class="section-title"><span class="sec-num">&sect;13</span> Pasqal Haneumann &mdash; Magos Explorator</h2>
+<div class="lore-block">
+  <p>The Adeptus Mechanicus has a standard assessment protocol for non-Mechanicus personnel: they are biological imperfections in an otherwise mechanical universe, tolerated by the Machine God as an unfortunate consequence of organic evolution, and useful primarily as interfaces between sacred machinery and its correct operational state. Pasqal Haneumann has applied this assessment to every member of the crew, including himself, and reached the conclusion that the data does not fully support it. He has not shared this conclusion with Mars. He remains uncertain whether this constitutes heresy or simply methodological rigour.</p>
+  <span class="source">// IMPERIAL ARCHIVE &middot; CREW ASSESSMENT &middot; MAGOS EXPLORATOR PASQAL HANEUMANN &middot; ADEPTUS MECHANICUS //</span>
+</div>
+
+<p>Pasqal is a Magos Explorator of the Adeptus Mechanicus &mdash; more machine than man, and proud of it. He fills multiple roles in the party: ranged attacker with his tech-weapon proficiencies, utility character who interacts with machinery throughout exploration, and Operative-archetype-based disabler whose Logic and Tech-Use checks unlock options unavailable to other party members.</p>
+
+<h2 class="sub-title">Combat and Exploration Role</h2>
+<p>Pasqal&apos;s highest unique value is outside combat: his Logic and Tech-Use skill levels unlock doors, disable security systems, interface with Mechanicus technology, and identify enemy mechanical weaknesses that other characters cannot access. In exploration-heavy areas (particularly those with Mechanicus or void station themes), Pasqal provides options that bypass significant content entirely. In combat, his Operative base provides the Exploit debuff chain and respectable ranged damage with specialised tech weapons.</p>
+
+<div class="callout mechanicus">
+  <div class="callout-title">Pasqal as a Tank Alternative</div>
+  <p>Pasqal&apos;s Toughness-based durability is notably higher than most Operative companions, making him viable in a forward-position role that most Operatives cannot survive. His heavy armour proficiency (available through specific talent investments) lets him absorb hits that would kill other backline characters. This makes him a viable replacement for Abelard in parties that want an Operative&apos;s damage profile alongside a moderate tank contribution &mdash; not as durable as Abelard, but more useful outside combat than any pure-tank companion can be.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S14 -->
+<section class="section" id="s14">
+<h2 class="section-title"><span class="sec-num">&sect;14</span> Jae Heydari &amp; Yrliet Lanaevyss</h2>
+
+<h2 class="sub-title">Jae Heydari &mdash; Cold Trader</h2>
+<div class="lore-block">
+  <p>Jae Heydari operates in the space between what the Imperium permits and what it tolerates. This is a fairly large space in the Koronus Expanse, because the Koronus Expanse is outside the Imperium&apos;s enforcement radius, and the tolerance threshold expands correspondingly. She deals in things that do not have clean legal classifications, with people who prefer their transactions undocumented, for reasons she considers entirely her own business. She is also, as a matter of unrelated fact, the most effective Officer on the crew. She gives orders the way some people breathe &mdash; without thinking about it, because it is simply the thing she does.</p>
+  <span class="source">// IMPERIAL ARCHIVE &middot; CREW ASSESSMENT &middot; JAE HEYDARI &middot; COLD TRADER &middot; [INCOMPLETE DATA] //</span>
+</div>
+
+<p>Jae is a Cold Trader with the Officer Archetype and one of the premier action-economy characters in the game. Her ability to dual-wield ranged weapons &mdash; shooting twice per turn with the second shot costing zero AP &mdash; makes her capable of extraordinary ranged output while simultaneously maintaining her Officer support role. She is recruited on Footfall station during Act 2 and should be added to the party as soon as available.</p>
+
+<p><strong>Build guidance:</strong> Jae benefits from Fellowship and Ballistic Skill equally. Her dual-wield zero-cost second shot is the most unusual ranged mechanic in the game &mdash; any investment in her BS directly doubles in effective output because both shots share the same accuracy characteristic. The Grand Strategist advanced Archetype path makes Jae one of the best &ldquo;give everyone extra turns&rdquo; commanders in the game while maintaining her personal damage output.</p>
+
+<h2 class="sub-title">Yrliet Lanaevyss &mdash; Aeldari Ranger</h2>
+<p>Yrliet is an Aeldari (Eldar) Ranger &mdash; a xenos companion whose inclusion in the party will generate Dogmatic disapproval from Argenta and other Imperial-orthodox companions. She is a long-range sniper with exceptional Ballistic Skill who provides the party&apos;s most reliable extreme-range damage from complete concealment. Her Ranger abilities allow her to engage targets from ranges that preclude return fire, eliminating priority enemy units before they can act. She is the premier single-target ranged damage dealer when Argenta is assigned to area suppression roles.</p>
+
+<div class="callout iconoclast">
+  <div class="callout-title">The Xenos Companion Question</div>
+  <p>Yrliet and Marazhai are xenos companions. Their presence in your party is mechanically strong but narratively controversial. Argenta and Heinrix will express strong disapproval of certain interactions with them. The Iconoclast playthrough accommodates xenos companions most naturally &mdash; Iconoclast conviction is philosophically aligned with working with non-humans when it serves survival. Dogmatic playthrough players who still want Yrliet&apos;s combat effectiveness should manage approval through other decisions that please Argenta rather than trying to maintain maximum approval with all Imperial companions simultaneously.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S15 -->
+<section class="section" id="s15">
+<h2 class="section-title"><span class="sec-num">&sect;15</span> Idira, Ulfar &amp; Marazhai</h2>
+
+<h2 class="sub-title">Idira Tlass &mdash; Unsanctioned Psyker</h2>
+<div class="lore-block">
+  <p>Unsanctioned Psykers are illegal. The relevant clause in the Lex Imperialis is brief and clear: individuals who manifest psychic ability without formal registration and sanction by the Adeptus Astra Telepathica are to be reported to the Inquisition immediately. Idira Tlass has been reported twice. Both reporting officers subsequently encountered administrative difficulties. She is on the ship because Theodora allowed her to be, and she remains on the ship because she is genuinely useful and genuinely dangerous, which in the Koronus Expanse makes her a valued crewmember rather than a liability.</p>
+  <span class="source">// IMPERIAL ARCHIVE &middot; CREW ASSESSMENT &middot; IDIRA TLASS &middot; UNSANCTIONED PSYKER &middot; [CLASSIFIED] //</span>
+</div>
+
+<p>Idira is an Operative Archetype psyker who joins in the prologue. As a Divination Psyker, she provides vision-based buffs and debuffs &mdash; seeing the near future to reduce enemy accuracy, improve ally performance, or apply the Exploit debuff through her Operative base. She is a solid early-game support character who provides prediction-based utility that no other companion replicates. Her limitation compared to Cassia and Heinrix: Idira lacks their durability and her support kit is narrower than Cassia&apos;s extraordinary versatility.</p>
+
+<h2 class="sub-title">Ulfar &mdash; Space Wolf</h2>
+<p>Ulfar is a Space Marine from the Space Wolf chapter &mdash; a Soldier/Arch-Militant hybrid. Space Wolves fight with the primal ferocity of enhanced transhuman warriors alongside the cunning of a veteran hunter. His Arch-Militant advancement requires alternating attack types each round to build stacking buffs, making him more mechanically complex than a standard Soldier but significantly more powerful when the rhythm is maintained. His durability as a Space Marine means he can serve as a secondary tank alongside Abelard.</p>
+
+<h2 class="sub-title">Marazhai Aezyrraesh &mdash; Drukhari Dracon</h2>
+<p>Marazhai is a Drukhari (Dark Eldar) warrior &mdash; a Warrior/Assassin hybrid melee character who thrives in direct melee combat with priority targets. His Drukhari nature means he gains power from the suffering of others, which synergises with combat situations where enemies are being killed or wounded around him. His poison and bleed-focused toolkit provides sustained damage-over-time effects that are particularly effective against high-HP targets. He is challenging to fit into parties because Yrliet and Argenta often kill targets before he can engage &mdash; but in melee-focused parties that want a fast, high-burst damage dealer, he excels.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S16 -->
+<section class="section" id="s16">
+<h2 class="section-title"><span class="sec-num">&sect;16</span> The Voidship</h2>
+<div class="lore-block">
+  <p>The ship does not have a name in the official records. It has a hull designation, a Warrant identifier, and a series of maintenance logs that describe its current condition with the patient optimism of Mechanicus documentation protocols. The crew calls it by the name Theodora never officially registered: the Righteous Path. It is a frigate-class vessel, which means it is enormous by the standards of anything that does not travel between stars, and desperately fragile by the standards of everything else out here. The ship is your home, your throne room, your fortress, and your fastest way out of any situation you have correctly assessed as requiring departure. You will learn to love it, or you will not survive long enough for it to matter.</p>
+  <span class="source">// IMPERIAL ARCHIVE &middot; VOIDSHIP LOG &middot; THE RIGHTEOUS PATH &middot; BRIDGE NOTATION //</span>
+</div>
+
+<p>The voidship is your mobile headquarters &mdash; home base, military platform, and symbol of the von Valancius dynasty&apos;s power. It serves several distinct mechanical functions beyond simply transporting the party between locations.</p>
+
+<h2 class="sub-title">The Ship as Home Base</h2>
+<p>Between ground missions, the voidship&apos;s various compartments provide important services:</p>
+<ul class="guide-list">
+  <li><strong>The Bridge:</strong> Janris Danrok (High Factotum) enables character respecification; your officers provide narrative briefings; the strategic map enables system navigation</li>
+  <li><strong>The Crew Quarters:</strong> Companion interaction; approval conversations; personal quest triggers; romanceable companion dialogue</li>
+  <li><strong>The Armory:</strong> Equipment management; weapon inspection; stores your accumulated loot for eventual use</li>
+  <li><strong>The Astropathic Choir and Navigator Quarters:</strong> Warp-related services that affect travel safety and Warp event severity</li>
+</ul>
+
+<h2 class="sub-title">Ship Upgrades</h2>
+<p>The voidship can be upgraded through various means throughout the game. Ship component improvements affect voidship combat performance (void shields, weapon batteries, dorsal turrets, augur arrays) and crew quality affects how the ship performs during Warp events. Prioritise void shield improvements and weapons that match your naval combat approach before investing in purely aesthetic or minor improvements.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S17 -->
+<section class="section" id="s17">
+<h2 class="section-title"><span class="sec-num">&sect;17</span> Voidship Combat</h2>
+<p>Naval combat between capital ships in the Koronus Expanse is a distinct combat system separate from ground tactical battles. It takes place between your voidship and enemy vessels, using range, facing, and weapons batteries rather than individual units on a hex grid.</p>
+
+<h2 class="sub-title">Naval Combat Mechanics</h2>
+<ul class="guide-list">
+  <li><strong>Facing matters:</strong> Firing arcs for most weapons are limited by the ship&apos;s orientation. Positioning your prow toward the enemy maximises forward weapons; broadside configurations maximise side battery fire.</li>
+  <li><strong>Void shields must be depleted before hull damage:</strong> Enemies and your ship both have void shields that absorb damage before it reaches the hull. Focus all fire on shield depletion first, then transition to hull damage when shields are down. Spreading fire across shields and hull simultaneously achieves neither goal efficiently.</li>
+  <li><strong>Macrocannon vs. Lance weapons:</strong> Macrobatteries fire multiple shells with scatter patterns effective against unshielded hulls; Lance weapons fire precise beams that ignore some armour but deal less total damage. Match weapon type to phase: macrobatteries during shield depletion (volume of fire), Lances against bare hull (penetration).</li>
+  <li><strong>Special manoeuvres:</strong> Your Navigator and crew skills enable special manoeuvres &mdash; emergency acceleration, evasive action, precise targeting. These cost crew morale and Warp exposure but can swing a difficult engagement decisively.</li>
+</ul>
+
+<div class="callout imperial">
+  <div class="callout-title">Cassia&apos;s Navigator Role in Voidship Combat</div>
+  <p>Cassia&apos;s Navigator abilities extend beyond combat into voidship operations. As Navigator, her skill level directly affects the safety of Warp jumps, the severity of Warp events during transit, and the availability of certain special manoeuvres during naval combat. Investing in Cassia&apos;s Willpower &mdash; which governs her psychic abilities in ground combat &mdash; simultaneously improves her Navigator effectiveness. This is the mechanic that makes Cassia not just the best combat companion but the most systemically important character in the entire game.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S18 -->
+<section class="section" id="s18">
+<h2 class="section-title"><span class="sec-num">&sect;18</span> Colony Management</h2>
+<div class="lore-block">
+  <p>A Rogue Trader without colonies is a very expensive explorer. The Warrant of Trade is not merely a licence to travel &mdash; it is a mandate to produce value for the Imperium, expressed in the form of exploitable planets, taxable populations, and extractable resources that flow back through the Maw. The dynasty of von Valancius did not achieve its Warrant through distinguished service or martial valour. It achieved it through an ancestral compact with the Administratum that no one living fully understands the original terms of. The current terms are simpler: colonise, develop, and profit. What you do with your share of the profit is, mercifully, entirely your own concern.</p>
+  <span class="source">// IMPERIAL ARCHIVE &middot; WARRANT OF TRADE GUIDANCE &middot; ADMINISTRATUM COLONIAL DEVELOPMENT DIVISION //</span>
+</div>
+
+<p>Colony management is the game&apos;s strategic resource layer &mdash; an underrated mechanic that rewards engagement with significant equipment and story benefits unavailable through any other path. Colonies are established on worlds discovered throughout the Koronus Expanse and developed through Project investments that take real in-game time.</p>
+
+<h2 class="sub-title">Colony Development</h2>
+<p>Each colony has development tracks (typically named tiers or levels) and Projects &mdash; specific investments that advance the colony&apos;s capabilities. Projects take a set number of turns to complete and produce colony-specific rewards. The key insight that most players miss: <strong>some Projects provide build-defining equipment</strong> unavailable from any other source in the game:</p>
+<ul class="guide-list">
+  <li><strong>Eyes of Joyeuse Helmet</strong> (Janus colony, Tier 2 Project): A substantial Psy Rating bonus &mdash; the best headgear for Dogmatic Psyker builds in the game</li>
+  <li><strong>Malpian Shroud Cloak</strong> (Foulstone colony, Tier 1 event): Exceptional defensive cloak for Abelard or Iconoclast melee builds</li>
+  <li><strong>Heart of the Nameless Accessory</strong> (specific colony event): A build-defining accessory for Jae Heydari</li>
+</ul>
+
+<h2 class="sub-title">Colony Decisions and Conviction</h2>
+<p>Every significant colony decision has a conviction tag. Maintaining consistent conviction in colony decisions (rather than opportunistically selecting based on the specific reward) both advances your overall conviction path and ensures maximum companion approval from conviction-aligned companions. Argenta approves of Dogmatic colony administration; Marazhai approves of colonial exploitation. Consistency produces better companion approval outcomes than trying to optimise each decision independently.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S19 -->
+<section class="section" id="s19">
+<h2 class="section-title"><span class="sec-num">&sect;19</span> Warp Travel</h2>
+<p>Moving between star systems in the Koronus Expanse requires navigating the Warp &mdash; the psychic dimension where the laws of physics are suggestions and the Chaos Gods&apos; influence is constant. Every transit generates Warp events that your crew must respond to. Understanding the Warp event system prevents the common mistake of treating transit as simply clicking &ldquo;next destination.&rdquo;</p>
+
+<h2 class="sub-title">Warp Event Categories</h2>
+<ul class="guide-list">
+  <li><strong>Minor events:</strong> Crew morale effects, minor resource costs, narrative flavour. Handle these by selecting the appropriate skill check option from available party members.</li>
+  <li><strong>Warp storms:</strong> More severe weather in the Immaterium; higher damage to crew morale and potential equipment damage; Cassia&apos;s Navigator ability reduces severity.</li>
+  <li><strong>Warp encounters:</strong> Actual combat encounters against Warp entities, Chaos manifestations, or other threats; treated as standard combat encounters with the tactical systems; Psyker-heavy parties handle these better than purely physical parties.</li>
+  <li><strong>Crew corruption events:</strong> Warp exposure can affect crew loyalty and morale; high Warp Degradation (from overusing Psyker powers in recent ground combat) increases the frequency and severity of these events.</li>
+</ul>
+
+<div class="callout heretical">
+  <div class="callout-title">Warp Degradation Accumulates</div>
+  <p>Warp Degradation is the resource accumulated by using psychic powers in ground combat. It does not reset between missions &mdash; it persists and affects Warp travel safety. Parties that use Psyker abilities aggressively and accumulate high Degradation will encounter more dangerous Warp events during subsequent transit. This creates a genuine trade-off between psychic power use in combat and transit safety. Monitor Warp Degradation between missions and consider rest periods to allow it to decay before extended transit sequences.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S20 -->
+<section class="section" id="s20">
+<h2 class="section-title"><span class="sec-num">&sect;20</span> Party Composition</h2>
+<p>Rogue Trader&apos;s tactical system rewards parties with clear role differentiation and deliberate synergy between companions. With six active party slots (the Rogue Trader plus five companions), you have enough flexibility to cover all essential roles while including companions based on story preference. The following guidelines apply across all difficulty levels.</p>
+
+<h2 class="sub-title">Essential Roles</h2>
+<div class="unit-grid">
+  <div class="unit-card imper-card">
+    <div class="unit-name">Frontline Tank</div>
+    <span class="unit-type">REQUIRED &middot; ABSORBS FIRE</span>
+    <p>Every party needs at least one character who can take hits and redirect enemy attention. <strong>Abelard</strong> is the default and best choice for this role in the base game. His Taunt ability forces enemies to attack him rather than fragile ranged units. Without a tank, your Psykers and Operatives will die to the first enemy that reaches melee range.</p>
+  </div>
+  <div class="unit-card imper-card">
+    <div class="unit-name">Action Economy</div>
+    <span class="unit-type">REQUIRED &middot; TURNS FOR OTHERS</span>
+    <p>The single most powerful party mechanic in the game is giving additional turns to high-damage characters. <strong>Cassia or Jae</strong> fills this role. An Officer who grants one extra turn per round to Argenta or Yrliet effectively doubles those characters&apos; damage output over the course of a combat. No party should operate without an action economy character.</p>
+  </div>
+  <div class="unit-card dogm-card">
+    <div class="unit-name">Ranged Damage</div>
+    <span class="unit-type">HIGHLY RECOMMENDED</span>
+    <p><strong>Argenta</strong> is the premier ranged damage dealer and should be in almost every party. <strong>Yrliet</strong> provides extreme-range sniper capability. Together they cover every range band and every target priority. Running both provides ranged coverage that most enemy formations cannot effectively answer.</p>
+  </div>
+  <div class="unit-card here-card">
+    <div class="unit-name">Psychic Support</div>
+    <span class="unit-type">RECOMMENDED &middot; AREA EFFECTS</span>
+    <p><strong>Cassia</strong> covers psychic support alongside her Officer role. If only one Psyker slot is available, Cassia is the choice over Idira or Heinrix for most party configurations. If two Psyker slots are available, Heinrix provides the melee hybrid option while Cassia handles command and area psychic effects.</p>
+  </div>
+</div>
+
+<h2 class="sub-title">Recommended Standard Party</h2>
+<p>The configuration cited by the GameFAQs community walkthrough as the author&apos;s personal party for the entire game: <strong>Abelard, Argenta, Cassia, Jae, and Yrliet</strong>. This provides: tanking (Abelard), sustained ranged damage (Argenta), action economy and psychic support (Cassia), dual-wield ranged damage and Officer support (Jae), and extreme-range precision (Yrliet). It is not the only viable configuration but it is comprehensive, synergistic, and handles every encounter type the game presents.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S21 -->
+<section class="section" id="s21">
+<h2 class="section-title"><span class="sec-num">&sect;21</span> Tactical Doctrine</h2>
+<div class="lore-block">
+  <p>The Tactica Imperialis states that the difference between a successful engagement and a failed one is preparation. The Tactica Imperialis was written by people who had the luxury of preparation, and it shows. The Koronus Expanse does not reliably provide the kind of preparation time the Tactica Imperialis assumes. What the Expanse does provide is enemies who consistently make the same mistakes, terrain that consistently offers the same advantages, and an action economy that consistently rewards the side that understands it better. The Tactica Imperialis does not mention action economy. It should have.</p>
+  <span class="source">// IMPERIAL ARCHIVE &middot; PERSONAL NOTES &middot; ROGUE TRADER VON VALANCIUS &middot; KORONUS EXPANSE //</span>
+</div>
+
+<p>The following tactical principles apply across all encounter types and difficulty levels. They are the consistent lessons that experienced Rogue Trader players have distilled from hundreds of combat encounters.</p>
+
+<div class="phase imper">
+  <div class="phase-title">Priority 1 &mdash; Establish Cover Before Engagement</div>
+  <p>Before the first action of any engagement, assess the battlefield for optimal cover positions. Characters should move into cover as their first action if they are not already in it. The cover bonus to Defence is substantial; characters in full cover are dramatically harder to hit than characters in the open. Lose an attack to gain cover; never lose cover to gain a marginal attack position.</p>
+</div>
+
+<div class="phase imper">
+  <div class="phase-title">Priority 2 &mdash; Kill One Enemy Completely Before Switching Targets</div>
+  <p>Spreading damage across multiple enemies allows all of them to keep acting. Concentrating all party fire on one enemy until it is dead removes it from the action economy permanently and reduces incoming damage immediately. Focus fire is more valuable than spread damage in every tactical context the game presents. Identify the highest-priority target (typically the one with the most dangerous ability or the one closest to your fragile characters) and eliminate it completely before touching anything else.</p>
+</div>
+
+<div class="phase imper">
+  <div class="phase-title">Priority 3 &mdash; Generate and Spend Momentum Deliberately</div>
+  <p>Do not treat Momentum as a passive tracker. Identify which actions generate Momentum and prioritise those early in the combat round. Reach the Heroic Act threshold as quickly as possible and spend it on the highest-damage or highest-utility action available. The party that spends Heroic Acts every two or three rounds consistently will outperform an equivalent party that uses them opportunistically.</p>
+</div>
+
+<div class="phase imper">
+  <div class="phase-title">Priority 4 &mdash; Use Action Economy Characters Every Turn</div>
+  <p>Cassia and Jae&apos;s turns are worth more than most characters&apos; turns even if they deal no personal damage, because the turns they grant to others typically deal significantly more damage than they would themselves. Never skip an action economy character&apos;s turn. If in doubt about which action to take, the Officer&apos;s &ldquo;give someone else a turn&rdquo; ability is almost always the correct choice.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S22 -->
+<section class="section" id="s22">
+<h2 class="section-title"><span class="sec-num">&sect;22</span> Equipment &amp; Progression</h2>
+<p>Rogue Trader&apos;s loot system provides a consistent stream of weapons, armour, and accessories throughout the campaign. The quality tiers escalate as the game progresses, but some of the most impactful items come from specific sources rather than random drops.</p>
+
+<h2 class="sub-title">Equipment Quality Tiers</h2>
+<table class="data-table">
+  <thead><tr><th>Tier</th><th>Description</th><th>How Obtained</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Common</strong></td><td>Standard Imperial issue; baseline performance</td><td>Merchants, basic loot drops</td></tr>
+    <tr><td><strong>Uncommon</strong></td><td>Enhanced standard equipment; minor modifiers</td><td>Mid-grade loot; some merchants</td></tr>
+    <tr><td><strong>Rare</strong></td><td>Significant improvements; unique modifiers</td><td>Boss drops; hidden caches; specific quests</td></tr>
+    <tr><td><strong>Exceptional</strong></td><td>High-quality items; meaningful combat impact</td><td>Named bosses; specific achievement unlocks</td></tr>
+    <tr><td><strong>Relic</strong></td><td>Ancient, blessed, or cursed items of extraordinary power</td><td>Colony projects; unique quest rewards; the rarest drops</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Build-Defining Items</h2>
+<p>Certain items are transformative for specific builds and worth actively pursuing:</p>
+<ul class="guide-list">
+  <li><strong>Eyes of Joyeuse Helmet</strong> (Janus colony, Tier 2): Massive Psy Rating boost &mdash; Dogmatic Psyker builds specifically</li>
+  <li><strong>Force weapons (mid-to-late game):</strong> Scale with Willpower; Heinrix and Psyker-Warrior builds specifically</li>
+  <li><strong>Power weapons (bolt and otherwise):</strong> Abelard&apos;s primary damage vehicle in melee</li>
+  <li><strong>Inferno pistols and melta weapons:</strong> Armour penetration leaders for Argenta against heavily armoured targets</li>
+</ul>
+
+<div class="callout tip">
+  <div class="callout-title">Sell Redundant Equipment; Buy Specific Needs</div>
+  <p>Rogue Trader&apos;s inventory management is weight-limited and your party will accumulate equipment faster than it can use it. Regularly sell redundant items and use the Dust generated to purchase specific items from merchants rather than waiting for the right drop. The Footfall merchant and subsequent hub merchants carry a rotating stock that includes Rare and Exceptional items appropriate to your current act. Check merchants at every hub visit and consider buying specific pieces that complete a build rather than hoping the correct Exceptional weapon drops from a specific enemy.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S23 -->
+<section class="section" id="s23">
+<h2 class="section-title"><span class="sec-num">&sect;23</span> Endings &amp; Conviction Paths</h2>
+<div class="lore-block">
+  <p>Every Warrant of Trade ends the same way: the holder dies, the dynasty endures or doesn&apos;t, and the galaxy continues being dark and large and indifferent to individual significance. What changes is the quality of the ending &mdash; the degree to which what was done in the Koronus Expanse mattered, to whom it mattered, and at what cost. The Imperium will not record the cost accurately. The Administratum never does. But the people who were there will know. And in the forty-first millennium, there is a narrow category of things that are considered more important than what the people who were there know. This category is: the Emperor, the survival of mankind, and very little else. Everything else is, in the most meaningful sense, personal.</p>
+  <span class="source">// IMPERIAL ARCHIVE &middot; WARRANT OF TRADE TERMINAL ASSESSMENT &middot; HOUSE VON VALANCIUS &middot; KORONUS EXPANSE //</span>
+</div>
+
+<p>Rogue Trader&apos;s ending is significantly shaped by your dominant conviction, your companion approval ratings, and specific story choices made throughout the campaign. Understanding the ending framework prevents reaching the final confrontation without the conviction rank required for your preferred conclusion.</p>
+
+<div class="phase dogm">
+  <div class="phase-title">Dogmatic Path &mdash; For the Emperor</div>
+  <p>The Dogmatic ending is the most &ldquo;canonical&rdquo; by Imperial standards: the Rogue Trader serves the Imperium at great personal cost, the Koronus Expanse is brought under Imperial order, and the dynasty&apos;s legacy is one of orthodox service. Companions who approve: Abelard, Argenta. Companions who disapprove: Marazhai, Yrliet (depending on your handling of the xenos question). Dogmatic conviction is the path recommended for first-time players who want the most coherent relationship with the 40K setting.</p>
+</div>
+
+<div class="phase icon">
+  <div class="phase-title">Iconoclast Path &mdash; A Better Imperium</div>
+  <p>The Iconoclast ending reflects a Rogue Trader who built something more humane in the Koronus Expanse than the Imperium normally permits &mdash; trading relationships, co-existence with xenos where possible, mercy where the Dogmatic path offers only fire. Most companions can approve of Iconoclast decisions when handled correctly. The ending is bittersweet in typical 40K fashion &mdash; the Imperium does not celebrate enlightenment.</p>
+</div>
+
+<div class="phase here">
+  <div class="phase-title">Heretical Path &mdash; Into Darkness</div>
+  <p>The Heretical ending is the darkest outcome: the Rogue Trader succumbs to Chaos, corrupts the Koronus Expanse in service of the Ruinous Powers, and contributes to the galaxy&apos;s fundamental decay. It is the &ldquo;villain ending&rdquo; and the most mechanically demanding to reach &mdash; maintaining Heretical conviction while keeping key companions who disapprove of it requires careful relationship management. The unique Chaos abilities available to Heretical characters compensate mechanically but at significant narrative cost.</p>
+</div>
+
+<div class="callout warning">
+  <div class="callout-title">Conviction Rank Must Be Sufficient Before the Finale</div>
+  <p>The game&apos;s final act checks your conviction rank to determine which ending options are available to you. A player who has made mixed conviction choices throughout the game &mdash; some Dogmatic, some Iconoclast, some Heretical &mdash; may find that no single conviction has reached the rank required for their preferred conclusion. Commit to a conviction path early and maintain it consistently. The mechanical abilities from high conviction ranks are also strong enough to justify consistency on gameplay grounds alone.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S24 -->
+<section class="section" id="s24">
+<h2 class="section-title"><span class="sec-num">&sect;24</span> Glossary</h2>
+<div class="gloss-grid">
+  <div class="gloss-item"><div class="gloss-term">Act of Faith</div><div class="gloss-def">Argenta&apos;s unique ability mechanic; allows Sister of Battle abilities to be fuelled by accumulated faith rather than Action Points, providing effectively free actions when conditions are met.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Action Point (AP)</div><div class="gloss-def">The primary resource spent to perform attacks, abilities, and other combat actions each turn; Full Actions cost 2 AP, Half Actions cost 1 AP; do not confuse with Armour Penetration, also abbreviated AP in this game&apos;s weapon statistics.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Adeptus Mechanicus</div><div class="gloss-def">The Machine Cult; the faction of humanity devoted to technology as religion; Pasqal&apos;s organisation; controls Mars and the secrets of human technology.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Aeldari</div><div class="gloss-def">The Eldar; ancient xenos species of psychic power and dying civilisation; Yrliet&apos;s species; considered xenos by the Imperium; technically better at most things and fully aware of it.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Agility</div><div class="gloss-def">Characteristic governing Movement Points, evasion, and Agility-based skill checks; primary stat for mobile characters and Assassin archetypes.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Arch-Militant</div><div class="gloss-def">An Advanced Archetype available to Warrior or Soldier base characters; requires alternating attack types each round to build stacking combat buffs; Ulfar&apos;s advanced path.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Armour Penetration (AP)</div><div class="gloss-def">Weapon statistic measuring how much armour a weapon ignores; high-AP weapons (melta, plasma, lance) are essential against armoured enemies; do not confuse with Action Points.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Archetype</div><div class="gloss-def">The character&apos;s class system; base Archetypes (Officer, Warrior, Soldier, Operative, Psyker) advance into Advanced Archetypes through levelling; defines the character&apos;s fundamental combat identity.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Astropathic Choir</div><div class="gloss-def">A ship department housing Astropaths; psykers who transmit and receive messages across the galaxy using the Warp; essential for long-distance communication and certain ship functions.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Ballistic Skill (BS)</div><div class="gloss-def">Characteristic governing ranged attack accuracy; the primary stat for Soldiers, Operatives (for some builds), and any character using firearms.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Bolter / Boltgun</div><div class="gloss-def">The standard weapon of Space Marines and Sisters of Battle; fires explosive self-propelled rounds with excellent armour penetration; Argenta&apos;s signature weapon.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Cassia Orsellio</div><div class="gloss-def">Navigator companion; the most versatile and generally recommended companion; serves as Leader, Psyker, Disabler, and Medic simultaneously; her Navigator role directly affects Warp travel safety.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Chaos</div><div class="gloss-def">The collective Warp entities (the Chaos Gods) who oppose the Imperium; Heretical conviction aligns with Chaos; the primary existential threat to humanity in 40K.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Characteristic</div><div class="gloss-def">The eight core statistics (WS, BS, S, T, Ag, Int, Per, WP, Fel) governing all skill checks and combat effectiveness; derived from the Fantasy Flight tabletop RPG.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Conviction</div><div class="gloss-def">The alignment system; three paths (Dogmatic, Iconoclast, Heretical) that accumulate through dialogue choices, colony decisions, and combat actions; each provides unique abilities and narrative consequences at escalating rank tiers.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Dogmatic</div><div class="gloss-def">The Imperial orthodoxy conviction path; faith in the Emperor, purge heresy without mercy, enforce Imperial law; provides Sanctic psychic power access; approved by Abelard and Argenta.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Drukhari</div><div class="gloss-def">The Dark Eldar; sadistic psychic predators who feed on suffering; Marazhai&apos;s species; xenos by Imperial classification; extremely dangerous allies.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Exploit</div><div class="gloss-def">The Operative archetype&apos;s signature debuff; applies a vulnerability to a target that causes them to take increased damage from subsequent attacks; the foundation of Operative burst-damage strategies.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Fellowship (Fel)</div><div class="gloss-def">Characteristic governing leadership, social skill checks, and Officer abilities; the primary stat for Officer archetype characters; governs diplomacy-based dialogue options.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Flamer</div><div class="gloss-def">A weapon projecting burning promethium; area-of-effect fire damage that ignores cover; standard Argenta loadout option; exceptional against massed infantry.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Footfall</div><div class="gloss-def">The void station serving as the main trading hub in the Koronus Expanse; the closest thing to a safe haven in the hostile Expanse; return regularly for shopping and quest resolution.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Force Weapon</div><div class="gloss-def">A psychically-attuned melee weapon that scales damage with Willpower; available from mid-game; Heinrix&apos;s preferred weapon type; excellent armour penetration against protected targets.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Grand Strategist</div><div class="gloss-def">Advanced Archetype for Officer or Operative base; the premier action-economy class; provides turns and bonus actions to entire party; the highest-ceiling support Archetype in the game.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Heretical</div><div class="gloss-def">The Chaos corruption conviction path; embracing dark powers for personal advantage; provides unique Chaos abilities and the Heretic ending; approved by Marazhai; deeply disapproved by Argenta.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Heroic Act</div><div class="gloss-def">A powerful special action available to any character when sufficient Momentum has been accumulated; higher damage, powerful effects, or major buffs; deliberately generating and spending Heroic Acts is the tactical mastery mechanic.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Homeworld</div><div class="gloss-def">Character creation choice determining starting characteristic adjustments; options include Noble, Void-Born, Forge World, Death World, and others; each provides one bonus and one penalty characteristic.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Iconoclast</div><div class="gloss-def">The pragmatic independence conviction path; valuing human life and freedom, seeking compromise over destruction, working with xenos when practical; the most &ldquo;humane&rdquo; path through the game.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Intelligence (Int)</div><div class="gloss-def">Characteristic governing Tech-Use, Logic, Medicae, and technical skill checks; the primary stat for Tech-Priest builds and Pasqal; enables machinery interaction throughout exploration.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Interrogator</div><div class="gloss-def">Heinrix&apos;s position within the Inquisition; a representative and investigator; his presence on the crew is not accidental and reflects specific Inquisitorial interests in the Koronus Expanse.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Janris Danrok</div><div class="gloss-def">The High Factotum on your voidship&apos;s bridge; enables character respecification at any time for any character; the mechanic that makes all build experimentation risk-free.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Koronus Expanse</div><div class="gloss-def">The unmapped region of space beyond the Maw that serves as the game&apos;s primary setting; filled with ancient ruins, xenospecies, and secrets the Imperium has not yet classified.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Lance Weapon</div><div class="gloss-def">Voidship weapon firing precise energy beams with armour penetration; deals less total damage than Macrobatteries but ignores more armour; best used against unshielded hull rather than shields.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Macrobattery</div><div class="gloss-def">Voidship weapon firing multiple shells in a scatter pattern; effective against unshielded hulls; best used for void shield depletion through volume of fire.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Magos Explorator</div><div class="gloss-def">Pasqal&apos;s Adeptus Mechanicus rank; a tech-priest focused on exploration and discovery of lost technology; more machine than organic by this point in his development.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Melta Weapon</div><div class="gloss-def">Short-range thermal weapon with exceptional armour penetration; the premier anti-armour weapon in Argenta&apos;s arsenal; devastating at close range, ineffective at distance.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Momentum</div><div class="gloss-def">A party-wide resource tracking combat tempo; builds through successful attacks and kills; depletes when enemies succeed against the party; at threshold levels, unlocks Heroic Acts and party-wide combat bonuses.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Movement Points (MP)</div><div class="gloss-def">The resource spent for movement each turn; governed by Agility; depleted by moving through difficult terrain; separate from Action Points.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Navigator</div><div class="gloss-def">A mutant human with a Warp-perceiving third eye; essential for voidship Warp travel; Cassia&apos;s unique role; her Willpower directly affects transit safety and Warp event severity.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Officer</div><div class="gloss-def">Base Archetype specialising in granting extra turns and actions to party members; Fellowship is the primary stat; the highest-ceiling support role in the game; Cassia and Jae are the premier companion Officers.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Operative</div><div class="gloss-def">Base Archetype specialising in Exploit debuffs and burst single-target damage; Perception is the primary stat; highest damage ceiling but lowest durability; Jae, Pasqal, and Idira are Operative companions.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Origin</div><div class="gloss-def">Character creation choice representing the Rogue Trader&apos;s background before inheriting the Warrant; provides additional skill access and background narrative; complements Archetype selection.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Perception (Per)</div><div class="gloss-def">Characteristic governing Awareness, trap detection, and the Operative&apos;s Exploit mechanic; the primary stat for Operative builds.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Psyker</div><div class="gloss-def">A human with psychic ability; Base Archetype for psychic characters; the most powerful archetype when managed well; generates Warp Degradation with every power used; Cassia, Heinrix, and Idira are Psyker companions.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Rogue Trader</div><div class="gloss-def">An individual holding a Warrant of Trade; authorised to explore and colonise beyond the Imperium&apos;s borders; the player character&apos;s title and role.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Seneschal</div><div class="gloss-def">Abelard&apos;s title; the Rogue Trader&apos;s right hand and senior officer; manages dynasty affairs; in game terms, the party&apos;s primary tank and loyal anchor.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Sister of Battle</div><div class="gloss-def">Argenta&apos;s organisation; the Adeptus Sororitas; the militant arm of the Ministorum; faith-powered warriors for the God-Emperor whose Acts of Faith provide unique ability fuelling.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Soldier</div><div class="gloss-def">Base Archetype specialising in ranged combat; Ballistic Skill is the primary stat; reliable sustained-fire damage from distance; Argenta is the premier Soldier companion.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Space Wolf</div><div class="gloss-def">Ulfar&apos;s Space Marine chapter; a feral, viking-themed Chapter from Fenris; Ulfar is the only Space Marine companion in the game and one of the most durable fighters.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Taunt</div><div class="gloss-def">Abelard&apos;s signature ability; forces nearby enemies to target him rather than other party members; the core mechanic of his tank role and the primary reason he is in every recommended party.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Toughness (T)</div><div class="gloss-def">Characteristic governing physical damage reduction; the primary defensive stat; essential for frontline characters who will absorb enemy fire.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Void Shields</div><div class="gloss-def">Voidship energy defences that must be depleted before hull damage can be dealt; focus all fire on shield depletion before transitioning to hull damage in naval combat.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Voidship</div><div class="gloss-def">The player&apos;s spacecraft; home base, mobile headquarters, and military platform; maintained through component upgrades; serves naval combat, Warp transit, and colony expedition functions.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Warrant of Trade</div><div class="gloss-def">The ancient document held by the Rogue Trader authorising independent exploration and colonisation beyond the Imperium; older than the Imperium that currently honours it; the source of your extraordinary authority.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Warp</div><div class="gloss-def">The psychic dimension used for faster-than-light travel; inhabited by the Chaos Gods and their daemons; necessary but dangerous; Psyker powers draw on it; excess use increases Warp Degradation.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Warp Degradation</div><div class="gloss-def">A persistent resource accumulated by using psychic powers in ground combat; does not reset between missions; high Degradation increases Warp travel event frequency and severity.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Weapon Skill (WS)</div><div class="gloss-def">Characteristic governing melee attack accuracy and damage; the primary stat for Warriors and all melee-focused builds.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Willpower (WP)</div><div class="gloss-def">Characteristic governing psychic power effectiveness and Warp resistance; the primary stat for Psykers; also governs Cassia&apos;s Navigator effectiveness, making it the most broadly important characteristic in the game.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Xenos</div><div class="gloss-def">Any non-human species; officially enemies of the Imperium; Rogue Traders have more latitude than standard Imperial forces in dealing with them; Yrliet and Marazhai are xenos companions.</div></div>
+</div>
+</section>
+
+</div><!-- /content -->
+<footer id="footer">
+  Warhammer 40,000: Rogue Trader &nbsp;&middot;&nbsp; Owlcat Games &nbsp;&middot;&nbsp; Nadir Strategy Archive &nbsp;&middot;&nbsp; Koronus Expanse &mdash; For the Emperor, the Dynasty, and Whatever Else the Warrant Permits.
+</footer>
+</div><!-- /main -->
+<a id="back-top" href="#hero" title="Back to top">&#8593;</a>
+<script>
+const bar=document.getElementById('progress-bar');
+const bt=document.getElementById('back-top');
+const tog=document.getElementById('sidebar-toggle');
+const sb=document.getElementById('sidebar');
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;
+  bar.style.transform='scaleX('+(s/t)+')';
+  bt.classList.toggle('visible',s>400);
+},{passive:true});
+const secs=document.querySelectorAll('.section[id]');
+const navs=document.querySelectorAll('.nav-item');
+const obs=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){navs.forEach(n=>n.classList.remove('active'));const a=document.querySelector('.nav-item[href="#'+e.target.id+'"]');if(a){a.classList.add('active');a.scrollIntoView({block:'nearest'});}}});
+},{rootMargin:'-20% 0px -70% 0px'});
+secs.forEach(s=>obs.observe(s));
+tog.addEventListener('click',()=>sb.classList.toggle('open'));
+document.querySelectorAll('.nav-item').forEach(i=>i.addEventListener('click',()=>sb.classList.remove('open')));
+document.querySelectorAll('.section').forEach((s,i)=>{s.style.animationDelay=i*0.03+'s';});
+</script>
+</body>
+</html>

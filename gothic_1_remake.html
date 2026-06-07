@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gothic 1 Remake &mdash; The Prisoner&apos;s Codex</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0e0c08;--parchment:#f0ecdf;--gold:#c9943a;--gold-dark:#8b6420;--gold-pale:#f0d9a8;
+  --mid:#3a3020;--light:#f6f2e8;--border:rgba(201,148,58,0.3);
+  /* Gothic Colony palette: stone grey, ore amber, old-camp iron red, new-camp mist teal, sect-camp swamp violet, fire-mage ember */
+  --stone:#0e0c0a;--stone-mid:#1a1710;
+  --ore:#7a5408;--ore-pale:#f4e4b0;
+  --oldcamp:#7a1a0a;--oldcamp-pale:#f4d0c0;
+  --newcamp:#0a5060;--newcamp-pale:#c0e4f0;
+  --sectcamp:#4a1870;--sectcamp-pale:#dcc8f8;
+  --ember:#8a3808;--ember-pale:#f8d8b8;
+  --font-head:'Cinzel','Times New Roman',serif;
+  --font-body:'Crimson Pro','Georgia',serif;
+  --sidebar-w:296px;
+}
+html{scroll-behavior:smooth;font-size:17px}
+body{background:var(--parchment);color:var(--ink);font-family:var(--font-body);line-height:1.75;display:flex;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");opacity:0.55}
+a{color:inherit;text-decoration:none}button{cursor:pointer;font-family:inherit}
+#progress-bar{position:fixed;top:0;left:var(--sidebar-w);right:0;height:3px;background:var(--gold);transform-origin:left;transform:scaleX(0);z-index:500;transition:transform 0.1s linear}
+#sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--stone);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;border-right:2px solid var(--gold-dark);display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--gold-dark) var(--stone)}
+#sidebar-header{padding:28px 20px 20px;border-bottom:1px solid rgba(201,148,58,0.22);background:linear-gradient(180deg,#040302 0%,var(--stone) 100%)}
+#sidebar-title{font-family:var(--font-head);font-size:0.84rem;font-weight:900;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;line-height:1.3}
+#sidebar-sub{font-family:var(--font-body);font-size:0.65rem;color:rgba(240,220,160,0.36);margin-top:6px;letter-spacing:0.04em;font-style:italic}
+#sidebar-nav{padding:8px 0 40px;flex:1}
+.nav-section{padding:10px 20px 3px;font-family:var(--font-head);font-size:0.52rem;letter-spacing:0.2em;color:var(--gold-dark);text-transform:uppercase;margin-top:6px;opacity:0.85}
+.nav-item{display:block;padding:5px 20px 5px 26px;font-family:var(--font-body);font-size:0.76rem;color:rgba(240,220,150,0.54);text-decoration:none;border-left:2px solid transparent;transition:all 0.15s ease;line-height:1.3;position:relative}
+.nav-item::before{content:'&#9658;';position:absolute;left:11px;top:6px;color:var(--gold-dark);opacity:0;transition:opacity 0.12s;font-size:0.42rem}
+.nav-item:hover,.nav-item.active{color:var(--gold-pale);border-left-color:var(--gold);background:rgba(201,148,58,0.07);padding-left:28px}
+.nav-item:hover::before,.nav-item.active::before{opacity:1}
+#sidebar-toggle{display:none;position:fixed;top:10px;left:10px;z-index:200;background:var(--stone);border:1px solid var(--gold-dark);color:var(--gold);font-size:1.1rem;padding:5px 9px;border-radius:2px}
+#main{margin-left:var(--sidebar-w);flex:1;min-width:0}
+/* Hero — Gothic colony: stone dark below, ore amber seam, fire mage ember at horizon, ash sky above */
+#hero{background:linear-gradient(172deg,#080604 0%,#100c06 28%,#180e06 55%,#0c0806 80%,#060404 100%);min-height:510px;display:flex;flex-direction:column;justify-content:flex-end;padding:0 64px 64px;position:relative;overflow:hidden;border-bottom:3px solid var(--gold-dark)}
+#hero::before{content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(250px 60px at 50% 100%,rgba(122,84,8,0.20) 0%,transparent 70%),
+    radial-gradient(100px 40px at 20% 92%,rgba(122,26,10,0.12) 0%,transparent 70%),
+    radial-gradient(80px 30px at 80% 90%,rgba(74,24,112,0.08) 0%,transparent 70%),
+    radial-gradient(1.5px 1.5px at 6% 9%,rgba(240,210,130,0.72) 0%,transparent 0%),
+    radial-gradient(1px 1px at 14% 4%,rgba(200,170,90,0.65) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 23% 14%,rgba(240,210,130,0.62) 0%,transparent 0%),
+    radial-gradient(2px 2px at 33% 7%,rgba(200,160,80,0.58) 0%,transparent 0%),
+    radial-gradient(1px 1px at 44% 16%,rgba(240,210,130,0.58) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 54% 5%,rgba(200,170,90,0.62) 0%,transparent 0%),
+    radial-gradient(1px 1px at 64% 14%,rgba(240,200,110,0.52) 0%,transparent 0%),
+    radial-gradient(1px 1px at 75% 8%,rgba(200,160,80,0.56) 0%,transparent 0%),
+    radial-gradient(2px 2px at 85% 16%,rgba(240,210,130,0.52) 0%,transparent 0%),
+    radial-gradient(1px 1px at 94% 6%,rgba(200,170,90,0.60) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 19% 26%,rgba(240,210,130,0.42) 0%,transparent 0%),
+    radial-gradient(1px 1px at 50% 28%,rgba(200,170,90,0.38) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 79% 24%,rgba(240,210,130,0.40) 0%,transparent 0%)}
+#hero::after{content:'';position:absolute;bottom:0;left:64px;right:64px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.hero-eyebrow{font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.28em;color:var(--gold-dark);text-transform:uppercase;margin-bottom:14px;position:relative}
+.hero-title{font-family:var(--font-head);font-size:clamp(1.8rem,4.5vw,3.4rem);font-weight:900;color:var(--parchment);letter-spacing:0.04em;text-transform:uppercase;line-height:1.05;margin-bottom:8px;position:relative;text-shadow:0 2px 24px rgba(0,0,0,0.95)}
+.hero-subtitle{font-family:var(--font-body);font-size:1.05rem;font-style:italic;color:rgba(240,217,168,0.72);font-weight:300;margin-bottom:26px;position:relative}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;position:relative}
+.hero-tag{font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-pale);border:1px solid rgba(201,148,58,0.38);padding:3px 10px;background:rgba(201,148,58,0.07)}
+#content{padding:0 64px 80px;max-width:960px}
+.section{padding:54px 0 6px;animation:fadeUp 0.45s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.sec-num{display:inline-block;font-family:var(--font-head);font-size:0.78rem;font-weight:400;letter-spacing:0.1em;color:var(--gold-dark);margin-right:0.5em;vertical-align:middle}
+.section-title{font-family:var(--font-head);font-size:clamp(1.25rem,2.4vw,1.75rem);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink);padding-bottom:12px;margin-bottom:20px;border-bottom:2px solid var(--border);position:relative}
+.section-title::after{content:'';position:absolute;bottom:-2px;left:0;width:58px;height:2px;background:var(--gold)}
+.sub-title{font-family:var(--font-head);font-size:1rem;font-weight:600;letter-spacing:0.05em;color:var(--mid);margin:26px 0 9px;text-transform:uppercase}
+p{margin-bottom:1rem;font-size:1rem}
+.guide-list{margin:0.5rem 0 1rem 1.2rem}
+.guide-list li{margin-bottom:0.5rem;font-size:1rem}
+.guide-list li::marker{color:var(--gold-dark)}
+ol.guide-list li{margin-bottom:0.6rem}
+.callout{padding:15px 20px;margin:20px 0;border-left:4px solid var(--gold);background:var(--light);border-radius:0 3px 3px 0}
+.callout.oldcamp{border-left-color:#7a1a0a;background:var(--oldcamp-pale)}
+.callout.newcamp{border-left-color:#0a5060;background:var(--newcamp-pale)}
+.callout.sect{border-left-color:#4a1870;background:var(--sectcamp-pale)}
+.callout.ore{border-left-color:#7a5408;background:var(--ore-pale)}
+.callout.ember{border-left-color:#8a3808;background:var(--ember-pale)}
+.callout.tip{border-left-color:#2a5c18;background:#e8f5e0}
+.callout.warning{border-left-color:#7a2010;background:#f5e8d0}
+.callout-title{font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;margin-bottom:5px;color:var(--gold-dark)}
+.callout.oldcamp .callout-title{color:#7a1a0a}
+.callout.newcamp .callout-title{color:#0a5060}
+.callout.sect .callout-title{color:#4a1870}
+.callout.ore .callout-title{color:#7a5408}
+.callout.ember .callout-title{color:#8a3808}
+.callout.tip .callout-title{color:#2a5c18}
+.callout.warning .callout-title{color:#7a2010}
+.callout p{font-size:0.94rem;margin-bottom:0.5rem}
+.callout p:last-child{margin-bottom:0}
+.lore-block{padding:16px 22px;margin:22px 0;border:1px solid rgba(122,84,8,0.38);background:rgba(14,12,10,0.05);position:relative}
+.lore-block::before{content:'THE COLONY';position:absolute;top:-0.6rem;left:1rem;font-family:var(--font-head);font-size:0.54rem;letter-spacing:0.22em;color:#7a5408;background:var(--parchment);padding:0 0.5rem}
+.lore-block p{font-style:italic;color:#1a1408;font-size:0.96rem;line-height:1.88}
+.lore-block .source{font-family:var(--font-head);font-size:0.58rem;color:rgba(122,84,8,0.6);text-align:right;display:block;margin-top:0.6rem;letter-spacing:0.1em}
+.data-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.9rem}
+.data-table th{background:var(--stone);color:var(--gold-pale);font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;padding:8px 11px;text-align:left;border:1px solid rgba(201,148,58,0.2)}
+.data-table td{padding:7px 11px;border:1px solid var(--border);vertical-align:top;line-height:1.5;color:var(--ink)}
+.data-table tr:nth-child(even) td{background:rgba(201,148,58,0.04)}
+.data-table tr:hover td{background:rgba(201,148,58,0.07)}
+.phase{padding:16px 20px;margin:14px 0;border-left:4px solid var(--gold);background:rgba(201,148,58,0.05)}
+.phase.old{border-left-color:#7a1a0a;background:rgba(122,26,10,0.06)}
+.phase.new{border-left-color:#0a5060;background:rgba(10,80,96,0.06)}
+.phase.sect{border-left-color:#4a1870;background:rgba(74,24,112,0.06)}
+.phase.early{border-left-color:#7a5408;background:rgba(122,84,8,0.06)}
+.phase.mid{border-left-color:var(--gold-dark);background:rgba(139,100,32,0.07)}
+.phase.late{border-left-color:#8a3808;background:rgba(138,56,8,0.07)}
+.phase-title{font-family:var(--font-head);font-size:0.84rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:7px;color:var(--gold-dark)}
+.phase.old .phase-title{color:#7a1a0a}
+.phase.new .phase-title{color:#0a5060}
+.phase.sect .phase-title{color:#4a1870}
+.phase.early .phase-title{color:#7a5408}
+.phase.late .phase-title{color:#8a3808}
+.phase p{font-size:0.94rem;margin-bottom:0.6rem;color:var(--ink)}
+.phase p:last-child{margin-bottom:0}
+.unit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin:16px 0}
+.unit-card{border:1px solid var(--border);background:var(--light);padding:14px 16px;border-top:3px solid var(--gold)}
+.unit-card.old-card{border-top-color:#7a1a0a}
+.unit-card.new-card{border-top-color:#0a5060}
+.unit-card.sect-card{border-top-color:#4a1870}
+.unit-card.ore-card{border-top-color:#7a5408}
+.unit-card.neutral-card{border-top-color:#5a4820}
+.unit-name{font-family:var(--font-head);font-size:0.88rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink);margin-bottom:2px}
+.unit-type{font-family:var(--font-head);font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);margin-bottom:7px;display:block}
+.unit-card.old-card .unit-type{color:#7a1a0a}
+.unit-card.new-card .unit-type{color:#0a5060}
+.unit-card.sect-card .unit-type{color:#4a1870}
+.unit-card.ore-card .unit-type{color:#7a5408}
+.unit-card p{font-size:0.88rem;line-height:1.6;color:var(--ink);margin-bottom:0}
+.orn{text-align:center;color:var(--gold-dark);font-size:0.72rem;letter-spacing:0.42em;padding:28px 0 8px;opacity:0.65}
+.gloss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:1px;background:var(--border);margin-top:16px;border:1px solid var(--border)}
+.gloss-item{background:var(--light);padding:9px 13px;display:flex;gap:10px;align-items:flex-start}
+.gloss-item:nth-child(even){background:var(--parchment)}
+.gloss-term{font-family:var(--font-head);font-size:0.75rem;font-weight:700;color:var(--ink);white-space:normal;min-width:118px;max-width:148px;word-break:break-word;letter-spacing:0.04em;text-transform:uppercase}
+.gloss-def{font-size:0.86rem;color:var(--mid);line-height:1.55}
+#back-top{position:fixed;bottom:26px;right:26px;width:40px;height:40px;background:var(--stone);border:1px solid var(--gold-dark);color:var(--gold);font-size:1rem;display:flex;align-items:center;justify-content:center;text-decoration:none;opacity:0;transform:translateY(8px);transition:opacity 0.3s,transform 0.3s;z-index:90}
+#back-top.visible{opacity:1;transform:none}
+#back-top:hover{background:var(--gold-dark);color:var(--parchment)}
+#footer{margin-top:40px;border-top:1px solid var(--border);padding:20px 64px;font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);text-align:center}
+@media(max-width:900px){
+  :root{--sidebar-w:0px}
+  #sidebar-toggle{display:flex;align-items:center;justify-content:center}
+  #sidebar{transform:translateX(-100%);transition:transform 0.26s ease;width:270px}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  #hero,#content,#footer{padding-left:22px;padding-right:22px}
+  #progress-bar{left:0}
+  .unit-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+<button id="sidebar-toggle" aria-label="Menu">&#9776;</button>
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <div id="sidebar-title">Gothic 1 Remake</div>
+    <div id="sidebar-sub">The Prisoner&apos;s Codex &mdash; Alkimia Interactive / THQ Nordic &mdash; Valley of Mines &mdash; PC (Steam) 2026</div>
+  </div>
+  <div id="sidebar-nav">
+    <div class="nav-section">The Colony</div>
+    <a class="nav-item" href="#s01">01 &middot; Behind the Barrier</a>
+    <a class="nav-item" href="#s02">02 &middot; What the Colony Is</a>
+    <a class="nav-item" href="#s03">03 &middot; First Hours &mdash; Survival</a>
+    <div class="nav-section">Progression</div>
+    <a class="nav-item" href="#s04">04 &middot; Learning Points &amp; Attributes</a>
+    <a class="nav-item" href="#s05">05 &middot; Ore Economy</a>
+    <a class="nav-item" href="#s06">06 &middot; Trainers &amp; Skills</a>
+    <div class="nav-section">Factions</div>
+    <a class="nav-item" href="#s07">07 &middot; The Faction Decision</a>
+    <a class="nav-item" href="#s08">08 &middot; The Old Camp</a>
+    <a class="nav-item" href="#s09">09 &middot; The New Camp</a>
+    <a class="nav-item" href="#s10">10 &middot; The Sect Camp</a>
+    <div class="nav-section">Combat</div>
+    <a class="nav-item" href="#s11">11 &middot; Combat Fundamentals</a>
+    <a class="nav-item" href="#s12">12 &middot; Weapon Mastery</a>
+    <a class="nav-item" href="#s13">13 &middot; Stamina Management</a>
+    <a class="nav-item" href="#s14">14 &middot; Ranged Combat</a>
+    <div class="nav-section">Magic</div>
+    <a class="nav-item" href="#s15">15 &middot; The Circles of Magic</a>
+    <a class="nav-item" href="#s16">16 &middot; Runes &amp; Spells</a>
+    <a class="nav-item" href="#s17">17 &middot; Mage Builds</a>
+    <div class="nav-section">Builds</div>
+    <a class="nav-item" href="#s18">18 &middot; Warrior Build</a>
+    <a class="nav-item" href="#s19">19 &middot; Ranger Build</a>
+    <a class="nav-item" href="#s20">20 &middot; Battlemage Build</a>
+    <div class="nav-section">The World</div>
+    <a class="nav-item" href="#s21">21 &middot; The Valley of Mines</a>
+    <a class="nav-item" href="#s22">22 &middot; Bestiary</a>
+    <a class="nav-item" href="#s23">23 &middot; Chapters &amp; Story</a>
+    <div class="nav-section">Reference</div>
+    <a class="nav-item" href="#s24">24 &middot; Glossary</a>
+  </div>
+</nav>
+
+<div id="main">
+<div id="hero">
+  <div class="hero-eyebrow">Nadir Strategy Archive &nbsp;&middot;&nbsp; Alkimia Interactive / THQ Nordic &nbsp;&middot;&nbsp; Action RPG &nbsp;&middot;&nbsp; PC (Steam) &nbsp;&middot;&nbsp; Valley of Mines &nbsp;&middot;&nbsp; 2026</div>
+  <h1 class="hero-title">Gothic 1 Remake</h1>
+  <p class="hero-subtitle">The Prisoner&apos;s Codex &mdash; A Complete Strategy Guide to Survival, Factions, Combat, and Every Path Through the Valley of Mines</p>
+  <div class="hero-tags">
+    <span class="hero-tag">24 Chapters</span>
+    <span class="hero-tag">All 3 Factions</span>
+    <span class="hero-tag">Combat Doctrine</span>
+    <span class="hero-tag">LP Roadmaps</span>
+    <span class="hero-tag">Magic System</span>
+    <span class="hero-tag">Ore Economy</span>
+    <span class="hero-tag">Bestiary</span>
+    <span class="hero-tag">Full Glossary</span>
+  </div>
+</div>
+
+<div id="content">
+
+<!-- S01 -->
+<section class="section" id="s01">
+<h2 class="section-title"><span class="sec-num">&sect;01</span> Behind the Barrier</h2>
+<div class="lore-block">
+  <p>The Barrier went up and the King lost control of his prison. That is the plain account of what happened, stripped of the political complications that came after. The mages who raised it lost control of the magic. The criminals inside &mdash; the murderers, the thieves, the deserters, the people sentenced to die underground extracting magical ore to fund a war that everyone in here has stopped believing in &mdash; found themselves in a position no prison warden had anticipated: trapped, yes, but ungoverned. The guards were trapped with them. The war continued outside. And in the valley, surrounded by a wall of magic that kills everything that tries to pass through it from either direction, the prisoners stopped being prisoners in any useful sense and started being something else. Something that had not had a name before, but was starting to develop one.</p>
+  <span class="source">// THE COLONY &middot; ACCOUNT OF THE BARRIER&apos;S RAISING &middot; YEAR UNKNOWN &middot; AUTHOR DISPUTED //</span>
+</div>
+
+<p>Gothic 1 Remake is the June 2026 full remake of Piranha Bytes&apos; 2001 cult classic action RPG, developed by <strong>Alkimia Interactive</strong> (THQ Nordic&apos;s Barcelona studio) and published by <strong>THQ Nordic</strong>, built on Unreal Engine 5. It is not a remaster. It is a complete reconstruction of the original game&apos;s world, systems, and story with fully modernised visuals, rebuilt combat mechanics, expanded questlines, and significant quality-of-life improvements &mdash; while deliberately preserving the original&apos;s tone of earned difficulty and consequential choice.</p>
+
+<p>The setting is the <strong>Valley of Mines</strong>, a magical prison colony enclosed by an indestructible energy barrier that traps everyone inside. No fast travel. No level scaling. No quest markers pointing you to objectives. The colony does not care whether you are prepared to cross the bridge to the Old Camp&apos;s outer ring, enter the swamps, or challenge a Shadow Beast you cannot yet kill. These are lessons the game teaches primarily through your death, and then through your subsequent understanding of why that death was avoidable.</p>
+
+<p>The game was developed by the same team that produced the 2019 Gothic Playable Teaser &mdash; which gathered over 180,000 downloads and 30,000 survey responses, demonstrating sufficient fan appetite to greenlight the full remake. The original Gothic&apos;s composer, <strong>Kai Rosenkranz</strong>, returned to score the remake. The narrative was handled by <strong>Nicolas Samuel Lietzau</strong>, who worked closely with Piranha Bytes veterans to maintain the original story&apos;s structure while expanding its content.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S02 -->
+<section class="section" id="s02">
+<h2 class="section-title"><span class="sec-num">&sect;02</span> What the Colony Is</h2>
+<p>Understanding the Colony&apos;s physical and social structure before your first hour of play prevents hours of confusion later. The Valley of Mines is a <strong>single seamless open world</strong> with no loading zones between regions. You will learn it by walking it, which is by design: the geography is both the game&apos;s map and its difficulty system.</p>
+
+<h2 class="sub-title">The Three Territories</h2>
+<div class="unit-grid">
+  <div class="unit-card old-card">
+    <div class="unit-name">Old Camp</div>
+    <span class="unit-type">ORE BARON GOMEZ &middot; IRON FIST &middot; FIRE MAGES</span>
+    <p>The established power. Controls the ore trade with the outside world through a ruined castle. Ore barons run the economy; their guards keep order through intimidation and violence; the Fire Mages study magic and maintain a degree of independence. The Old Camp is the most physically central location and the natural first destination for new arrivals. Led by <strong>Gomez</strong>.</p>
+  </div>
+  <div class="unit-card new-card">
+    <div class="unit-name">New Camp</div>
+    <span class="unit-type">GENERAL LEE &middot; REBELLION &middot; WATER MAGES</span>
+    <p>The resistance. A community of free miners and rebels who refuse to deliver ore to the King, hoarding it instead to fund the Water Mages&apos; machine &mdash; a device intended to destroy the Barrier and free everyone inside. The New Camp sits at a large lake in the western valley. The Water Mages live in a cave behind the settlement. Led by <strong>General Lee</strong>.</p>
+  </div>
+  <div class="unit-card sect-card">
+    <div class="unit-name">Sect Camp</div>
+    <span class="unit-type">Y&apos;BERION &middot; THE SLEEPER &middot; BROTHERHOOD</span>
+    <p>The cult. A swamp-dwelling brotherhood that has rejected the ore entirely, using swampweed and ritual to commune with a dormant god called the Sleeper who they believe will free them from the Barrier. The most unusual faction socially and mechanically. Lives in the dangerous swamp region southeast of the valley. Led by <strong>Y&apos;Berion</strong>.</p>
+  </div>
+</div>
+
+<h2 class="sub-title">Core Game Loop</h2>
+<p>Gothic 1 Remake&apos;s core loop is: explore, acquire ore, spend ore on trainer services, spend Learning Points on attributes and skills through those trainers, become stronger, explore further. The loop is not guided. The game expects you to seek trainers, ask the right questions, find the right payment, and make permanent decisions about how you spend finite Learning Points. There is <strong>no respec</strong>. Once a Learning Point is spent, it is spent.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S03 -->
+<section class="section" id="s03">
+<h2 class="section-title"><span class="sec-num">&sect;03</span> First Hours &mdash; Survival</h2>
+<div class="lore-block">
+  <p>You wake up in a ditch outside the Old Camp with a sword you do not know how to use well, wearing clothes a Digger would find inadequate, and possessing a letter from the King that every prisoner in this valley has already decided does not confer any particular authority. The first thing to understand is that everyone here is stronger than you. The second thing is that this is not permanent. The third thing &mdash; the one the valley teaches before any trainer does &mdash; is that every prisoner who survived long enough to become something in this place started in exactly the same ditch you are in now.</p>
+  <span class="source">// THE COLONY &middot; DIEGO&apos;S INTRODUCTION &middot; VALLEY ENTRANCE &middot; CHAPTER ONE //</span>
+</div>
+
+<p>The first hours of Gothic 1 Remake are designed to humble you. The Colony does not scale to your level. A Lurker near the New Camp&apos;s lake is as deadly at hour one as it is at hour twenty. Understanding the principles of early survival determines whether those first hours are a learning experience or a frustrating loop of deaths without insight.</p>
+
+<h2 class="sub-title">Immediate Priorities &mdash; The First Session</h2>
+<ol class="guide-list">
+  <li><strong>Follow Diego to the Old Camp first.</strong> He is the starting guide and a reliable escort for the most dangerous stretch of the path to the Old Camp&apos;s outer ring. The Old Camp is the natural starting hub &mdash; it has the most early-game trainers, the most early-game quests, and is the closest camp to your starting position.</li>
+  <li><strong>Do not buy neutral armour before joining a faction.</strong> This is the most expensive mistake new players make. Digger&apos;s Trousers and generic armour pieces cost hundreds of ore. Every faction provides its first guild armour for free or at deep discount upon joining. Hold your ore. The free armour is coming.</li>
+  <li><strong>Complete admission quests for ALL THREE camps before committing.</strong> The faction decision is permanent within a run. All three admission quest chains can be completed before you formally join any of them &mdash; meaning you can accumulate XP and ore from all three before making the irreversible choice. This is the single most valuable strategic decision available in Chapter 1.</li>
+  <li><strong>Save frequently, and in rotating slots.</strong> Gothic 1 Remake preserves the original&apos;s consequence design: NPCs can die, quests can fail permanently, and some mistakes have story consequences. Save before every significant NPC conversation, before entering any new area, and before every combat you have not already won confidently.</li>
+  <li><strong>Cook your food before eating it.</strong> Raw food heals less efficiently than cooked food. Find a campfire, cook meat and gathered food, and carry cooked meals as your primary healing consumable. The difference in healing value per ore spent on ingredients is significant across an entire playthrough.</li>
+</ol>
+
+<h2 class="sub-title">What Sleeping Does (and Does Not Do)</h2>
+<p>Sleeping advances time and restores your <strong>Mana</strong> (once you have access to it). <strong>Sleeping does not restore Health.</strong> Health is restored by consuming food and healing items, or by paying a healer at camp. This distinction matters in the early game when you may expect sleep to function as a health restoration mechanic. Budget food accordingly, and locate the camp healers as soon as possible.</p>
+
+<div class="callout warning">
+  <div class="callout-title">The Colony Does Not Scale &mdash; This Is Not a Bug</div>
+  <p>Gothic 1 Remake does not scale enemy difficulty to your character level. A Shadow Beast encountered near the Sect Camp&apos;s swamp is that difficulty whether you meet it at Level 2 or Level 12. When you encounter enemies that seem impossible, the correct response is not to push through &mdash; it is to recognise that this area is beyond your current capability and retreat to find a viable path elsewhere. Every dangerous region has boundary signals. If every enemy in an area is killing you in two hits, you have found a boundary. Note the location, note what blocked you, and return when you are stronger.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S04 -->
+<section class="section" id="s04">
+<h2 class="section-title"><span class="sec-num">&sect;04</span> Learning Points &amp; Attributes</h2>
+<div class="lore-block">
+  <p>Every prisoner who survives their first month in the valley understands one thing about themselves that they did not understand before they arrived: they are improvable. The body that was thrown through the Barrier can become something more capable. This is not idealism. It is physiology. Find the right person. Pay them what they ask. Listen to what they teach. The capability that was unavailable yesterday becomes available today, and the prisoner who accumulates enough of these transitions stops being improvable in the ordinary sense and starts being something the other prisoners refer to very carefully when they refer to it at all.</p>
+  <span class="source">// THE COLONY &middot; TRAINING HALL INSCRIPTION &middot; OLD CAMP &middot; UNSIGNED //</span>
+</div>
+
+<p>Gothic 1 Remake&apos;s progression system is deliberately counter-intuitive compared to modern RPGs. <strong>Levelling up does not automatically raise any attribute.</strong> Gaining a level grants two things only: an increase to maximum Health, and <strong>10 Learning Points (LP)</strong>. Every other stat &mdash; Strength, Dexterity, Mana, and all combat skill tiers &mdash; remains frozen until you spend LP through a trainer.</p>
+
+<h2 class="sub-title">The Four Attributes</h2>
+<table class="data-table">
+  <thead><tr><th>Attribute</th><th>Function</th><th>Governs</th><th>Training Cost Note</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Strength</strong></td><td>Melee damage multiplier; weapon requirement</td><td>Damage dealt with all melee weapons; minimum STR to equip weapons</td><td>Progressive cost; early raises cheap, later raises expensive per point</td></tr>
+    <tr><td><strong>Dexterity</strong></td><td>Ranged weapon effectiveness; skill requirements</td><td>Bow and crossbow accuracy; minimum DEX for ranged weapons; pickpocket success</td><td>New Camp-focused trainers; also governs lockpicking at higher values</td></tr>
+    <tr><td><strong>Mana</strong></td><td>Spell capacity; magic circle access</td><td>How many spells you can cast before needing to sleep; required for magic circles</td><td>Circle 1&ndash;4 totals 70 LP (10+15+20+25); Circles 5&ndash;6 cost 70 more combined</td></tr>
+    <tr><td><strong>Health</strong></td><td>Survivability; death threshold</td><td>How much damage you can absorb before dying</td><td>Increases automatically each level; also raised through Toughness trainer investment</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">The LP Economy &mdash; The Finite Resource</h2>
+<p>Learning Points are the most precious resource in the game. There is no respec. Misallocated LP cannot be recovered. Understanding the total LP budget before you commit to a build path prevents the most common permanent mistake in the game &mdash; spending LP on attributes that do not synergise with your intended playstyle.</p>
+<p>At Level 1&ndash;30 (a typical campaign completion range), you accumulate 300 LP from levelling. Additional LP come from select quests and hidden collectibles. A pure Warrior who wants Strength 100 and maxed weapon skill tiers will spend the majority of their LP budget on those two tracks. Adding Mana and magic circles to the same character stretches the budget beyond what most campaigns can afford without compromise. <strong>Specialise early and invest consistently.</strong></p>
+
+<div class="callout ore">
+  <div class="callout-title">Progressive Attribute Costs</div>
+  <p>Attribute training costs increase as your base stat rises. Raising Strength from 30 to 40 costs fewer LP than raising it from 80 to 90. This means your early LP investment has the best return &mdash; the same LP spent at a low base buys more total stat increase than the same LP spent at a high base. Identify your build&apos;s primary attribute early and invest in it continuously rather than waiting until you have &ldquo;enough&rdquo; other things sorted. The compounding return on early attribute investment is significant.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S05 -->
+<section class="section" id="s05">
+<h2 class="section-title"><span class="sec-num">&sect;05</span> Ore Economy</h2>
+<div class="lore-block">
+  <p>Everything in the Valley of Mines costs ore. Not gold. Not silver. Not the coins that work outside the Barrier. Ore: the raw magical mineral that the King wants and cannot reach because his mages made a mistake. Ore is simultaneously the reason the Colony exists, the thing that determines every prisoner&apos;s social status within it, and the medium through which the entire prisoner economy functions. The Nameless Hero, who arrived with nothing, will spend his first weeks in the valley with a desperate relationship to every piece of ore he finds. He will learn, gradually, that this relationship is not a limitation. Every prisoner who learned to generate ore efficiently stopped being desperate in proportion to their success. Ore is not the problem. Knowing how to accumulate it is the skill.</p>
+  <span class="source">// THE COLONY &middot; ECONOMIC NOTES &middot; FREE MINE RECORDS &middot; NEW CAMP //</span>
+</div>
+
+<p>Ore is the Colony&apos;s universal currency. Trainer services cost ore. Equipment costs ore. Most NPC services cost ore. Managing your ore carefully in the early game &mdash; before your accumulation systems are established &mdash; determines whether you arrive at your first faction choice with enough resources to act or scrambling.</p>
+
+<h2 class="sub-title">Ore Sources by Priority</h2>
+<ol class="guide-list">
+  <li><strong>Quests:</strong> Quest rewards are the most concentrated ore income available. Complete every quest you can access, especially in Chapters 1 and 2 when the quest supply is richest. The 26 quests available in Chapter 1 represent a substantial chunk of early-game income.</li>
+  <li><strong>Monster hunting:</strong> Creature parts (claws, teeth, pelts, fangs) sell to merchants for reliable ore income. Scavengers, Wolves, and Goblins in the safer areas near the Old Camp provide early income; Shadow Beasts, Lurkers, and Mine Crawlers provide more at higher risk.</li>
+  <li><strong>Foraging:</strong> Every herb, mushroom, berry, and scrap of wood has sell value. Early in the game, foraging supplements quest income meaningfully. Blueberries, Hellshrooms, and Rusty Nails are worth picking up. The cumulative value across a session of exploration is not negligible.</li>
+  <li><strong>The Betrayal Quest (double-dipping):</strong> In the New Camp&apos;s admission quest chain, before returning the list to Diego, take it to Lares &mdash; he will copy or alter it for significant XP and ore. You can then complete Diego&apos;s quest normally by delivering the original. This is not technically cheating; both NPCs react to their version of events. It rewards players who ask questions before completing objectives.</li>
+  <li><strong>Lockpicking and theft:</strong> At sufficient Dexterity, lockpicking chests and pickpocketing NPCs provides additional ore. High-risk if caught; the reputation penalty and ore fine from getting caught can exceed the gain. Reserve for when your skill is high enough to make success reliable.</li>
+</ol>
+
+<h2 class="sub-title">What NOT to Spend Ore On (Early Game)</h2>
+<ul class="guide-list">
+  <li><strong>Generic neutral armour:</strong> Every faction provides guild armour on joining. Wait for it.</li>
+  <li><strong>Early-game weapons that your Strength cannot yet fully utilise:</strong> A sword that requires STR 60 and you have STR 30 is wasted ore. Buy weapons your current Strength supports and upgrade as your stats grow.</li>
+  <li><strong>Consumables beyond what immediate survival requires:</strong> Maintain a food buffer for healing, but do not hoard at the expense of trainer investment. Trainer investment compounds; consumable hoarding does not.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S06 -->
+<section class="section" id="s06">
+<h2 class="section-title"><span class="sec-num">&sect;06</span> Trainers &amp; Skills</h2>
+<p>Gothic 1 Remake does not have a skill menu you open to level abilities. Skills are trained through <strong>specific NPC trainers</strong> who you must find, who may require favours or ore payment, and through whose dialogue you spend your LP to improve your character. The trainer-based system is central to the game&apos;s world-building: your character becomes capable because someone in the Colony taught them, not because a menu allowed it.</p>
+
+<h2 class="sub-title">Key Early Trainers</h2>
+<table class="data-table">
+  <thead><tr><th>Trainer</th><th>Location</th><th>Teaches</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Diego</strong></td><td>Old Camp outer ring / entrance</td><td>Strength; Dexterity (early)</td><td>Your starting escort; ask him directly after arrival; first trainer most players access</td></tr>
+    <tr><td><strong>Scatty</strong></td><td>Old Camp training area</td><td>One-handed combat skill tiers</td><td>Guards and fighters train here; core 1H weapon skill trainer for melee builds</td></tr>
+    <tr><td><strong>Cronos</strong></td><td>New Camp &mdash; Water Mage hideout</td><td>Mana (Learning Points to Mana)</td><td>PC Gamer tip: find the big lake on the map west, then Water Mage hideout at back of cave</td></tr>
+    <tr><td><strong>Torrez</strong></td><td>Old Camp</td><td>Price of Magic quest</td><td>Must complete &ldquo;The Price of Magic&rdquo; quest before any spell use becomes available</td></tr>
+    <tr><td><strong>Baal Cadar</strong></td><td>Sect Camp</td><td>Circles 1&ndash;4 of Psionic magic</td><td>Immediately available to Novices after joining; earliest magic access in the game</td></tr>
+    <tr><td><strong>Fisk</strong></td><td>Old Camp marketplace</td><td>Merchant; armour upgrades</td><td>Can upgrade starting guild armour at the camp blacksmith; PC Gamer specifically cites Fisk for Old Camp armour upgrades</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Weapon Skill Tiers</h2>
+<p>Combat skills in Gothic 1 Remake are not a single skill value &mdash; they are tiered unlocks that change what your character can do in combat. Each tier of One-Handed, Two-Handed, or Bow skill provides new attack patterns, improved damage multipliers, or additional combat techniques. Advancing weapon skill tiers through trainers is as important as raising your raw Strength or Dexterity. A character with Strength 80 but only Tier 1 One-Handed skill is significantly weaker than one with Strength 60 and Tier 3 skill. <strong>Train combat skill tiers in parallel with your attribute investment, not after it.</strong></p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S07 -->
+<section class="section" id="s07">
+<h2 class="section-title"><span class="sec-num">&sect;07</span> The Faction Decision</h2>
+<div class="lore-block">
+  <p>The question of which camp to join is asked in the Colony&apos;s first days and answered in its first weeks, and the prisoners who have been here long enough to give advice generally say the same thing: don&apos;t answer it until you have been to all three. Not because the choice is so difficult &mdash; it is, in fact, usually clear once you understand what each camp is asking of you &mdash; but because the information gathered in the asking is worth as much as the choice itself. The valley will tell you what it needs from you if you are willing to listen before you commit.</p>
+  <span class="source">// THE COLONY &middot; UNNAMED VETERAN PRISONER &middot; OLD CAMP TAVERN &middot; ESTIMATED YEAR 3 //</span>
+</div>
+
+<p>The faction decision is the most consequential single choice in the game. It determines your guild rank structure, your available trainers, your armour progression, your magic access ceiling, and which quest lines are open to you. It is also <strong>permanent within a run</strong>. Once formally joined, the other two camps&apos; exclusive trainers and armour paths are closed.</p>
+
+<h2 class="sub-title">Faction Decision Matrix</h2>
+<table class="data-table">
+  <thead><tr><th>Priority</th><th>Old Camp</th><th>New Camp</th><th>Sect Camp</th></tr></thead>
+  <tbody>
+    <tr><td>Playstyle</td><td>Pure Warrior; heavy melee; maximum STR weapons</td><td>DEX hybrid; archery; Water Magic; battlemage</td><td>Battlemage; early magic; Sleeper runes; 2H weapons</td></tr>
+    <tr><td>Magic Ceiling</td><td>Fire Magic, Circles 1&ndash;5 (delayed access)</td><td>Water Magic, Circles 1&ndash;5 (+30 attribute bonus)</td><td>Psionic Magic, Circles 1&ndash;4 only (hard cap)</td></tr>
+    <tr><td>Early Game</td><td>Fastest heavy armour; strongest melee progression</td><td>Better mid-game gear; Water Magic path</td><td>Earliest magic access; most dangerous starting area</td></tr>
+    <tr><td>Late Game</td><td>Best melee; Chapter 4 banishment disrupts flow</td><td>Strongest magic (Water &gt; Fire by 30 attribute pts)</td><td>Circle 4 cap becomes significant disadvantage</td></tr>
+    <tr><td>Difficulty</td><td>Most beginner-friendly; best 1H trainers early</td><td>Intermediate; 2H weapons require precise timing</td><td>Advanced; dangerous swamp; hard cap limits endgame</td></tr>
+    <tr><td>Key Warning</td><td>Chapter 4 banishment from castle is scripted and unavoidable</td><td>New Camp has better magic investment but fewer early quests</td><td>Circle 4 cap means missing all endgame Circles 5&ndash;6 spells permanently</td></tr>
+  </tbody>
+</table>
+
+<div class="callout tip">
+  <div class="callout-title">Strategy: Complete All Three Admission Chains First</div>
+  <p>All three faction admission quest chains can be completed before you formally join any camp. This means you can do every admission quest for the Old Camp, New Camp, AND Sect Camp in Chapter 1, collecting all their XP and ore rewards, and only then make the faction commitment. This is the most efficient Chapter 1 strategy available. The faction choice locks at the moment you formally complete the final admission step and receive your first guild designation &mdash; all prior quest work is freely available without that commitment.</p>
+</div>
+
+<div class="callout warning">
+  <div class="callout-title">Sect Camp Magic Cap Is Permanent</div>
+  <p>The Sect Camp&apos;s magic system (Psionics) permanently caps at Circle 4. There is no workaround. Circles 5 and 6 together cost 70 LP and contain the game&apos;s most powerful offensive and utility spells. Sect Camp members cannot access any of these for the entire run. This is not a minor limitation &mdash; it is a structural ceiling that makes the Sect Camp the weakest overall faction for magic builds despite having the earliest magic access. The Sect Camp is the correct choice for a second or third playthrough focused on its unique atmosphere and storyline, or for pure battlemage builds that are satisfied with Circle 4 as the ceiling. It is not the recommended choice for a first playthrough.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S08 -->
+<section class="section" id="s08">
+<h2 class="section-title"><span class="sec-num">&sect;08</span> The Old Camp</h2>
+<div class="lore-block">
+  <p>Gomez runs the valley the way a man runs a prison when all the guards are prisoners themselves: with the absolute confidence that the alternative to order is chaos, and that chaos will kill everyone faster than his version of order will. He may be right. It is difficult to verify from inside the system. The Fire Mages keep their own counsel. The guards keep their own counsel in a different way, which involves considerably less reading and considerably more heavy armour. The Old Camp is the most recognisable form of authority in the valley, which is both its greatest strength and the thing that will eventually make it a problem.</p>
+  <span class="source">// THE COLONY &middot; NAMELESS HERO OBSERVATIONS &middot; OLD CAMP &middot; CHAPTER TWO //</span>
+</div>
+
+<p>The Old Camp is the right first choice for most players, particularly those on their first run with Gothic&apos;s systems. It provides the clearest early-game progression, the most trainers in the accessible early-game area, and the fastest path to heavy armour and maximum Strength weapons.</p>
+
+<h2 class="sub-title">Joining the Old Camp</h2>
+<p>Joining the Old Camp requires completing a series of quests that demonstrate usefulness to Gomez&apos;s operation &mdash; typically involving resolving disputes, recovering stolen ore, and demonstrating your fighting capability. Your initial rank is <strong>Digger</strong>, the lowest-status workers in the mining hierarchy. Advancing rank through completed quests and demonstrated combat ability moves you toward <strong>Scavenger</strong> and eventually full <strong>Guard</strong> status with access to the castle interior.</p>
+
+<h2 class="sub-title">Guild Ranks and Armour Progression</h2>
+<table class="data-table">
+  <thead><tr><th>Rank</th><th>Armour</th><th>Access Unlocked</th></tr></thead>
+  <tbody>
+    <tr><td>Digger</td><td>Digger&apos;s Dress (free from Swiney at Free Mine)</td><td>Free Mine; basic Old Camp areas</td></tr>
+    <tr><td>Scavenger</td><td>Scavenger armour (first tier guild upgrade)</td><td>Old Camp inner areas; more trainers</td></tr>
+    <tr><td>Guard</td><td>Guard armour; heavy iron protection</td><td>Castle access; Fire Mage interactions; best 1H trainers</td></tr>
+    <tr><td>Elite Guard</td><td>Elite Guard armour; maximum Old Camp tier</td><td>Full castle access; elite training</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Old Camp Magic: Fire Mages</h2>
+<p>The Fire Mages serve the ore barons but maintain a degree of independence. Their magic (Fire Circles 1&ndash;5) is accessible to Old Camp members who advance in rank, but access comes significantly later than in the other two camps. The Old Camp is the worst choice if magic is your primary goal; it is the best choice if your primary goal is maximum Strength and melee dominance. The Fire Mage path is viable but requires accepting that magic comes online as a supplement to melee rather than as the primary combat tool.</p>
+
+<div class="callout oldcamp">
+  <div class="callout-title">Chapter 4 Banishment &mdash; Plan for It</div>
+  <p>In Chapter 4, all Old Camp members are banished from Gomez&apos;s castle. This is scripted, unavoidable, and happens regardless of your standing. The banishment disrupts access to Old Camp castle trainers and questlines. The strategic implication: complete every Old Camp castle quest and access every Old Camp castle trainer before Chapter 4 begins. Do not postpone Old Camp castle content past Chapter 3 assuming you will have time to return. You will not. When the banishment comes, everything inside becomes inaccessible until the story resolves it.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S09 -->
+<section class="section" id="s09">
+<h2 class="section-title"><span class="sec-num">&sect;09</span> The New Camp</h2>
+<div class="lore-block">
+  <p>Lee runs the New Camp with a military officer&apos;s precision applied to a situation that no military manual anticipated. He knows that the machine will work because he has made the Water Mages convince him it will work, and he has made them do it twice. Whether it actually works is a separate question that will be answered when they try it. In the meantime, the ore accumulates, the free miners dig without handing anything over to the King, and the New Camp&apos;s position on the question of legitimate authority in the valley is simple: there isn&apos;t any, and they are comfortable with that.</p>
+  <span class="source">// THE COLONY &middot; NAMELESS HERO OBSERVATIONS &middot; NEW CAMP LAKE &middot; CHAPTER TWO //</span>
+</div>
+
+<p>The New Camp is the recommended faction for magic-focused builds and the best overall faction for hybrid melee-magic characters. Its Water Mage path provides the game&apos;s strongest magic progression (Circles 1&ndash;5 with a +30 attribute point advantage over Fire Mages), and its Mercenary track provides solid melee and archery capability for non-magic builds.</p>
+
+<h2 class="sub-title">Joining the New Camp</h2>
+<p>Admission requires demonstrating value to Lee&apos;s operation. The key quests involve the ore list (where the double-dipping strategy with Lares applies), scouting assignments, and proving combat competence. Your initial status as a <strong>Scraper</strong> advances through the Mercenary ranks as quests are completed and reputation grows.</p>
+
+<h2 class="sub-title">Why the New Camp is the Best Magic Faction</h2>
+<ul class="guide-list">
+  <li><strong>Water Magic vs. Fire Magic:</strong> Water Magic provides the same Circle structure (1&ndash;5) as Fire Magic but Water Mage initiates receive approximately 30 additional attribute points in their magic advancement compared to equivalent Fire Mage initiates. This is not a minor edge &mdash; 30 attribute points translates directly into higher spell effectiveness and Mana capacity for every Circle invested.</li>
+  <li><strong>No Chapter 4 disruption:</strong> The New Camp does not undergo the scripted banishment event that disrupts Old Camp progression. New Camp members maintain their camp access and trainer availability throughout the campaign without an interruption equivalent to the Old Camp&apos;s Chapter 4 problem.</li>
+  <li><strong>Better mid-game equipment:</strong> The New Camp&apos;s Mercenary equipment track provides stronger mid-game gear than the equivalent Old Camp tier, particularly for builds that invest in Dexterity alongside Strength.</li>
+</ul>
+
+<div class="callout newcamp">
+  <div class="callout-title">New Camp Warning: 2H Weapons Require Timing</div>
+  <p>The New Camp&apos;s melee track leans toward two-handed weapons, which are slower and more stamina-intensive than one-handed weapons. The 2026 remake&apos;s fluid stamina-based combat system means 2H weapons require precise timing and dodge-rolling to use effectively &mdash; they are less forgiving to new players than the Old Camp&apos;s one-handed weapon specialisation. If this is your first Gothic playthrough and you intend to play a melee character rather than a mage, the Old Camp&apos;s 1H focus is mechanically more accessible. New Camp is the best magic choice and a strong hybrid choice for players comfortable with the combat timing.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S10 -->
+<section class="section" id="s10">
+<h2 class="section-title"><span class="sec-num">&sect;10</span> The Sect Camp</h2>
+<div class="lore-block">
+  <p>The Brotherhood does not recruit so much as collect. Y&apos;Berion does not ask prisoners to believe anything. He asks them to listen, and then to feel whether what they hear corresponds to something they already knew. The ones who find it do. The Sleeper is not a difficult deity to understand. He sleeps in the deep place beneath the swamp, and his dreaming is what the Gurus tap when they reach into the psionic currents, and when he wakes, everything changes. The camp does not worry about the details of what &ldquo;everything changes&rdquo; means in practical terms. This is, depending on who is evaluating the situation, either the faith&apos;s greatest strength or its most significant problem.</p>
+  <span class="source">// THE COLONY &middot; NAMELESS HERO OBSERVATIONS &middot; SECT CAMP &middot; CHAPTER THREE //</span>
+</div>
+
+<p>The Sect Camp is the most unusual faction &mdash; a swamp-dwelling cult built around the worship of a sleeping god &mdash; and the most demanding in terms of both starting environment difficulty and late-game limitation. It is not recommended for first playthroughs but offers a genuinely distinctive experience for returning players who have already explored the other two factions.</p>
+
+<h2 class="sub-title">Joining the Sect Camp</h2>
+<p>The admission process requires winning the approval of <strong>four of the five Gurus</strong>. Each Guru has a specific requirement:</p>
+<ul class="guide-list">
+  <li><strong>Baal Namib:</strong> Have Lester stage a conversation in which you reject the old gods in favour of the Sleeper</li>
+  <li><strong>Baal Tyon:</strong> Deliver a prepared dreamcall</li>
+  <li><strong>Baal Tondral:</strong> Recruit new souls to the Brotherhood</li>
+  <li><strong>Baal Orun:</strong> Gather the swampweed harvest</li>
+  <li><strong>Baal Cadar:</strong> Cast a sleep spell on his pupil</li>
+</ul>
+<p><strong>Critical warning:</strong> Do not speak to a Guru before they address you first. Initiating conversation with a Guru before they approach you triggers a temporary reputation penalty and forces an ore fine. Wait for them to address you.</p>
+
+<h2 class="sub-title">Sect Camp Magic: Psionics</h2>
+<p>Psionic magic is unique to the Sect Camp and immediately available upon becoming a Novice. Baal Cadar teaches Circles 1&ndash;4 without the rank advancement requirement that delays other factions&apos; magic access. The early advantage is real and substantial: for the first two chapters, a Sect Camp magic character is more capable than an equivalent Old or New Camp mage. The permanent ceiling at Circle 4 becomes increasingly significant from Chapter 3 onward, as the most powerful spells in the game sit in Circles 5 and 6 that Sect Camp members can never reach.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S11 -->
+<section class="section" id="s11">
+<h2 class="section-title"><span class="sec-num">&sect;11</span> Combat Fundamentals</h2>
+<div class="lore-block">
+  <p>The combat in the valley is not glorious. It is not the staged duelling of castle knights. It is what happens when people who have been fighting for survival for years encounter someone they want to rob, kill, or simply remove from their path. There are patterns to it &mdash; the Scavengers have patterns, the Guards have patterns, the creatures have patterns &mdash; and the prisoner who lives long enough to recognise the patterns stops being surprised by them. The ones who do not recognise the patterns stop being alive. The valley has a simple framework for sorting these two categories.</p>
+  <span class="source">// THE COLONY &middot; UNNAMED TRAINER &middot; OLD CAMP TRAINING GROUND &middot; UNDATED //</span>
+</div>
+
+<p>Gothic 1 Remake&apos;s combat system is a complete rebuild of the original&apos;s deliberate, timing-dependent mechanics with modern action-RPG fluidity. Enemies react to your positioning and timing. Guards and mercenaries actively defend themselves. Stamina management prevents mindless button-mashing. The fundamental combat knowledge that separates functional play from struggling play is understandable within a few hours &mdash; mastery of specific enemy patterns takes longer.</p>
+
+<h2 class="sub-title">The Four Attack Directions</h2>
+<p>You have four attack inputs corresponding to four swing directions. Different enemies have different defensive postures and vulnerabilities to different directions. Using only one attack direction against a defending enemy is significantly less effective than varying your approach:</p>
+<ul class="guide-list">
+  <li><strong>Horizontal sweep:</strong> Wide arc; good against multiple enemies; slower recovery</li>
+  <li><strong>Overhead strike:</strong> High damage per hit; slower; can be parried by alert enemies</li>
+  <li><strong>Quick thrust:</strong> Fast; low damage; good for gap-testing enemy defence; generates less stamina penalty</li>
+  <li><strong>Low sweep:</strong> Hits under some guards; useful against crouched or charging enemies</li>
+</ul>
+<p>Varying your attack directions forces defending enemies to adjust their guard, creating openings. Against human opponents who actively parry, landing attacks reliably requires observing which direction their guard is weak and attacking into it.</p>
+
+<h2 class="sub-title">The Parry System</h2>
+<p>Gothic 1 Remake features a timing-based parry mechanic that blocks incoming attacks entirely when executed at the correct frame window. A perfect parry staggers the attacker briefly, creating a guaranteed counterattack window. Key parry principles:</p>
+<ul class="guide-list">
+  <li>Parry timing is based on the <em>moment of impact</em>, not the beginning of the enemy&apos;s animation</li>
+  <li>One-handed weapons have faster parry frames than two-handed weapons &mdash; this is a meaningful mechanical advantage for 1H builds in reactive combat</li>
+  <li>A failed parry (blocked too early or too late) does not provide the stagger window and may leave you in a vulnerable recovery animation</li>
+  <li>Against multiple enemies, parrying all attacks simultaneously is not possible &mdash; priority-target one attacker at a time or use movement to prevent simultaneous engagement</li>
+</ul>
+
+<div class="callout ember">
+  <div class="callout-title">Every Human Fight Has a Consequence</div>
+  <p>Gothic 1 Remake&apos;s Steam description specifically notes this: every fight with another human has a consequence. NPCs who witness you attacking fellow prisoners may react negatively; dead NPCs stay dead and cannot be used for their quests; defeating a named NPC may permanently close a quest line. The game signals this by making every human combat more personal and visceral than creature combat &mdash; there are blood effects, impact sounds, and pain reactions that feel different from fighting animals. Before attacking any named human NPC, consider whether their death or defeat would close any quest or story content you intend to pursue. The answer is sometimes yes.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S12 -->
+<section class="section" id="s12">
+<h2 class="section-title"><span class="sec-num">&sect;12</span> Weapon Mastery</h2>
+<p>Weapon effectiveness in Gothic 1 Remake is determined by three variables operating simultaneously: your <strong>Strength</strong> (minimum requirement to equip and damage multiplier), your <strong>weapon skill tier</strong> (unlocks attack patterns and improves damage multiplier), and the <strong>weapon&apos;s base damage value</strong>. None of these three factors alone is sufficient &mdash; a high-tier weapon on a low-Strength character deals less damage than its statistics suggest, and a high-Strength character with low weapon skill tiers fights less effectively than their attribute investment implies.</p>
+
+<h2 class="sub-title">One-Handed vs. Two-Handed</h2>
+<div class="unit-grid">
+  <div class="unit-card old-card">
+    <div class="unit-name">One-Handed</div>
+    <span class="unit-type">SPEED &middot; PARRY FRAMES &middot; OLD CAMP</span>
+    <p>Faster attack speed; lower stamina cost per swing; faster parry windows making reactive combat more forgiving. One-handed weapons are the recommended path for first-time players and Old Camp members. The stamina efficiency and parry speed make them significantly more accessible than two-handed weapons when learning the remake&apos;s combat system. Pairs naturally with a shield for added defence when shields become available.</p>
+  </div>
+  <div class="unit-card new-card">
+    <div class="unit-name">Two-Handed</div>
+    <span class="unit-type">POWER &middot; REACH &middot; NEW CAMP / SECT</span>
+    <p>Higher damage per hit; longer reach that can hit enemies before they close to ideal melee range; slower attack and recovery speed; higher stamina cost; slower parry windows. Two-handed weapons reward precise timing and dodge-rolling more than one-handed weapons. New Camp Mercenaries and Sect Camp Templars favour two-handed approaches. The higher damage ceiling justifies the difficulty increase for experienced players.</p>
+  </div>
+</div>
+
+<h2 class="sub-title">Weapon Tier Milestones</h2>
+<p>As you advance weapon skill tiers through training, new attack combos and enhanced techniques unlock. The specific milestones vary by weapon type, but the general pattern:</p>
+<ul class="guide-list">
+  <li><strong>Tier 1 (base):</strong> Basic attack pattern; all four directions available but limited combo extension</li>
+  <li><strong>Tier 2:</strong> Combo extension; ability to chain attacks into follow-up strikes; improved hit stagger on weaker enemies</li>
+  <li><strong>Tier 3:</strong> Advanced combos; special attacks unlocked; significantly improved damage multiplier versus Tier 1 at equivalent Strength</li>
+</ul>
+<p>The difference between Tier 1 and Tier 3 at the same Strength level is not marginal. Train weapon skill tiers continuously &mdash; they are not less important than raw Strength investment and should be developed in parallel, not deferred.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S13 -->
+<section class="section" id="s13">
+<h2 class="section-title"><span class="sec-num">&sect;13</span> Stamina Management</h2>
+<p>Stamina is the 2026 remake&apos;s most important addition to the original&apos;s combat system. Unlike the original Gothic, where combat was more purely timing-based, the remake adds a stamina bar that depletes with each attack and recovers during pauses. Understanding stamina prevents the most common failure mode in tougher encounters: depleting your stamina while an enemy is still alive and healthy, leaving you unable to attack or effectively parry.</p>
+
+<h2 class="sub-title">Stamina Principles</h2>
+<ul class="guide-list">
+  <li><strong>Each attack costs stamina:</strong> Two-handed attacks cost more than one-handed. Quick thrusts cost less than overhead strikes. Combos that chain multiple attacks rapidly deplete stamina faster than single strikes.</li>
+  <li><strong>Zero stamina means no attacks and degraded parry:</strong> Running your stamina to empty in the middle of an engagement is a tactical emergency. You cannot swing effectively, and parry execution with depleted stamina is inconsistent. Never intentionally let stamina bottom out except in situations where the next hit will kill the enemy.</li>
+  <li><strong>Recovery is passive but interrupted by attack:</strong> Stamina recovers automatically when you are not attacking. Brief pauses between attack strings allow partial recovery. The correct combat rhythm is: attack string → brief tactical pause → attack string, rather than continuous button-mashing until stamina is zero.</li>
+  <li><strong>Strong opponents drain your stamina faster:</strong> Heavier enemies or enemies with active parries force you to land fewer hits per stamina investment. Against heavily armoured opponents, switch to higher-penetration attacks (overhead strikes, thrust variants) that deal more damage per swing rather than attempting to compensate with volume.</li>
+</ul>
+
+<div class="callout tip">
+  <div class="callout-title">The Tactical Pause &mdash; The Core Combat Rhythm</div>
+  <p>The single most impactful improvement to Gothic 1 Remake combat for most players is internalising the tactical pause. After landing two or three attacks in a string, consciously stop attacking for one to two seconds. This restores a meaningful portion of your stamina, repositions you relative to the enemy, and potentially disrupts an enemy combo they were beginning to execute. Players who attack continuously until stamina is empty, then wait for full recovery, waste a significant portion of their stamina efficiency. Players who maintain a medium stamina buffer through brief tactical pauses fight with consistently more options available at every moment of an engagement.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S14 -->
+<section class="section" id="s14">
+<h2 class="section-title"><span class="sec-num">&sect;14</span> Ranged Combat</h2>
+<p>Ranged combat in Gothic 1 Remake uses <strong>manual aim</strong> rather than lock-on targeting. You control the aim reticle directly, which means archery is a distinct skill that requires both in-game Dexterity investment and player-level aiming ability. The New Camp is the natural home of archery-focused characters, providing the best DEX trainers and the equipment line most suited to ranged builds.</p>
+
+<h2 class="sub-title">Bow Types and Requirements</h2>
+<table class="data-table">
+  <thead><tr><th>Bow Type</th><th>DEX Requirement</th><th>Characteristics</th><th>Suited For</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Short Bow</strong></td><td>Low</td><td>Fastest draw speed; lowest damage; lightest arrows</td><td>Early investment; scouting; harassment at range</td></tr>
+    <tr><td><strong>Long Bow</strong></td><td>Medium</td><td>Moderate draw speed; good damage; most common mid-game choice</td><td>Primary ranged weapon for hybrid builds in mid-game</td></tr>
+    <tr><td><strong>Crossbow</strong></td><td>Medium-High</td><td>Slow reload; high damage; pierces some armour types</td><td>Ambush builds; single high-value shots before melee engagement</td></tr>
+    <tr><td><strong>Compound Bow</strong></td><td>High</td><td>High damage; good accuracy; late-game ranged primary</td><td>Dedicated Ranger builds at high DEX investment</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Ranged Combat Tactics</h2>
+<ul class="guide-list">
+  <li><strong>Open engagements from elevation or distance:</strong> Ranged attacks are most effective against enemies who cannot immediately close to melee range. Use terrain height advantages (rocky outcroppings, hillsides) to gain a clear line of fire that the enemy must travel to contest.</li>
+  <li><strong>Target large, slow enemies from range before melee:</strong> Heavy creatures (Shadow Beasts, Mine Crawlers, Lurkers) are more vulnerable to softening with multiple arrows before melee engagement than to being engaged immediately at close range. A Shadow Beast with 40% health entering melee is a fundamentally different problem than a Shadow Beast at full health.</li>
+  <li><strong>Carry sufficient arrows:</strong> Running out of ammunition mid-engagement is a common beginner mistake. Buy arrows proactively from merchants when available; do not wait until your supply is critically low.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S15 -->
+<section class="section" id="s15">
+<h2 class="section-title"><span class="sec-num">&sect;15</span> The Circles of Magic</h2>
+<div class="lore-block">
+  <p>The mages of the Colony sorted their knowledge into circles not because the division was natural &mdash; it was not &mdash; but because the prisoners who wanted to learn from them needed a framework they could navigate. Circle One is the entrance. Circle Six is the place most prisoners will never reach, and the ones who do reach it are not talking to ordinary prisoners about what they found there. The circles describe not just power but comprehension: the mage who commands Circle Five has not merely learned more spells than the Circle Three mage. They have understood something different about how magic works in relation to the sleeping thing beneath the valley.</p>
+  <span class="source">// THE COLONY &middot; FIRE MAGE SCROLLS &middot; OLD CAMP TOWER &middot; CONFIDENTIAL //</span>
+</div>
+
+<p>Magic in Gothic 1 Remake is organised into six Circles of increasing power. Each Circle requires a Learning Point investment to unlock (the cost escalates with each Circle) and provides access to the spells within that Circle. You cannot use spells from a Circle you have not unlocked. The Circle investment is permanent &mdash; once spent, those LP cannot be reassigned.</p>
+
+<h2 class="sub-title">Circle LP Costs and Investment Planning</h2>
+<table class="data-table">
+  <thead><tr><th>Circle</th><th>LP Cost</th><th>Cumulative Cost</th><th>Availability</th></tr></thead>
+  <tbody>
+    <tr><td>Circle 1</td><td>10 LP</td><td>10 LP</td><td>All three factions (earliest for Sect Camp Novices)</td></tr>
+    <tr><td>Circle 2</td><td>15 LP</td><td>25 LP</td><td>All three factions</td></tr>
+    <tr><td>Circle 3</td><td>20 LP</td><td>45 LP</td><td>All three factions</td></tr>
+    <tr><td>Circle 4</td><td>25 LP</td><td>70 LP</td><td>All three factions; final tier for Sect Camp (hard cap)</td></tr>
+    <tr><td>Circle 5</td><td>35 LP</td><td>105 LP</td><td>Old Camp (Fire Mages) and New Camp (Water Mages) only</td></tr>
+    <tr><td>Circle 6</td><td>35 LP</td><td>140 LP</td><td>Old Camp and New Camp only</td></tr>
+  </tbody>
+</table>
+
+<p>A full magic build (Circles 1&ndash;6) costs <strong>140 LP</strong> in Circle investment alone, before accounting for Mana attribute investment, weapon skills, Strength/Dexterity, or Toughness. Pure mage characters dedicate the majority of their LP budget to Circle and Mana investment. Hybrid builds that want both combat effectiveness and magic must carefully partition their LP between the two tracks, typically sacrificing Circle 5&ndash;6 access or high-tier weapon skills to afford both at a workable level.</p>
+
+<div class="callout sect">
+  <div class="callout-title">Magic Requires Mana &mdash; Which Requires LP</div>
+  <p>Unlocking a magic Circle does not give you the Mana to use its spells. Mana is a separate attribute that must be raised through LP investment with trainers (Cronos at the New Camp, or equivalent mage trainers at each faction). A character who unlocks Circle 3 without investing Mana will run out of casting capacity after one or two spells. Mana investment costs LP at the same progressive cost as other attributes &mdash; plan your total magic investment budget to include both Circle costs AND sufficient Mana investment to cast through your unlocked Circles meaningfully.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S16 -->
+<section class="section" id="s16">
+<h2 class="section-title"><span class="sec-num">&sect;16</span> Runes &amp; Spells</h2>
+<p>Spells in Gothic 1 Remake are cast using <strong>rune stones</strong> &mdash; physical objects containing crystallised magical instructions that the caster reads to activate the spell. You must have the rune for a spell before you can cast it, and casting requires both Mana and an unlocked Circle of sufficient level. Runes are found, purchased, and occasionally rewarded through quests.</p>
+
+<h2 class="sub-title">Key Spells by Circle</h2>
+<div class="phase early">
+  <div class="phase-title">Circle 1 &mdash; Entry Magic</div>
+  <p><strong>Light:</strong> Illuminates dark areas; essential for mine exploration and cave navigation. <strong>Sleep:</strong> Puts human enemies to sleep for a short duration; excellent for isolating targets in groups or escaping dangerous situations. <strong>Arrow:</strong> A basic magical projectile; not strong but confirms you can cast offensively at Circle 1.</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">Circle 2&ndash;3 &mdash; Combat Foundation</div>
+  <p><strong>Fire Arrow:</strong> Reliable ranged damage; fire element applies a burning effect over time. <strong>Icebolt:</strong> Water magic equivalent; slightly different damage profile; available to Water Mages. <strong>Fear:</strong> Forces fleeing on target; breaks group engagements by removing one enemy temporarily. <strong>Telekinesis:</strong> Moves distant objects; enables puzzle solutions and item retrieval at range. <strong>Heal:</strong> Direct health restoration; reduces food dependency for mage builds who have Mana to spare.</p>
+</div>
+
+<div class="phase late">
+  <div class="phase-title">Circles 4&ndash;6 &mdash; Power Spells</div>
+  <p><strong>Fireball:</strong> High-damage area fire attack; strongest single offensive spell available at Circle 4. <strong>Shrink Monster:</strong> Reduces enemy size and capability dramatically; extremely useful against difficult creatures that are otherwise dangerous. <strong>Summon Demon:</strong> (Circle 5&ndash;6) Calls a demonic entity to fight alongside you; exceptionally powerful; available only to Fire and Water Mages who reach Circle 5. <strong>Destroy Undead:</strong> Instant-kills undead enemies; the most efficient tool for the mine regions in the second half of the game where undead become common. These spells are what the Sect Camp permanently misses by capping at Circle 4.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S17 -->
+<section class="section" id="s17">
+<h2 class="section-title"><span class="sec-num">&sect;17</span> Mage Builds</h2>
+<p>A pure mage build in Gothic 1 Remake is weak in the early game and powerful in the late game. This is not a bug or poor design &mdash; it is the intentional structure of the magic system. Surviving the early weakness to reach the late-game power spike is the mage&apos;s central strategic challenge. The game does not make this easy, but it rewards patience and correct LP allocation with the most dominant late-game capability available.</p>
+
+<h2 class="sub-title">Mage LP Roadmap (New Camp Water Mage)</h2>
+<div class="phase new">
+  <div class="phase-title">Levels 1&ndash;8: The Survival Phase</div>
+  <p>Invest LP in Strength first (up to the minimum required for the first useful one-handed weapon: approximately STR 30&ndash;40) and Toughness (for Health improvement). Do NOT invest in Circles yet. You do not have enough Mana to make early Circle investment pay off, and your survival depends on being able to fight physically before your magic comes online. A mage who cannot survive the first eight levels&apos; content is a mage who dies before their magic matters. Basic Sword proficiency (Tier 1) keeps you alive in early encounters. Circle 1 investment can happen at Level 5&ndash;6 once survival is no longer an immediate concern.</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">Levels 8&ndash;15: The Transition Phase</div>
+  <p>Begin investing in Mana and Circle advancement. Target Circle 2 and Circle 3 by Level 12&ndash;15. During this phase, magic supplements your melee combat rather than replacing it. Use Sleep on grouped human enemies, Fire Arrow or Icebolt on creatures that are too dangerous for direct melee, and Heal to reduce food costs. The investment is: Mana increases per session (maintain enough to cast four to six spells per encounter), Circles 1&ndash;3 if not already unlocked, continued minimum Strength maintenance for weapon upgrades.</p>
+</div>
+
+<div class="phase late">
+  <div class="phase-title">Levels 15+: The Power Phase (The Spike)</div>
+  <p>Circle 4 (70 LP cumulative) and then Circle 5 (105 LP) are the thresholds at which mage builds become dominant. Access to Fireball and area-effect spells at Circle 4 allows engaging groups of enemies safely from range. Circle 5&apos;s summon abilities and the strongest direct-damage spells shift the balance so completely that many enemies that were previously dangerous become manageable. The Water Mage&apos;s +30 attribute point advantage compounds here &mdash; those 30 points represent significantly more Mana capacity and spell effectiveness than equivalent Fire Mage progression. By Level 20&ndash;25, a properly built Water Mage is the strongest character in the game.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S18 -->
+<section class="section" id="s18">
+<h2 class="section-title"><span class="sec-num">&sect;18</span> Warrior Build</h2>
+<div class="lore-block">
+  <p>The Guard does not ask whether the sword is the right tool for a given situation. The sword is the only tool the Guard has trained with sufficient intensity to trust in the situations the valley produces. This is not a limitation of imagination. It is the product of a specific philosophy: that a weapon used so well it requires no thought is more reliable than any number of weapons used with careful deliberation. The deliberation costs time. The valley rarely offers that.</p>
+  <span class="source">// THE COLONY &middot; OLD CAMP GUARD QUARTERS &middot; WALL INSCRIPTION &middot; AUTHOR UNKNOWN //</span>
+</div>
+
+<p>The Warrior build is the most reliable path through Gothic 1 Remake for first-time players. It is consistent across all chapters, has the clearest progression path, and avoids the early weakness that makes mage builds challenging to learn simultaneously with the game&apos;s other systems.</p>
+
+<h2 class="sub-title">Warrior LP Roadmap (Old Camp Guard)</h2>
+<div class="phase old">
+  <div class="phase-title">Levels 1&ndash;10: Foundation</div>
+  <p>Priority 1: <strong>Strength</strong> to weapon tier thresholds (STR 30 for early sword, STR 50 for mid-tier weapons). Priority 2: <strong>One-Handed skill Tier 2</strong> through Scatty or equivalent trainer. Priority 3: <strong>Toughness</strong> for Health pool increase. Do not invest in Mana or any Circle. A Warrior spending LP on magic they will not develop is wasting the LP on both tracks. The early game Warrior is moderately vulnerable &mdash; the one-handed parry advantage makes this the best-handled combat style at low skill level.</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">Levels 10&ndash;20: Power Ramp</div>
+  <p>Advance Strength toward STR 60&ndash;80 to unlock the mid-game weapon tier. Invest in <strong>One-Handed skill Tier 3</strong> for the advanced combo unlocks and damage multiplier. Begin investing in <strong>Two-Handed as a secondary</strong> if you want access to the high-damage two-handed weapons available from castle trainers &mdash; or maintain pure One-Handed and develop your parry precision. At STR 80+ you are equipping the most powerful one-handed weapons in the game and dealing reliable damage against most enemies in the valley.</p>
+</div>
+
+<div class="phase late">
+  <div class="phase-title">Levels 20+: Endgame</div>
+  <p>Push Strength toward STR 100 for maximum melee damage. At this level, with Tier 3 One-Handed skill and maximum Strength weapons, the Warrior is the most consistently reliable damage dealer against physical enemies in the game. No Warrior suffers the Mage&apos;s early vulnerability. The cost is the absence of ranged and magical tools for situations where melee is disadvantageous &mdash; which the late game occasionally produces. Carry a supply of throwing weapons (axes, daggers) for situations where engaging in melee is undesirable, as a secondary to your primary combat style.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S19 -->
+<section class="section" id="s19">
+<h2 class="section-title"><span class="sec-num">&sect;19</span> Ranger Build</h2>
+<p>The Ranger build centres on Dexterity investment and bow/crossbow combat, supplemented by sufficient Strength for close-range melee when enemies close to contact distance. It is the most versatile build in terms of engagement range and is the natural fit for New Camp Mercenary and some Sect Camp characters who prefer hit-and-run tactics over sustained melee.</p>
+
+<h2 class="sub-title">Ranger LP Roadmap</h2>
+<div class="phase new">
+  <div class="phase-title">Levels 1&ndash;10: Minimum Melee Foundation</div>
+  <p>Rangers cannot avoid melee entirely in the early game &mdash; enemies will close to contact distance regularly, and a pure DEX character with no melee training is extremely vulnerable to anything that reaches them. Invest minimum Strength (STR 30&ndash;40) and One-Handed Tier 1 for survival against early close-range threats. Begin DEX investment in parallel, targeting DEX 30&ndash;40 for access to the first genuinely useful bow. Archery Tier 1 through a DEX trainer enables effective use of the long bow. The early ranger is more fragile than the early warrior &mdash; use range actively to prevent enemies from reaching you.</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">Levels 10&ndash;20: Range Dominance</div>
+  <p>DEX investment toward DEX 60&ndash;80 provides access to compound bows and advanced crossbows with meaningfully higher damage. Archery Tier 2&ndash;3 unlocks improved accuracy bonuses and the ability to draw bows faster under pressure. At this level, the Ranger excels at opening engagements from elevation or distance: two or three solid bow hits before the enemy closes significantly reduces the melee damage they bring into contact. Invest in a second-tier melee skill (One-Handed Tier 2) to handle the enemies who do reach you without panicking at contact range.</p>
+</div>
+
+<div class="phase late">
+  <div class="phase-title">Levels 20+: Hybrid Flexibility</div>
+  <p>At DEX 100 with Archery Tier 3, the Ranger is the most efficient damage dealer against fast-moving creatures and long-range targets. Consider investing in Circle 1&ndash;2 magic as a late supplement &mdash; Light for mine exploration and Sleep for human crowd control complement the Ranger&apos;s toolkit without requiring the heavy LP investment of a full mage build. A Ranger with circles 1&ndash;2 as utility tools maintains all their archery effectiveness while gaining flexibility in the situations where archery alone is insufficient.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S20 -->
+<section class="section" id="s20">
+<h2 class="section-title"><span class="sec-num">&sect;20</span> Battlemage Build</h2>
+<p>The Battlemage combines melee combat capability with meaningful magic progression. It is the most LP-intensive build to execute because it requires minimum viable investment in both tracks, meaning it achieves neither a pure Warrior&apos;s melee ceiling nor a pure Mage&apos;s spell ceiling &mdash; but it compensates with the flexibility to apply the right tool to every situation in the game. The New Camp is the best faction for Battlemage builds.</p>
+
+<h2 class="sub-title">Battlemage LP Roadmap (New Camp)</h2>
+<div class="phase new">
+  <div class="phase-title">Levels 1&ndash;12: Melee First</div>
+  <p>Battlemages begin as Warriors. This is not optional. The magic investment that defines a Battlemage only becomes viable when your survival is already secured through melee capability. Invest STR 40&ndash;50, One-Handed Tier 2, and Toughness through Level 12. At Level 8&ndash;10, begin Circle 1 investment (10 LP) and minimum Mana raise (enough for 4&ndash;5 spells). Circle 1 Sleep and Fire Arrow provide genuine utility without requiring heavy LP commitment. The Battlemage is a Warrior with Light and Sleep in Chapter 1; they become something more from Chapter 2 onward.</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">Levels 12&ndash;20: Both Tracks Grow</div>
+  <p>The Battlemage&apos;s mid-game is the LP management game. Budget: approximately 60% of LP to magic (Mana raises + Circle 2&ndash;3 unlock + Circle 4 target by Level 20) and 40% to melee (continued Strength increases, maintain weapon tier 2). Realistic targets: STR 60&ndash;70 and Circle 3 by Level 15; STR 75 and Circle 4 by Level 20. These numbers are lower than a pure build on each track, but the Battlemage compensates in encounters where having Fireball AND a two-handed weapon provides options the pure Warrior or pure Mage does not.</p>
+</div>
+
+<div class="phase late">
+  <div class="phase-title">Levels 20+: Synthesis</div>
+  <p>A New Camp Battlemage with Circle 4&ndash;5 access and STR 80&ndash;90 at the endgame is one of the most flexible characters in Gothic 1 Remake. Opening encounters with area-damage spells, transitioning to melee when enemies close, using Summon spells (Circle 5) to hold attention while dealing melee damage from behind &mdash; this range of tools handles every encounter type the game presents without a structural weakness. The Sect Camp Battlemage is strong through Circle 4 but loses access to Circle 5&ndash;6&apos;s summons and highest-damage spells permanently. New Camp is strictly the superior Battlemage faction for this reason.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S21 -->
+<section class="section" id="s21">
+<h2 class="section-title"><span class="sec-num">&sect;21</span> The Valley of Mines</h2>
+<div class="lore-block">
+  <p>The valley is approximately three kilometres in diameter. It sounds small until you have crossed it on foot while being hunted. The terrain is intentionally varied: the central flat areas around the Old Camp are the safest; the swamp in the southeast is among the most dangerous; the mine entrances ring the valley perimeter like old wounds; and the areas between camps contain all the creatures and prisoners that could not survive in any of the three structured social formations. There are no official maps. The ones prisoners draw for each other are accurate enough for navigation and consistently understated about the danger.</p>
+  <span class="source">// THE COLONY &middot; VALLEY GEOGRAPHIC NOTES &middot; ATTRIBUTED TO VARIOUS PRISONERS //</span>
+</div>
+
+<p>The Valley of Mines is a single seamless open world with no loading zones. Its layout is not random &mdash; it is a deliberate spatial progression from safer central areas to increasingly dangerous peripheral regions. Understanding the danger gradient allows you to navigate efficiently rather than stumbling into areas you cannot survive.</p>
+
+<h2 class="sub-title">Regional Danger Assessment</h2>
+<table class="data-table">
+  <thead><tr><th>Region</th><th>Danger Level</th><th>Key Contents</th><th>When to Visit</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Old Camp Environs</strong></td><td>Low-Medium</td><td>Guards, Scavengers, Wolves; most trainers; marketplace</td><td>Immediately; starting hub</td></tr>
+    <tr><td><strong>Old Camp to New Camp Path</strong></td><td>Medium</td><td>Wolves, Scavengers, some Lurkers; Diego escort reduces danger</td><td>Chapter 1 with escort; Chapter 2 solo</td></tr>
+    <tr><td><strong>New Camp Area</strong></td><td>Medium</td><td>Mercenaries; Wolves; lake creatures; Water Mage cave</td><td>Chapter 1 for admission quests; Chapter 2 freely</td></tr>
+    <tr><td><strong>Free Mine</strong></td><td>Medium</td><td>Mine Crawlers; Diggers; Swiney (free Digger&apos;s Dress)</td><td>Chapter 1 for free armour; early second destination</td></tr>
+    <tr><td><strong>Swamp / Sect Camp</strong></td><td>High</td><td>Swamp Sharks, Snappers, dangerous creatures; Brotherhood</td><td>Chapter 1 for admission quests (with care); solo Chapter 2+</td></tr>
+    <tr><td><strong>Deep Mines</strong></td><td>Very High</td><td>Mine Crawlers (large), Ore Lizards, undead; richest ore</td><td>Chapter 3&ndash;4 with strong build</td></tr>
+    <tr><td><strong>Old Mine (northern)</strong></td><td>Very High</td><td>High-level creatures; plot-critical areas; named enemies</td><td>Chapter 3&ndash;4 per story progression</td></tr>
+  </tbody>
+</table>
+
+<div class="callout tip">
+  <div class="callout-title">No Fast Travel &mdash; Learn the Shortcuts</div>
+  <p>Gothic 1 Remake does not have fast travel in the early game. You learn the valley by walking it, which means learning the safe paths between locations. The path from Old Camp to New Camp via Diego escort is established immediately. Learn the path to the Free Mine early (Swiney&apos;s free armour). Discover the path to the Sect Camp via Lester&apos;s guidance in the swamp approach quest. These paths become familiar enough to navigate quickly within a few sessions, and several player-discovered shortcuts (exploiting terrain elevation to bypass dangerous patrol areas) exist throughout the valley. Note them when you find them. The colony rewards spatial memory.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S22 -->
+<section class="section" id="s22">
+<h2 class="section-title"><span class="sec-num">&sect;22</span> Bestiary</h2>
+<p>Gothic 1 Remake&apos;s creature roster is not populated for variety. It is populated for purpose: every creature in the valley teaches the player a specific lesson about how the game&apos;s danger and reward systems work. Knowing the patterns of major creature types before encountering them prevents the worst first encounters.</p>
+
+<div class="phase early">
+  <div class="phase-title">Scavenger</div>
+  <p>The introductory creature. Low HP, slow movement, a single basic attack. Scavengers appear harmless and largely are &mdash; individually. In groups of three or more, their attacks can interrupt your recovery animations and deal cumulative damage before you can respond. The lesson: even weak enemies aggregate into a threat if you let them surround you. Kill Scavengers one at a time with movement to prevent flanking. Early-game Scavenger parts (claws, feathers) sell for useful early ore.</p>
+</div>
+
+<div class="phase early">
+  <div class="phase-title">Wolf</div>
+  <p>Fast, rushes at the player, and attacks from the approach rather than waiting for melee range. Wolves teach the timing of dodge-rolling or side-stepping charging attacks. A Wolf running at you is not in the same physical state as a Wolf standing next to you &mdash; its charge animation has a distinct timing window for counterattack. Several Wolves together are dangerous primarily because of their speed making it difficult to maintain spacing. Wolf pelts and meat are reliable early ore income.</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">Lurker</div>
+  <p>The first creature that genuinely threatens an unprepared early character. Lurkers are large, durable, and deal substantial damage per hit. They patrol lake edges and swamp boundaries. The lesson: when you first encounter a Lurker and it kills you in two hits, retreat, level up, and return. Lurkers are where the game first teaches the non-scaling world principle explicitly. STR 40+ with upgraded equipment handles them reliably; STR 25 with basic gear does not. Lurker claws and hide are among the highest-value early-game materials.</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">Mine Crawler</div>
+  <p>Armoured insects found in mines and cave systems. Their exoskeleton reduces physical damage significantly &mdash; attacks that work reliably against surface creatures deal noticeably less damage. The lesson: armour penetration matters. High-Strength overhead strikes (the most penetrating attack in one-handed repertoire) are more effective than quick thrusts against Mine Crawlers. Alternatively, Fire Arrow and offensive spells bypass their physical armour entirely. Mine Crawler parts are crafting-relevant and sell well.</p>
+</div>
+
+<div class="phase late">
+  <div class="phase-title">Shadow Beast</div>
+  <p>A regional apex predator found near the Sect Camp swamp and certain deep areas. Large, fast, and deals devastating damage. The lesson: stay out of Shadow Beast territory until you have at least STR 60&ndash;70 and Tier 2 weapon skill. Even then, a Shadow Beast one-on-one is a serious engagement that requires active parrying and stamina management. Two Shadow Beasts simultaneously is fatal for most characters until the late game. Shadow Beast claws are among the most valuable creature materials in the colony.</p>
+</div>
+
+<div class="phase late">
+  <div class="phase-title">Undead (Mine Regions)</div>
+  <p>Appear in the deep mine regions during the second half of the game. Resistant to physical damage; highly vulnerable to magical attacks (particularly Destroy Undead at Circle 5, which one-shots them). The lesson: build flexibility. A pure Warrior without any magic faces every undead encounter with reduced effectiveness. Carrying offensive Scrolls (which provide one-use spell effects without requiring Circle investment) is the Warrior&apos;s answer to undead resistance. The game sells specific anti-undead scrolls; buy them before entering the deep mines.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S23 -->
+<section class="section" id="s23">
+<h2 class="section-title"><span class="sec-num">&sect;23</span> Chapters &amp; Story</h2>
+<div class="lore-block">
+  <p>The Colony&apos;s story does not begin when the prisoner arrives. It began years earlier, with a group of mages who lost control of a spell and created an inescapable prison, and with a King who decided this was actually useful and kept sending criminals in. The Nameless Hero arrives at the end of the beginning. Everything that follows is the middle of a story that has been moving without him. His task is not to understand the story from the beginning. His task is to understand enough of the middle to affect the ending before the ending arrives on its own terms.</p>
+  <span class="source">// THE COLONY &middot; BACKSTORY NOTES &middot; ALKIMIA INTERACTIVE &middot; NARRATIVE DOCUMENT //</span>
+</div>
+
+<p>Gothic 1 Remake is divided into four story chapters, each with distinct objectives, available content, and story consequences. Understanding what closes in each chapter and what becomes available is essential for content-efficient playthroughs.</p>
+
+<h2 class="sub-title">Chapter Structure</h2>
+<div class="phase early">
+  <div class="phase-title">Chapter 1 &mdash; Arrival and Alignment</div>
+  <p>The longest chapter and the richest in quest content: 26 quests according to community documentation. The chapter is defined by the faction admission process and the Nameless Hero&apos;s establishment in the Colony. <strong>Complete all three admission quest chains before committing to a faction.</strong> Do not rush the chapter end trigger. The ore and XP available in Chapter 1 from questing is the most concentrated content per unit of game time in the entire campaign. Missing Chapter 1 quests means missed XP, missed ore, and missed trainer access that cannot be compensated later.</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">Chapter 2 &mdash; Establishment</div>
+  <p>The faction is locked by Chapter 2 if not already committed. The chapter expands exploration into the mid-range dangerous areas (Free Mine, deeper New Camp territory, cautious swamp approaches). Faction rank advancement accelerates through completing faction-specific quest lines. The chapter introduces the deeper political tensions of the Colony and signals the story moving toward its major turning points. Complete all faction-specific quests in this chapter before triggering chapter advancement. Armour upgrades should happen here; by Chapter 2 end, you should be in second-tier guild armour or equivalent.</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">Chapter 3 &mdash; Escalation</div>
+  <p>The story&apos;s tensions escalate. The Old Camp&apos;s castle becomes more restricted before the Chapter 4 banishment. All remaining Old Camp castle content must be addressed here. Chapter 3 introduces the deeper mine areas and their associated undead enemies. Build strength should be approaching endgame targets by Chapter 3: STR 70&ndash;80 for Warriors, Circle 3&ndash;4 for Mages, appropriate weapon tier upgrades. The story&apos;s resolution begins accelerating and certain NPCs become unreachable after specific events.</p>
+</div>
+
+<div class="phase late">
+  <div class="phase-title">Chapter 4 &mdash; Resolution</div>
+  <p>Old Camp members are banished from the castle. All factions experience significant story disruptions. The chapter is the game&apos;s endgame push toward the Barrier question and the final confrontation with the sleeping entity beneath the valley. Chapter 4 is less quest-dense and more story-focused than earlier chapters; the primary activity is completing the main quest chain. Characters should be near their build completion by Chapter 4 entry. Significant LP investment decisions that have been deferred will need to be made here with the LP accumulated through Chapter 3.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S24 -->
+<section class="section" id="s24">
+<h2 class="section-title"><span class="sec-num">&sect;24</span> Glossary</h2>
+<div class="gloss-grid">
+  <div class="gloss-item"><div class="gloss-term">Archery Tier</div><div class="gloss-def">Ranged weapon skill level trained through DEX trainers; higher tiers improve accuracy, draw speed, and damage multiplier with bows and crossbows. Must be trained separately from Dexterity attribute investment.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Barrier</div><div class="gloss-def">The magical energy wall enclosing the Valley of Mines; indestructible from outside or inside; kills anything attempting to pass through it; the reason the Colony exists and the reason no one can leave.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Battlemage</div><div class="gloss-def">A hybrid build combining melee combat investment with meaningful magic progression; LP-intensive; requires disciplined budget management across both tracks; New Camp is the superior faction for this build.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Brotherhood of the Sleeper</div><div class="gloss-def">The religious cult occupying the Sect Camp; worship a dormant deity called the Sleeper; use Psionic magic; led by Y&apos;Berion; the most atmospherically distinct faction in the Colony.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Circle of Magic</div><div class="gloss-def">A tier of magical power (1&ndash;6); each Circle costs LP to unlock; Sect Camp caps at Circle 4; Circles 5&ndash;6 contain the game&apos;s most powerful spells and summons. Total LP investment for all six circles is 140 LP.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Dexterity (DEX)</div><div class="gloss-def">Attribute governing ranged weapon effectiveness, lockpicking success, and pickpocket capability; minimum DEX values required to equip specific bows and crossbows; primary stat for Ranger builds; trained at New Camp DEX trainers.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Diego</div><div class="gloss-def">The Nameless Hero&apos;s starting escort; introduces the Old Camp; first accessible trainer for Strength and Dexterity; provides safe passage for the first dangerous road section.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Digger</div><div class="gloss-def">The lowest-rank prisoners in the Old Camp; miners who extract ore under the ore barons&apos; authority; the starting guild rank for most Old Camp joiners; receive Digger&apos;s Dress armour from Swiney at the Free Mine.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Fire Mages</div><div class="gloss-def">The Old Camp&apos;s magic faction; study Fire Magic through Circles 1&ndash;5; maintain independence from Gomez&apos;s ore barons; their magic access is delayed compared to other factions but reaches Circle 5 at maximum.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Free Mine</div><div class="gloss-def">A mine south of the New Camp; early destination for obtaining free Digger&apos;s Dress armour from Swiney; populated by Scrapers and Mine Crawlers; lower danger than the deep mines.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Gomez</div><div class="gloss-def">The Ore Baron who effectively rules the Old Camp through force, economic control, and the backing of the castle&apos;s armed guards; the Old Camp&apos;s de facto leader and ultimate authority.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Guild</div><div class="gloss-def">Your rank designation within your chosen faction (Digger, Scavenger, Guard, Elite Guard for Old Camp; Scraper, Mercenary for New Camp; Novice, Templar for Sect Camp); determines armour tier access, trainer availability, and which areas of the camp are accessible.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Guard</div><div class="gloss-def">The third-tier Old Camp rank; full castle access; access to best 1H trainers; heavy iron armour; the goal tier for most Old Camp Warrior builds by mid-campaign.</div></div>
+  <div class="gloss-item"><div class="gloss-term">General Lee</div><div class="gloss-def">The military leader of the New Camp; former Imperial officer; organised the free miners and Water Mages around the machine project; the New Camp&apos;s ultimate authority.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Health</div><div class="gloss-def">Hit points; reaches zero when you die; increases automatically each level; also raised through Toughness trainer investment; restored by eating food and healing items, NOT by sleeping.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Learning Points (LP)</div><div class="gloss-def">The game&apos;s progression currency; 10 granted per level; spent through trainers only (not menus); cannot be refunded; no respec system exists. Every LP allocation decision is permanent.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Lester</div><div class="gloss-def">A prisoner who acts as a liaison to the Sect Camp; guides new arrivals toward the Brotherhood; assists in the Sect Camp admission process; provides safe escort to the swamp approach.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Lurker</div><div class="gloss-def">Large, aggressive water-adjacent creatures; the first creature that genuinely threatens an underprepared early character; patrol lake edges and swamp margins; teach the &ldquo;retreat and return stronger&rdquo; lesson.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Mana</div><div class="gloss-def">The psychic resource for casting spells; does not automatically increase with levels; must be raised through LP investment with mage trainers; recovers by sleeping. You must have enough Mana to cast a spell and must have the appropriate Circle unlocked.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Mine Crawler</div><div class="gloss-def">Armoured insect enemies found in mines and caves; physical damage is significantly reduced by their exoskeleton; overhead strikes and magical attacks are more effective than quick thrusts; Cave Crawler is a larger, more dangerous variant.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Nameless Hero</div><div class="gloss-def">The player character; a convicted prisoner thrown into the Colony at the story&apos;s start; has no defined past, no faction allegiance, and no existing relationships in the valley. Everything they become is built through play.</div></div>
+  <div class="gloss-item"><div class="gloss-term">New Camp</div><div class="gloss-def">The free miners&apos; settlement at the western lake; led by General Lee; home of the Water Mages; best faction for magic builds and the strongest overall magic faction due to Water Mage +30 attribute advantage over Fire Mages.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Novice</div><div class="gloss-def">The first rank in the Sect Camp upon joining the Brotherhood; immediately receives Circle 1&ndash;4 Psionic magic access through Baal Cadar; the fastest magic access of any faction&apos;s starting rank.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Old Camp</div><div class="gloss-def">The established power in the Valley of Mines; led by Ore Baron Gomez from a ruined castle; controls the ore trade; home of the Fire Mages; best faction for pure Warriors and first-time players.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Old Mine</div><div class="gloss-def">The northern mine complex; among the most dangerous areas in the valley; story-critical in later chapters; populated by high-level creatures and undead; requires strong late-game build.</div></div>
+  <div class="gloss-item"><div class="gloss-term">One-Handed (1H)</div><div class="gloss-def">Melee weapon category; faster attacks; lower stamina cost; faster parry windows; easier to learn for new players; best trainers in the Old Camp; natural fit for Warriors.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Ore</div><div class="gloss-def">The Colony&apos;s universal currency; not gold; used to pay all trainers, merchants, and NPC services; also the resource the King wants extracted; extremely scarce early; do not spend it on neutral armour before receiving free guild armour from your faction.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Parry</div><div class="gloss-def">A timing-based defensive action that blocks an attack at the moment of impact; a perfect parry staggers the attacker briefly for a counterattack window; one-handed weapons have faster parry frames than two-handed weapons.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Price of Magic</div><div class="gloss-def">A mandatory quest in the Old Camp requiring completion before any spells can be cast regardless of Circle investment; given by Torrez; not optional for any magic build regardless of faction.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Psionic Magic</div><div class="gloss-def">The Sect Camp&apos;s magic system; taught by the Gurus; accessible immediately as a Novice; circles 1&ndash;4 only (permanent hard cap); unique sleep and mental effects; tied to the Sleeper&apos;s power.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Ranger</div><div class="gloss-def">A Dexterity-focused build centred on archery; requires minimum Strength investment for close-range melee defence; New Camp provides best DEX trainers and equipment; versatile engagement range.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Rune</div><div class="gloss-def">A physical stone containing a crystallised spell; must be possessed and equipped to cast the associated spell; obtained by purchase, quest reward, or looting; requires the appropriate Circle unlocked AND sufficient Mana to use.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Scatty</div><div class="gloss-def">One-handed weapon skill trainer in the Old Camp training area; the primary resource for progressing one-handed combat skill tiers for Old Camp members.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Scavenger</div><div class="gloss-def">A low-level creature type; the introductory enemy; dangerous in groups; teaches basic group management and the value of not allowing flanking. Also the second guild rank in the Old Camp.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Sect Camp</div><div class="gloss-def">The Brotherhood of the Sleeper&apos;s settlement in the southeastern swamp; led by Y&apos;Berion; earliest magic access (immediately on joining); permanent Circle 4 cap; not recommended for first playthroughs.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Shadow Beast</div><div class="gloss-def">A regional apex predator found near the swamp and deep areas; the game&apos;s most significant &ldquo;you are not ready for this area&rdquo; signal; requires STR 60&ndash;70 minimum for safe engagement; extremely valuable drops.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Stamina</div><div class="gloss-def">New mechanic in the remake; depletes with each attack; recovers passively during pauses; reaching zero stamina prevents attacks and degrades parry; core to combat rhythm; one-handed attacks cost less stamina than two-handed.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Strength (STR)</div><div class="gloss-def">Attribute governing melee damage and weapon minimum requirements; does not increase automatically with levels; must be raised through LP investment with trainers; the primary stat for Warrior builds.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Swiney</div><div class="gloss-def">An NPC at the Free Mine south of the New Camp; gives the Digger&apos;s Dress armour for free to players who agree to join the Scrapers; the fastest free armour acquisition in the early game and worth visiting before making any faction commitment.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Tactical Pause</div><div class="gloss-def">A deliberate brief stop in attack strings to allow stamina to partially recover; the core advanced combat rhythm of Gothic 1 Remake; prevents stamina exhaustion mid-engagement and maintains consistent combat options throughout a fight.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Templar</div><div class="gloss-def">The advanced rank in the Sect Camp Brotherhood; access to Psionic Circles 1&ndash;4; two-handed weapon training; the Sect Camp&apos;s answer to battlemage and heavy fighter builds.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Toughness</div><div class="gloss-def">A new attribute in the remake that reduces incoming physical damage; worth early investment for Warrior builds who will absorb hits regularly; raised through specific trainers.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Trainer</div><div class="gloss-def">An NPC who accepts LP (and often ore) to improve your attributes and skills; the only mechanism for spending LP; must be physically found in the world; faction membership restricts which trainers you can access.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Two-Handed (2H)</div><div class="gloss-def">Melee weapon category; higher damage per hit; longer reach; slower speed; higher stamina cost; slower parry windows; New Camp and Sect Camp favour 2H weapons; requires more precise timing to use safely than one-handed.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Valley of Mines</div><div class="gloss-def">The game&apos;s single seamless open world; a prison colony enclosed by the Barrier; no loading zones between regions; no fast travel in the early game; danger increases from the central Old Camp environs outward toward the swamp and deep mines.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Water Mages</div><div class="gloss-def">The New Camp&apos;s magic faction; developing a machine to destroy the Barrier; Water Magic Circles 1&ndash;5 with approximately 30 additional attribute points compared to equivalent Fire Mage progression; the strongest magic faction in the game.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Weapon Skill Tier</div><div class="gloss-def">Combat proficiency level for a weapon category (1H, 2H, Bow); unlocks attack combos, improves damage multipliers; trained separately from attributes; as important as raw Strength for overall melee effectiveness.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Wolf</div><div class="gloss-def">A common early-game creature; fast charging attack with distinct timing window for counterattack; dangerous in groups due to speed; teaches dodge-roll and charge-counter timing; valuable pelts and meat for early ore income.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Y&apos;Berion</div><div class="gloss-def">The high priest and leader of the Brotherhood of the Sleeper in the Sect Camp; the Gurus serve under his spiritual authority; his approval of a new Novice follows the approval of four Gurus.</div></div>
+</div>
+</section>
+
+</div><!-- /content -->
+<footer id="footer">
+  Gothic 1 Remake &nbsp;&middot;&nbsp; Alkimia Interactive / THQ Nordic &nbsp;&middot;&nbsp; Nadir Strategy Archive &nbsp;&middot;&nbsp; Valley of Mines &mdash; Every Prisoner Finds a Side. Choose Well.
+</footer>
+</div><!-- /main -->
+<a id="back-top" href="#hero" title="Back to top">&#8593;</a>
+<script>
+const bar=document.getElementById('progress-bar');
+const bt=document.getElementById('back-top');
+const tog=document.getElementById('sidebar-toggle');
+const sb=document.getElementById('sidebar');
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;
+  bar.style.transform='scaleX('+(s/t)+')';
+  bt.classList.toggle('visible',s>400);
+},{passive:true});
+const secs=document.querySelectorAll('.section[id]');
+const navs=document.querySelectorAll('.nav-item');
+const obs=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){navs.forEach(n=>n.classList.remove('active'));const a=document.querySelector('.nav-item[href="#'+e.target.id+'"]');if(a){a.classList.add('active');a.scrollIntoView({block:'nearest'});}}});
+},{rootMargin:'-20% 0px -70% 0px'});
+secs.forEach(s=>obs.observe(s));
+tog.addEventListener('click',()=>sb.classList.toggle('open'));
+document.querySelectorAll('.nav-item').forEach(i=>i.addEventListener('click',()=>sb.classList.remove('open')));
+document.querySelectorAll('.section').forEach((s,i)=>{s.style.animationDelay=i*0.03+'s';});
+</script>
+</body>
+</html>

@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stellar Blade &mdash; The Blood Edge Manual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0e0c10;--parchment:#f0ecdf;--gold:#c9943a;--gold-dark:#8b6420;--gold-pale:#f0d9a8;
+  --mid:#3e3528;--light:#f6f2e8;--border:rgba(201,148,58,0.3);
+  /* Stellar Blade palette — cool blue-white Colony tech vs warm ruined Earth amber */
+  --colony:#08101e;--colony-mid:#0e1828;
+  --eve:#1a5080;--eve-pale:#d0e4f5;
+  --burst:#6a1a2a;--burst-pale:#f5d5dc;
+  --beta:#1a4030;--beta-pale:#d0eed8;
+  --xion:#3a2010;--xion-pale:#f5ead0;
+  --naytiba:#2a0a30;--naytiba-pale:#ead5f5;
+  --font-head:'Cinzel','Times New Roman',serif;
+  --font-body:'Crimson Pro','Georgia',serif;
+  --sidebar-w:294px;
+}
+html{scroll-behavior:smooth;font-size:17px}
+body{background:var(--parchment);color:var(--ink);font-family:var(--font-body);line-height:1.75;display:flex;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.5}
+a{color:inherit;text-decoration:none}button{cursor:pointer;font-family:inherit}
+#progress-bar{position:fixed;top:0;left:var(--sidebar-w);right:0;height:3px;background:var(--gold);transform-origin:left;transform:scaleX(0);z-index:500;transition:transform 0.1s linear}
+#sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--colony);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;border-right:2px solid var(--gold-dark);display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--gold-dark) var(--colony)}
+#sidebar-header{padding:28px 20px 20px;border-bottom:1px solid rgba(201,148,58,0.2);background:linear-gradient(180deg,#030608 0%,var(--colony) 100%)}
+#sidebar-title{font-family:var(--font-head);font-size:0.88rem;font-weight:900;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;line-height:1.3}
+#sidebar-sub{font-family:var(--font-body);font-size:0.67rem;color:rgba(255,255,255,0.38);margin-top:6px;letter-spacing:0.04em;font-style:italic}
+#sidebar-nav{padding:8px 0 40px;flex:1}
+.nav-section{padding:10px 20px 3px;font-family:var(--font-head);font-size:0.52rem;letter-spacing:0.2em;color:var(--gold-dark);text-transform:uppercase;margin-top:6px;opacity:0.85}
+.nav-item{display:block;padding:5px 20px 5px 26px;font-family:var(--font-body);font-size:0.77rem;color:rgba(240,220,180,0.6);text-decoration:none;border-left:2px solid transparent;transition:all 0.15s ease;line-height:1.3;position:relative}
+.nav-item::before{content:'&#9654;';position:absolute;left:11px;top:6px;color:var(--gold-dark);opacity:0;transition:opacity 0.12s;font-size:0.42rem}
+.nav-item:hover,.nav-item.active{color:var(--gold-pale);border-left-color:var(--gold);background:rgba(201,148,58,0.07);padding-left:28px}
+.nav-item:hover::before,.nav-item.active::before{opacity:1}
+#sidebar-toggle{display:none;position:fixed;top:10px;left:10px;z-index:200;background:var(--colony);border:1px solid var(--gold-dark);color:var(--gold);font-size:1.1rem;padding:5px 9px;border-radius:2px}
+#main{margin-left:var(--sidebar-w);flex:1;min-width:0}
+/* Hero — Colony white light shafting through ruined Earth amber haze */
+#hero{background:linear-gradient(165deg,#040608 0%,#081018 35%,#180e06 70%,#040608 100%);min-height:490px;display:flex;flex-direction:column;justify-content:flex-end;padding:0 64px 64px;position:relative;overflow:hidden;border-bottom:3px solid var(--gold-dark)}
+#hero::before{content:'';position:absolute;inset:0;
+  background:
+    linear-gradient(120deg,rgba(26,80,140,0.08) 0%,transparent 40%),
+    linear-gradient(240deg,rgba(180,80,30,0.06) 0%,transparent 50%),
+    radial-gradient(1.5px 1.5px at 8% 12%,rgba(200,230,255,0.7) 0%,transparent 0%),
+    radial-gradient(1px 1px at 18% 5%,rgba(255,240,200,0.65) 0%,transparent 0%),
+    radial-gradient(1px 1px at 29% 18%,rgba(200,230,255,0.6) 0%,transparent 0%),
+    radial-gradient(2px 2px at 38% 8%,rgba(255,220,160,0.5) 0%,transparent 0%),
+    radial-gradient(1px 1px at 50% 15%,rgba(200,220,255,0.55) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 60% 4%,rgba(255,240,200,0.65) 0%,transparent 0%),
+    radial-gradient(1px 1px at 72% 14%,rgba(200,230,255,0.5) 0%,transparent 0%),
+    radial-gradient(1px 1px at 82% 7%,rgba(255,200,140,0.6) 0%,transparent 0%),
+    radial-gradient(2px 2px at 91% 19%,rgba(200,230,255,0.5) 0%,transparent 0%),
+    radial-gradient(1px 1px at 15% 28%,rgba(200,220,255,0.4) 0%,transparent 0%),
+    radial-gradient(1px 1px at 45% 30%,rgba(255,240,200,0.38) 0%,transparent 0%),
+    radial-gradient(1.5px 1.5px at 76% 25%,rgba(200,230,255,0.45) 0%,transparent 0%)}
+#hero::after{content:'';position:absolute;bottom:0;left:64px;right:64px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.hero-eyebrow{font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.28em;color:var(--gold-dark);text-transform:uppercase;margin-bottom:14px;position:relative}
+.hero-title{font-family:var(--font-head);font-size:clamp(2rem,5vw,3.8rem);font-weight:900;color:var(--parchment);letter-spacing:0.04em;text-transform:uppercase;line-height:1.05;margin-bottom:8px;position:relative;text-shadow:0 2px 20px rgba(0,0,0,0.9)}
+.hero-subtitle{font-family:var(--font-body);font-size:1.05rem;font-style:italic;color:rgba(240,217,168,0.72);font-weight:300;margin-bottom:26px;position:relative}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;position:relative}
+.hero-tag{font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-pale);border:1px solid rgba(201,148,58,0.38);padding:3px 10px;background:rgba(201,148,58,0.07)}
+#content{padding:0 64px 80px;max-width:960px}
+.section{padding:54px 0 6px;animation:fadeUp 0.45s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.sec-num{display:inline-block;font-family:var(--font-head);font-size:0.78rem;font-weight:400;letter-spacing:0.1em;color:var(--gold-dark);margin-right:0.5em;vertical-align:middle}
+.section-title{font-family:var(--font-head);font-size:clamp(1.25rem,2.4vw,1.75rem);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink);padding-bottom:12px;margin-bottom:20px;border-bottom:2px solid var(--border);position:relative}
+.section-title::after{content:'';position:absolute;bottom:-2px;left:0;width:58px;height:2px;background:var(--gold)}
+.sub-title{font-family:var(--font-head);font-size:1rem;font-weight:600;letter-spacing:0.05em;color:var(--mid);margin:26px 0 9px;text-transform:uppercase}
+p{margin-bottom:1rem;font-size:1rem}
+.guide-list{margin:0.5rem 0 1rem 1.2rem}
+.guide-list li{margin-bottom:0.5rem;font-size:1rem}
+.guide-list li::marker{color:var(--gold-dark)}
+.callout{padding:15px 20px;margin:20px 0;border-left:4px solid var(--gold);background:var(--light);border-radius:0 3px 3px 0}
+.callout.eve{border-left-color:#1a5080;background:var(--eve-pale)}
+.callout.burst{border-left-color:#8a2030;background:var(--burst-pale)}
+.callout.beta{border-left-color:#1a5030;background:var(--beta-pale)}
+.callout.xion{border-left-color:#7a5020;background:var(--xion-pale)}
+.callout.naytiba{border-left-color:#5a1a6a;background:var(--naytiba-pale)}
+.callout.tip{border-left-color:#2a5c18;background:#e8f5e0}
+.callout.warning{border-left-color:#7a2010;background:#f5e8d0}
+.callout-title{font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;margin-bottom:5px;color:var(--gold-dark)}
+.callout.eve .callout-title{color:#1a5080}
+.callout.burst .callout-title{color:#8a2030}
+.callout.beta .callout-title{color:#1a5030}
+.callout.xion .callout-title{color:#7a5020}
+.callout.naytiba .callout-title{color:#5a1a6a}
+.callout.tip .callout-title{color:#2a5c18}
+.callout.warning .callout-title{color:#7a2010}
+.callout p{font-size:0.94rem;margin-bottom:0.5rem}
+.callout p:last-child{margin-bottom:0}
+/* Colony transmission blocks */
+.lore-block{padding:16px 22px;margin:22px 0;border:1px solid rgba(26,80,128,0.35);background:rgba(8,16,30,0.05);position:relative}
+.lore-block::before{content:'COLONY TRANSMISSION';position:absolute;top:-0.6rem;left:1rem;font-family:var(--font-head);font-size:0.54rem;letter-spacing:0.22em;color:#1a5080;background:var(--parchment);padding:0 0.5rem}
+.lore-block p{font-style:italic;color:#0c1e36;font-size:0.96rem;line-height:1.88}
+.lore-block .source{font-family:var(--font-head);font-size:0.58rem;color:rgba(26,80,128,0.6);text-align:right;display:block;margin-top:0.6rem;letter-spacing:0.1em}
+.data-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.9rem}
+.data-table th{background:var(--colony);color:var(--gold-pale);font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;padding:8px 11px;text-align:left;border:1px solid rgba(201,148,58,0.2)}
+.data-table td{padding:7px 11px;border:1px solid var(--border);vertical-align:top;line-height:1.5;color:var(--ink)}
+.data-table tr:nth-child(even) td{background:rgba(201,148,58,0.04)}
+.data-table tr:hover td{background:rgba(201,148,58,0.07)}
+.phase{padding:16px 20px;margin:14px 0;border-left:4px solid var(--gold);background:rgba(201,148,58,0.05)}
+.phase.early{border-left-color:#1a5080;background:rgba(26,80,128,0.07)}
+.phase.mid{border-left-color:var(--gold-dark);background:rgba(201,148,58,0.07)}
+.phase.late{border-left-color:#7a2010;background:rgba(122,32,16,0.07)}
+.phase-title{font-family:var(--font-head);font-size:0.84rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:7px;color:var(--gold-dark)}
+.phase.early .phase-title{color:#1a5080}
+.phase.late .phase-title{color:#7a2010}
+.phase p{font-size:0.94rem;margin-bottom:0.6rem;color:var(--ink)}
+.phase p:last-child{margin-bottom:0}
+.unit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(222px,1fr));gap:16px;margin:16px 0}
+.unit-card{border:1px solid var(--border);background:var(--light);padding:14px 16px;border-top:3px solid var(--gold)}
+.unit-card.eve-card{border-top-color:#1a5080}
+.unit-card.burst-card{border-top-color:#8a2030}
+.unit-card.beta-card{border-top-color:#1a5030}
+.unit-card.xion-card{border-top-color:#8a6020}
+.unit-card.naytiba-card{border-top-color:#5a1a6a}
+.unit-card.neutral-card{border-top-color:#5a4820}
+.unit-name{font-family:var(--font-head);font-size:0.88rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink);margin-bottom:2px}
+.unit-type{font-family:var(--font-head);font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);margin-bottom:7px;display:block}
+.unit-card.eve-card .unit-type{color:#1a5080}
+.unit-card.burst-card .unit-type{color:#8a2030}
+.unit-card.beta-card .unit-type{color:#1a5030}
+.unit-card.xion-card .unit-type{color:#8a6020}
+.unit-card.naytiba-card .unit-type{color:#5a1a6a}
+.unit-card p{font-size:0.88rem;line-height:1.6;color:var(--ink);margin-bottom:0}
+.orn{text-align:center;color:var(--gold-dark);font-size:0.72rem;letter-spacing:0.42em;padding:28px 0 8px;opacity:0.65}
+.gloss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:1px;background:var(--border);margin-top:16px;border:1px solid var(--border)}
+.gloss-item{background:var(--light);padding:9px 13px;display:flex;gap:10px;align-items:flex-start}
+.gloss-item:nth-child(even){background:var(--parchment)}
+.gloss-term{font-family:var(--font-head);font-size:0.75rem;font-weight:700;color:var(--ink);white-space:normal;min-width:118px;max-width:148px;word-break:break-word;letter-spacing:0.04em;text-transform:uppercase}
+.gloss-def{font-size:0.86rem;color:var(--mid);line-height:1.55}
+#back-top{position:fixed;bottom:26px;right:26px;width:40px;height:40px;background:var(--colony);border:1px solid var(--gold-dark);color:var(--gold);font-size:1rem;display:flex;align-items:center;justify-content:center;text-decoration:none;opacity:0;transform:translateY(8px);transition:opacity 0.3s,transform 0.3s;z-index:90}
+#back-top.visible{opacity:1;transform:none}
+#back-top:hover{background:var(--gold-dark);color:var(--parchment)}
+#footer{margin-top:40px;border-top:1px solid var(--border);padding:20px 64px;font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);text-align:center}
+@media(max-width:880px){
+  :root{--sidebar-w:0px}
+  #sidebar-toggle{display:flex;align-items:center;justify-content:center}
+  #sidebar{transform:translateX(-100%);transition:transform 0.26s ease;width:266px}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  #hero,#content,#footer{padding-left:22px;padding-right:22px}
+  #progress-bar{left:0}
+  .unit-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+<button id="sidebar-toggle" aria-label="Menu">&#9776;</button>
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <div id="sidebar-title">Stellar Blade</div>
+    <div id="sidebar-sub">The Blood Edge Manual &mdash; Shift Up / Sony Interactive Entertainment</div>
+  </div>
+  <div id="sidebar-nav">
+    <div class="nav-section">The World</div>
+    <a class="nav-item" href="#s01">01 &middot; Earth &amp; the Colony</a>
+    <a class="nav-item" href="#s02">02 &middot; Game Overview</a>
+    <a class="nav-item" href="#s03">03 &middot; Eve &amp; the 7th Airborne</a>
+    <div class="nav-section">Combat Systems</div>
+    <a class="nav-item" href="#s04">04 &middot; Combat Fundamentals</a>
+    <a class="nav-item" href="#s05">05 &middot; Perfect Parry &amp; Blink</a>
+    <a class="nav-item" href="#s06">06 &middot; Beta Energy &amp; Beta Skills</a>
+    <a class="nav-item" href="#s07">07 &middot; Burst Energy &amp; Burst Skills</a>
+    <a class="nav-item" href="#s08">08 &middot; The Drone &amp; Ranged Combat</a>
+    <a class="nav-item" href="#s09">09 &middot; Enemy Balance &amp; Stagger</a>
+    <div class="nav-section">Skills &amp; Builds</div>
+    <a class="nav-item" href="#s10">10 &middot; The Five Skill Trees</a>
+    <a class="nav-item" href="#s11">11 &middot; Priority Skill Investments</a>
+    <a class="nav-item" href="#s12">12 &middot; Tachy &amp; the Tachy Mode</a>
+    <div class="nav-section">Equipment</div>
+    <a class="nav-item" href="#s13">13 &middot; The Blood Edge &amp; Upgrades</a>
+    <a class="nav-item" href="#s14">14 &middot; Exospines</a>
+    <a class="nav-item" href="#s15">15 &middot; Nano Suits &amp; Gear</a>
+    <a class="nav-item" href="#s16">16 &middot; Nano Elements &amp; Crafting</a>
+    <div class="nav-section">Exploration</div>
+    <a class="nav-item" href="#s17">17 &middot; Xion &amp; the World</a>
+    <a class="nav-item" href="#s18">18 &middot; Supply Camps &amp; Bases</a>
+    <a class="nav-item" href="#s19">19 &middot; Side Quests &amp; Collectibles</a>
+    <div class="nav-section">Enemies</div>
+    <a class="nav-item" href="#s20">20 &middot; Naytiba Classification</a>
+    <a class="nav-item" href="#s21">21 &middot; Alpha Naytiba &amp; Bosses</a>
+    <div class="nav-section">Strategy</div>
+    <a class="nav-item" href="#s22">22 &middot; Early Game Doctrine</a>
+    <a class="nav-item" href="#s23">23 &middot; Combat Mastery</a>
+    <a class="nav-item" href="#s24">24 &middot; Points of No Return</a>
+    <a class="nav-item" href="#s25">25 &middot; New Game Plus</a>
+    <div class="nav-section">Reference</div>
+    <a class="nav-item" href="#s26">26 &middot; Glossary</a>
+  </div>
+</nav>
+
+<div id="main">
+<div id="hero">
+  <div class="hero-eyebrow">Nadir Strategy Archive &nbsp;&middot;&nbsp; Shift Up / Sony Interactive Entertainment &nbsp;&middot;&nbsp; Action-RPG &nbsp;&middot;&nbsp; Post-Apocalyptic Earth</div>
+  <h1 class="hero-title">Stellar Blade</h1>
+  <p class="hero-subtitle">The Blood Edge Manual &mdash; A Complete Combat &amp; Exploration Guide for Eve&apos;s Mission to Reclaim Earth</p>
+  <div class="hero-tags">
+    <span class="hero-tag">26 Chapters</span>
+    <span class="hero-tag">Full Combat System</span>
+    <span class="hero-tag">5 Skill Trees</span>
+    <span class="hero-tag">All Exospines</span>
+    <span class="hero-tag">Boss Strategies</span>
+    <span class="hero-tag">New Game Plus</span>
+    <span class="hero-tag">All Endings</span>
+    <span class="hero-tag">Full Glossary</span>
+  </div>
+</div>
+
+<div id="content">
+
+<!-- S01 -->
+<section class="section" id="s01">
+<h2 class="section-title"><span class="sec-num">&sect;01</span> Earth &amp; the Colony</h2>
+<div class="lore-block">
+  <p>The Colony was built because Earth was lost. Not conquered, not occupied &mdash; <em>lost</em>, in the way that a war is lost before the last battle is fought, when the outcome is no longer in doubt but the fighting continues anyway. The Naytiba came and the human race did what it has always done when faced with a catastrophe it cannot immediately solve: it left and made plans to come back later. The Colony exists in orbit, or somewhere beyond orbit, somewhere that is not Earth but can see Earth, a perpetual vantage point from which the plan to reclaim the planet can be planned indefinitely while the planet waits below, overrun and patient.</p>
+  <span class="source">// COLONY HISTORICAL ARCHIVE &middot; MISSION BRIEFING PREFACE &middot; 7TH AIRBORNE SQUAD //</span>
+</div>
+
+<p>Stellar Blade is set in a near-future Earth that has been comprehensively overrun by the Naytiba &mdash; a force described alternately as alien, biological, and something that resists easy classification in either category. The details of their origin are one of the game&apos;s central mysteries, and the official briefing material that the 7th Airborne Squad receives before their descent turns out to be substantially incomplete. This is a deliberate narrative choice: Eve knows what she has been told, and the player learns what Eve learns, which is often different from what the Colony intended.</p>
+
+<p>The surviving human population has been consolidated in <strong>Xion</strong>, the last surviving city &mdash; a settlement built in and around the ruins of a previous civilisation, maintained by a handful of survivors who have developed their own systems, economies, and relationships with the geography of a destroyed world. Xion is the player&apos;s home base, the source of most side quests and upgrade infrastructure, and the emotional centre of a story that becomes more complicated the longer Eve spends time in it.</p>
+
+<h2 class="sub-title">Inspirations and Context</h2>
+<p>Stellar Blade was developed by South Korean studio Shift Up (Nikke: Goddess of Victory) and draws explicit inspiration from <strong>NieR: Automata</strong> (post-apocalyptic setting, android protagonist questioning her mission), <strong>Sekiro: Shadows Die Twice</strong> (parry-focused combat with high precision requirements), and <strong>Bayonetta/Devil May Cry</strong> (stylish combat with special move systems). It also cites Battle Angel Alita and Blade Runner as visual and tonal influences. Understanding these inspirations helps frame what the game is attempting: the emotional weight of NieR&apos;s existential sci-fi combined with the moment-to-moment satisfaction of Sekiro&apos;s reactive combat system.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S02 -->
+<section class="section" id="s02">
+<h2 class="section-title"><span class="sec-num">&sect;02</span> Game Overview</h2>
+<p>Stellar Blade is a <strong>third-person action RPG with character action elements</strong>, released exclusively for PlayStation 5 on April 26, 2024, and on PC via Steam and Epic Games on June 11, 2025. It is the debut console release from Shift Up. The game features intense real-time combat with a strong emphasis on <strong>precision parrying, reactive dodging, and energy resource management</strong>, set across a series of post-apocalyptic environments ranging from the ruins of Xion to open desert wastelands to subterranean structures of uncertain origin.</p>
+
+<h2 class="sub-title">Difficulty and Accessibility</h2>
+<p>The game offers two primary difficulty modes:</p>
+<ul class="guide-list">
+  <li><strong>Story Mode:</strong> Reduced enemy damage, extended timing windows for parries and dodges, Action Assist enabled. Allows players to experience the narrative without the full challenge of the combat system.</li>
+  <li><strong>Normal Mode:</strong> The intended experience. Parry and dodge windows require precision. Enemies deal meaningful damage. The combat system&apos;s depth becomes necessary rather than optional.</li>
+</ul>
+<p>The game is not a Soulslike in the sense of permanent death consequences, but it absolutely demands the same pattern recognition and execution precision. Enemies telegraph their attacks with visual tells; mastering the reading of those tells is the core skill the game is teaching from the first encounter to the last boss.</p>
+
+<h2 class="sub-title">Three Endings</h2>
+<p>Stellar Blade has three distinct endings determined by choices and completion level:</p>
+<ul class="guide-list">
+  <li><strong>Return to the Colony:</strong> The default ending reached without meeting specific conditions.</li>
+  <li><strong>Cost of Lost Memories:</strong> Requires 100% completion of specific content before the final confrontation.</li>
+  <li><strong>Making New Memories:</strong> Achievable without 100% completion through specific story choices.</li>
+</ul>
+<p>New Game Plus (available from launch) allows players to carry over skills and equipment for additional endings and NG+-exclusive gear.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S03 -->
+<section class="section" id="s03">
+<h2 class="section-title"><span class="sec-num">&sect;03</span> Eve &amp; the 7th Airborne</h2>
+<div class="lore-block">
+  <p>The 7th Airborne Squad descended through atmosphere in craft that were not designed for the scenario they met. They were told to expect a contested landing. They met something more absolute than contest. The squad did not survive the initial engagement. This is the part of the mission briefing that the Colony does not acknowledge in the official record. The part they acknowledge is Eve. She survived. That was, according to the Colony, sufficient.</p>
+  <span class="source">// COLONY MISSION DEBRIEF &middot; 7TH AIRBORNE SQUAD &middot; CLASSIFIED ARCHIVE //</span>
+</div>
+
+<p>Eve is a member of the Colony&apos;s Airborne Squad &mdash; a unit of soldiers designed and trained for exactly this kind of reclamation mission. Her weapon is the <strong>Blood Edge</strong>, a one-handed blade with the capability to develop new techniques and combat modes as the game progresses. She is also equipped with a <strong>drone</strong> that provides ranged combat capability, an <strong>Exospine</strong> that modifies her physical capabilities, and the biological and mechanical augmentations that all Airborne units carry.</p>
+
+<h2 class="sub-title">Key Characters</h2>
+<table class="data-table">
+  <thead><tr><th>Character</th><th>Role</th><th>Narrative Function</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Eve</strong></td><td>Player character; 7th Airborne</td><td>The protagonist. More than she has been told. Less certain than she appears. The game&apos;s central question is about her as much as about Earth.</td></tr>
+    <tr><td><strong>Adam</strong></td><td>Xion survivor; Eve&apos;s primary contact</td><td>The human half of Eve&apos;s relationship with the people she is supposed to be saving. Provides local knowledge and emotional grounding. His motivations are not simple.</td></tr>
+    <tr><td><strong>Lily</strong></td><td>Xion survivor; technical support</td><td>The game&apos;s key upgrade NPC. Upgrades the Blood Edge and Exospines at the base. Her cheerful practicality is the counterweight to the weight of the setting.</td></tr>
+    <tr><td><strong>Tachy</strong></td><td>Another Airborne soldier</td><td>Her involvement in the story provides one of the game&apos;s significant combat expansions. Her relationship with Eve is one of the game&apos;s more emotionally complex threads.</td></tr>
+    <tr><td><strong>Mother Sphere</strong></td><td>The Colony&apos;s guiding intelligence</td><td>The institutional authority behind Eve&apos;s mission. What she knows versus what she shares is the game&apos;s central dramatic tension.</td></tr>
+  </tbody>
+</table>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S04 -->
+<section class="section" id="s04">
+<h2 class="section-title"><span class="sec-num">&sect;04</span> Combat Fundamentals</h2>
+<div class="lore-block">
+  <p>The Airborne training protocols were designed around a simple observation: the Naytiba attack with patterns. They are not random. They telegraph. They commit. A soldier who can read the commitment before it arrives can control the pace of the engagement. The Blood Edge was built on the assumption that its operator would be able to read what is coming. The weapon rewards precision and punishes reaction. This was considered an acceptable design philosophy by the people who would never carry one.</p>
+  <span class="source">// COLONY AIRBORNE TRAINING PROTOCOL &middot; SECTION 4: COMBAT PRINCIPLES //</span>
+</div>
+
+<p>Stellar Blade&apos;s combat is built on a foundation of <strong>read, react, and punish</strong>. Every enemy has a pattern. Every attack has a tell. The game rewards players who learn these patterns and execute precise responses. The primary responses available to Eve are:</p>
+
+<h2 class="sub-title">Basic Attack Framework</h2>
+<ul class="guide-list">
+  <li><strong>Quick Attack (Square):</strong> Fast, lower-damage strikes that build Beta Energy and enable combo chains. The basis of most active combat sequences.</li>
+  <li><strong>Strong Attack (Triangle):</strong> Slower, higher-damage strikes. After blocking, holding Triangle initiates a dash-forward attack. Dropping down while pressing Triangle enables an aerial attack. Charged Triangle attacks provide armour break utility.</li>
+  <li><strong>Guard/Block (L1):</strong> Blocks incoming attacks. Holding block reduces damage but does not eliminate it. Perfect Parry (timed L1) negates damage and generates resources. The distinction between guarding and parrying is the game&apos;s most critical execution point.</li>
+  <li><strong>Dodge/Blink (Circle):</strong> Standard dodge provides evasion. Perfect Dodge (timed Circle) &mdash; called Blink &mdash; generates Burst Energy. Repulse is a directional Perfect Dodge variant.</li>
+</ul>
+
+<h2 class="sub-title">The Colour-Code Attack System</h2>
+<p>Stellar Blade uses a visual indicator system to tell the player what kind of response each enemy attack requires:</p>
+<table class="data-table">
+  <thead><tr><th>Indicator Colour</th><th>Attack Type</th><th>Correct Response</th><th>Wrong Response</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Yellow / Orange</strong></td><td>Blockable / Parriable attack</td><td>Perfect Parry (timed L1) for maximum benefit; Block to reduce damage</td><td>Taking the hit full damage; dodge incurs unnecessary risk</td></tr>
+    <tr><td><strong>Red / Unblockable</strong></td><td>Unblockable attack; must be dodged</td><td>Blink (Perfect Dodge) or standard dodge to evade entirely</td><td>Blocking or parrying; will take full damage regardless</td></tr>
+    <tr><td><strong>Blue / Grab</strong></td><td>Grab attack; must dodge laterally</td><td>Dodge sideways (not backward) to evade the grab trajectory</td><td>Blocking, parrying, or dodging backward; all ineffective</td></tr>
+  </tbody>
+</table>
+
+<div class="callout eve">
+  <div class="callout-title">Learning the Colour Code First</div>
+  <p>The single most important early-game habit to develop: learn to read attack colours before learning any specific enemy&apos;s pattern. The colour code is universal; it applies to every enemy in the game. A player who correctly identifies an orange indicator and applies a Perfect Parry is doing the correct thing regardless of what specific attack generated that indicator. Build the habit of reading the colour first, then the animation. This cognitive priority switch &mdash; colour over animation &mdash; dramatically accelerates learning across all enemy types.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S05 -->
+<section class="section" id="s05">
+<h2 class="section-title"><span class="sec-num">&sect;05</span> Perfect Parry &amp; Blink</h2>
+<div class="lore-block">
+  <p>There is a moment, in every engagement, where the gap between receiving damage and dealing it closes to nothing. The Naytiba commits to its attack. The attack is in the air. Between commitment and contact there is exactly enough time for someone who has been trained correctly, or who has learned correctly, to insert something different into the sequence. This moment is called many things in the Colony records. The soldiers called it the window. The window is everything.</p>
+  <span class="source">// COLONY AIRBORNE TRAINING PROTOCOL &middot; SECTION 7: PRECISE RESPONSE TIMING //</span>
+</div>
+
+<p>The <strong>Perfect Parry</strong> (timed L1 press as an attack arrives) and <strong>Blink</strong> (timed Circle press as an attack arrives) are the game&apos;s two precision responses. They are the foundation of high-level play and the skills that separate competent combat from mastery.</p>
+
+<h2 class="sub-title">Perfect Parry</h2>
+<p>A Perfect Parry is executed by pressing L1 at the precise moment a blockable (orange/yellow indicator) attack would connect with Eve. A successful Perfect Parry:</p>
+<ul class="guide-list">
+  <li>Negates all incoming damage from that attack</li>
+  <li>Generates Beta Energy &mdash; each successful Perfect Parry fills two small squares of the Beta Gauge (versus one square from attacking)</li>
+  <li>Staggers the enemy&apos;s balance, contributing to the stagger meter that eventually exposes their weak point</li>
+  <li>Creates a brief window for a punish counterattack with Square or Triangle</li>
+</ul>
+<p>The key insight: <strong>Perfect Parry is significantly more efficient at building Beta Energy than attacking.</strong> Parrying fills Beta twice as fast per action as striking. Against enemies with sustained attack patterns, a parry-focused approach builds Beta faster while simultaneously draining the enemy&apos;s stagger bar.</p>
+
+<h2 class="sub-title">Blink (Perfect Dodge)</h2>
+<p>Blink is the timed Perfect Dodge, executed by pressing Circle at the precise moment a non-blockable attack would connect. A successful Blink:</p>
+<ul class="guide-list">
+  <li>Avoids all damage from that attack</li>
+  <li>Generates Burst Energy (the resource for Burst Skills)</li>
+  <li>Exposes the enemy&apos;s weak point briefly, enabling a high-damage Drone shot</li>
+  <li>Can trigger the Repulse variant if executed with directional input</li>
+</ul>
+
+<h2 class="sub-title">Repulse</h2>
+<p>Repulse is a directional variant of Blink where Eve deflects the attack back toward the enemy. It provides all Blink benefits (Burst Energy, balance damage) plus additional counterattack momentum. Some enemy attacks are designed to be Repulsed rather than simply dodged &mdash; the timing window is similar but the directionality requires being positioned to deflect rather than simply evade.</p>
+
+<div class="callout tip">
+  <div class="callout-title">Exospine Assistance for Timing</div>
+  <p>If Perfect Parry and Blink timing feel too tight, the <strong>Reflex-Type Exospine</strong> extends the timing windows for both mechanics. It is not a permanent solution &mdash; the tighter windows of the base game are achievable with practice &mdash; but equipping it during the learning phase while developing the muscle memory for each mechanic is a legitimate strategy. The Focus Boost from Matrix 11 also extends parry windows. Use these assistances while learning; remove them when the timing becomes natural.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S06 -->
+<section class="section" id="s06">
+<h2 class="section-title"><span class="sec-num">&sect;06</span> Beta Energy &amp; Beta Skills</h2>
+<div class="lore-block">
+  <p>The Beta system was not named by poets. It was named by engineers who considered Greek letters a reasonable shorthand for &ldquo;the second thing in a sequence that requires the first thing to work.&rdquo; The first thing is attacking. The second thing is the attack that only becomes possible after sufficient attacking. This sounds circular because it is. The engineers considered this a feature rather than a limitation. They were correct, but they would not have survived long enough to appreciate it personally.</p>
+  <span class="source">// COLONY WEAPONS DEVELOPMENT ARCHIVE &middot; BLOOD EDGE SYSTEMS DOCUMENTATION //</span>
+</div>
+
+<p>Beta Energy is the first special resource in Stellar Blade&apos;s dual-gauge combat economy. It fills as Eve attacks and parries, and it is spent to execute Beta Skills &mdash; powerful, stylised special attacks with specific tactical applications that normal attacks cannot replicate.</p>
+
+<h2 class="sub-title">Beta Gauge Mechanics</h2>
+<ul class="guide-list">
+  <li><strong>Attacks fill Beta:</strong> Each successful hit fills one small segment of the Beta Gauge.</li>
+  <li><strong>Perfect Parry fills Beta faster:</strong> Each successful Perfect Parry fills two segments. This double rate is the fundamental reason parry-heavy styles generate Beta faster than pure offensive play.</li>
+  <li><strong>The Beta Gauge does not decay:</strong> Unlike some action games where special meter drains over time, your accumulated Beta stays until spent. There is no urgency to use it immediately.</li>
+  <li><strong>Used Beta is lost even on miss:</strong> If you execute a Beta Skill that fails to connect with a target, the Beta Energy is consumed regardless. Use Beta Skills when they will connect.</li>
+</ul>
+
+<h2 class="sub-title">Key Beta Skills</h2>
+<div class="unit-grid">
+  <div class="unit-card beta-card">
+    <div class="unit-name">Slash</div>
+    <span class="unit-type">SINGLE TARGET &middot; HIGH BALANCE DAMAGE &middot; EARLY UNLOCK</span>
+    <p>A fast, powerful single-target slash that deals significant balance damage. Excellent for building enemy stagger against isolated targets. One of the first Beta Skills available and reliably effective throughout the game. Its quick animation makes it safe to use even in mid-combo sequences.</p>
+  </div>
+  <div class="unit-card beta-card">
+    <div class="unit-name">Triplet</div>
+    <span class="unit-type">MULTI-HIT &middot; BALANCE DAMAGE &middot; CLOSE RANGE</span>
+    <p>A three-hit combo skill that deals excellent balance damage per Beta spent. Highly recommended against Gigas and other large enemies whose stagger bars benefit from multi-hit application. Low Beta cost relative to impact makes it efficient for stagger-focused combat approaches.</p>
+  </div>
+  <div class="unit-card beta-card">
+    <div class="unit-name">Arche</div>
+    <span class="unit-type">AOE &middot; CROWD CONTROL &middot; MULTIPLE TARGETS</span>
+    <p>An area-of-effect Beta Skill that damages multiple enemies around Eve simultaneously. Indispensable when surrounded by groups of Naytiba. Deals less single-target balance damage than Slash but its crowd control value in multi-enemy encounters exceeds any single-target option.</p>
+  </div>
+  <div class="unit-card beta-card">
+    <div class="unit-name">Judgment Wave</div>
+    <span class="unit-type">RANGED &middot; LONG DISTANCE &middot; HIGH DAMAGE</span>
+    <p>A long-range energy slash that travels forward from Eve&apos;s position. Useful against enemies at range or those using extended windup attacks where closing to melee is risky. Has a cinematic quality that reflects the game&apos;s Devil May Cry inspiration. Excellent for initiating encounters before enemies close distance.</p>
+  </div>
+</div>
+
+<div class="callout beta">
+  <div class="callout-title">Beta Skill Selection Strategy</div>
+  <p>You can equip four Beta Skills simultaneously (displayed in the lower right). Selection should be situational: always carry one AOE (Arche) for grouped encounters, one high-balance-damage single-target (Slash or Triplet) for boss fights, and two situational picks based on the region you are exploring. Do not try to have one &ldquo;optimal&rdquo; loadout &mdash; the game is designed for you to swap skills at camps based on what you are about to face. Use that flexibility.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S07 -->
+<section class="section" id="s07">
+<h2 class="section-title"><span class="sec-num">&sect;07</span> Burst Energy &amp; Burst Skills</h2>
+<div class="lore-block">
+  <p>The Burst state was documented in Airborne training as &ldquo;the consequence of perfect engagement with incoming threat vectors.&rdquo; What this means in practice is that Eve fights perfectly, for a while, and the perfection builds toward something. The engineers called this Burst. The soldiers called it the moment when the fight stops being a fight and becomes something else. They were not wrong. They were also not explaining it in a way the engineers found useful.</p>
+  <span class="source">// COLONY AIRBORNE TRAINING PROTOCOL &middot; SECTION 11: BURST ENGAGEMENT DOCTRINE //</span>
+</div>
+
+<p>Burst Energy is the second special resource in Stellar Blade&apos;s combat economy. Where Beta Energy is built through sustained offensive action and parrying, Burst Energy is generated specifically through <strong>precision defensive actions</strong>: Perfect Dodges (Blink), Repulse, and expending Beta Energy through Beta Chain.</p>
+
+<h2 class="sub-title">How Burst Energy Is Generated</h2>
+<ul class="guide-list">
+  <li><strong>Perfect Dodge (Blink):</strong> The primary Burst generator. Each successful Blink adds Burst Energy. The better your dodge timing, the faster your Burst meter fills.</li>
+  <li><strong>Repulse:</strong> Also generates Burst Energy alongside its other benefits.</li>
+  <li><strong>Beta Chain:</strong> Using Beta Skills in combo chains contributes to Burst Energy generation. This creates a resource loop where Beta investment eventually feeds Burst capability.</li>
+</ul>
+
+<h2 class="sub-title">Burst Skills &mdash; Access and Function</h2>
+<p>Burst Skills become available after defeating the Stalker in Matrix 11 (a mid-game story milestone). They are unlocked at base camp kiosks using SP, separate from the Beta Skill system. Burst Skills are powerful, often cinematic attacks that provide temporary buffs or deal massive burst damage to single targets or groups.</p>
+
+<div class="unit-grid">
+  <div class="unit-card burst-card">
+    <div class="unit-name">Blood Drive</div>
+    <span class="unit-type">SINGLE TARGET &middot; MASSIVE DAMAGE &middot; CORE BURST</span>
+    <p>High single-target damage Burst Skill. One of the first Burst Skills unlocked and one of the most useful throughout the game. Use against isolated priority targets or during boss stagger windows when maximum damage application is needed. The go-to Burst Skill for boss engagements.</p>
+  </div>
+  <div class="unit-card burst-card">
+    <div class="unit-name">Rage</div>
+    <span class="unit-type">BUFF &middot; ATTACK BOOST &middot; TEMPORARY ENHANCEMENT</span>
+    <p>A temporary attack power increase rather than a direct damage skill. Activating Rage during a boss fight or tough elite encounter multiplies the damage of every subsequent hit for its duration. Pair with Beta Skills and Drone fire during Rage for dramatically amplified total output.</p>
+  </div>
+  <div class="unit-card burst-card">
+    <div class="unit-name">Counter</div>
+    <span class="unit-type">REACTIVE &middot; DAMAGE REFLECT &middot; DEFENSIVE</span>
+    <p>A Burst Skill that converts incoming damage into reflected counter-damage. Requires timing to execute properly but rewards precision with both defensive and offensive value simultaneously. Particularly effective against enemy attack strings where normal blocking is inefficient.</p>
+  </div>
+  <div class="unit-card burst-card">
+    <div class="unit-name">Thunderclap</div>
+    <span class="unit-type">AOE &middot; CROWD CLEAR &middot; AREA DAMAGE</span>
+    <p>Area-of-effect Burst Skill equivalent of Arche. Clears groups of Naytiba with significant damage across a wide area. The crowd-control Burst equivalent &mdash; pair with Blood Drive for a toolkit that handles both isolated and grouped encounters.</p>
+  </div>
+</div>
+
+<div class="callout burst">
+  <div class="callout-title">Burst Is Your Emergency System</div>
+  <p>Think of Burst Energy and Burst Skills as your emergency toolkit. They are generated by being in danger (dodging attacks perfectly) and spent on responses that dramatically change the engagement state. If you are struggling with a boss, focus on Perfect Dodging every attack rather than attacking &mdash; you will build Burst energy through the evasion and can then unload a Blood Drive or Rage-amplified sequence at the right moment. The defensive path paradoxically builds toward the most aggressive offensive tools.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S08 -->
+<section class="section" id="s08">
+<h2 class="section-title"><span class="sec-num">&sect;08</span> The Drone &amp; Ranged Combat</h2>
+<p>Eve&apos;s drone provides ranged combat capability that complements but does not replace her melee system. After defeating Gigas (the first Alpha Naytiba in Eidos 7) and returning to Xion, Lily upgrades the drone from a basic unit to a fully functional combat support system with multiple ammunition types.</p>
+
+<h2 class="sub-title">Ammunition Types</h2>
+<table class="data-table">
+  <thead><tr><th>Ammunition</th><th>Effect</th><th>Best Used Against</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Normal Slugs</strong></td><td>Standard ranged damage; unlimited supply</td><td>Weak points; interrupted boss attacks; chip damage during approach</td></tr>
+    <tr><td><strong>Explosive Rounds</strong></td><td>Area effect; higher damage per shot; limited ammo</td><td>Groups of smaller Naytiba; armoured sections; clustered weak points</td></tr>
+    <tr><td><strong>Shotgun Rounds</strong></td><td>Wide spread; multiple hits at close range; limited ammo</td><td>Close-range engagement; balance damage against single targets</td></tr>
+    <tr><td><strong>Stinger Missiles</strong></td><td>Homing; high single-target damage; limited ammo</td><td>Fast-moving targets; aerial enemies; boss priority targets</td></tr>
+    <tr><td><strong>Blaster Rail</strong></td><td>Piercing; highest single-shot damage; very limited ammo</td><td>Heavily armoured sections; weak point strike when exposed; reserved for critical moments</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sub-title">Weak Point Targeting</h2>
+<p>When an enemy is staggered (balance depleted) or when a successful Blink/Repulse is executed, the enemy&apos;s <strong>weak point is exposed</strong> briefly. Shooting a Drone round at the exposed weak point during this window deals dramatically amplified damage &mdash; significantly more than any standard attack. Building a habit of immediately switching to Drone fire upon seeing a weak point exposed is one of the highest-return combat habits in the game.</p>
+
+<div class="callout tip">
+  <div class="callout-title">The Drone Upgrade Priority</div>
+  <p>Drone Upgrade Modules unlock additional ammo types and expand ammo capacity. The capacity expansions &mdash; particularly for Stinger Missiles and Blaster Rail &mdash; provide the most consistent combat value. More ammo means more weak point opportunities converted to maximum damage. Upgrade the Drone at Lily or at Repair Consoles in camps as Upgrade Modules become available, prioritising capacity before specialised ammo types.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S09 -->
+<section class="section" id="s09">
+<h2 class="section-title"><span class="sec-num">&sect;09</span> Enemy Balance &amp; Stagger</h2>
+<p>Every enemy in Stellar Blade has a <strong>Balance bar</strong> beneath their health. Depleting this bar staggers the enemy &mdash; momentarily interrupting their attack pattern, exposing their weak point to Drone fire, and creating a window for high-damage follow-up attacks. Understanding what depletes Balance efficiently and how to exploit the stagger window is the foundation of efficient combat against all enemy types.</p>
+
+<h2 class="sub-title">What Depletes Balance</h2>
+<ul class="guide-list">
+  <li><strong>Perfect Parry:</strong> Each successful parry deals significant Balance damage alongside its other benefits. Parry-heavy play depletes Balance rapidly against attack-heavy enemies.</li>
+  <li><strong>Beta Skills:</strong> Most Beta Skills deal substantial Balance damage in addition to health damage. Balance-focused Beta Skills (Triplet, Slash) are particularly efficient for stagger setup.</li>
+  <li><strong>Strong Attacks (Triangle):</strong> Heavy attacks deal more Balance damage than quick attacks. Incorporating charged Strong Attacks into combos accelerates Balance depletion.</li>
+  <li><strong>Repulse:</strong> Successful Repulse adds meaningful Balance damage alongside its defensive value.</li>
+</ul>
+
+<h2 class="sub-title">The Stagger Window</h2>
+<p>When Balance is fully depleted, the enemy staggers briefly and their weak point becomes visible. This is the critical window for:</p>
+<ul class="guide-list">
+  <li>Immediate Drone fire targeting the exposed weak point for massive damage</li>
+  <li>A high-damage Burst Skill if your Burst meter has sufficient charge</li>
+  <li>Following up with strong attack strings before the enemy recovers</li>
+</ul>
+
+<div class="callout warning">
+  <div class="callout-title">Balance Resets Between Phases</div>
+  <p>Boss enemies reset their Balance bar between attack phases and health thresholds. Do not assume that depleting a boss&apos;s Balance once means they are permanently staggerable at lower cost &mdash; each phase effectively begins the Balance buildup process again. Budget your Beta usage accordingly: save significant Beta Skill investment for the stagger-into-punish sequence rather than spending Beta Skills wastefully between staggers.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S10 -->
+<section class="section" id="s10">
+<h2 class="section-title"><span class="sec-num">&sect;10</span> The Five Skill Trees</h2>
+<div class="lore-block">
+  <p>The Colony does not give its soldiers all their capabilities at once. This is described in training materials as &ldquo;progressive capability development aligned with operational reality.&rdquo; What it means is that you learn what the mission requires as the mission reveals what it requires. The skills that Eve develops in the field were not theoretical prior to deployment. They were potential. The Naytiba make them actual.</p>
+  <span class="source">// COLONY AIRBORNE TRAINING PROTOCOL &middot; SECTION 2: PROGRESSIVE DEVELOPMENT FRAMEWORK //</span>
+</div>
+
+<p>Stellar Blade has <strong>five skill trees</strong>: Attack, Beta, Burst, Tachy, and Survival. Not all are available from the start. Attack, Beta, and Survival are unlocked initially. Burst unlocks after defeating the Stalker in Matrix 11. Tachy unlocks through story progression linked to the Tachy character. Skills are purchased with <strong>SP (Skill Points)</strong> earned by defeating enemies or found in the environment.</p>
+
+<h2 class="sub-title">Attack Tree</h2>
+<p>The Attack tree contains Eve&apos;s core melee expansion skills, combo extensions, and movement-attack options. Key skills:</p>
+<ul class="guide-list">
+  <li><strong>Ambush (1 SP):</strong> Instantly kills eligible enemies with a stealth attack from behind or above. One of the highest-value 1-SP investments in the game. Enables bypassing weak enemies entirely and earns the Silent Executioner achievement milestones.</li>
+  <li><strong>Air Combo Extensions:</strong> Aerial attack launchers and follow-ups that extend combat into the vertical axis. More stylistic than optimal for most encounters but valuable against certain enemy types.</li>
+  <li><strong>Charged Attack Enhancements:</strong> Improve charged Triangle attacks for greater Balance damage. Directly accelerates stagger timing against boss enemies.</li>
+  <li><strong>Dash Attack:</strong> Enables the dash-forward-attack sequence after blocking for aggressive counter-pressure.</li>
+</ul>
+
+<h2 class="sub-title">Beta Tree</h2>
+<p>Unlocks and upgrades Beta Skills. The Beta tree is the source of all Beta Skill acquisition &mdash; new skills are purchased here and existing skills can be upgraded for reduced Beta cost, faster animation, or additional effects.</p>
+
+<h2 class="sub-title">Survival Tree</h2>
+<p>Defense, recovery, and utility skills. Contains:</p>
+<ul class="guide-list">
+  <li>HP maximum increases</li>
+  <li>Guard improvements (reduced damage while blocking)</li>
+  <li>Recovery skills (HP restoration on execution, performance after low-HP situations)</li>
+  <li>Dodge improvements including Double Dodge for additional evasion options</li>
+</ul>
+
+<h2 class="sub-title">Burst Tree</h2>
+<p>Unlocked after the Stalker encounter. Contains all Burst Skill unlocks and their upgrade paths. Blood Drive and Rage are early-access Burst Skills worth unlocking immediately upon tree access.</p>
+
+<h2 class="sub-title">Tachy Tree</h2>
+<p>Story-unlocked tree providing access to Tachy Mode abilities &mdash; a high-powered combat transformation with unique attack chains unavailable in Eve&apos;s standard kit. Details in Chapter 12.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S11 -->
+<section class="section" id="s11">
+<h2 class="section-title"><span class="sec-num">&sect;11</span> Priority Skill Investments</h2>
+<p>The skill trees contain more options than can be afforded in a single playthrough without dedicated SP farming. Knowing which skills to prioritise early determines how smooth the mid-game transition feels. This chapter provides a prioritised investment guide for the three trees available at game start.</p>
+
+<h2 class="sub-title">First Investment Priorities (Early Game)</h2>
+<div class="phase early">
+  <div class="phase-title">Attack Tree &mdash; First Purchases</div>
+  <p><strong>Ambush (1 SP):</strong> Buy immediately. Instant kill from stealth on eligible enemies saves HP and SP over the course of the game. Use it before any engagement where stealth approach is feasible. Against Naytiba that can be ambushed, it is a free kill that costs one SP once.<br><br>
+  <strong>Dash Attack / Block Counter:</strong> The block-into-dash-attack option is a reliable safe punish that works against almost every enemy type. Prioritise this for reliable offensive output after defensive actions.<br><br>
+  <strong>Charged Attack upgrades:</strong> Even a single level of Charged Attack improvement meaningfully accelerates Balance depletion against boss enemies. Buy at least one level before the first major Alpha Naytiba encounter.</p>
+</div>
+
+<div class="phase early">
+  <div class="phase-title">Survival Tree &mdash; First Purchases</div>
+  <p><strong>HP upgrades:</strong> Straightforward; more HP means more margin for learning. Stellar Blade punishes mistakes with real damage; having additional HP to absorb those mistakes while building pattern recognition is directly useful, not padding.<br><br>
+  <strong>Double Dodge:</strong> A second dodge in quick succession allows escaping complex multi-hit attack strings that a single Blink cannot cover. Essential for later encounters where attack strings chain faster than a single dodge can clear. Prioritise this in the Survival tree after initial HP investment.</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">Beta Tree &mdash; Investment Strategy</div>
+  <p>Do not spread early Beta SP across many skills at base level. Instead, pick two or three Beta Skills that match your developing playstyle and invest in upgrading those to reduce their Beta cost or improve their animation speed. A Slash at 50% Beta cost is significantly more valuable than four different Beta Skills at base cost. Slash and Triplet upgrades for boss stagger work; Arche for crowd situations. Depth over breadth in the Beta tree early game.</p>
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">SP From the Environment</div>
+  <p>SP is earned from killing enemies but also found in the environment inside caches, on corpses, and as mission rewards. Exploring thoroughly &mdash; opening all crates, investigating all side paths &mdash; provides a meaningful supplement to combat SP income. The difference between a pilot who searches thoroughly and one who runs through areas can be 20+ SP per region, which translates to several significant skill upgrades per playthrough.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S12 -->
+<section class="section" id="s12">
+<h2 class="section-title"><span class="sec-num">&sect;12</span> Tachy &amp; the Tachy Mode</h2>
+<div class="lore-block">
+  <p>Tachy was sent on the same mission. She arrived differently. The records of what she encountered before Eve reached the surface are incomplete, and the Colony&apos;s incomplete records are not accidents. Tachy fights the way someone fights when survival has required them to solve every problem that Eve was briefed to expect, and the ones she was not. The training manuals do not cover this. Some things have to be learned from the person, not the manual.</p>
+  <span class="source">// COLONY PERSONNEL FILE &middot; TACHY &middot; [PORTIONS REDACTED] //</span>
+</div>
+
+<p>Tachy is another Airborne soldier whose story intersection with Eve&apos;s represents one of the game&apos;s significant narrative beats. Her mechanical impact is equally significant: unlocking Tachy-related content opens the Tachy skill tree and, through progression, access to <strong>Tachy Mode</strong> &mdash; a temporary combat transformation with a completely different attack style and capability set.</p>
+
+<h2 class="sub-title">Tachy Mode</h2>
+<p>Tachy Mode activates as a special state with a dedicated gauge. In Tachy Mode:</p>
+<ul class="guide-list">
+  <li>Eve&apos;s movement speed increases dramatically</li>
+  <li>A distinct attack chain with different animations and hit properties becomes available</li>
+  <li>Unique Tachy skill effects apply that are inaccessible outside this mode</li>
+  <li>The mode has a time limit; the gauge depletes during use</li>
+</ul>
+<p>Tachy Mode is best used during boss encounters when the enemy has been staggered and the punish window is open. Entering Tachy Mode during a stagger phase and executing its full attack chain before the mode times out produces one of the game&apos;s highest single-window damage outputs. The Tachy tree skill investments that extend the mode duration and improve its attack chain are among the most impactful late-game skill purchases available.</p>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S13 -->
+<section class="section" id="s13">
+<h2 class="section-title"><span class="sec-num">&sect;13</span> The Blood Edge &amp; Upgrades</h2>
+<div class="lore-block">
+  <p>The Blood Edge was named before its first combat deployment. The engineers knew what it was for. The name was honest in a way that mission briefing documents rarely manage. It is an edge for drawing blood. Every upgrade to it, every Core integrated into its structure, is an acknowledgment of the same honest purpose. The Naytiba do not negotiate. The Blood Edge does not need to.</p>
+  <span class="source">// COLONY WEAPONS DEVELOPMENT ARCHIVE &middot; BLOOD EDGE PRODUCTION NOTES //</span>
+</div>
+
+<p>The Blood Edge is Eve&apos;s primary melee weapon. Unlike many action games where weapons are swapped out for newer models, the Blood Edge is Eve&apos;s weapon for the entire game &mdash; it is upgraded, not replaced. Understanding the upgrade system and how to acquire upgrade materials is essential for keeping pace with the game&apos;s escalating enemy difficulty.</p>
+
+<h2 class="sub-title">Weapon Core Upgrades</h2>
+<p>The Blood Edge&apos;s damage is increased by integrating <strong>Weapon Cores</strong> through the Repair Console at camps or through Lily at the base. Weapon Cores come from:</p>
+<ul class="guide-list">
+  <li><strong>Boss kills (Alpha Naytibas):</strong> Each major boss drops one Weapon Core upon defeat. These are the primary upgrade currency.</li>
+  <li><strong>Optional bosses / Side quests:</strong> Optional Alpha Naytibas found in side quests drop <strong>Damaged Weapon Cores</strong>. Two Damaged Weapon Cores can be exchanged for one working Core at the vendor D1G-g2r.</li>
+</ul>
+<p>This means the number of Blood Edge upgrades available in a single playthrough is directly tied to how many bosses &mdash; mandatory and optional &mdash; you defeat. Completing all optional Alpha Naytiba encounters provides a meaningful weapon power advantage that compounds across the late game.</p>
+
+<div class="callout xion">
+  <div class="callout-title">Optional Boss Priority</div>
+  <p>Optional Alpha Naytibas are found through side quests and environmental exploration. They are harder than their area suggests (they are designed as challenge encounters rather than narrative escalation) but their Damaged Weapon Core drops make them worth pursuing. Finding and defeating all optional Alphas before the final confrontation gives you the maximum possible Blood Edge upgrade level going into endgame content. Track optional bosses through the Naytiba Data collection system.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S14 -->
+<section class="section" id="s14">
+<h2 class="section-title"><span class="sec-num">&sect;14</span> Exospines</h2>
+<div class="lore-block">
+  <p>The Exospine is described in technical documents as a &ldquo;modular sub-dermal performance enhancement system.&rdquo; What it is in practice is the second spine. The one that makes the first one survivable. Soldiers who wore Exospines during the original conflict were engaging in something the Colony&apos;s medical division classified, with characteristic bureaucratic understatement, as &ldquo;statistically marginal survival scenarios.&rdquo; The survivors wore yellow. The ones who did not wear yellow went into the official record as &ldquo;mission complete.&rdquo;</p>
+  <span class="source">// COLONY MEDICAL DIVISION &middot; EXOSPINE PERFORMANCE ASSESSMENT &middot; CLASSIFIED //</span>
+</div>
+
+<p>Exospines are the game&apos;s primary equipment pieces. There are 12 Exospines total (plus MK2 variants in New Game Plus), each providing a different set of passive bonuses that fundamentally shape how you engage with the combat system. Unlike most RPG equipment, Exospines are not simply better or worse &mdash; they are better or worse <em>for a specific playstyle</em>.</p>
+
+<h2 class="sub-title">Exospine Profiles</h2>
+<div class="unit-grid">
+  <div class="unit-card eve-card">
+    <div class="unit-name">Reflex-Type</div>
+    <span class="unit-type">TIMING ASSISTANCE &middot; PARRY/DODGE WINDOWS</span>
+    <p>Extends the timing windows for Perfect Parry and Blink. The most recommended Exospine for players still developing parry and dodge timing. As a skill aid it has diminishing returns once the timing becomes natural, but during the learning phase it bridges the gap between understanding what to do and being able to execute it reliably.</p>
+  </div>
+  <div class="unit-card burst-card">
+    <div class="unit-name">Impact-Type</div>
+    <span class="unit-type">CRITICAL RATE &middot; CHAIN DAMAGE</span>
+    <p>Increases critical hit rate and causes critical hits to unleash chained energy damage to nearby enemies. A strong offensive Exospine for group encounters where critical hits can cascade through packed enemy formations. Crit Rate 9.5% with chain effect on multi-enemy scenarios.</p>
+  </div>
+  <div class="unit-card eve-card">
+    <div class="unit-name">Recovery-Type</div>
+    <span class="unit-type">HP RESTORATION &middot; SURVIVAL</span>
+    <p>Provides HP restoration on execution kills and potentially on successful parrying at low HP. The survivability Exospine of choice for players who find themselves frequently using executions or who want a safety net during the learning phase of difficult boss encounters.</p>
+  </div>
+  <div class="unit-card beta-card">
+    <div class="unit-name">Chain-Type</div>
+    <span class="unit-type">BETA CHAIN &middot; COMBO EXTENSION</span>
+    <p>Enhances Beta Chain attack chains, allowing more hits in a single Beta Chain sequence before the chain expires. Best for players who have invested heavily in Beta Skills and want to maximise Beta investment in each combat engagement. Requires Nano Elements to upgrade through multiple tiers.</p>
+  </div>
+  <div class="unit-card neutral-card">
+    <div class="unit-name">Protection-Type</div>
+    <span class="unit-type">DAMAGE REDUCTION &middot; SHIELD BOOST &middot; SITUATIONAL</span>
+    <p>10% damage reduction from all sources, increased shield capacity, and a chance to restore HP when guarding or parrying at low HP (&lt;20%). A situational defensive Exospine most useful in the game&apos;s most punishing boss encounters. Not universally optimal but very effective for specific high-damage encounters.</p>
+  </div>
+  <div class="unit-card neutral-card">
+    <div class="unit-name">Camouflage-Type</div>
+    <span class="unit-type">STEALTH &middot; AMBUSH ENHANCEMENT</span>
+    <p>Reduces enemy field of view, enabling approach from wider angles without detection. Provides attack bonus and HP restoration on Ambush or Execution. Best for players investing heavily in the Ambush skill who want to maximise stealth approaches. Enables consistent one-shot kills through Ambush against eligible enemies that would normally be out of approach angle.</p>
+  </div>
+</div>
+
+<h2 class="sub-title">Upgrading Exospines</h2>
+<p>Exospines are upgraded using <strong>Nano Elements</strong> at Repair Consoles in camps or via Lily. Each tier requires progressively more Nano Elements and introduces Extreme Nano Elements at higher levels. The Chain-Type exemplifies the typical upgrade cost: Tier 2 costs 100 Nano Elements + 50 Advanced; Tier 3 costs 150 Nano + 75 Advanced + 25 Extreme + 1,000 gold. Budget Nano Elements carefully &mdash; spreading them across all Exospines is less effective than maximising two or three that match your playstyle.</p>
+
+<div class="callout eve">
+  <div class="callout-title">Exospine Selection Philosophy</div>
+  <p>The Reflex-Type is the broadly recommended default for the first half of the game while parry and dodge timing develop. Transition to either Recovery-Type (if HP management is your primary challenge) or Impact-Type (if you are consistently landing critical combos and want chain damage) once the timing windows no longer require assistance. Run Protection-Type for specific high-damage boss fights you are struggling with; it is a situational tool rather than a permanent loadout choice. Build Nano Element investment depth on two Exospines rather than spread across all twelve.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S15 -->
+<section class="section" id="s15">
+<h2 class="section-title"><span class="sec-num">&sect;15</span> Nano Suits &amp; Gear</h2>
+<p>Nano Suits are Eve&apos;s cosmetic outfits &mdash; 40 are available in the base game, with more added through updates. They provide no combat stat bonuses (they are purely aesthetic) but collecting them unlocks the Nano Suit Collector achievement and contributes to the 100% completion requirement for the secret ending. More importantly, they represent the game&apos;s character expression system and are frequently highlighted as one of Stellar Blade&apos;s distinctive features.</p>
+
+<h2 class="sub-title">Acquiring Nano Suits</h2>
+<p>Nano Suits are obtained through:</p>
+<ul class="guide-list">
+  <li><strong>Exploration and discovery:</strong> Hidden in the world in caches, locked rooms, and optional areas</li>
+  <li><strong>Side quest completion:</strong> Several Nano Suits are rewards for completing specific side quests</li>
+  <li><strong>Crafting:</strong> Some suits require Nano Elements and other materials to produce</li>
+  <li><strong>NPC interactions:</strong> Specific characters provide suits as gifts through relationship development</li>
+  <li><strong>Vending machines:</strong> Certain suits are purchasable at specific locations including Xion</li>
+</ul>
+
+<div class="callout warning">
+  <div class="callout-title">Points of No Return and Nano Suit Collection</div>
+  <p>Several Nano Suits are locked to specific areas that become inaccessible after story progression. The first major point of no return locks out Xion after completing Abyss Levoire. The second locks out additional areas after Spire 4. If pursuing the 100% completion ending or the Nano Suit Collector trophy, ensure you have collected all available suits in each area before advancing past these thresholds. See Chapter 24 for the full point-of-no-return breakdown.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S16 -->
+<section class="section" id="s16">
+<h2 class="section-title"><span class="sec-num">&sect;16</span> Nano Elements &amp; Crafting</h2>
+<p>Nano Elements are the primary upgrade material in Stellar Blade. They come in three tiers &mdash; standard, Advanced, and Extreme &mdash; and are required for upgrading both Exospines and crafting certain Nano Suits. Managing Nano Element acquisition and expenditure is a parallel resource game running alongside the main combat progression.</p>
+
+<h2 class="sub-title">Nano Element Sources</h2>
+<ul class="guide-list">
+  <li><strong>Crates and containers in the environment:</strong> The most consistent source; thorough exploration of every area yields meaningful Nano Element quantities across a playthrough.</li>
+  <li><strong>Enemy drops:</strong> Higher-level Naytiba and Alpha Naytibas drop Nano Elements. The difficulty-to-drop ratio favours advanced enemy farming for Advanced and Extreme tiers.</li>
+  <li><strong>D1G-g2r vendor in Xion and the Wasteland:</strong> Sells Nano Elements for credits. Use as a supplement when specific upgrade projects require more than exploration has provided, but not as a primary source since credits also have other uses.</li>
+</ul>
+
+<h2 class="sub-title">Nano Element Budget Planning</h2>
+<p>The decision of which Exospines to upgrade with limited Nano Elements should be made early and maintained consistently:</p>
+<ul class="guide-list">
+  <li>Choose <strong>two primary Exospines</strong> that suit your playstyle and upgrade them to maximum tier as a priority.</li>
+  <li>Reserve Standard Nano Elements for Tier 1&ndash;2 upgrades and save Advanced/Extreme for Tier 3.</li>
+  <li>Do not spend Nano Elements on Nano Suit crafting until your priority Exospines are at desired upgrade level.</li>
+  <li>The trophy for upgrading 10 Exospines (&ldquo;Perfect Exospine&rdquo;) spans two playthroughs in most cases due to MK2 variants being available only in New Game Plus.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S17 -->
+<section class="section" id="s17">
+<h2 class="section-title"><span class="sec-num">&sect;17</span> Xion &amp; the World</h2>
+<div class="lore-block">
+  <p>Xion was built by people who had learned to build things that the Naytiba would not immediately notice or immediately be able to destroy. This required compromises that earlier civilisations would not have considered reasonable. The result is a city that does not look like any city that existed before the conflict. It looks like something that survived. There is a difference, and the people who live in Xion understand it in ways that visitors from the Colony do not, because the Colony has never had to survive. It has only had to plan.</p>
+  <span class="source">// XION HISTORICAL ARCHIVE &middot; CITY DEVELOPMENT RECORD &middot; YEAR 14 AFTER FALL //</span>
+</div>
+
+<p>Xion is the game&apos;s primary hub: the last surviving city, home to all major NPC interactions, upgrade infrastructure, side quest origination, and the emotional anchor of the game&apos;s human element. Beyond Xion, the game features nine distinct regions with unique visual identities, enemy populations, and environmental challenges.</p>
+
+<h2 class="sub-title">The Nine Regions</h2>
+<table class="data-table">
+  <thead><tr><th>Region</th><th>Character</th><th>Notable Content</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Xion / Eidos 7</strong></td><td>The city; ruins of the old world; starting area</td><td>All major NPCs; upgrade hub; Gigas boss; extensive side quest network</td></tr>
+    <tr><td><strong>Wasteland</strong></td><td>Open desert; harsh environment; mid-game hub</td><td>Altar (second base camp); D1G-g2r vendor in wasteland; vast exploration area</td></tr>
+    <tr><td><strong>Altess Levoire</strong></td><td>Flooded ruins; water environments</td><td>Unique traversal mechanics; specific Naytiba types; environmental puzzle elements</td></tr>
+    <tr><td><strong>Abyss Levoire</strong></td><td>Deep subterranean; alien architecture</td><td>First point-of-no-return threshold; unique boss encounters</td></tr>
+    <tr><td><strong>Matrix 11</strong></td><td>Industrial/technological ruins</td><td>Stalker boss; Burst Skill system unlock; significant story beats</td></tr>
+    <tr><td><strong>Great Desert</strong></td><td>Extreme open terrain; heat hazards</td><td>Largest open area; environmental exploration emphasis; collectible density</td></tr>
+    <tr><td><strong>Spire 4</strong></td><td>Vertical structure; high-altitude combat</td><td>Second point-of-no-return; late-game story content</td></tr>
+    <tr><td><strong>Eidos 9</strong></td><td>Final story region</td><td>Endgame content; all endings contingent; final bosses</td></tr>
+  </tbody>
+</table>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S18 -->
+<section class="section" id="s18">
+<h2 class="section-title"><span class="sec-num">&sect;18</span> Supply Camps &amp; Bases</h2>
+<p>Supply Camps are the game&apos;s save points and upgrade hubs distributed throughout each region. Activating a camp serves several functions simultaneously:</p>
+<ul class="guide-list">
+  <li><strong>Saves your progress:</strong> The game saves automatically at camp activation; Eve also heals.</li>
+  <li><strong>Restores consumables:</strong> Health recovery items and ammo refill.</li>
+  <li><strong>Provides Skill Kiosks:</strong> Where SP is spent to unlock and upgrade skills from all available trees.</li>
+  <li><strong>Provides Repair Consoles:</strong> Where Nano Elements are spent to upgrade Exospines.</li>
+  <li><strong>Provides fast travel:</strong> Once a camp is activated, it becomes a fast travel destination throughout the region.</li>
+</ul>
+
+<div class="callout tip">
+  <div class="callout-title">Camp Activation Priority</div>
+  <p>Activate every camp you find immediately, regardless of whether you need to use its services in that moment. Camp activation saves progress, extends fast travel options, and ensures that if you die shortly after discovering a new area, you respawn at the most recently activated camp rather than backtracking through cleared territory. Never pass a camp without activating it. The habit pays consistent dividends across the entire playthrough.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S19 -->
+<section class="section" id="s19">
+<h2 class="section-title"><span class="sec-num">&sect;19</span> Side Quests &amp; Collectibles</h2>
+<p>Stellar Blade has 35 Side Quests that unlock in Xion and progress with the main story. It also has 27 Bulletin Board requests accepted in Xion. Together, these represent a substantial parallel content layer that provides SP, Nano Elements, Nano Suit unlocks, and story content that contextualises Xion&apos;s survivors in depth beyond what the main quest allows.</p>
+
+<h2 class="sub-title">Key Collectible Systems</h2>
+<table class="data-table">
+  <thead><tr><th>Collectible</th><th>Count</th><th>Purpose</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Soda Cans</strong></td><td>49 across all maps</td><td>Trophy progress; lore; NPC interactions in Xion</td><td>Tracked through the vending machine in Xion; missable if areas lock out</td></tr>
+    <tr><td><strong>Naytiba Data</strong></td><td>One per enemy type</td><td>100% completion; lore on Naytiba biology; unlocks Naytiba Research trophy</td><td>Acquired by defeating each unique Naytiba type first time</td></tr>
+    <tr><td><strong>Memory Sticks / Documents</strong></td><td>200+ total</td><td>Lore; story context; 100% completion</td><td>Found in the environment; check all containers</td></tr>
+    <tr><td><strong>Nano Suits</strong></td><td>40 total</td><td>Cosmetics; 30+ needed for Nano Suit Collector trophy</td><td>Some are area-locked; plan collection before points of no return</td></tr>
+    <tr><td><strong>Fish</strong></td><td>Variable; fishing available at certain sites</td><td>Side quest ingredients; NPC gifts; minor lore</td><td>Fishing is a separate minigame mechanic with specific equipment</td></tr>
+  </tbody>
+</table>
+
+<div class="callout xion">
+  <div class="callout-title">Side Quest Timing Warning</div>
+  <p>Several side quests and all 27 Bulletin Board requests must be completed before the game&apos;s second point of no return (finishing Spire 4 and heading to the final area). The game does not always clearly signal which quests are time-sensitive. The safe approach: before advancing past any story milestone that feels significant, return to Xion and check the Bulletin Board and all available NPCs for new interactions. Do not leave questlines half-completed when approaching major story junctions.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S20 -->
+<section class="section" id="s20">
+<h2 class="section-title"><span class="sec-num">&sect;20</span> Naytiba Classification</h2>
+<div class="lore-block">
+  <p>The Colony&apos;s Naytiba Research Division produced forty-seven volumes of classification data before the original conflict ended the research program. The survivors of Xion, who had to fight the Naytiba rather than study them, developed a more practical taxonomy. It had three categories: the ones you could kill in one hit from behind, the ones you needed help to kill, and the ones that nothing in the field manual had prepared anyone for. The field manual was not written by people who had met those.</p>
+  <span class="source">// XION FIELD NOTES &middot; NAYTIBA COMBAT GUIDE &middot; PRACTICAL EDITION //</span>
+</div>
+
+<p>Naytiba are the primary enemy type in Stellar Blade. They are not simply monsters &mdash; their biology, their relationship to humanity, and the mystery of their origin is central to the game&apos;s narrative. In combat terms, they range from standard field enemies to unique boss-level entities requiring specific tactical approaches.</p>
+
+<h2 class="sub-title">Standard Naytiba Types</h2>
+<div class="unit-grid">
+  <div class="unit-card naytiba-card">
+    <div class="unit-name">Melee Variants</div>
+    <span class="unit-type">CLOSE RANGE &middot; PATTERN-BASED &middot; PARRIABLE</span>
+    <p>The most common standard Naytiba. Attack primarily with physical strikes that are typically parriable or dodgeable with correct timing. These enemies are the game&apos;s primary training apparatus for Perfect Parry and Blink. Learning their attack patterns thoroughly makes every subsequent encounter more manageable.</p>
+  </div>
+  <div class="unit-card naytiba-card">
+    <div class="unit-name">Ranged Variants</div>
+    <span class="unit-type">PROJECTILES &middot; POSITIONING REQUIRED &middot; DODGE-FOCUSED</span>
+    <p>Naytiba that attack with projectile or energy attacks. Primarily countered through Blink and positional movement rather than Perfect Parry. Use approach from cover angles; close to melee range quickly to neutralise their ranged advantage.</p>
+  </div>
+  <div class="unit-card naytiba-card">
+    <div class="unit-name">Armoured Variants</div>
+    <span class="unit-type">SHIELD RESISTANT &middot; BETA REQUIRED &middot; BALANCE FOCUS</span>
+    <p>Naytiba with physical armour or shield-type defences that resist normal attacks. Require Beta Skills or Charged Triangle attacks to break their armour before standard attacks become effective. The Burst Skill Counter is particularly effective for dealing with their armour while also building Burst charge.</p>
+  </div>
+  <div class="unit-card naytiba-card">
+    <div class="unit-name">Stealth/Ambush Variants</div>
+    <span class="unit-type">ENVIRONMENTAL &middot; SURPRISE ATTACKS &middot; HIGH DAMAGE</span>
+    <p>Naytiba that use environmental concealment or surprise attacks. Often trigger special attack animations if they land the initial strike. Develop a habit of scanning areas before moving through potential ambush points. The Camouflage-Type Exospine reduces your detectability but does not improve detection of stealth enemies.</p>
+  </div>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S21 -->
+<section class="section" id="s21">
+<h2 class="section-title"><span class="sec-num">&sect;21</span> Alpha Naytiba &amp; Boss Strategies</h2>
+<div class="lore-block">
+  <p>The Alpha designation was applied by the Colony Research Division to mean &ldquo;primary threat vector.&rdquo; In practice it means the one in front of you is significantly larger than the ones that came before, and it has learned what the ones before it were doing wrong. The Colony Research Division did not observe this process personally. They observed it in the footage that Eve sends back. She has been sending footage for a while. The classification has expanded considerably since she arrived.</p>
+  <span class="source">// COLONY RESEARCH DIVISION &middot; ALPHA NAYTIBA CLASSIFICATION UPDATE &middot; MISSION ONGOING //</span>
+</div>
+
+<p>Alpha Naytibas are the game&apos;s boss enemies &mdash; uniquely named individuals with distinct combat patterns, multiple attack phases, and often cinematic presentation. Every Alpha encounter is a test of the specific combat skills the preceding area was designed to develop.</p>
+
+<h2 class="sub-title">Universal Boss Principles</h2>
+<ul class="guide-list">
+  <li><strong>Phase transitions reset Balance.</strong> When a boss enters a new phase (usually triggered by health thresholds), their Balance bar resets. Do not spend Beta Skills immediately before a phase transition if you can recognise the trigger.</li>
+  <li><strong>Learn the phase before committing resources.</strong> In the first fight with any new Alpha, prioritise survival and observation over aggressive resource spending. Identify which attacks are parriable, which require dodges, and what the phase transition tells look like before investing Beta and Burst into a single window.</li>
+  <li><strong>Equip the appropriate Exospine.</strong> Boss fights with heavy sustained damage output (Protection-Type), frequent stagger opportunities (Impact-Type), or situations where learning is the priority (Reflex-Type) all call for different equipment. The game respects players who adjust their equipment for specific encounters.</li>
+</ul>
+
+<h2 class="sub-title">Key Boss Strategies</h2>
+<div class="phase early">
+  <div class="phase-title">Gigas &mdash; Eidos 7 (First Alpha Naytiba)</div>
+  <p>A massive Naytiba brute that introduces parry-focused combat at scale. Its heavy slam attacks have clear wind-ups &mdash; practice parrying the double-fist slam as your primary Balance-building tool. The red-glow shockwave is unblockable; Blink to avoid it. Use Triplet Beta Skill to chip away at the stagger bar during melee phases. Stay close to its legs to avoid most sweeping attacks. Its grab attack is telegraphed with a reach animation &mdash; dodge laterally. Equip Reflex-Type Exospine if struggling with parry timing windows.</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">Abaddon &mdash; Parking Tower, Xion</div>
+  <p>A dual-wielding Naytiba with fast, aggressive combo attacks that demand precise parry timing. Keep mid-range to bait its lunging attacks which are easier to parry than its close-range chains. Equip Double Dodge Exospine for extra evasion against its quick follow-ups. Shoot its back weak point with Drone during stagger phases for bonus damage. Its speed ramps as it takes damage &mdash; be prepared for faster timing requirements in the second half of the fight.</p>
+</div>
+
+<div class="phase mid">
+  <div class="phase-title">Altus &mdash; Wasteland, Altar</div>
+  <p>This grotesque Naytiba uses tentacle-like limbs and poison clouds. Stay mobile constantly. Dodge sweeping tentacle attacks; avoid standing in poison pools regardless of timing. Use Slash Beta Skill to break its stagger bar during melee combos. Shoot its glowing core with the Drone to interrupt the poison cloud attack when it begins winding up. Equip Protection-Type Exospine to reduce poison damage accumulation. Priority: interrupt the poison cloud before it deploys rather than managing the deployed version.</p>
+</div>
+
+<div class="callout naytiba">
+  <div class="callout-title">Boss Learning Loop</div>
+  <p>The most effective approach for any Alpha Naytiba: spend the first attempt exclusively on observation. Identify three to five attack animations. Note which are orange (parriable), which are red (dodge-only), and which are blue (grab-type). Note the phase transition trigger. Die if necessary. Return with this knowledge and use it to build a parry rhythm in the second attempt. By the third attempt, you should have the parry windows and the punish sequence. Most bosses in Stellar Blade yield within three to five genuine learning attempts rather than the dozens that trial-and-error grinding produces.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S22 -->
+<section class="section" id="s22">
+<h2 class="section-title"><span class="sec-num">&sect;22</span> Early Game Doctrine</h2>
+<div class="lore-block">
+  <p>Every soldier who descended from the Colony to Earth arrived with a mission brief and a set of expectations about what that mission would require. The mission brief was accurate in its broad outlines. The expectations were less reliable. The distance between what the Colony knew about Earth and what Earth turned out to actually be had been growing for 230 years. Eve&apos;s arrival began the process of closing that distance. The process was uncomfortable for everyone involved.</p>
+  <span class="source">// COLONY MISSION ARCHIVE &middot; 7TH AIRBORNE SQUAD &middot; INITIAL DEPLOYMENT ASSESSMENT //</span>
+</div>
+
+<div class="phase early">
+  <div class="phase-title">First Encounters: Learn the Colour Code</div>
+  <p>Before worrying about optimal skill investment or perfect execution, build the habit of reading the attack colour indicator before doing anything else. Orange = parry attempt. Red = dodge. Blue = lateral dodge. This colour-first cognitive habit is the foundation that every other combat skill is built on. The game&apos;s tutorials reinforce this, but the habit must become automatic &mdash; a conscious decision process that happens faster than the attack&apos;s animation completes.</p>
+</div>
+
+<div class="phase early">
+  <div class="phase-title">First Skills: Ambush and the Survival Tree</div>
+  <p>Buy Ambush (1 SP) from the Attack tree as your first skill purchase. It pays for itself within the first zone. Then invest SP in the Survival tree: one or two HP upgrades, then Double Dodge. This investment profile keeps you alive long enough to learn patterns rather than dying too fast to accumulate the knowledge needed to stop dying.</p>
+</div>
+
+<div class="phase early">
+  <div class="phase-title">First Upgrade: Drone and Exospine</div>
+  <p>After defeating Gigas and returning to Xion: immediately upgrade the Drone with Lily. Then equip the Reflex-Type Exospine if it is available and you are struggling with parry timing. The Drone&apos;s weak point targeting adds meaningful damage to every stagger window; the Reflex-Type extends your error margin during the learning phase. Both are meaningful upgrades that make the Wasteland&apos;s increased difficulty more manageable.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S23 -->
+<section class="section" id="s23">
+<h2 class="section-title"><span class="sec-num">&sect;23</span> Combat Mastery</h2>
+<p>Advanced combat in Stellar Blade is not about executing a fixed optimal rotation. It is about reading specific enemies and dynamically applying the correct tools from Eve&apos;s full kit. The following principles define the difference between functional and masterful combat execution.</p>
+
+<h2 class="sub-title">The Parry-Beta-Stagger Loop</h2>
+<p>The fundamental combat loop of high-level play against most boss-type enemies:</p>
+<ol class="guide-list">
+  <li><strong>Perfect Parry every parriable attack.</strong> Each parry fills Beta Energy at double the attack rate. You are building toward a stagger while the enemy builds toward nothing.</li>
+  <li><strong>Use Quick Attacks in gaps between enemy attack strings</strong> to supplement Beta generation without exposing yourself to unparriable follow-ups.</li>
+  <li><strong>Spend Beta Skills to accelerate the stagger</strong> when you have sufficient charge. Triplet or Slash against the stagger bar; save Arche for when you will be surrounded.</li>
+  <li><strong>When stagger breaks: Drone weak point shot immediately, then Beta Skill if sufficient charge, then follow-up Strong Attack chain.</strong></li>
+  <li><strong>Return to step 1.</strong></li>
+</ol>
+
+<h2 class="sub-title">When to Use Burst</h2>
+<p>Burst Skills are most valuable in these specific situations:</p>
+<ul class="guide-list">
+  <li><strong>During a boss stagger window</strong> when you have a full or near-full Burst gauge: Blood Drive or Rage-amplified attacks during stagger produce the highest damage output available.</li>
+  <li><strong>When surrounded</strong> and Burst gauge is sufficient: Thunderclap clears groups better than any standard crowd control option.</li>
+  <li><strong>As a recovery tool:</strong> Counter during a difficult attack string converts incoming damage into outgoing damage. Effective as a panic button that paradoxically improves your offensive position.</li>
+</ul>
+
+<h2 class="sub-title">Enemy Attack Reading Cues</h2>
+<p>Beyond colour indicators, every enemy has body language cues that precede attacks:</p>
+<ul class="guide-list">
+  <li><strong>Foot plant / weight shift:</strong> A change in foot position or weight distribution almost always precedes a melee attack.</li>
+  <li><strong>Limb chamber:</strong> Pulling back an arm or weapon signals an imminent strike; the timing of the pull-back correlates with when to press parry.</li>
+  <li><strong>Audio cues:</strong> Many attacks have distinct sound design elements that precede the visual wind-up. Playing with audio enabled and calibrated helps significantly.</li>
+  <li><strong>Glowing indicators on the enemy body:</strong> Some attacks cause the enemy&apos;s body part to glow before impact. This is a secondary indicator system that operates alongside the overlay colours.</li>
+</ul>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S24 -->
+<section class="section" id="s24">
+<h2 class="section-title"><span class="sec-num">&sect;24</span> Points of No Return</h2>
+<div class="lore-block">
+  <p>The mission has two points from which there is no turning back. The Colony did not include them in the briefing because the Colony did not know about them. The Naytiba did not put them there. The world created them, over 230 years, out of the accumulated weight of everything that happened after the Imperium did not arrive. This is the part of the mission that no amount of preparation would have prepared anyone for. Eve is discovering it in real time.</p>
+  <span class="source">// COLONY MISSION ARCHIVE &middot; 7TH AIRBORNE SQUAD &middot; [RECORD DISCONTINUED PENDING REVIEW] //</span>
+</div>
+
+<p>Stellar Blade has <strong>two major points of no return</strong> that lock players out of specific content permanently for the remainder of that playthrough. Planning around these thresholds is essential for completionists and for reaching the secret ending.</p>
+
+<h2 class="sub-title">Point of No Return 1 &mdash; After Abyss Levoire</h2>
+<p>Completing the Abyss Levoire area locks out access to <strong>Xion</strong>. Before crossing this threshold:</p>
+<ul class="guide-list">
+  <li>Complete all currently available side quests and Bulletin Board requests in Xion</li>
+  <li>Collect all available Nano Suits in Xion and Eidos 7</li>
+  <li>Collect all available Soda Cans in Xion</li>
+  <li>Interact with all available NPCs (some relationships trigger quest content)</li>
+  <li>Purchase any available skills from Xion&apos;s base camp kiosk</li>
+  <li>Upgrade any equipment available at Lily&apos;s station</li>
+</ul>
+
+<h2 class="sub-title">Point of No Return 2 &mdash; After Spire 4</h2>
+<p>Completing Spire 4 and entering the final area locks out all remaining regional content. This is the final completion checkpoint before endgame. By this point:</p>
+<ul class="guide-list">
+  <li>All 35 side quests should be either complete or you should have an accurate record of what cannot be completed</li>
+  <li>All 27 Bulletin Board requests should be addressed</li>
+  <li>All available Naytiba Data should be collected</li>
+  <li>Any outstanding collectibles (Soda Cans, Memory Sticks) in accessible regions should be gathered</li>
+</ul>
+
+<div class="callout warning">
+  <div class="callout-title">100% Completion for the Secret Ending</div>
+  <p>The &ldquo;Cost of Lost Memories&rdquo; ending requires 100% completion of specific content categories before the final confrontation. This is not announced until you approach the ending and the game checks your progress. If pursuing this ending: track completable quests carefully against both points of no return. It is safer to overestimate what counts than to discover at the ending that a Soda Can or side quest was left incomplete in a locked-out region.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S25 -->
+<section class="section" id="s25">
+<h2 class="section-title"><span class="sec-num">&sect;25</span> New Game Plus</h2>
+<p>New Game Plus was available at Stellar Blade&apos;s launch and provides significant additional content for players who complete the main campaign. Understanding what carries over and what changes in NG+ helps plan how to approach the two-playthrough investment for the Platinum Trophy.</p>
+
+<h2 class="sub-title">What Carries Over to NG+</h2>
+<ul class="guide-list">
+  <li>All unlocked Skills (Attack, Beta, Survival, Burst, Tachy trees)</li>
+  <li>All Exospines at their current upgrade level</li>
+  <li>Blood Edge upgrade level</li>
+  <li>Nano Suits collected</li>
+  <li>Credits and materials</li>
+</ul>
+
+<h2 class="sub-title">What Changes in NG+</h2>
+<ul class="guide-list">
+  <li><strong>MK2 Exospines:</strong> All 12 Exospines have MK2 variants available in the same locations as their original versions in NG+. These provide significantly higher statistical buffs than the standard versions. The Perfect Exospine trophy requires upgrading 10 Exospines across both standard and MK2 variants.</li>
+  <li><strong>New Nano Suits:</strong> NG+-exclusive Nano Suits are available that were not accessible in the first playthrough.</li>
+  <li><strong>New Skills (MK2):</strong> The Skill trees receive MK2 enhancement versions of existing abilities that provide stronger modifiers &mdash; including options like converting received damage into Beta Energy or ignoring enemy shields.</li>
+  <li><strong>Enemy repositioning:</strong> Some enemies are placed in different positions in NG+. Do not assume cleared areas are identical to the first playthrough.</li>
+  <li><strong>Increased enemy strength:</strong> Enemies on hard difficulties in NG+ are stronger than their first-playthrough equivalents.</li>
+</ul>
+
+<div class="callout eve">
+  <div class="callout-title">NG+ Planning for Platinum</div>
+  <p>Two playthroughs are required for the Platinum Trophy because both the &ldquo;Cost of Lost Memories&rdquo; ending and the &ldquo;Making New Memories&rdquo; ending are needed, and the MK2 Exospine upgrades require NG+ access. Plan your first playthrough to reach the secret ending (if possible) and complete all side content before both points of no return. Plan your second playthrough (NG+) to collect all remaining endings, MK2 gear, and any collectibles missed in the first run. Having carried-over skills and equipment makes the second playthrough significantly faster regardless of difficulty selected.</p>
+</div>
+</section>
+
+<div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<!-- S26 -->
+<section class="section" id="s26">
+<h2 class="section-title"><span class="sec-num">&sect;26</span> Glossary</h2>
+<div class="gloss-grid">
+  <div class="gloss-item"><div class="gloss-term">Adam</div><div class="gloss-def">Xion survivor and Eve&apos;s primary local contact; provides emotional grounding and local knowledge; his motivations become more complex as the story develops.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Alpha Naytiba</div><div class="gloss-def">Boss-tier named Naytiba with unique attack patterns, multiple phases, and cinematic presentation; defeat rewards Weapon Cores for Blood Edge upgrades.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Ambush</div><div class="gloss-def">Attack tree skill (1 SP) that instantly kills eligible enemies from behind or above; one of the game&apos;s highest-value first purchases.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Arche</div><div class="gloss-def">An area-of-effect Beta Skill that damages multiple enemies simultaneously; essential for crowd control in multi-enemy encounters.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Balance Bar</div><div class="gloss-def">An enemy&apos;s stability meter beneath their health; depleted by Perfect Parry, Beta Skills, and Strong Attacks; when emptied, staggers the enemy and exposes their weak point.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Beta Chain</div><div class="gloss-def">A combo technique that enables enhanced attack chains using Beta Energy; also contributes to Burst Energy generation.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Beta Energy</div><div class="gloss-def">A resource gauge filled by attacking and especially by Perfect Parrying (which fills two segments versus one for attacks); spent on Beta Skills.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Beta Skill</div><div class="gloss-def">A powerful special attack consuming Beta Energy; four can be active simultaneously; acquired and upgraded through the Beta Skill Tree using SP.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Blaster Rail</div><div class="gloss-def">Piercing, highest single-shot damage Drone ammunition type; very limited quantity; reserved for critical moments and exposed weak points.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Blink</div><div class="gloss-def">The timed Perfect Dodge; pressing Circle at the moment of impact; avoids all damage, generates Burst Energy, and briefly exposes the enemy&apos;s weak point.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Blood Edge</div><div class="gloss-def">Eve&apos;s one-handed blade; the game&apos;s only melee weapon, upgraded (not replaced) throughout the game using Weapon Cores from boss kills.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Blood Drive</div><div class="gloss-def">High single-target damage Burst Skill; one of the first Burst Skills available and most consistently useful across all boss encounters.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Burst Energy</div><div class="gloss-def">A resource gauge filled by Perfect Dodges (Blink), Repulse, and Beta Chain usage; spent on Burst Skills.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Burst Skill</div><div class="gloss-def">Powerful special abilities consuming Burst Energy; unlocked after defeating the Stalker in Matrix 11; acquired at base camp kiosks using SP.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Camouflage-Type Exospine</div><div class="gloss-def">Exospine that reduces enemy field of view, enables wider approach angles for Ambush, and provides attack and HP bonuses on Ambush/Execution.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Chain-Type Exospine</div><div class="gloss-def">Exospine that enhances Beta Chain attack chains for more hits per chain; best for Beta-heavy playstyles.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Colony</div><div class="gloss-def">The off-world human settlement from which Eve and the Airborne Squads originate; its knowledge of Earth and the Naytiba is incomplete in ways the game reveals progressively.</div></div>
+  <div class="gloss-item"><div class="gloss-term">D1G-g2r</div><div class="gloss-def">A vendor in Xion and the Wasteland who exchanges two Damaged Weapon Cores for one working Weapon Core and sells Nano Elements for credits.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Damaged Weapon Core</div><div class="gloss-def">Dropped by optional boss Alpha Naytibas; two can be exchanged at D1G-g2r for one full Weapon Core; important for maximising Blood Edge upgrade level.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Drone</div><div class="gloss-def">Eve&apos;s ranged combat support system; upgraded after defeating Gigas; uses multiple ammunition types including Normal Slugs, Explosive Rounds, Stinger Missiles, and Blaster Rail.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Drone Upgrade Module</div><div class="gloss-def">Items used to unlock new Drone ammunition types and expand ammo capacity; collected from the environment and enemy drops.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Eve</div><div class="gloss-def">The player character; a member of the Colony&apos;s 7th Airborne Squad; wielder of the Blood Edge; the game&apos;s central mystery is as much about her as about the Naytiba.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Exospine</div><div class="gloss-def">Modular sub-dermal performance enhancement; the game&apos;s primary equipment piece; 12 total (plus MK2 variants in NG+); each fundamentally shapes a specific playstyle approach.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Gigas</div><div class="gloss-def">The first Alpha Naytiba; encountered in Eidos 7; defeating it upgrades the Drone; a beginner-friendly boss that introduces parry-focused combat at scale.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Guard</div><div class="gloss-def">L1 hold; reduces incoming damage while blocking; does not negate it; a Perfect Parry (timed L1) is required to negate damage entirely and generate Beta Energy.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Impact-Type Exospine</div><div class="gloss-def">Exospine that increases critical hit rate and causes critical hits to unleash chained energy damage to nearby enemies; strong for multi-enemy encounters.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Judgment Wave</div><div class="gloss-def">Long-range Beta Skill that fires an energy slash forward from Eve&apos;s position; useful for initiating encounters and engaging at range.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Lily</div><div class="gloss-def">Xion survivor and technical support NPC; upgrades the Blood Edge and Exospines at the base; accessible at Repair Consoles in camps throughout the world.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Matrix 11</div><div class="gloss-def">An industrial/technological ruins region where the Stalker boss is encountered; defeating the Stalker unlocks the Burst Skill system.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Mother Sphere</div><div class="gloss-def">The Colony&apos;s guiding intelligence; the institutional authority behind Eve&apos;s mission; what she knows and does not share is the game&apos;s central dramatic tension.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Nano Elements</div><div class="gloss-def">Primary upgrade material in three tiers (standard, Advanced, Extreme); used to upgrade Exospines; found in environmental caches, from enemy drops, and purchasable from D1G-g2r.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Nano Suit</div><div class="gloss-def">Eve&apos;s cosmetic outfits; 40 total in the base game; purely aesthetic (no stat bonuses); required for the Nano Suit Collector trophy and contribute to 100% completion.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Naytiba</div><div class="gloss-def">The primary enemy force; have overrun Earth and expelled humanity to the Colony; their origin and nature is one of the game&apos;s central mysteries.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Naytiba Data</div><div class="gloss-def">Lore collectible obtained by defeating each unique Naytiba type for the first time; required for 100% completion and associated trophy.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Perfect Parry</div><div class="gloss-def">Timed L1 press at the moment a blockable (orange/yellow indicator) attack would connect; negates all damage, fills two Beta Energy segments, and staggers the enemy&apos;s balance.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Protection-Type Exospine</div><div class="gloss-def">10% damage reduction, increased shield, and HP restoration chance when guarding at low HP; situationally powerful for high-damage boss encounters.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Recovery-Type Exospine</div><div class="gloss-def">Provides HP restoration on execution kills and on successful parrying at low HP; the primary survivability Exospine for learning-phase and attrition combat scenarios.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Reflex-Type Exospine</div><div class="gloss-def">Extends the timing windows for Perfect Parry and Blink; broadly recommended during the learning phase; diminishing returns once timing becomes natural.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Repulse</div><div class="gloss-def">A directional variant of Blink that deflects the attack back toward the enemy; generates Burst Energy and exposes weak points.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Repair Console</div><div class="gloss-def">Found at Supply Camps; used to upgrade Exospines using Nano Elements; also accessible through Lily at the Xion base.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Skill Kiosk</div><div class="gloss-def">Found at Supply Camps; where SP is spent to unlock and upgrade skills from all available Skill Trees.</div></div>
+  <div class="gloss-item"><div class="gloss-term">SP (Skill Points)</div><div class="gloss-def">The currency for unlocking and upgrading skills; earned by defeating enemies and found in the environment; spent at Skill Kiosks in Supply Camps.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Stalker</div><div class="gloss-def">An Alpha Naytiba encountered in Matrix 11; defeating it unlocks the Burst Skill system and is a significant story milestone.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Supply Camp</div><div class="gloss-def">Save points distributed throughout each region; activation saves progress, heals Eve, restores consumables, and provides access to Skill Kiosks and Repair Consoles; also enables fast travel.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Tachy</div><div class="gloss-def">Another Airborne soldier whose story intersection with Eve is one of the game&apos;s significant narrative moments; unlocks the Tachy Skill Tree and Tachy Mode through story progression.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Tachy Mode</div><div class="gloss-def">A temporary combat transformation with increased movement speed and a distinct attack chain; most effective during boss stagger windows; gauge-limited duration.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Thunderclap</div><div class="gloss-def">Area-of-effect Burst Skill; the Burst equivalent of Arche; clears groups of Naytiba with significant damage across a wide area.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Triplet</div><div class="gloss-def">A three-hit Beta Skill that deals excellent Balance damage per Beta spent; highly effective for stagger-focused combat against single large enemies.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Weapon Core</div><div class="gloss-def">Upgrade material for the Blood Edge; obtained from mandatory boss Alpha Naytiba kills; two Damaged Weapon Cores (from optional bosses) exchange for one at D1G-g2r.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Weak Point</div><div class="gloss-def">A vulnerable location on each enemy exposed when their Balance is depleted (stagger) or after a successful Blink/Repulse; Drone fire on the exposed weak point deals dramatically amplified damage.</div></div>
+  <div class="gloss-item"><div class="gloss-term">Xion</div><div class="gloss-def">The last surviving city on Earth; Eve&apos;s base of operations; the source of all side quests and most upgrade infrastructure; locked out after completing Abyss Levoire.</div></div>
+</div>
+</section>
+
+</div><!-- /content -->
+<footer id="footer">
+  Stellar Blade &nbsp;&middot;&nbsp; Shift Up / Sony Interactive Entertainment &nbsp;&middot;&nbsp; Nadir Strategy Archive &nbsp;&middot;&nbsp; Earth, Year Unknown &mdash; The Mission Continues
+</footer>
+</div><!-- /main -->
+<a id="back-top" href="#hero" title="Back to top">&#8593;</a>
+<script>
+const bar=document.getElementById('progress-bar');
+const bt=document.getElementById('back-top');
+const tog=document.getElementById('sidebar-toggle');
+const sb=document.getElementById('sidebar');
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;
+  bar.style.transform='scaleX('+(s/t)+')';
+  bt.classList.toggle('visible',s>400);
+},{passive:true});
+const secs=document.querySelectorAll('.section[id]');
+const navs=document.querySelectorAll('.nav-item');
+const obs=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){navs.forEach(n=>n.classList.remove('active'));const a=document.querySelector('.nav-item[href="#'+e.target.id+'"]');if(a){a.classList.add('active');a.scrollIntoView({block:'nearest'});}}});
+},{rootMargin:'-20% 0px -70% 0px'});
+secs.forEach(s=>obs.observe(s));
+tog.addEventListener('click',()=>sb.classList.toggle('open'));
+document.querySelectorAll('.nav-item').forEach(i=>i.addEventListener('click',()=>sb.classList.remove('open')));
+document.querySelectorAll('.section').forEach((s,i)=>{s.style.animationDelay=i*0.03+'s';});
+</script>
+</body>
+</html>
